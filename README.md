@@ -33,7 +33,20 @@ This is a work in progress mostly as a way to learn Rust.
 
 * Then use the generated heroku token to create a heroku client
 
-    `tdb`
+    ```
+    let client = Heroku::new("API_KEY_HERE").unwrap();
+    let me = client.get().apps().execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("{:#?}", headers);
+            println!("{}", status);
+            if let Some(json) = json {
+                println!("{}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+    ```
 
 
 
