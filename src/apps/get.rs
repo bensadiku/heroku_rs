@@ -5,6 +5,7 @@ use crate::client::GetQueryBuilder;
 // Declaration of types representing the various items under apps
 new_type!(
    Apps
+   AppName
    Name
    Id
 
@@ -15,18 +16,22 @@ from!(
     @GetQueryBuilder
         -> Apps = "apps"
     @Apps
+        => AppName 
+    @AppName
         -> Name = "name"
-        -> Id = "id"
 );
 
 // impls of each type
 impl_macro!(
     @Apps
+        |
+        |=> app_name -> AppName = appname_str
+    @AppName
         |=> name -> Name
-        |=> id -> Id
         |
 );
 
 exec!(Apps);
+exec!(AppName);
 exec!(Name);
 exec!(Id);

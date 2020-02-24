@@ -1,4 +1,4 @@
-# rust-heroku-client
+# heroku-rs
 
 **This project is currently under development**
 
@@ -11,6 +11,8 @@ This is a work in progress mostly as a way to learn Rust.
 ### Useful links
 
 [Heroku quickstart](https://devcenter.heroku.com/articles/platform-api-quickstart) 
+
+[Heroku API reference](https://devcenter.heroku.com/articles/platform-api-reference)
 
 [Generating a heroku API key](https://help.heroku.com/PBGP6IDE/how-should-i-generate-an-api-key-that-allows-me-to-use-the-heroku-platform-api)
 
