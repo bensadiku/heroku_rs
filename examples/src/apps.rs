@@ -12,6 +12,7 @@ pub fn run() {
     // patch_app(&client);
     // patch_feature(&client);
     // post_app(&client);
+    // delete_app(&client);
 }
 
 // == Getting an app ==
@@ -19,13 +20,8 @@ pub fn run() {
 // If you want to get a specific app you can do so..run()
 // by quering .app_name("NAME_HERE") or .app_id("ID_HERE")
 
-
 fn get_apps(client: &Heroku) {
-    let me = client
-        .get()
-        .apps() 
-        .app_name("APP_NAME")
-        .execute::<Value>();
+    let me = client.get().apps().app_name("APP_NAME").execute::<Value>();
     match me {
         Ok((headers, status, json)) => {
             println!("Headers: {:#?}", headers);
@@ -126,10 +122,35 @@ fn patch_feature(client: &Heroku) {
 // Library provides a default struct AppPost to create a simple app.
 fn post_app(client: &Heroku) {
     let region = String::from("us"); //unique identifier or name of region e.g.	"01234567-89ab-cdef-0123-456789abcdef" or "us"
-    let stack = String::from("heroku-18");// unique name or identifier of stack e.g. heroku-18
+    let stack = String::from("heroku-18"); // unique name or identifier of stack e.g. heroku-18
     let name = String::from("mynewcoolapp"); // name of app e.g. mynewcoolapp
-    let app_to_create = AppPost { region, stack, name };
+    let app_to_create = AppPost {
+        region,
+        stack,
+        name,
+    };
     let me = client.post(app_to_create).apps().execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Deleting an app ==
+// https://devcenter.heroku.com/articles/platform-api-reference#app-delete
+fn delete_app(client: &Heroku) {
+    let name = String::from("mynewcoolapp"); // name or id of the app to delete e.g. mynewcoolapp
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name(&name)
+        .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {
             println!("Headers: {:#?}", headers);
