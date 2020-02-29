@@ -4,10 +4,11 @@ use crate::client::GetQueryBuilder;
 
 // Declaration of types representing the various items under apps
 new_type!(
-   Apps
-   AppName
-   Name
-   Id
+    App
+    Apps
+    AppFeatures 
+    AppFeaturesName 
+    AppFeaturesId
 
 );
 
@@ -16,22 +17,31 @@ from!(
     @GetQueryBuilder
         -> Apps = "apps"
     @Apps
-        => AppName 
-    @AppName
-        -> Name = "name"
+        => App
+    @App
+        -> AppFeatures = "features"     //TODO webhooks addons etc
+    @AppFeatures
+        => AppFeaturesName  
+        => AppFeaturesId   
 );
 
 // impls of each type
 impl_macro!(
     @Apps
         |
-        |=> app_name -> AppName = appname_str
-    @AppName
-        |=> name -> Name
+        |=> app_name -> App = app_name_str
+        |=> app_id -> App = app_id_str
+    @App
+        |=> app_features ->  AppFeatures
         |
+    @AppFeatures
+        |
+        |=> feature_name -> AppFeaturesName = name
+        |=> feature_id -> AppFeaturesId = id
 );
 
+exec!(App);
 exec!(Apps);
-exec!(AppName);
-exec!(Name);
-exec!(Id);
+exec!(AppFeatures);
+exec!(AppFeaturesName);
+exec!(AppFeaturesId);
