@@ -59,10 +59,6 @@ fn get_app_features(client: &Heroku) {
     }
 }
 
-fn post_apps() {
-    //TODO
-}
-
 // == Patching an app ==
 // https://devcenter.heroku.com/articles/platform-api-reference#app-update
 
