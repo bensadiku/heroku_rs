@@ -4,7 +4,7 @@
 
 ## Intro
 
-This is a rust wrapper for the [Heroku](https://heroku.com/) [v3 API](https://devcenter.heroku.com/articles/platform-api-reference/).
+This is a rust wrapper inspired by [github-rs](https://github.com/github-rs/github-rs), for the [Heroku](https://heroku.com/) [v3 API](https://devcenter.heroku.com/articles/platform-api-reference/) .
 
 This is a work in progress mostly as a way to learn Rust.
 ## Getting Started
@@ -12,7 +12,7 @@ Add the following to your `Cargo.toml`
 
 ```toml
 [dependencies]
-heroku-rs = "0.1"
+heroku_rs = "0.1"
 serde_json = "1.0"
 ```
 run: `cargo build`
