@@ -299,6 +299,8 @@ impl<'g> PatchQueryBuilder<'g> {
     /// if you need access to a hidden endpoint.
     func_client!(custom_endpoint, CustomQuery, endpoint_str);
 
+    func_client!(apps, apps::patch::Apps<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {
