@@ -14,6 +14,7 @@ mod macros;
 mod utils;
 
 pub mod client;
+pub mod defaults;
 pub mod errors;
 pub mod headers;
 pub mod apps;
