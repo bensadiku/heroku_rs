@@ -17,3 +17,12 @@ pub struct AppPatch {
     pub maintenance: bool,
     pub name: String,
 }
+
+/// A simple struct for an app post
+/// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-create
+#[derive(Serialize, Deserialize)]
+pub struct AppPost {
+    pub region: String,
+    pub stack: String,
+    pub name: String,
+}

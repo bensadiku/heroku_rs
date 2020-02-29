@@ -1,15 +1,17 @@
 #![allow(dead_code)] // Just warns about un-used methods until they're used.
 
 use heroku_rs::client::{Executor, Heroku};
-use heroku_rs::defaults::{AppPatch, EnableFeature};
+use heroku_rs::defaults::{AppPatch, AppPost, EnableFeature};
 use serde_json::Value;
 
+// Uncomment methods to run them.
 pub fn run() {
     let client = Heroku::new("API_KEY").unwrap();
     get_apps(&client);
     //get_app_features(&client);
     // patch_app(&client);
     // patch_feature(&client);
+    // post_app(&client);
 }
 
 // == Getting an app ==
@@ -108,6 +110,27 @@ fn patch_feature(client: &Heroku) {
         .execute::<Value>();
 
     match result {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Creating an app ==
+// https://devcenter.heroku.com/articles/platform-api-reference#app-create
+// Library provides a default struct AppPost to create a simple app.
+fn post_app(client: &Heroku) {
+    let region = String::from("us"); //unique identifier or name of region e.g.	"01234567-89ab-cdef-0123-456789abcdef" or "us"
+    let stack = String::from("heroku-18");// unique name or identifier of stack e.g. heroku-18
+    let name = String::from("mynewcoolapp"); // name of app e.g. mynewcoolapp
+    let app_to_create = AppPost { region, stack, name };
+    let me = client.post(app_to_create).apps().execute::<Value>();
+    match me {
         Ok((headers, status, json)) => {
             println!("Headers: {:#?}", headers);
             println!("Status: {}", status);
