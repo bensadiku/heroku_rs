@@ -9,6 +9,7 @@ new_type!(
     WebhookId
     Build
     Collaborator
+    Domain
 );
 
 from!(
@@ -20,6 +21,7 @@ from!(
         -> Webhooks = "webhooks"    
         -> Build = "builds"    
         -> Collaborator = "collaborators"    
+        -> Domain = "domains"    
     @Webhooks
         => WebhookId 
 );
@@ -33,6 +35,7 @@ impl_macro!(
         |=> app_webhooks ->  Webhooks
         |=> app_build ->  Build
         |=> app_collaborator ->  Collaborator
+        |=> app_domain ->  Domain
         |
     @Webhooks
         |
@@ -45,3 +48,4 @@ exec!(Webhooks);
 exec!(WebhookId);
 exec!(Build);
 exec!(Collaborator);
+exec!(Domain);

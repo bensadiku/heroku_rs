@@ -12,6 +12,9 @@ new_type!(
     Collaborator
     CollaboratorEmail
     CollaboratorId
+    Domain
+    DomainId
+    DomainHostname
 
 );
 
@@ -25,11 +28,15 @@ from!(
         -> Webhooks = "webhooks"
         -> BuildCache = "build-cache"
         -> Collaborator = "collaborators"
+        -> Domain = "domains"
     @Webhooks
         => WebhookId
     @Collaborator
         => CollaboratorEmail
         => CollaboratorId
+    @Domain
+        => DomainHostname
+        => DomainId
       
 );
 
@@ -43,6 +50,7 @@ impl_macro!(
         |=> app_webhooks -> Webhooks
         |=> app_build_cache -> BuildCache
         |=> app_collaborators -> Collaborator
+        |=> app_domains -> Domain
         |
     @Webhooks
         |
@@ -51,6 +59,10 @@ impl_macro!(
         |
         |=> collaborator_email -> CollaboratorEmail = email
         |=> collaborator_id -> CollaboratorId = id
+    @Domain
+        |
+        |=> domain_hostname -> DomainHostname = hostname
+        |=> domain_id -> DomainId = id
 );
 
 exec!(App);
@@ -61,3 +73,6 @@ exec!(BuildCache);
 exec!(Collaborator);
 exec!(CollaboratorEmail);
 exec!(CollaboratorId);
+exec!(Domain);
+exec!(DomainId);
+exec!(DomainHostname);

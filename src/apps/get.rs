@@ -25,6 +25,9 @@ new_type!(
     Releases
     ReleaseId
     ReleaseVersion
+    Domain
+    DomainId
+    DomainHostname
 
 );
 
@@ -44,6 +47,7 @@ from!(
         -> Collaborator = "collaborators"    
         -> ConfigVars = "config-vars"    
         -> Releases = "releases"    
+        -> Domain = "domains"    
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId  
@@ -65,6 +69,9 @@ from!(
         -> ConfigVars = "config-vars"
     @ReleaseId
         -> ConfigVars = "config-vars"
+    @Domain
+        => DomainHostname
+        => DomainId
 );
 
 // impls of each type
@@ -83,6 +90,7 @@ impl_macro!(
         |=> app_collaborators ->  Collaborator
         |=> app_config_vars ->  ConfigVars
         |=> app_releases->  Releases
+        |=> app_domains ->  Domain
         |
     @AppFeatures
         |
@@ -114,6 +122,10 @@ impl_macro!(
     @ReleaseVersion
         |=> release_config_vars ->  ConfigVars 
         |    
+    @Domain
+        |
+        |=> domain_id -> DomainId = id
+        |=> domain_hostname -> DomainHostname = hostname
 );
 
 exec!(App);
@@ -137,4 +149,8 @@ exec!(ConfigVars);
 exec!(Releases);
 exec!(ReleaseId);
 exec!(ReleaseVersion);
+exec!(Domain);
+exec!(DomainId);
+exec!(DomainHostname);
+
 

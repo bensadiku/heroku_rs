@@ -31,6 +31,9 @@ pub fn run() {
     // delete_collaborators(&client);
     // get_config_vars(&client);
     // patch_config_vars(&client);
+    // post_new_domain(&client);
+    // get_domains(&client);
+    // delete_domain(&client);
 }
 
 // == Getting an app ==
@@ -568,7 +571,7 @@ fn get_config_vars(client: &Heroku) {
 }
 
 // == Patch config vars ==
-// https://devcenter.heroku.com/articles/platform-api-reference#config-vars-update
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#config-vars-update
 // Requires the Heroku client, the app you want to patch the config vars of
 // You can get all config vars for an app or for a specific release
 // Patch config vars for an app: .patch(obj).apps().app_name("NAME_HERE").app_config_vars()
@@ -587,6 +590,82 @@ fn patch_config_vars(client: &Heroku) {
         .apps()
         .app_name("APP_NAME")
         .app_config_vars()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == POST new domain ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#domain-create
+// Requires the Heroku client, the app you want to create a domain for and the uri
+fn post_new_domain(client: &Heroku) {
+    //Post takes an object, this is just an example struct
+    #[derive(Serialize, Deserialize)]
+    struct NewDomain {
+        hostname: String,
+    };
+    let new_domain = NewDomain {
+        hostname: String::from("my-excellent-app.herokuapp.com"), // the full hostname
+    };
+    let me = client
+        .post(new_domain)
+        .apps()
+        .app_name("APP_NAME")
+        .app_domain()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == GET app domains  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#domain-info
+// Requires the Heroku client and an App to get all the app domains
+// get a specific domain by id: .app_domains().domain_id("ID_HERE")
+//  or by hostname: .app_domains().domain_hostname("HOSTNAME_HERE")
+fn get_domains(client: &Heroku) {
+    let me = client
+        .get()
+        .apps()
+        .app_name("APP_NAME")
+        .app_domains()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+// == DELETE app domain  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#domain-delete
+// Requires the Heroku client, an App which has domain and a domain id or hostname
+fn delete_domain(client: &Heroku) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name("APP_NAME")
+        .app_domains()
+        .domain_hostname("my-excellent-app.herokuapp.com")
         .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {
