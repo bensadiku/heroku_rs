@@ -9,7 +9,7 @@ use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run() {
     let client = Heroku::new("API_KEY").unwrap();
-    // get_apps(&client);
+    get_apps(&client);
     //get_app_features(&client);
     // patch_app(&client);
     // patch_feature(&client);
@@ -28,7 +28,9 @@ pub fn run() {
     // get_buildpack_installations(&client);
     // post_collaborator(&client);
     // get_collaborators(&client);
-    delete_collaborators(&client);
+    // delete_collaborators(&client);
+    // get_config_vars(&client);
+    // patch_config_vars(&client);
 }
 
 // == Getting an app ==
@@ -525,6 +527,66 @@ fn delete_collaborators(client: &Heroku) {
         .app_name("APP_NAME")
         .app_collaborators()
         .collaborator_email("COLLABORATOR_EMAIL_HERE")
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Get config vars ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#config-vars
+// Requires the Heroku client, the app you want to get the config vars of
+// You can get all config vars for an app or for a specific release
+// All config vars for an app: .get().apps().app_name("NAME_HERE").app_config_vars()
+// All config vars for a specific app release. See below:
+fn get_config_vars(client: &Heroku) {
+    let me = client
+        .get()
+        .apps()
+        .app_name("APP_NAME")
+        .app_releases() // get all releases
+        .release_version("2") // get version e.g. 2
+        .release_config_vars() // get all config vars for that version 2 release
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Patch config vars ==
+// https://devcenter.heroku.com/articles/platform-api-reference#config-vars-update
+// Requires the Heroku client, the app you want to patch the config vars of
+// You can get all config vars for an app or for a specific release
+// Patch config vars for an app: .patch(obj).apps().app_name("NAME_HERE").app_config_vars()
+fn patch_config_vars(client: &Heroku) {
+    //Patch takes an object, this is just an example struct
+    #[derive(Serialize, Deserialize)]
+    struct AddConfig {
+        config: String,
+    };
+    let new_config = AddConfig {
+        config: String::from("My_New_Config"),
+    };
+
+    let me = client
+        .patch(new_config)
+        .apps()
+        .app_name("APP_NAME")
+        .app_config_vars()
         .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {

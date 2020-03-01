@@ -10,6 +10,7 @@ new_type!(
     AppFeaturesId
     Webhooks
     WebhookId
+    ConfigVars
 );
 
 from!(
@@ -20,6 +21,7 @@ from!(
     @App
         -> AppFeatures = "features"
         -> Webhooks = "webhooks"    
+        -> ConfigVars = "config-vars"    
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId 
@@ -35,6 +37,7 @@ impl_macro!(
     @App
         |=> app_features ->  AppFeatures
         |=> app_webhooks ->  Webhooks
+        |=> app_config_vars ->  ConfigVars
         |
     @AppFeatures
         |
@@ -52,3 +55,4 @@ exec!(AppFeaturesName);
 exec!(AppFeaturesId);
 exec!(Webhooks);
 exec!(WebhookId);
+exec!(ConfigVars);

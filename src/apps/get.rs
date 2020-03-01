@@ -21,6 +21,10 @@ new_type!(
     Collaborator
     CollaboratorEmail
     CollaboratorId
+    ConfigVars
+    Releases
+    ReleaseId
+    ReleaseVersion
 
 );
 
@@ -38,6 +42,8 @@ from!(
         -> Build = "builds"    
         -> BuildpackInstallations = "buildpack-installations"    
         -> Collaborator = "collaborators"    
+        -> ConfigVars = "config-vars"    
+        -> Releases = "releases"    
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId  
@@ -52,6 +58,13 @@ from!(
     @Collaborator
         => CollaboratorEmail
         => CollaboratorId
+    @Releases
+        => ReleaseVersion
+        => ReleaseId
+    @ReleaseVersion
+        -> ConfigVars = "config-vars"
+    @ReleaseId
+        -> ConfigVars = "config-vars"
 );
 
 // impls of each type
@@ -68,6 +81,8 @@ impl_macro!(
         |=> app_builds ->  Build
         |=> app_buildpack_installations ->  BuildpackInstallations
         |=> app_collaborators ->  Collaborator
+        |=> app_config_vars ->  ConfigVars
+        |=> app_releases->  Releases
         |
     @AppFeatures
         |
@@ -89,6 +104,16 @@ impl_macro!(
         |
         |=> collaborator_id -> CollaboratorId = id
         |=> collaborator_email -> CollaboratorEmail = email
+    @Releases
+        |
+        |=> release_id -> ReleaseId = id
+        |=> release_version -> ReleaseVersion = version
+    @ReleaseId
+        |=> release_config_vars ->  ConfigVars
+        |
+    @ReleaseVersion
+        |=> release_config_vars ->  ConfigVars 
+        |    
 );
 
 exec!(App);
@@ -108,3 +133,8 @@ exec!(BuildpackInstallations);
 exec!(Collaborator);
 exec!(CollaboratorId);
 exec!(CollaboratorEmail);
+exec!(ConfigVars);
+exec!(Releases);
+exec!(ReleaseId);
+exec!(ReleaseVersion);
+
