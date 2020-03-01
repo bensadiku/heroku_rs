@@ -11,6 +11,10 @@ new_type!(
     AppFeaturesId
     Webhooks
     WebhookId
+    WebhookDelivery
+    WebhookDeliveryId
+    WebhookEvent
+    WebhookEventId
 
 );
 
@@ -23,11 +27,17 @@ from!(
     @App
         -> AppFeatures = "features"    
         -> Webhooks = "webhooks"    
+        -> WebhookDelivery = "webhook-deliveries"    
+        -> WebhookEvent = "webhook-events"    
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId  
     @Webhooks
         => WebhookId 
+    @WebhookDelivery
+        => WebhookDeliveryId 
+    @WebhookEvent
+        => WebhookEventId 
 );
 
 // impls of each type
@@ -39,6 +49,8 @@ impl_macro!(
     @App
         |=> app_features ->  AppFeatures
         |=> app_webhooks ->  Webhooks
+        |=> app_webhook_deliveries ->  WebhookDelivery
+        |=> app_webhook_events ->  WebhookEvent
         |
     @AppFeatures
         |
@@ -47,6 +59,12 @@ impl_macro!(
     @Webhooks
         |
         |=> webhook_id -> WebhookId = id
+    @WebhookDelivery
+        |
+        |=> webhook_delivery_id -> WebhookDeliveryId = id
+    @WebhookEvent
+        |
+        |=> webhook_event_id -> WebhookEventId = id
 );
 
 exec!(App);
@@ -56,3 +74,7 @@ exec!(AppFeaturesName);
 exec!(AppFeaturesId);
 exec!(Webhooks);
 exec!(WebhookId);
+exec!(WebhookDelivery);
+exec!(WebhookDeliveryId);
+exec!(WebhookEvent);
+exec!(WebhookEventId);

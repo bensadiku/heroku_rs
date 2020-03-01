@@ -16,6 +16,8 @@ pub fn run() {
     // delete_webhook(&client);
     // post_webhook(&client);
     // patch_webhook(&client);
+    // get_webhook_deliveries(&client);
+    // get_webhook_events(&client);
 }
 
 // == Getting an app ==
@@ -260,6 +262,51 @@ fn patch_webhook(client: &Heroku) {
         .app_webhooks()
         .webhook_id("Hook-Id-here")
         .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Getting webhook deliveries ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-info
+// Requires the Heroku client and an App to get all the webhook deliveries
+// get a specific webhook delivery by doing: .webhook_delivery_id("ID_HERE") 
+fn get_webhook_deliveries(client: &Heroku) {
+    let me = client.get()
+    .apps()
+    .app_name("APP_NAME")
+    .app_webhook_deliveries()
+    .webhook_delivery_id("ID_HERE")
+    .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Getting webhook events ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-event-info
+// Requires the Heroku client and an App to get all the webhook events
+// get a specific webhook event by doing: .webhook_event_id("ID_HERE") 
+fn get_webhook_events(client: &Heroku) {
+    let me = client.get()
+    .apps()
+    .app_name("APP_NAME")
+    .app_webhook_events()
+    .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {
             println!("Headers: {:#?}", headers);
