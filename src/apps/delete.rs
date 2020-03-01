@@ -8,6 +8,7 @@ new_type!(
     Apps
     Webhooks
     WebhookId
+    BuildCache
 
 );
 
@@ -19,6 +20,7 @@ from!(
         => App
     @App
         -> Webhooks = "webhooks"
+        -> BuildCache = "build-cache"
     @Webhooks
         => WebhookId
       
@@ -32,6 +34,7 @@ impl_macro!(
         |=> app_id -> App = app_id_str
     @App
         |=> app_webhooks -> Webhooks
+        |=> app_build_cache -> BuildCache
         |
     @Webhooks
         |
@@ -42,3 +45,4 @@ exec!(App);
 exec!(Apps);
 exec!(Webhooks);
 exec!(WebhookId);
+exec!(BuildCache);

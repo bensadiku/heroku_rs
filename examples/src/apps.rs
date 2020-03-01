@@ -1,6 +1,6 @@
 #![allow(dead_code)] // Just warns about un-used methods until they're used.
 use heroku_rs::client::{Executor, Heroku};
-use heroku_rs::defaults::{AppPatch, AppPost, EnableFeature, WebhookPost};
+use heroku_rs::defaults::{AppPatch, AppPost, BuildPost, EnableFeature, SourceBlob, WebhookPost};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
@@ -18,6 +18,9 @@ pub fn run() {
     // patch_webhook(&client);
     // get_webhook_deliveries(&client);
     // get_webhook_events(&client);
+    // get_builds(&client);
+    // post_build(&client);
+    // delete_build_cache(&client);
 }
 
 // == Getting an app ==
@@ -277,14 +280,15 @@ fn patch_webhook(client: &Heroku) {
 // == Getting webhook deliveries ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-info
 // Requires the Heroku client and an App to get all the webhook deliveries
-// get a specific webhook delivery by doing: .webhook_delivery_id("ID_HERE") 
+// get a specific webhook delivery by doing: .webhook_delivery_id("ID_HERE")
 fn get_webhook_deliveries(client: &Heroku) {
-    let me = client.get()
-    .apps()
-    .app_name("APP_NAME")
-    .app_webhook_deliveries()
-    .webhook_delivery_id("ID_HERE")
-    .execute::<Value>();
+    let me = client
+        .get()
+        .apps()
+        .app_name("APP_NAME")
+        .app_webhook_deliveries()
+        .webhook_delivery_id("ID_HERE")
+        .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {
             println!("Headers: {:#?}", headers);
@@ -300,13 +304,94 @@ fn get_webhook_deliveries(client: &Heroku) {
 // == Getting webhook events ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-event-info
 // Requires the Heroku client and an App to get all the webhook events
-// get a specific webhook event by doing: .webhook_event_id("ID_HERE") 
+// get a specific webhook event by doing: .webhook_event_id("ID_HERE")
 fn get_webhook_events(client: &Heroku) {
-    let me = client.get()
-    .apps()
-    .app_name("APP_NAME")
-    .app_webhook_events()
-    .execute::<Value>();
+    let me = client
+        .get()
+        .apps()
+        .app_name("APP_NAME")
+        .app_webhook_events()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Getting app builds  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#build
+// Requires the Heroku client and an App to get all the app builds
+// get a specific build by doing: .app_builds().build_id("ID_HERE")
+fn get_builds(client: &Heroku) {
+    let me = client
+        .get()
+        .apps()
+        .app_name("APP_NAME")
+        .app_builds()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Creating an app build  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#build-create
+// Requires the Heroku client, the app you want to create a build for
+// Library provides a default struct BuildPost to create a simple build
+
+fn post_build(client: &Heroku) {
+    let url = String::from("URL");
+    let version = String::from("VERSION_NUMBER");
+    let blob = SourceBlob {
+        checksum: None,
+        url: url,
+        version: Some(version),
+    };
+    let build = BuildPost {
+        buildpacks: None,
+        source_blob: blob,
+    };
+    let me = client
+        .post(build)
+        .apps()
+        .app_name("APP_NAME")
+        .app_build()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == DELETE app build cache ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#build-delete-cache
+// Requires the Heroku client, the app you want to delete the cache build for
+fn delete_build_cache(client: &Heroku) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name("APP_NAME")
+        .app_build_cache()
+        .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {
             println!("Headers: {:#?}", headers);

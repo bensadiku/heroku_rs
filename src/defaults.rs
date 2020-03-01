@@ -38,3 +38,33 @@ pub struct WebhookPost {
     pub level: String,
     pub url: String,
 }
+
+/// A default struct to create a app build
+/// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#build
+#[derive(Serialize, Deserialize)]
+pub struct BuildPost {
+    pub buildpacks: Option<Vec<Buildpack>>,
+    pub source_blob: SourceBlob,
+}
+
+/// A struct to use for the buildpacks executed for this build, in order
+/// Docs: https://devcenter.heroku.com/articles/platform-api-reference#build-create-optional-parameters
+/// url: the URL of the buildpack for the app
+/// name: Buildpack Registry name of the buildpack for the app
+#[derive(Serialize, Deserialize)]
+pub struct Buildpack {
+    pub url: String,
+    pub name: String,
+}
+
+/// A struct to use for the build pack with required paramenters
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#build-create-required-parameters
+/// checksum : Optional checksum of the gzipped tarball for verifying its integrity
+/// url : URL where gzipped tar archive of source code for build was downloaded.
+/// version : Optional version of the gzipped tarball.
+#[derive(Serialize, Deserialize)]
+pub struct SourceBlob {
+    pub checksum: Option<String>,
+    pub url: String,
+    pub version: Option<String>,
+}
