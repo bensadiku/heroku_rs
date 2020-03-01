@@ -107,6 +107,11 @@ impl Heroku {
         self.into()
     }
 
+    /// Begin building up a PATCH request with no data to Heroku
+    pub fn post_empty(&self) -> PostQueryBuilder {
+        self.into()
+    }
+
     /// Begin building up a PUT request with data to Heroku
     pub fn put<T>(&self, body: T) -> PutQueryBuilder
     where

@@ -15,6 +15,9 @@ new_type!(
     Domain
     DomainId
     DomainHostname
+    Dyno
+    DynoId
+    DynoName
 
 );
 
@@ -29,6 +32,7 @@ from!(
         -> BuildCache = "build-cache"
         -> Collaborator = "collaborators"
         -> Domain = "domains"
+        -> Dyno = "dynos"
     @Webhooks
         => WebhookId
     @Collaborator
@@ -37,6 +41,9 @@ from!(
     @Domain
         => DomainHostname
         => DomainId
+    @Dyno
+        => DynoName
+        => DynoId
       
 );
 
@@ -51,6 +58,7 @@ impl_macro!(
         |=> app_build_cache -> BuildCache
         |=> app_collaborators -> Collaborator
         |=> app_domains -> Domain
+        |=> app_dynos -> Dyno
         |
     @Webhooks
         |
@@ -63,6 +71,10 @@ impl_macro!(
         |
         |=> domain_hostname -> DomainHostname = hostname
         |=> domain_id -> DomainId = id
+    @Dyno
+        |
+        |=> dyno_name -> DynoName = name
+        |=> dyno_id -> DynoId = id
 );
 
 exec!(App);
@@ -76,3 +88,6 @@ exec!(CollaboratorId);
 exec!(Domain);
 exec!(DomainId);
 exec!(DomainHostname);
+exec!(Dyno);
+exec!(DynoId);
+exec!(DynoName);

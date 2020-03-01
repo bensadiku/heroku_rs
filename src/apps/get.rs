@@ -28,6 +28,9 @@ new_type!(
     Domain
     DomainId
     DomainHostname
+    Dyno
+    DynoId
+    DynoName
 
 );
 
@@ -48,6 +51,7 @@ from!(
         -> ConfigVars = "config-vars"    
         -> Releases = "releases"    
         -> Domain = "domains"    
+        -> Dyno = "dynos"    
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId  
@@ -72,6 +76,9 @@ from!(
     @Domain
         => DomainHostname
         => DomainId
+    @Dyno
+        => DynoName
+        => DynoId
 );
 
 // impls of each type
@@ -91,6 +98,7 @@ impl_macro!(
         |=> app_config_vars ->  ConfigVars
         |=> app_releases->  Releases
         |=> app_domains ->  Domain
+        |=> app_dynos ->  Dyno
         |
     @AppFeatures
         |
@@ -126,6 +134,10 @@ impl_macro!(
         |
         |=> domain_id -> DomainId = id
         |=> domain_hostname -> DomainHostname = hostname
+    @Dyno
+        |
+        |=> dyno_id -> DynoId = id
+        |=> dyno_name -> DynoName = name
 );
 
 exec!(App);
@@ -152,5 +164,8 @@ exec!(ReleaseVersion);
 exec!(Domain);
 exec!(DomainId);
 exec!(DomainHostname);
+exec!(Dyno);
+exec!(DynoId);
+exec!(DynoName);
 
 

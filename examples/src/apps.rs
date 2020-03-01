@@ -9,8 +9,8 @@ use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run() {
     let client = Heroku::new("API_KEY").unwrap();
-    get_apps(&client);
-    //get_app_features(&client);
+    // get_apps(&client);
+    // get_app_features(&client);
     // patch_app(&client);
     // patch_feature(&client);
     // post_app(&client);
@@ -34,6 +34,10 @@ pub fn run() {
     // post_new_domain(&client);
     // get_domains(&client);
     // delete_domain(&client);
+    // get_dynos(&client);
+    // post_dynos(&client);
+    // delete_dyno(&client);
+    post_dyno_stop(&client);
 }
 
 // == Getting an app ==
@@ -666,6 +670,112 @@ fn delete_domain(client: &Heroku) {
         .app_name("APP_NAME")
         .app_domains()
         .domain_hostname("my-excellent-app.herokuapp.com")
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == GET app dynos  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#dyno-create
+// Requires the Heroku client and an App to get the app dynos
+// get a specific dyno by id: .app_dynos().dyno_id("ID_HERE")
+//  or by name: .app_dynos().dyno_name("NAME_HERE")
+fn get_dynos(client: &Heroku) {
+    let me = client
+        .get()
+        .apps()
+        .app_name("APP_NAME")
+        .app_dynos()
+        .dyno_id("a61ed193-66fd-4a34-9ac5-697ba12b01ba")
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == POST new dyno ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#dyno-create
+// Requires the Heroku client, the app you want to create a new dyno for
+fn post_dynos(client: &Heroku) {
+    #[derive(Serialize, Deserialize)]
+    struct DynoCmd {
+        command: String,
+    };
+
+    let cmd = DynoCmd {
+        command: String::from("bash"),
+    };
+    let me = client
+        .post(cmd)
+        .apps()
+        .app_name("APP_NAME")
+        .app_dyno()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == DELETE dyno ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#dyno-restart-all
+// Requires the Heroku client, the app you want to delete the dyno for
+// To delete a dyno by name .app_dynos().dyno_name("Dyno_name_here")
+// To delete a dyno by id .app_dynos().dyno_id("Dyno_id_here")
+// To delete all dynos .app_dynos()
+fn delete_dyno(client: &Heroku) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name("APP_NAME")
+        .app_dynos()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == POST dyno stop ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#dyno-stop
+// POST /apps/{app_id_or_name}/dynos/{dyno_id_or_name}/actions/stop
+// Requires the Heroku client, the app you want to create a new dyno for
+fn post_dyno_stop(client: &Heroku) {
+    let me = client
+        .post_empty()
+        .apps()
+        .app_name("APP_NAME")
+        .app_dyno()
+        .dyno_name("DYNO_NAME_HERE")
+        .dyno_action()
+        .action_stop()
         .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {
