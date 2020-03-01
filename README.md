@@ -12,7 +12,7 @@ Add the following to your `Cargo.toml`
 
 ```toml
 [dependencies]
-heroku_rs = "0.1"
+heroku_rs = "0.2"
 serde_json = "1.0"
 ```
 run: `cargo build`

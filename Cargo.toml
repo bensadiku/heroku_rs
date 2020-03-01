@@ -1,6 +1,6 @@
 [package]
 name = "heroku_rs"
-version = "0.1.0"
+version = "0.2.0"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/bensadiku/heroku-rs"
 description = "Rust bindings for the Heroku API"
