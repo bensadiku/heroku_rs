@@ -81,3 +81,13 @@ pub struct BuildpackInstallation {
 pub struct BuildPackUpdate {
     pub buildpack: String,
 }
+
+/// A struct to use for adding a new collaborator on the app
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create
+/// silent : Optional whether to suppress email invitation when creating collaborator 
+/// user : unique email address, identifier of an account or Implicit reference to currently authorized user
+#[derive(Serialize, Deserialize)]
+pub struct NewCollaborator {
+    pub silent: Option<bool>,
+    pub user: String,
+}

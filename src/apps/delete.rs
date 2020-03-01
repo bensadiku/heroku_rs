@@ -9,6 +9,9 @@ new_type!(
     Webhooks
     WebhookId
     BuildCache
+    Collaborator
+    CollaboratorEmail
+    CollaboratorId
 
 );
 
@@ -21,8 +24,12 @@ from!(
     @App
         -> Webhooks = "webhooks"
         -> BuildCache = "build-cache"
+        -> Collaborator = "collaborators"
     @Webhooks
         => WebhookId
+    @Collaborator
+        => CollaboratorEmail
+        => CollaboratorId
       
 );
 
@@ -35,10 +42,15 @@ impl_macro!(
     @App
         |=> app_webhooks -> Webhooks
         |=> app_build_cache -> BuildCache
+        |=> app_collaborators -> Collaborator
         |
     @Webhooks
         |
         |=> webhook_id -> WebhookId = id
+    @Collaborator
+        |
+        |=> collaborator_email -> CollaboratorEmail = email
+        |=> collaborator_id -> CollaboratorId = id
 );
 
 exec!(App);
@@ -46,3 +58,6 @@ exec!(Apps);
 exec!(Webhooks);
 exec!(WebhookId);
 exec!(BuildCache);
+exec!(Collaborator);
+exec!(CollaboratorEmail);
+exec!(CollaboratorId);

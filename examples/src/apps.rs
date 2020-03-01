@@ -2,7 +2,7 @@
 use heroku_rs::client::{Executor, Heroku};
 use heroku_rs::defaults::{
     AppPatch, AppPost, BuildPackUpdate, BuildPost, BuildpackInstallation, EnableFeature,
-    SourceBlob, WebhookPost,
+    NewCollaborator, SourceBlob, WebhookPost,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -25,7 +25,10 @@ pub fn run() {
     // post_build(&client);
     // delete_build_cache(&client);
     // put_buildpack_installations(&client);
-    get_buildpack_installations(&client);
+    // get_buildpack_installations(&client);
+    // post_collaborator(&client);
+    // get_collaborators(&client);
+    delete_collaborators(&client);
 }
 
 // == Getting an app ==
@@ -448,6 +451,80 @@ fn get_buildpack_installations(client: &Heroku) {
         .apps()
         .app_name("APP_NAME")
         .app_buildpack_installations()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Add a new collaborator ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create
+// Requires the Heroku client, the app you want to add a collaborator
+fn post_collaborator(client: &Heroku) {
+    let user = String::from("EMAIL_HERE"); // the email of the collaborator to invite
+    let new_collaborator = NewCollaborator {
+        silent: Some(false),
+        user: user,
+    };
+    let me = client
+        .post(new_collaborator)
+        .apps()
+        .app_name("APP_NAME")
+        .app_collaborator()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Get collaborators ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#collaborator-info
+// Requires the Heroku client, the app you want to get the collaborators of
+// get a specific collaborator by id by doing: .app_collaborators().collaborator_id("ID_HERE")
+// or by email : .app_collaborators().collaborator_email("EMAIL_HERE")
+fn get_collaborators(client: &Heroku) {
+    let me = client
+        .get()
+        .apps()
+        .app_name("APP_NAME")
+        .app_collaborators()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Delete specific collaborator by id or email ==
+// Requires only the Heroku client & collaborator id or email
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#collaborator-delete
+fn delete_collaborators(client: &Heroku) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name("APP_NAME")
+        .app_collaborators()
+        .collaborator_email("COLLABORATOR_EMAIL_HERE")
         .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {

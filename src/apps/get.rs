@@ -18,6 +18,9 @@ new_type!(
     Build
     BuildId
     BuildpackInstallations
+    Collaborator
+    CollaboratorEmail
+    CollaboratorId
 
 );
 
@@ -34,6 +37,7 @@ from!(
         -> WebhookEvent = "webhook-events"    
         -> Build = "builds"    
         -> BuildpackInstallations = "buildpack-installations"    
+        -> Collaborator = "collaborators"    
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId  
@@ -45,6 +49,9 @@ from!(
         => WebhookEventId 
     @Build
         => BuildId 
+    @Collaborator
+        => CollaboratorEmail
+        => CollaboratorId
 );
 
 // impls of each type
@@ -60,6 +67,7 @@ impl_macro!(
         |=> app_webhook_events ->  WebhookEvent
         |=> app_builds ->  Build
         |=> app_buildpack_installations ->  BuildpackInstallations
+        |=> app_collaborators ->  Collaborator
         |
     @AppFeatures
         |
@@ -77,6 +85,10 @@ impl_macro!(
     @Build
         |
         |=> build_id-> BuildId = id
+    @Collaborator
+        |
+        |=> collaborator_id -> CollaboratorId = id
+        |=> collaborator_email -> CollaboratorEmail = email
 );
 
 exec!(App);
@@ -93,3 +105,6 @@ exec!(WebhookEventId);
 exec!(Build);
 exec!(BuildId);
 exec!(BuildpackInstallations);
+exec!(Collaborator);
+exec!(CollaboratorId);
+exec!(CollaboratorEmail);
