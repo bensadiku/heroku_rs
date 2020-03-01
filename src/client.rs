@@ -232,6 +232,8 @@ impl<'g> PutQueryBuilder<'g> {
     /// you to get functionality out of the library as items are still added or
     /// if you need access to a hidden endpoint.
     func_client!(custom_endpoint, CustomQuery, endpoint_str);
+    
+    func_client!(apps, apps::put::Apps<'g>);
 
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {

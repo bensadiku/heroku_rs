@@ -1,12 +1,15 @@
 #![allow(dead_code)] // Just warns about un-used methods until they're used.
 use heroku_rs::client::{Executor, Heroku};
-use heroku_rs::defaults::{AppPatch, AppPost, BuildPost, EnableFeature, SourceBlob, WebhookPost};
+use heroku_rs::defaults::{
+    AppPatch, AppPost, BuildPackUpdate, BuildPost, BuildpackInstallation, EnableFeature,
+    SourceBlob, WebhookPost,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run() {
     let client = Heroku::new("API_KEY").unwrap();
-    get_apps(&client);
+    // get_apps(&client);
     //get_app_features(&client);
     // patch_app(&client);
     // patch_feature(&client);
@@ -21,6 +24,8 @@ pub fn run() {
     // get_builds(&client);
     // post_build(&client);
     // delete_build_cache(&client);
+    // put_buildpack_installations(&client);
+    get_buildpack_installations(&client);
 }
 
 // == Getting an app ==
@@ -391,6 +396,58 @@ fn delete_build_cache(client: &Heroku) {
         .apps()
         .app_name("APP_NAME")
         .app_build_cache()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Update buildpack installations ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update
+// Requires the Heroku client, the app you want to update buildpack for
+fn put_buildpack_installations(client: &Heroku) {
+    let bp_update = BuildPackUpdate {
+        buildpack: String::from("https://github.com/heroku/heroku-buildpack-python"),
+    };
+
+    let bp_install = BuildpackInstallation {
+        updates: vec![bp_update],
+    };
+
+    let me = client
+        .put(bp_install)
+        .apps()
+        .app_name("APP_NAME")
+        .app_buildpack_installation()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Get buildpack installations ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-list
+// Requires the Heroku client, the app you want to list the builpacks for
+fn get_buildpack_installations(client: &Heroku) {
+    let me = client
+        .get()
+        .apps()
+        .app_name("APP_NAME")
+        .app_buildpack_installations()
         .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {

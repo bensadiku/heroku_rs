@@ -17,6 +17,7 @@ new_type!(
     WebhookEventId
     Build
     BuildId
+    BuildpackInstallations
 
 );
 
@@ -32,6 +33,7 @@ from!(
         -> WebhookDelivery = "webhook-deliveries"    
         -> WebhookEvent = "webhook-events"    
         -> Build = "builds"    
+        -> BuildpackInstallations = "buildpack-installations"    
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId  
@@ -57,6 +59,7 @@ impl_macro!(
         |=> app_webhook_deliveries ->  WebhookDelivery
         |=> app_webhook_events ->  WebhookEvent
         |=> app_builds ->  Build
+        |=> app_buildpack_installations ->  BuildpackInstallations
         |
     @AppFeatures
         |
@@ -89,3 +92,4 @@ exec!(WebhookEvent);
 exec!(WebhookEventId);
 exec!(Build);
 exec!(BuildId);
+exec!(BuildpackInstallations);

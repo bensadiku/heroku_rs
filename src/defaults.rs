@@ -68,3 +68,16 @@ pub struct SourceBlob {
     pub url: String,
     pub version: Option<String>,
 }
+
+/// A struct to use for updating the heroku build pack
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update
+/// updates : The buildpack attribute can accept a name, a url, or a urn.
+#[derive(Serialize, Deserialize)]
+pub struct BuildpackInstallation {
+    pub updates: Vec<BuildPackUpdate>,
+}
+/// Used in tandem with BuildpackInstallation
+#[derive(Serialize, Deserialize)]
+pub struct BuildPackUpdate {
+    pub buildpack: String,
+}
