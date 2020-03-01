@@ -4,6 +4,9 @@ version = "0.1.0"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/bensadiku/heroku-rs"
 description = "Rust bindings for the Heroku API"
+documentation = "https://docs.rs/heroku_rs"
+homepage = "https://github.com/bensadiku/heroku-rs"
+keywords = ["heroku", "api", "wrapper", "rust"]
 authors = ["Behxhet Sadiku <bensadiku65@gmail.com>"]
 edition = "2018"
 

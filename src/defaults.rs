@@ -26,3 +26,15 @@ pub struct AppPost {
     pub stack: String,
     pub name: String,
 }
+
+/// A default struct to create a app webhook
+/// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create
+/// include: entities you want to subscribe to notifications for
+/// level: must be either notify or sync
+/// url: The URL of your server endpoint that will receive all webhook notifications.
+#[derive(Serialize, Deserialize)]
+pub struct WebhookPost {
+    pub include: Vec<String>,
+    pub level: String,
+    pub url: String,
+}

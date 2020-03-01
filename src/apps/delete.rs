@@ -6,6 +6,8 @@ use crate::client::DeleteQueryBuilder;
 new_type!(
     App
     Apps
+    Webhooks
+    WebhookId
 
 );
 
@@ -15,6 +17,10 @@ from!(
         -> Apps = "apps"
     @Apps
         => App
+    @App
+        -> Webhooks = "webhooks"
+    @Webhooks
+        => WebhookId
       
 );
 
@@ -25,8 +31,14 @@ impl_macro!(
         |=> app_name -> App = app_name_str
         |=> app_id -> App = app_id_str
     @App
+        |=> app_webhooks -> Webhooks
         |
+    @Webhooks
+        |
+        |=> webhook_id -> WebhookId = id
 );
 
 exec!(App);
 exec!(Apps);
+exec!(Webhooks);
+exec!(WebhookId);

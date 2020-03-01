@@ -1,9 +1,8 @@
 #![allow(dead_code)] // Just warns about un-used methods until they're used.
-
 use heroku_rs::client::{Executor, Heroku};
-use heroku_rs::defaults::{AppPatch, AppPost, EnableFeature};
+use heroku_rs::defaults::{AppPatch, AppPost, EnableFeature, WebhookPost};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
-
 // Uncomment methods to run them.
 pub fn run() {
     let client = Heroku::new("API_KEY").unwrap();
@@ -13,11 +12,15 @@ pub fn run() {
     // patch_feature(&client);
     // post_app(&client);
     // delete_app(&client);
+    // get_webhooks(&client);
+    // delete_webhook(&client);
+    // post_webhook(&client);
+    // patch_webhook(&client);
 }
 
 // == Getting an app ==
 // Requires only the Heroku client to get all the apps
-// If you want to get a specific app you can do so..run()
+// If you want to get a specific app you can do so..
 // by quering .app_name("NAME_HERE") or .app_id("ID_HERE")
 
 fn get_apps(client: &Heroku) {
@@ -96,7 +99,7 @@ fn patch_feature(client: &Heroku) {
     let result = client
         .patch(enable)
         .apps()
-        .app_name("spreventionbott")
+        .app_name("APP_NAME")
         .app_features()
         .feature_name("web-auto-scaling")
         .execute::<Value>();
@@ -146,6 +149,116 @@ fn delete_app(client: &Heroku) {
         .delete_empty()
         .apps()
         .app_name(&name)
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Getting all webhooks and specific ones by id ==
+// Requires only the Heroku client to get all the webhooks
+// If you want to get a specific webhooks you can do so..
+// by quering .webhook_id("ID_HERE")
+// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-info
+fn get_webhooks(client: &Heroku) {
+    let me = client
+        .get()
+        .apps()
+        .app_name("APP_NAME")
+        .app_webhooks() //get all webhooks
+        .webhook_id("Hook-Id-here") // get a specific webhook by id
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Delete specific webhook by id ==
+// Requires only the Heroku client & webhook id
+// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delete
+
+fn delete_webhook(client: &Heroku) {
+    let name = String::from("APP_NAME");
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name(&name)
+        .app_webhooks()
+        .webhook_id("ID_HERE")
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Create a new webhook  ==
+// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create
+
+fn post_webhook(client: &Heroku) {
+    let include: Vec<String> = vec!["api:release".to_string()];
+    let level = String::from("notify");
+    let url = String::from("https://crates.io/crates/heroku_rs"); //the URL where the webhook’s notification requests are sent
+    let new_webhook = WebhookPost {
+        include,
+        level,
+        url,
+    };
+    let me = client
+        .post(new_webhook)
+        .apps()
+        .app_name("APP_NAME")
+        .app_webhooks()
+        .execute::<Value>();
+    match me {
+        Ok((headers, status, json)) => {
+            println!("Headers: {:#?}", headers);
+            println!("Status: {}", status);
+            if let Some(json) = json {
+                println!("Response: {}", json);
+            }
+        }
+        Err(e) => println!("Err {}", e),
+    }
+}
+
+// == Update existing webhook  ==
+// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update
+// In this example, i'm just updating webhook level to `sync`
+fn patch_webhook(client: &Heroku) {
+    #[derive(Serialize, Deserialize)]
+    struct UpdateLevel {
+        level: String,
+    };
+    let update_level = UpdateLevel {
+        level: "sync".to_string(),
+    };
+    let me = client
+        .patch(update_level)
+        .apps()
+        .app_name("APP_NAME")
+        .app_webhooks()
+        .webhook_id("Hook-Id-here")
         .execute::<Value>();
     match me {
         Ok((headers, status, json)) => {

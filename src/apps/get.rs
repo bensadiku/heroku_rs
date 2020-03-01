@@ -9,6 +9,8 @@ new_type!(
     AppFeatures 
     AppFeaturesName 
     AppFeaturesId
+    Webhooks
+    WebhookId
 
 );
 
@@ -19,10 +21,13 @@ from!(
     @Apps
         => App
     @App
-        -> AppFeatures = "features"     //TODO webhooks addons etc
+        -> AppFeatures = "features"    
+        -> Webhooks = "webhooks"    
     @AppFeatures
         => AppFeaturesName  
-        => AppFeaturesId   
+        => AppFeaturesId  
+    @Webhooks
+        => WebhookId 
 );
 
 // impls of each type
@@ -33,11 +38,15 @@ impl_macro!(
         |=> app_id -> App = app_id_str
     @App
         |=> app_features ->  AppFeatures
+        |=> app_webhooks ->  Webhooks
         |
     @AppFeatures
         |
         |=> feature_name -> AppFeaturesName = name
         |=> feature_id -> AppFeaturesId = id
+    @Webhooks
+        |
+        |=> webhook_id -> WebhookId = id
 );
 
 exec!(App);
@@ -45,3 +54,5 @@ exec!(Apps);
 exec!(AppFeatures);
 exec!(AppFeaturesName);
 exec!(AppFeaturesId);
+exec!(Webhooks);
+exec!(WebhookId);
