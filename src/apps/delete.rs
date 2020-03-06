@@ -18,6 +18,10 @@ new_type!(
     Dyno
     DynoId
     DynoName
+    LogDrain
+    LogDrainId
+    LogDrainUrl
+    LogDrainToken
 
 );
 
@@ -33,6 +37,7 @@ from!(
         -> Collaborator = "collaborators"
         -> Domain = "domains"
         -> Dyno = "dynos"
+        -> LogDrain = "log-drains"
     @Webhooks
         => WebhookId
     @Collaborator
@@ -44,6 +49,10 @@ from!(
     @Dyno
         => DynoName
         => DynoId
+    @LogDrain
+        => LogDrainId
+        => LogDrainUrl
+        => LogDrainToken
       
 );
 
@@ -59,6 +68,7 @@ impl_macro!(
         |=> app_collaborators -> Collaborator
         |=> app_domains -> Domain
         |=> app_dynos -> Dyno
+        |=> app_log_drains -> LogDrain
         |
     @Webhooks
         |
@@ -75,6 +85,11 @@ impl_macro!(
         |
         |=> dyno_name -> DynoName = name
         |=> dyno_id -> DynoId = id
+    @LogDrain
+        |
+        |=> log_drain_id -> LogDrainId = id
+        |=> log_drain_url -> LogDrainUrl = lurl
+        |=> log_drain_token -> LogDrainToken = ltoken
 );
 
 exec!(App);
@@ -91,3 +106,7 @@ exec!(DomainHostname);
 exec!(Dyno);
 exec!(DynoId);
 exec!(DynoName);
+exec!(LogDrain);
+exec!(LogDrainId);
+exec!(LogDrainUrl);
+exec!(LogDrainToken);

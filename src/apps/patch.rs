@@ -11,6 +11,9 @@ new_type!(
     Webhooks
     WebhookId
     ConfigVars
+    Formations
+    FormationId
+    FormationType
 );
 
 from!(
@@ -22,11 +25,15 @@ from!(
         -> AppFeatures = "features"
         -> Webhooks = "webhooks"    
         -> ConfigVars = "config-vars"    
+        -> Formations = "formation"    
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId 
     @Webhooks
         => WebhookId
+    @Formations
+        => FormationId
+        => FormationType
 );
 
 impl_macro!(
@@ -38,6 +45,7 @@ impl_macro!(
         |=> app_features ->  AppFeatures
         |=> app_webhooks ->  Webhooks
         |=> app_config_vars ->  ConfigVars
+        |=> app_formations ->  Formations
         |
     @AppFeatures
         |
@@ -46,6 +54,10 @@ impl_macro!(
     @Webhooks
         |
         |=> webhook_id -> WebhookId = id
+    @Formations
+        |
+        |=> formation_id -> FormationId = id
+        |=> formation_type -> FormationType = ftype
 );
 
 exec!(App);
@@ -56,3 +68,6 @@ exec!(AppFeaturesId);
 exec!(Webhooks);
 exec!(WebhookId);
 exec!(ConfigVars);
+exec!(Formations);
+exec!(FormationId);
+exec!(FormationType);

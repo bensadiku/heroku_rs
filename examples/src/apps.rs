@@ -4,12 +4,15 @@ use heroku_rs::defaults::{
     AppPatch, AppPost, BuildPackUpdate, BuildPost, BuildpackInstallation, EnableFeature,
     NewCollaborator, SourceBlob, WebhookPost,
 };
+use heroku_rs::errors::Error;
+use heroku_rs::{HeaderMap, StatusCode};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run() {
     let client = Heroku::new("API_KEY").unwrap();
-    // get_apps(&client);
+    let app_name = "APP_NAME";
+    get_apps(&client);
     // get_app_features(&client);
     // patch_app(&client);
     // patch_feature(&client);
@@ -37,7 +40,13 @@ pub fn run() {
     // get_dynos(&client);
     // post_dynos(&client);
     // delete_dyno(&client);
-    post_dyno_stop(&client);
+    // post_dyno_stop(&client);
+    // get_app_formation(&client, app_name);
+    // patch_app_formation(&client, app_name);
+    // post_log_drains(&client, app_name);
+    // delete_log_drain(&client, app_name);
+    // get_log_drains(&client, app_name);
+    // post_log_sessions(&client, app_name);
 }
 
 // == Getting an app ==
@@ -46,17 +55,8 @@ pub fn run() {
 // by quering .app_name("NAME_HERE") or .app_id("ID_HERE")
 
 fn get_apps(client: &Heroku) {
-    let me = client.get().apps().app_name("APP_NAME").execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+    let me = client.get().apps().execute::<Value>();
+    log_response(me);
 }
 // == Getting app features ==
 // Requires the client and the app name
@@ -72,16 +72,7 @@ fn get_app_features(client: &Heroku) {
         .feature_name("web-auto-scaling")
         .execute::<Value>();
 
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+    log_response(me);
 }
 
 // == Patching an app ==
@@ -101,16 +92,7 @@ fn patch_app(client: &Heroku) {
         .app_name("APP_NAME") //must specify exactly which app you want to patch
         .execute::<Value>();
 
-    match result {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+    log_response(result);
 }
 // == Patching a feature ==
 // https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update
@@ -126,16 +108,7 @@ fn patch_feature(client: &Heroku) {
         .feature_name("web-auto-scaling")
         .execute::<Value>();
 
-    match result {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+    log_response(result);
 }
 
 // == Creating an app ==
@@ -151,16 +124,7 @@ fn post_app(client: &Heroku) {
         name,
     };
     let me = client.post(app_to_create).apps().execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+    log_response(me);
 }
 
 // == Deleting an app ==
@@ -172,16 +136,8 @@ fn delete_app(client: &Heroku) {
         .apps()
         .app_name(&name)
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Getting all webhooks and specific ones by id ==
@@ -197,16 +153,8 @@ fn get_webhooks(client: &Heroku) {
         .app_webhooks() //get all webhooks
         .webhook_id("Hook-Id-here") // get a specific webhook by id
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Delete specific webhook by id ==
@@ -222,16 +170,8 @@ fn delete_webhook(client: &Heroku) {
         .app_webhooks()
         .webhook_id("ID_HERE")
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Create a new webhook  ==
@@ -252,16 +192,8 @@ fn post_webhook(client: &Heroku) {
         .app_name("APP_NAME")
         .app_webhooks()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Update existing webhook  ==
@@ -282,16 +214,8 @@ fn patch_webhook(client: &Heroku) {
         .app_webhooks()
         .webhook_id("Hook-Id-here")
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Getting webhook deliveries ==
@@ -306,16 +230,8 @@ fn get_webhook_deliveries(client: &Heroku) {
         .app_webhook_deliveries()
         .webhook_delivery_id("ID_HERE")
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Getting webhook events ==
@@ -329,16 +245,8 @@ fn get_webhook_events(client: &Heroku) {
         .app_name("APP_NAME")
         .app_webhook_events()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Getting app builds  ==
@@ -352,16 +260,8 @@ fn get_builds(client: &Heroku) {
         .app_name("APP_NAME")
         .app_builds()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Creating an app build  ==
@@ -387,16 +287,8 @@ fn post_build(client: &Heroku) {
         .app_name("APP_NAME")
         .app_build()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == DELETE app build cache ==
@@ -409,16 +301,7 @@ fn delete_build_cache(client: &Heroku) {
         .app_name("APP_NAME")
         .app_build_cache()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+    log_response(me);
 }
 
 // == Update buildpack installations ==
@@ -439,16 +322,8 @@ fn put_buildpack_installations(client: &Heroku) {
         .app_name("APP_NAME")
         .app_buildpack_installation()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Get buildpack installations ==
@@ -461,16 +336,8 @@ fn get_buildpack_installations(client: &Heroku) {
         .app_name("APP_NAME")
         .app_buildpack_installations()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Add a new collaborator ==
@@ -488,16 +355,8 @@ fn post_collaborator(client: &Heroku) {
         .app_name("APP_NAME")
         .app_collaborator()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Get collaborators ==
@@ -512,16 +371,8 @@ fn get_collaborators(client: &Heroku) {
         .app_name("APP_NAME")
         .app_collaborators()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Delete specific collaborator by id or email ==
@@ -535,16 +386,8 @@ fn delete_collaborators(client: &Heroku) {
         .app_collaborators()
         .collaborator_email("COLLABORATOR_EMAIL_HERE")
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Get config vars ==
@@ -562,16 +405,8 @@ fn get_config_vars(client: &Heroku) {
         .release_version("2") // get version e.g. 2
         .release_config_vars() // get all config vars for that version 2 release
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == Patch config vars ==
@@ -595,16 +430,8 @@ fn patch_config_vars(client: &Heroku) {
         .app_name("APP_NAME")
         .app_config_vars()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == POST new domain ==
@@ -625,16 +452,8 @@ fn post_new_domain(client: &Heroku) {
         .app_name("APP_NAME")
         .app_domain()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == GET app domains  ==
@@ -649,16 +468,8 @@ fn get_domains(client: &Heroku) {
         .app_name("APP_NAME")
         .app_domains()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 // == DELETE app domain  ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#domain-delete
@@ -671,16 +482,8 @@ fn delete_domain(client: &Heroku) {
         .app_domains()
         .domain_hostname("my-excellent-app.herokuapp.com")
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == GET app dynos  ==
@@ -696,16 +499,8 @@ fn get_dynos(client: &Heroku) {
         .app_dynos()
         .dyno_id("a61ed193-66fd-4a34-9ac5-697ba12b01ba")
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == POST new dyno ==
@@ -726,16 +521,7 @@ fn post_dynos(client: &Heroku) {
         .app_name("APP_NAME")
         .app_dyno()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+    log_response(me);
 }
 
 // == DELETE dyno ==
@@ -751,16 +537,8 @@ fn delete_dyno(client: &Heroku) {
         .app_name("APP_NAME")
         .app_dynos()
         .execute::<Value>();
-    match me {
-        Ok((headers, status, json)) => {
-            println!("Headers: {:#?}", headers);
-            println!("Status: {}", status);
-            if let Some(json) = json {
-                println!("Response: {}", json);
-            }
-        }
-        Err(e) => println!("Err {}", e),
-    }
+
+    log_response(me);
 }
 
 // == POST dyno stop ==
@@ -777,12 +555,145 @@ fn post_dyno_stop(client: &Heroku) {
         .dyno_action()
         .action_stop()
         .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app formations  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#formation-info
+// Requires the Heroku client and an App to get the formation for
+// get a specific formation by id: .app_formations().formation_id("ID_HERE")
+//  or by type: .app_formations().formation_type("TYPE_HERE")
+fn get_app_formation(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_formations()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == PATCH app formation ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#formation-update
+// Requires the Heroku client, the app you want to patch the formations of
+// You can patch specific formations by type or id or app formations
+// Patch formations .patch(obj).apps().app_name("NAME_HERE").app_formations()
+// Patch formation by type: .patch(obj).apps().app_name("NAME_HERE").app_formations().formation_type("TYPE_HERE")
+fn patch_app_formation(client: &Heroku, app_name: &str) {
+    //Patch takes an object, this is just an example struct
+    #[derive(Serialize, Deserialize)]
+    struct FormationUpdate {
+        quantity: u32,
+        size: String,
+    };
+    let formation_patch = FormationUpdate {
+        quantity: 1,
+        size: String::from("standard-1X"),
+    };
+
+    let me = client
+        .patch(formation_patch)
+        .apps()
+        .app_name(app_name)
+        .app_formations()
+        .formation_id("formation_id")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST log drains ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#log-drain-create
+// Requires the Heroku client and the app you want to create a log drain for
+fn post_log_drains(client: &Heroku, app_name: &str) {
+    #[derive(Serialize, Deserialize)]
+    struct DrainCreate {
+        url: String,
+    };
+
+    let cmd = DrainCreate {
+        url: String::from("https://example.com/drain"),
+    };
+    let me = client
+        .post(cmd)
+        .apps()
+        .app_name(app_name)
+        .app_log_drain()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == DELETE log drains ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#log-drain-delete
+// Requires the Heroku client and the app you want to delete a log drain for and drain id/token/url
+fn delete_log_drain(client: &Heroku, app_name: &str) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name(app_name)
+        .app_log_drains()
+        .log_drain_url("https://example.com/drain")
+        .execute::<Value>();
+    log_response(me);
+}
+// == GET app log drains  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#log-drain-info
+// Requires the Heroku client and an App to get the log drains for
+// get a specific log drain by id: .app_log_drains().log_drain_id("ID_HERE")
+// get a specific log drain by url: .app_log_drains().log_drain_url("URL_HERE")
+// get a specific log drain by token: .app_log_drains().log_drain_token("TOKEN_HERE")
+//  or get a list of log drains like below:
+fn get_log_drains(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_log_drains()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST log sessions  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#log-session-create
+// Requires the Heroku client and an App to create a new log session.
+fn post_log_sessions(client: &Heroku, app_name: &str) {
+    #[derive(Serialize, Deserialize)]
+    pub struct CreateLogSession {
+        pub dyno: String,
+        pub lines: i64,
+        pub source: String,
+        pub tail: bool,
+    }
+    let obj = CreateLogSession {
+        dyno: String::from("web.1"),
+        lines: 10,
+        source: String::from("app"),
+        tail: true,
+    };
+    let me = client
+        .post(obj)
+        .apps()
+        .app_name(app_name)
+        .app_log_session()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+//a generic method to log heroku responses and avoid code duplication
+fn log_response<T>(me: Result<(HeaderMap, StatusCode, Option<T>), Error>)
+where
+    T: ToString,
+{
     match me {
         Ok((headers, status, json)) => {
             println!("Headers: {:#?}", headers);
             println!("Status: {}", status);
             if let Some(json) = json {
-                println!("Response: {}", json);
+                println!("Response: {}", json.to_string());
             }
         }
         Err(e) => println!("Err {}", e),
