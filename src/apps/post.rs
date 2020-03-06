@@ -15,6 +15,8 @@ new_type!(
     DynoName
     DynoAction
     DynoActionStop
+    LogSession
+    LogDrain
 );
 
 from!(
@@ -28,6 +30,8 @@ from!(
         -> Collaborator = "collaborators"    
         -> Domain = "domains"    
         -> Dyno = "dynos"     
+        -> LogSession = "log-sessions"     
+        -> LogDrain = "log-drains"  
     @Webhooks
         => WebhookId 
     @Dyno
@@ -52,6 +56,8 @@ impl_macro!(
         |=> app_collaborator ->  Collaborator
         |=> app_domain ->  Domain
         |=> app_dyno ->  Dyno
+        |=> app_log_session ->  LogSession
+        |=> app_log_drain ->  LogDrain
         |
     @Webhooks
         |
@@ -83,4 +89,5 @@ exec!(DynoId);
 exec!(DynoName);
 exec!(DynoAction);
 exec!(DynoActionStop);
-
+exec!(LogSession);
+exec!(LogDrain);

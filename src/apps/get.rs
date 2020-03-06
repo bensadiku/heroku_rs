@@ -31,6 +31,13 @@ new_type!(
     Dyno
     DynoId
     DynoName
+    Formation
+    FormationId
+    FormationType
+    LogDrains
+    LogDrainId
+    LogDrainUrl
+    LogDrainToken
 
 );
 
@@ -52,6 +59,8 @@ from!(
         -> Releases = "releases"    
         -> Domain = "domains"    
         -> Dyno = "dynos"    
+        -> Formation = "formation"    
+        -> LogDrains = "log-drains"  
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId  
@@ -79,6 +88,13 @@ from!(
     @Dyno
         => DynoName
         => DynoId
+    @Formation
+        => FormationId
+        => FormationType
+    @LogDrains
+        => LogDrainId
+        => LogDrainToken
+        => LogDrainUrl
 );
 
 // impls of each type
@@ -99,6 +115,8 @@ impl_macro!(
         |=> app_releases->  Releases
         |=> app_domains ->  Domain
         |=> app_dynos ->  Dyno
+        |=> app_formations ->  Formation
+        |=> app_log_drains ->  LogDrains
         |
     @AppFeatures
         |
@@ -138,6 +156,15 @@ impl_macro!(
         |
         |=> dyno_id -> DynoId = id
         |=> dyno_name -> DynoName = name
+    @Formation
+        |
+        |=> formation_id -> FormationId = id
+        |=> formation_type -> FormationType = ftype
+    @LogDrains
+        |
+        |=> log_drain_id -> LogDrainId = id
+        |=> log_drain_url -> LogDrainUrl = lurl
+        |=> log_drain_token -> LogDrainToken = ltoken
 );
 
 exec!(App);
@@ -167,5 +194,12 @@ exec!(DomainHostname);
 exec!(Dyno);
 exec!(DynoId);
 exec!(DynoName);
+exec!(Formation);
+exec!(FormationId);
+exec!(FormationType);
+exec!(LogDrains);
+exec!(LogDrainId);
+exec!(LogDrainUrl);
+exec!(LogDrainToken);
 
 

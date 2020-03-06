@@ -155,7 +155,7 @@ dependencies = [
 
 [[package]]
 name = "example01"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "heroku_rs",
  "serde",
@@ -229,7 +229,7 @@ dependencies = [
 
 [[package]]
 name = "heroku_rs"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "error-chain",
  "futures",
