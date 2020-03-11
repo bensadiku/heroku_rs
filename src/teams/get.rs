@@ -5,9 +5,8 @@ use crate::client::GetQueryBuilder;
 // Declaration of types representing the various items under Teams
 new_type!(
    Teams
-   TeamName
-   Name
-   Id
+   Team
+   Addons
 
 );
 
@@ -16,22 +15,22 @@ from!(
     @GetQueryBuilder
         -> Teams = "teams"
     @Teams
-        => TeamName
-    @TeamName
-        -> Name = "name"
+        => Team
+    @Team
+        -> Addons = "addons"
 );
 
 // impls of each type
 impl_macro!(
     @Teams
         |
-        |=> team_name -> TeamName = teamname_str
-    @TeamName
-        |=> name -> Name
+        |=> team_name -> Team = team_name_str
+        |=> team_id -> Team = team_id_str
+    @Team
+        |=> team_addons -> Addons
         |
 );
 
 exec!(Teams);
-exec!(TeamName);
-exec!(Name);
-exec!(Id);
+exec!(Team);
+exec!(Addons);

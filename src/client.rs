@@ -240,6 +240,8 @@ impl<'g> PutQueryBuilder<'g> {
     
     func_client!(apps, apps::put::Apps<'g>);
 
+    func_client!(teams, teams::put::Teams<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {
@@ -263,6 +265,8 @@ impl<'g> DeleteQueryBuilder<'g> {
     func_client!(custom_endpoint, CustomQuery, endpoint_str);
    
     func_client!(apps, apps::delete::Apps<'g>);
+
+    func_client!(teams, teams::delete::Teams<'g>);
 
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
@@ -288,6 +292,8 @@ impl<'g> PostQueryBuilder<'g> {
 
     func_client!(apps, apps::post::Apps<'g>);
 
+    func_client!(teams, teams::post::Teams<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {
@@ -311,6 +317,8 @@ impl<'g> PatchQueryBuilder<'g> {
     func_client!(custom_endpoint, CustomQuery, endpoint_str);
 
     func_client!(apps, apps::patch::Apps<'g>);
+
+    func_client!(teams, teams::patch::Teams<'g>);
 
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
