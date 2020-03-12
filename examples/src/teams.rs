@@ -1,22 +1,29 @@
 #![allow(dead_code)] // Just warns about un-used methods until they're used.
 use heroku_rs::client::{Executor, Heroku};
+use heroku_rs::defaults::{CreateTeamApp, CreateTeamIdentityProvider, CreateTeamMember, CreateTeamAppCollaborator};
 use heroku_rs::errors::Error;
 use heroku_rs::{HeaderMap, StatusCode};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
-    let team_name = "herokuexample";
+    // let team_name = "herokuexample";
+    // let team_app_name = "heroku-rs-tests";
 
-    // get_teams(&client);
+    get_teams(&client);
     // post_team(&client, team_name);
-    get_team_addons(&client, team_name);
+    // get_team_addons(&client, team_name);
     // patch_team(&client, team_name);
     // put_teams_invitation(&client, team_name);
     // delete_team(&client, team_name);
     // delete_team_member(&client, team_name);
     // delete_team_invitation(&client, team_name);
+    // post_team_member(&client, team_name);
+    // post_team_apps(&client);
+    // post_team_app_collaborators(&client,team_app_name);
+    // post_team_addon_service(&client, team_name);
+    // post_team_identity_provider(&client, team_name);
+    // post_team_invitation_accept(&client);
 }
 
 // == GET teams  ==
@@ -114,7 +121,6 @@ fn put_teams_invitation(client: &Heroku, team_name: &str) {
 // Requires the Heroku client and the team name you want to delete
 // DELETE /teams/{team_name_or_id}
 fn delete_team(client: &Heroku, team_name: &str) {
-
     let me = client
         .delete_empty()
         .teams()
@@ -126,12 +132,11 @@ fn delete_team(client: &Heroku, team_name: &str) {
 
 // == DELETE team member  ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-member-delete
-// Requires the Heroku client, the team name and the member email of the you want to delete 
+// Requires the Heroku client, the team name and the member email of the you want to delete
 // You can also delete a team member by id  .team_members().member_id("ID_HERE")
 // DELETE /teams/{team_name_or_id}/members/{team_member_email_or_id}
 
 fn delete_team_member(client: &Heroku, team_name: &str) {
-
     let me = client
         .delete_empty()
         .teams()
@@ -148,13 +153,135 @@ fn delete_team_member(client: &Heroku, team_name: &str) {
 // Requires the Heroku client and the team name you want to delete the invitation for
 // DELETE /teams/{team_name_or_id}/invitations/{team_invitation_id}
 fn delete_team_invitation(client: &Heroku, team_name: &str) {
-
     let me = client
         .delete_empty()
         .teams()
         .team_name(team_name)
         .team_invitations()
         .invitation_id("ID HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST team apps  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-app-create
+// Requires the Heroku client
+// POST /teams/apps
+fn post_team_apps(client: &Heroku) {
+    let team_app = CreateTeamApp {
+        locked: None,
+        name: Some(String::from("test")),
+        team: None,
+        personal: None,
+        region: None,
+        space: None,
+        stack: None,
+        internal_routing: None,
+    };
+
+    let me = client.post(team_app).teams().team_apps().execute::<Value>();
+    log_response(me);
+}
+
+// == POST team apps collaborator ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-create
+// Requires the Heroku client and the app name or id you want to add the collaborator to
+// POST /teams/apps/{app_id_or_name}/collaborators
+fn post_team_app_collaborators(client: &Heroku, app_name: &str) {
+    let team_app = CreateTeamAppCollaborator {
+        permissions: None,
+        silent: None,
+        user: String::from("01234567"),
+    };
+
+    let me = client
+        .post(team_app)
+        .teams()
+        .team_apps()
+        .app_name(app_name)
+        .app_collaborators()
+        .execute::<Value>();
+
+    log_response(me);
+}
+// == POST team member  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-member-create
+// Requires the Heroku client, team id or name you want to create the member for
+// POST /teams/{team_name_or_id}/members
+fn post_team_member(client: &Heroku, team_name: &str) {
+    let team_member = CreateTeamMember {
+        email: String::from("someone@example.org"),
+        role: String::from("viewer"),
+        federated: None,
+    };
+
+    let me = client
+        .post(team_member)
+        .teams()
+        .team_name(team_name)
+        .team_member()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST team whitelist addon  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#whitelisted-entity-create-by-team
+// Requires the Heroku client, team id or name you want to add the addon for
+// POST /teams/{team_name_or_id}/whitelisted-addon-services
+fn post_team_addon_service(client: &Heroku, team_name: &str) {
+    #[derive(Serialize, Deserialize, Debug)]
+    struct WhiteListAddonService {
+        pub addon_service: String,
+    }
+    let addon = WhiteListAddonService {
+        addon_service: String::from("heroku-postgresql"),
+    };
+
+    let me = client
+        .post(addon)
+        .teams()
+        .team_name(team_name)
+        .team_whitelist_addon_service()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST team identity provider  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#identity-provider-create-by-team
+// Requires the Heroku client, team id or name you want to add the identity provider to
+// POST /teams/{team_name}/identity-providers
+fn post_team_identity_provider(client: &Heroku, team_name: &str) {
+    let identity_provider = CreateTeamIdentityProvider {
+        certificate: String::from("-----BEGIN CERTIFICATE----- ..."),
+        entity_id: String::from("https://heroku-rs-domain.idp .com"),
+        sso_target_url: String::from("https://example .com/idp/login"),
+        slo_target_url: None,
+    };
+
+    let me = client
+        .post(identity_provider)
+        .teams()
+        .team_name(team_name)
+        .team_identity_provider()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST team invitation accept  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-accept
+// Requires the Heroku client, and the invitation token you want to accept
+// POST /teams/invitations/{team_invitation_token}/accept
+fn post_team_invitation_accept(client: &Heroku) {
+    let me = client
+        .post_empty()
+        .teams()
+        .team_invitations()
+        .invitation_token("test")
+        .invitation_accept()
         .execute::<Value>();
 
     log_response(me);

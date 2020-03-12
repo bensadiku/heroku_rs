@@ -86,8 +86,55 @@ pub struct BuildPackUpdate {
 /// Docs https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create
 /// silent : Optional whether to suppress email invitation when creating collaborator 
 /// user : unique email address, identifier of an account or Implicit reference to currently authorized user
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct NewCollaborator {
+    pub silent: Option<bool>,
+    pub user: String,
+}
+
+/// A struct to use for adding a new app for a team
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create
+/// All fields on this POST request are optional
+#[derive(Serialize, Deserialize, Debug)]
+pub struct CreateTeamApp  {
+    pub locked: Option<bool>,
+    pub name: Option<String>,
+    pub team: Option<String>,
+    pub personal: Option<bool>,
+    pub region: Option<String>,
+    pub space: Option<String>,
+    pub stack: Option<String>,
+    pub internal_routing: Option<bool>,
+}
+
+/// A struct to use for adding a new app for a team
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-member-create
+/// federated field on this POST request is optional
+#[derive(Serialize, Deserialize, Debug)]
+pub struct CreateTeamMember {
+    pub email: String,
+    pub federated: Option<bool>,
+    pub role: String,
+}
+
+/// A struct to use for creating a new identity provider for a team
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#identity-provider-create-by-team
+/// Only slo_target_url field on this POST request is optional
+#[derive(Serialize, Deserialize, Debug)]
+pub struct CreateTeamIdentityProvider {
+    pub certificate: String,
+    pub entity_id: String,
+    pub sso_target_url: String,
+    pub slo_target_url: Option<String>,
+}
+
+/// A struct to use for creating a new collaborator a specific app from a specific team
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-create
+/// Only user field on this POST request is required
+/// User should be a unique email address, identifier of an account or Implicit reference to currently authorized user
+#[derive(Serialize, Deserialize, Debug)]
+pub struct CreateTeamAppCollaborator {
+    pub permissions: Option<Vec<String>>,
     pub silent: Option<bool>,
     pub user: String,
 }
