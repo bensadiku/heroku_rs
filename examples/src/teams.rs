@@ -1,6 +1,8 @@
 #![allow(dead_code)] // Just warns about un-used methods until they're used.
 use heroku_rs::client::{Executor, Heroku};
-use heroku_rs::defaults::{CreateTeamApp, CreateTeamIdentityProvider, CreateTeamMember, CreateTeamAppCollaborator};
+use heroku_rs::defaults::{
+    CreateTeamApp, CreateTeamAppCollaborator, CreateTeamIdentityProvider, CreateTeamMember,
+};
 use heroku_rs::errors::Error;
 use heroku_rs::{HeaderMap, StatusCode};
 use serde::{Deserialize, Serialize};
@@ -24,6 +26,21 @@ pub fn run(client: Heroku) {
     // post_team_addon_service(&client, team_name);
     // post_team_identity_provider(&client, team_name);
     // post_team_invitation_accept(&client);
+    // get_team_identity_providers(&client, team_name);
+    // get_team_permissions(&client, team_name);
+    // get_team_pipeline_couplings(&client, team_name);
+    // get_team_apps(&client, team_name);
+    // get_team_app(&client, team_name);
+    // get_team_app_collaborator(&client, team_app_name);
+    // get_team_features(&client, team_name);
+    // get_team_invitations(&client, team_name);
+    // get_team_invitation_by_token(&client);
+    // get_team_invoices(&client, team_name);
+    // get_team_members(&client, team_name);
+    // get_team_member_apps(&client, team_name);
+    // get_team_preferences(&client);
+    // get_team_spaces(&client, team_name);
+    // get_team_whitelist_addon_services(&client, team_name);
 }
 
 // == GET teams  ==
@@ -286,6 +303,242 @@ fn post_team_invitation_accept(client: &Heroku) {
 
     log_response(me);
 }
+
+// == GET team identity providers  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#identity-provider-list-by-team
+// Requires the Heroku client, and the team name you want to get identity providers of
+// GET /teams/{team_name}/identity-providers
+// NOTE: Only team name can be used as a parameter here
+fn get_team_identity_providers(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_identity_providers()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team identity providers  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#permission-entity-list
+// Requires the Heroku client, and the team name you want to get the permissions of
+// GET /teams/{team_name_or_id}/permissions
+fn get_team_permissions(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_permissions()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team pipeline couplings  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-list-by-team
+// Requires the Heroku client, and the team name you want to get the pipline couplings of
+// GET /teams/{team_name_or_id}/pipeline-couplings
+fn get_team_pipeline_couplings(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_pipeline_couplings()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team app info  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-app-info
+// Requires the Heroku client, and the team app name you want to get
+// GET /teams/apps/{team_app_name}
+fn get_team_app(client: &Heroku, team_app_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_apps()
+        .team_app_name(team_app_name)
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team app list by team  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-app-list-by-team
+// Requires the Heroku client, and the team you want to get the apps for
+// GET /teams/{team_name_or_id}/apps
+fn get_team_apps(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_apps()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team app collaborators ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-info
+// Requires the Heroku client, the team app name , and the collaborator email
+// You can get all collaborators with the following: .get().teams().team_apps().team_app_name(team_app_name).app_collaborators()
+// GET /teams/apps/{team_app_name}/collaborators/{team_app_collaborator_email}
+fn get_team_app_collaborator(client: &Heroku, team_app_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_apps()
+        .team_app_name(team_app_name)
+        .app_collaborators()
+        .collaborator_email("collaborator_email_here")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team features  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-feature-info
+// Requires the Heroku client, the team app name , and the feature name or id
+// You can get all team features with the following: .get().teams().team_name(team_name).team_features()
+// GET /teams/{team_name_or_id}/features/{team_feature_id_or_name}
+fn get_team_features(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_features()
+        .feature_name("MY_FEATURE_NAME")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team invitations  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-list
+// Requires the Heroku client, the team app name you want to get the invitations for
+// GET /teams/{team_name}/invitations
+fn get_team_invitations(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_invitations()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET an invitation by its token  ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-get
+// Requires the Heroku client, the token of the invitation
+// GET /teams/invitations/{team_invitation_token}
+fn get_team_invitation_by_token(client: &Heroku) {
+    let me = client
+        .get()
+        .teams()
+        .team_invitations()
+        .invitation_token("TOKEN_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team invoices ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-invoice-list
+// Requires the Heroku client, and the team name to get the invoices
+// You can also get a specific invoice by number: .teams().team_name(team_name).team_invoices().invoice_number("1234")
+// GET /teams/{team_name_or_id}/invoices
+fn get_team_invoices(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_invoices()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team members ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-member-list
+// Requires the Heroku client, and the team name to get the members of
+// You can also get a specific member by email: .teams().team_name(team_name).team_members().member_email("EMAIL_HERE")
+// You can also get a specific member by id: .teams().team_name(team_name).team_members().member_id("ID_HERE")
+// GET /teams/{team_name_or_id}/members
+fn get_team_members(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_members()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET team member apps ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-member-list-by-member
+// Requires the Heroku client, the team name, and the member email or id to get the apps
+// You can also get all member apps by id: .teams().team_name(team_name).team_members().member_id("ID_HERE").team_apps()
+// GET /teams/{team_name_or_id}/members
+fn get_team_member_apps(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_members()
+        .member_email("EMAIL_HERE")
+        .team_apps()
+        .execute::<Value>();
+    log_response(me);
+}
+
+
+// == GET team preference list ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-list
+// Requires the Heroku client, and the preference name or id 
+// You can also get all prefences by id: .teams().team_preference_id("ID_HERE").preferences()
+// GET /teams/{team_preferences_name_or_id}/preferences
+fn get_team_preferences(client: &Heroku) {
+    let me = client
+        .get()
+        .teams()
+        .team_preference_name("NAME_HERE")
+        .preferences()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == GET team spaces ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#space-space-list-2
+// Requires the Heroku client and the team_name or team_id
+// GET /teams/{team_name_or_id}/spaces
+fn get_team_spaces(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_spaces()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == GET team whitelisted addon services ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#whitelisted-entity-list-by-team
+// Requires the Heroku client and the team_name or team_id
+// GET /teams/{team_name_or_id}/whitelisted-addon-services
+fn get_team_whitelist_addon_services(client: &Heroku, team_name: &str) {
+    let me = client
+        .get()
+        .teams()
+        .team_name(team_name)
+        .team_whitelisted_addon_services()
+        .execute::<Value>();
+    log_response(me);
+}
+
 
 //a generic method to log heroku responses and avoid code duplication
 fn log_response<T>(me: Result<(HeaderMap, StatusCode, Option<T>), Error>)
