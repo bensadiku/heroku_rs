@@ -107,9 +107,10 @@ pub struct CreateTeamApp  {
     pub internal_routing: Option<bool>,
 }
 
-/// A struct to use for adding a new app for a team
-/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-member-create
-/// federated field on this POST request is optional
+/// A struct to use for adding updating team members 
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-member-create 
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-member-update
+/// federated field is optional
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CreateTeamMember {
     pub email: String,
@@ -137,4 +138,35 @@ pub struct CreateTeamAppCollaborator {
     pub permissions: Option<Vec<String>>,
     pub silent: Option<bool>,
     pub user: String,
+}
+
+/// A struct to use for patching a team
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-update
+/// Both fields, default and name are optional
+/// default : whether to use this team when none is specified
+/// name : unique name of team
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PatchTeam {
+    pub default: Option<bool>,
+    pub name: Option<String>,
+}
+
+/// A struct to use for patching a team's lock or unlock.
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-app-update-locked
+/// locked : are other team members forbidden from joining this app.
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PatchTeamLock {
+    pub locked: bool,
+}
+
+/// A struct to use for transferring an existing team app to another Heroku account.
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-account
+/// owner : unique email address, identifier of an account or Implicit reference to currently authorized user or a unique team name 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PatchTeamTransfer {
+    pub owner: String,
+}
+
+pub struct PatchTeamMember {
+    
 }

@@ -2,6 +2,7 @@
 use heroku_rs::client::{Executor, Heroku};
 use heroku_rs::defaults::{
     CreateTeamApp, CreateTeamAppCollaborator, CreateTeamIdentityProvider, CreateTeamMember,
+    PatchTeamLock, PatchTeamTransfer,
 };
 use heroku_rs::errors::Error;
 use heroku_rs::{HeaderMap, StatusCode};
@@ -41,6 +42,11 @@ pub fn run(client: Heroku) {
     // get_team_preferences(&client);
     // get_team_spaces(&client, team_name);
     // get_team_whitelist_addon_services(&client, team_name);
+    // patch_team_app_lock_unlock(&client, team_app_name);
+    // patch_team_app_owner(&client, team_app_name);
+    // patch_team_collaborators(&client, team_app_name);
+    // patch_team_member(&client, team_name);
+    // patch_team_preferences(&client);
 }
 
 // == GET teams  ==
@@ -228,7 +234,7 @@ fn post_team_app_collaborators(client: &Heroku, app_name: &str) {
 // POST /teams/{team_name_or_id}/members
 fn post_team_member(client: &Heroku, team_name: &str) {
     let team_member = CreateTeamMember {
-        email: String::from("someone@example.org"),
+        email: String::from("someone @example.org"),
         role: String::from("viewer"),
         federated: None,
     };
@@ -495,10 +501,9 @@ fn get_team_member_apps(client: &Heroku, team_name: &str) {
     log_response(me);
 }
 
-
 // == GET team preference list ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-list
-// Requires the Heroku client, and the preference name or id 
+// Requires the Heroku client, and the preference name or id
 // You can also get all prefences by id: .teams().team_preference_id("ID_HERE").preferences()
 // GET /teams/{team_preferences_name_or_id}/preferences
 fn get_team_preferences(client: &Heroku) {
@@ -539,6 +544,98 @@ fn get_team_whitelist_addon_services(client: &Heroku, team_name: &str) {
     log_response(me);
 }
 
+// == PATCH lock or unlock a team app. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-app-update-locked
+// Requires the Heroku client and the team_name
+// PATCH /teams/apps/{team_app_name}
+fn patch_team_app_lock_unlock(client: &Heroku, team_app_name: &str) {
+    let patch = PatchTeamLock { locked: false };
+
+    let me = client
+        .patch(patch)
+        .teams()
+        .team_apps()
+        .team_app_name(team_app_name)
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == PATCH transfer team app. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-account
+// Requires the Heroku client and the team_name
+// PATCH /teams/apps/{team_app_name}
+fn patch_team_app_owner(client: &Heroku, team_app_name: &str) {
+    let patch = PatchTeamTransfer {
+        owner: String::from("test @gmail. com"),
+    };
+
+    let me = client
+        .patch(patch)
+        .teams()
+        .team_apps()
+        .team_app_name(team_app_name)
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == PATCH team app collaborators. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-update
+// Requires the Heroku client and the team_app_name
+// PATCH /teams/apps/{team_app_name}/collaborators/{team_app_collaborator_email}
+fn patch_team_collaborators(client: &Heroku, team_app_name: &str) {
+    let patch = serde_json::json!({
+        "permissions": [
+            "view"
+          ],
+    });
+
+    let me = client
+        .patch(patch)
+        .teams()
+        .team_apps()
+        .team_app_name(team_app_name)
+        .app_collaborators()
+        .collaborator_email("@EMAILHERE")
+        .execute::<Value>();
+    log_response(me);
+}
+// == PATCH team members. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-member-update
+// Requires the Heroku client and the team_name
+// PATCH /teams/{team_name_or_id}/members
+fn patch_team_member(client: &Heroku, team_name: &str) {
+    let team_member = CreateTeamMember {
+        email: String::from("someone @example.org"),
+        role: String::from("viewer"),
+        federated: None,
+    };
+    let me = client
+        .patch(team_member)
+        .teams()
+        .team_name(team_name)
+        .team_members()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == PATCH team preferences. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-update
+// Requires the Heroku client and the team preference name or id
+// PATCH /teams/{team_preferences_name_or_id}/preferences
+fn patch_team_preferences(client: &Heroku) {
+
+    let patch = serde_json::json!({
+        "whitelisting-enabled": true
+    });
+
+    let me = client
+        .patch(patch)
+        .teams()
+        .team_preference_id("ID_HERE")
+        .preferences()
+        .execute::<Value>();
+    log_response(me);
+}
 
 //a generic method to log heroku responses and avoid code duplication
 fn log_response<T>(me: Result<(HeaderMap, StatusCode, Option<T>), Error>)
