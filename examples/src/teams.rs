@@ -47,6 +47,9 @@ pub fn run(client: Heroku) {
     // patch_team_collaborators(&client, team_app_name);
     // patch_team_member(&client, team_name);
     // patch_team_preferences(&client);
+    // delete_team_identity_provider(&client, team_name);
+    // delete_team_app_collaborator(&client, team_app_name);
+    // delete_team_whitelisted_addon_service(&client, team_name);
 }
 
 // == GET teams  ==
@@ -599,6 +602,7 @@ fn patch_team_collaborators(client: &Heroku, team_app_name: &str) {
         .execute::<Value>();
     log_response(me);
 }
+
 // == PATCH team members. ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#team-member-update
 // Requires the Heroku client and the team_name
@@ -623,7 +627,6 @@ fn patch_team_member(client: &Heroku, team_name: &str) {
 // Requires the Heroku client and the team preference name or id
 // PATCH /teams/{team_preferences_name_or_id}/preferences
 fn patch_team_preferences(client: &Heroku) {
-
     let patch = serde_json::json!({
         "whitelisting-enabled": true
     });
@@ -633,6 +636,53 @@ fn patch_team_preferences(client: &Heroku) {
         .teams()
         .team_preference_id("ID_HERE")
         .preferences()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == DELETE a team’s Identity Provider. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#identity-provider-delete-by-team
+// Requires the Heroku client and the team_name
+// DELETE /teams/{team_name}/identity-providers/{identity_provider_id}
+fn delete_team_identity_provider(client: &Heroku, team_name: &str) {
+    let me = client
+        .delete_empty()
+        .teams()
+        .team_name(team_name)
+        .team_identity_providers()
+        .identity_provider_id("ID")
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == DELETE an existing collaborator from a team app. ==
+// Endpoint: hhttps://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-delete
+// Requires the Heroku client and the team_app_name
+// DELETE /teams/apps/{team_app_name}/collaborators/{team_app_collaborator_email}
+fn delete_team_app_collaborator(client: &Heroku, team_app_name: &str) {
+    let me = client
+        .delete_empty()
+        .teams()
+        .team_apps()
+        .team_app_name(team_app_name)
+        .app_collaborators()
+        .collaborator_email("EMAIL_HERE")
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == DELETE a whitelisted entity ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#whitelisted-entity-delete-by-team
+// Requires the Heroku client and the team_name
+// YOu can also delete by name: .teams().team_name(team_name).team_whitelisted_addon_services().whitelist_addon_service_name("NAME_HERE")
+// DELETE /teams/{team_name_or_id}/whitelisted-addon-services/{whitelisted_add_on_service_id_or_name}
+fn delete_team_whitelisted_addon_service(client: &Heroku, team_name: &str) {
+    let me = client
+        .delete_empty()
+        .teams()
+        .team_name(team_name)
+        .team_whitelisted_addon_services()
+        .whitelist_addon_service_id("ID_HERE")
         .execute::<Value>();
     log_response(me);
 }
