@@ -9,8 +9,8 @@ use heroku_rs::{HeaderMap, StatusCode};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
-pub fn run() {
-    let client = Heroku::new("API_KEY").unwrap();
+pub fn run(client: Heroku) {
+    
     let app_name = "APP_NAME";
     get_apps(&client);
     // get_app_features(&client);

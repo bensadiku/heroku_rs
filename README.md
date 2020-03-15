@@ -1,5 +1,10 @@
 # heroku-rs
 
+[![crates.io](https://img.shields.io/crates/v/heroku_rs.svg)](https://crates.io/crates/heroku_rs)
+[![Documentation](https://docs.rs/heroku_rs/badge.svg)](https://docs.rs/heroku_rs)
+[![MIT/Apache-2 licensed](https://img.shields.io/crates/l/heroku_rs.svg)](./LICENSE)
+[![CI](https://github.com/bensadiku/heroku_rs/workflows/Heroku/badge.svg)](https://github.com/bensadiku/heroku_rs/actions?query=workflow%3AHerokuCI)
+
 **This project is currently under development**
 
 ## Intro
