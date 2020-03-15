@@ -1,8 +1,8 @@
 #![allow(dead_code)] // Just warns about un-used methods until they're used.
 use heroku_rs::client::{Executor, Heroku};
+use heroku_rs::defaults::PostAppTransfer;
 use heroku_rs::errors::Error;
 use heroku_rs::{HeaderMap, StatusCode};
-use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
@@ -20,7 +20,11 @@ pub fn run(client: Heroku) {
     // get_user_account_apps(&client);
     // get_user_account_sms_number(&client);
     // get_user_account_apps(&client);
-    put_account_invoice_address(&client);
+    // put_account_invoice_address(&client);
+    // post_account_app_transfers(&client);
+    // post_account_credits(&client);
+    post_sms_number_confirm(&client);
+    // post_sms_number_recover(&client);
 }
 
 // == GET account ==
@@ -189,6 +193,67 @@ fn put_account_invoice_address(client: &Heroku) {
         .put(update)
         .account()
         .account_invoice_address()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == POST an app transfer. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create
+// POST /account/app-transfers
+fn post_account_app_transfers(client: &Heroku) {
+    let transfer = PostAppTransfer {
+        app: String::from("APP_NAME"),
+        recipient: String::from("EMAIL_HERE"),
+        silent: None,
+    };
+    let me = client
+        .post(transfer)
+        .account()
+        .account_app_tranfer()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == POST credits. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#credit-create
+// POST /account/credits
+fn post_account_credits(client: &Heroku) {
+    let update_credits = serde_json::json!({
+        "code1": "1234ABC",
+        "code2": "5678DEF",
+    });
+    let me = client
+        .post(update_credits)
+        .account()
+        .account_credit()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == POST sms number action confirm. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#credit-create
+// POST /users/{account_email_or_id_or_self}/sms-number/actions/confirm
+fn post_sms_number_confirm(client: &Heroku) {
+    let me = client
+        .post_empty()
+        .accounts()
+        .account_email("bensadiku64@gmail.com")
+        .account_sms_number()
+        .action_confirm()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == POST sms number actions. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#sms-number-recover
+// POST POST /users/{account_email_or_id_or_self}/sms-number/actions/recover
+fn post_sms_number_recover(client: &Heroku) {
+    let me = client
+        .post_empty()
+        .accounts()
+        .account_email("bensadiku64@gmail.com")
+        .account_sms_number()
+        .action_recover()
         .execute::<Value>();
     log_response(me);
 }

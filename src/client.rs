@@ -303,6 +303,10 @@ impl<'g> PostQueryBuilder<'g> {
 
     func_client!(teams, teams::post::Teams<'g>);
 
+    func_client!(account, account::post::Account<'g>);
+
+    func_client!(accounts, account::post::Accounts<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {

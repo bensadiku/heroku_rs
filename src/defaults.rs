@@ -166,3 +166,15 @@ pub struct PatchTeamLock {
 pub struct PatchTeamTransfer {
     pub owner: String,
 }
+
+/// A struct to use for transferring an existing app to another Heroku account.
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create
+/// app : unique identifier or name of app
+/// recipient : unique email address, identifier of an account or Implicit reference to currently authorized user
+/// silent : whether to suppress email notification when transferring apps (Optional)
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PostAppTransfer {
+    pub app: String,
+    pub recipient: String,
+    pub silent: Option<bool>,
+}
