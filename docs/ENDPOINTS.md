@@ -208,7 +208,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 ## PUT
 - [X] [/apps/{app_id_or_name}/buildpack-installations](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update)	
 - [ ] [/spaces/{space_id_or_name}/inbound-ruleset](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-create)	
-- [ ] [/account/invoice-address](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-update)
+- [X] [/account/invoice-address](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-update)
 - [ ] [/addons/{add_on_id_or_name}/log-drains/{log_drain_id_or_url_or_token}](https://devcenter.heroku.com/articles/platform-api-reference#log-drain-update)	
 - [ ] [/spaces/{space_id_or_name}/outbound-ruleset](https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-create)	
 - [X] [/teams/{team_name_or_id}/invitations](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-create)	

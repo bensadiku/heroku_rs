@@ -249,6 +249,8 @@ impl<'g> PutQueryBuilder<'g> {
 
     func_client!(teams, teams::put::Teams<'g>);
 
+    func_client!(account, account::put::Account<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {

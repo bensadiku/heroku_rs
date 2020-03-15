@@ -2,10 +2,11 @@
 use heroku_rs::client::{Executor, Heroku};
 use heroku_rs::errors::Error;
 use heroku_rs::{HeaderMap, StatusCode};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
-    get_account(&client);
+    // get_account(&client);
     // get_account_features(&client);
     // get_specific_account_feature(&client);
     // get_user_account(&client);
@@ -19,6 +20,7 @@ pub fn run(client: Heroku) {
     // get_user_account_apps(&client);
     // get_user_account_sms_number(&client);
     // get_user_account_apps(&client);
+    put_account_invoice_address(&client);
 }
 
 // == GET account ==
@@ -171,6 +173,22 @@ fn get_user_account_sms_number(client: &Heroku) {
         .accounts()
         .account_email("EMAIL_HERE")
         .account_sms_number()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == PUT account invoice address. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-update
+// PUT /account/invoice-address
+fn put_account_invoice_address(client: &Heroku) {
+    let update = serde_json::json!({
+        "city": "Seattle",
+    });
+
+    let me = client
+        .put(update)
+        .account()
+        .account_invoice_address()
         .execute::<Value>();
     log_response(me);
 }
