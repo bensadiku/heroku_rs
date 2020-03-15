@@ -11,7 +11,7 @@ use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
     
-    let app_name = "APP_NAME";
+    // let app_name = "APP_NAME";
     get_apps(&client);
     // get_app_features(&client);
     // patch_app(&client);

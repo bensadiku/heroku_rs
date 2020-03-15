@@ -24,6 +24,7 @@ use serde_json;
 use crate::errors::*;
 use crate::teams;
 use crate::apps;
+use crate::account;
 use crate::utils::url_join;
 
 use std::cell::RefCell;
@@ -216,6 +217,12 @@ impl<'g> GetQueryBuilder<'g> {
     /// Query the App endpoint
     func_client!(apps, apps::get::Apps<'g>);
 
+    /// Query the Account endpoint
+    func_client!(account, account::get::Account<'g>);
+    
+    /// Query the Users account endpoint
+    func_client!(accounts, account::get::Accounts<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {
@@ -241,6 +248,8 @@ impl<'g> PutQueryBuilder<'g> {
     func_client!(apps, apps::put::Apps<'g>);
 
     func_client!(teams, teams::put::Teams<'g>);
+
+    func_client!(account, account::put::Account<'g>);
 
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
@@ -268,6 +277,10 @@ impl<'g> DeleteQueryBuilder<'g> {
 
     func_client!(teams, teams::delete::Teams<'g>);
 
+    func_client!(account, account::delete::Account<'g>);
+
+    func_client!(accounts, account::delete::Accounts<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {
@@ -294,6 +307,10 @@ impl<'g> PostQueryBuilder<'g> {
 
     func_client!(teams, teams::post::Teams<'g>);
 
+    func_client!(account, account::post::Account<'g>);
+
+    func_client!(accounts, account::post::Accounts<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {
@@ -319,6 +336,10 @@ impl<'g> PatchQueryBuilder<'g> {
     func_client!(apps, apps::patch::Apps<'g>);
 
     func_client!(teams, teams::patch::Teams<'g>);
+
+    func_client!(account, account::patch::Account<'g>);
+
+    func_client!(accounts, account::patch::Accounts<'g>);
 
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {

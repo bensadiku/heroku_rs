@@ -19,5 +19,6 @@ pub mod errors;
 pub mod headers;
 pub mod apps;
 pub mod teams;
+pub mod account;
 
 pub use hyper::{HeaderMap, StatusCode};

@@ -84,7 +84,7 @@ pub struct BuildPackUpdate {
 
 /// A struct to use for adding a new collaborator on the app
 /// Docs https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create
-/// silent : Optional whether to suppress email invitation when creating collaborator 
+/// silent : Optional whether to suppress email invitation when creating collaborator
 /// user : unique email address, identifier of an account or Implicit reference to currently authorized user
 #[derive(Serialize, Deserialize, Debug)]
 pub struct NewCollaborator {
@@ -96,7 +96,7 @@ pub struct NewCollaborator {
 /// Docs https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create
 /// All fields on this POST request are optional
 #[derive(Serialize, Deserialize, Debug)]
-pub struct CreateTeamApp  {
+pub struct CreateTeamApp {
     pub locked: Option<bool>,
     pub name: Option<String>,
     pub team: Option<String>,
@@ -107,8 +107,8 @@ pub struct CreateTeamApp  {
     pub internal_routing: Option<bool>,
 }
 
-/// A struct to use for adding updating team members 
-/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-member-create 
+/// A struct to use for adding updating team members
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-member-create
 /// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-member-update
 /// federated field is optional
 #[derive(Serialize, Deserialize, Debug)]
@@ -161,12 +161,31 @@ pub struct PatchTeamLock {
 
 /// A struct to use for transferring an existing team app to another Heroku account.
 /// Docs https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-account
-/// owner : unique email address, identifier of an account or Implicit reference to currently authorized user or a unique team name 
+/// owner : unique email address, identifier of an account or Implicit reference to currently authorized user or a unique team name
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PatchTeamTransfer {
     pub owner: String,
 }
 
-pub struct PatchTeamMember {
-    
+/// A struct to use for transferring an existing app to another Heroku account.
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create
+/// app : unique identifier or name of app
+/// recipient : unique email address, identifier of an account or Implicit reference to currently authorized user
+/// silent : whether to suppress email notification when transferring apps (Optional)
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PostAppTransfer {
+    pub app: String,
+    pub recipient: String,
+    pub silent: Option<bool>,
+}
+/// A struct to use for patching an account
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#account-update
+/// allow_tracking : whether to allow third party web activity tracking default: true
+/// beta : whether allowed to utilize beta Heroku features
+/// name : full name of the account owner
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PatchAccount {
+    pub allow_tracking: Option<bool>,
+    pub beta: Option<bool>,
+    pub name: Option<String>,
 }
