@@ -11,8 +11,8 @@ use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
     
-    // let app_name = "APP_NAME";
-    get_apps(&client);
+    let app_name = "heroku-rs-tests";
+    // get_apps(&client);
     // get_app_features(&client);
     // patch_app(&client);
     // patch_feature(&client);
@@ -47,6 +47,13 @@ pub fn run(client: Heroku) {
     // delete_log_drain(&client, app_name);
     // get_log_drains(&client, app_name);
     // post_log_sessions(&client, app_name);
+    // get_app_addons(&client, app_name);
+    // get_app_addon_attachments(&client, app_name);
+    // get_app_pipeline_couplings(&client, app_name);
+    // get_app_review(&client, app_name);
+    // get_app_slug(&client, app_name);
+    // get_app_sni_endpoints(&client, app_name);
+    get_app_ssl_endpoints(&client, app_name);
 }
 
 // == Getting an app ==
@@ -682,6 +689,118 @@ fn post_log_sessions(client: &Heroku, app_name: &str) {
 
     log_response(me);
 }
+
+// == GET app addons ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#add-on-list-by-app
+// Requires the Heroku client and an App to get the addons
+// get a specific addon by id: .app_addons().addon_id("ID_HERE")
+// get a specific addon by name: .app_addons().addon_name("NAME_HERE")
+fn get_app_addons(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_addons()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app addon attachments ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-list-by-app
+// Requires the Heroku client and the app name to get the addon attachments for
+// get a specific addon by id: .app_addon_attachments().addon_attachment_id("ID_HERE")
+// get a specific addon by name: .app_addon_attachments().addon_attachment_name("NAME_HERE")
+fn get_app_addon_attachments(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_addon_attachments()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app pipeline couplings ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-info-by-app
+// Requires the Heroku client and the app name to get the pipeline couplings
+fn get_app_pipeline_couplings(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_pipeline_couplings()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app review ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#review-app-get-review-app-by-app_id
+// Requires the Heroku client and the app name to get the app review
+// GET /apps/{app_id_or_name}/review-app
+fn get_app_review(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_review()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app slug ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#slug-info
+// Requires the Heroku client, the app name and the slug id
+// GET /apps/{app_id_or_name}/slugs/{slug_id}
+fn get_app_slug(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_slug()
+        .slug_id("ID_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app SNI endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-info
+// Requires the Heroku client, the app name
+// get a specific SNI endpoint by id: .app_sni_endpoints().sni_endpoint_id("ID_HERE")
+// get a specific SNI endpoint by name: .app_sni_endpoints().sni_endpoint_name("NAME_HERE")
+// GET /apps/{app_id_or_name}/sni-endpoints/{sni_endpoint_id_or_name}
+fn get_app_sni_endpoints(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_sni_endpoints()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app SSL endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-info
+// Requires the Heroku client, the app name
+// get a specific SSL endpoint by id: .app_ssl_endpoints().ssl_endpoint_id("ID_HERE")
+// get a specific SSL endpoint by name: .app_ssl_endpoints().ssl_endpoint_name("NAME_HERE")
+// GET /apps/{app_id_or_name}/ssl-endpoints/{ssl_endpoint_id_or_name}
+fn get_app_ssl_endpoints(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_ssl_endpoints()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
 
 //a generic method to log heroku responses and avoid code duplication
 fn log_response<T>(me: Result<(HeaderMap, StatusCode, Option<T>), Error>)
