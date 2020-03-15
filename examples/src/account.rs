@@ -1,8 +1,9 @@
 #![allow(dead_code)] // Just warns about un-used methods until they're used.
 use heroku_rs::client::{Executor, Heroku};
-use heroku_rs::defaults::PostAppTransfer;
+use heroku_rs::defaults::{EnableFeature, PatchAccount, PostAppTransfer};
 use heroku_rs::errors::Error;
 use heroku_rs::{HeaderMap, StatusCode};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
@@ -23,8 +24,12 @@ pub fn run(client: Heroku) {
     // put_account_invoice_address(&client);
     // post_account_app_transfers(&client);
     // post_account_credits(&client);
-    post_sms_number_confirm(&client);
+    // post_sms_number_confirm(&client);
     // post_sms_number_recover(&client);
+    // patch_account(&client);
+    // patch_account_feature(&client);
+    // patch_account_transfer(&client);
+    patch_users_account(&client);
 }
 
 // == GET account ==
@@ -246,7 +251,7 @@ fn post_sms_number_confirm(client: &Heroku) {
 
 // == POST sms number actions. ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#sms-number-recover
-// POST POST /users/{account_email_or_id_or_self}/sms-number/actions/recover
+// POST /users/{account_email_or_id_or_self}/sms-number/actions/recover
 fn post_sms_number_recover(client: &Heroku) {
     let me = client
         .post_empty()
@@ -254,6 +259,72 @@ fn post_sms_number_recover(client: &Heroku) {
         .account_email("bensadiku64@gmail.com")
         .account_sms_number()
         .action_recover()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == PATCH account. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#account-update
+// PATCH /account
+fn patch_account(client: &Heroku) {
+    let patch = PatchAccount {
+        allow_tracking: Some(true),
+        beta: Some(true),
+        name: None,
+    };
+    let me = client.patch(patch).account().execute::<Value>();
+    log_response(me);
+}
+
+// == PATCH account feature. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update
+// PATCH /account/features/{account_feature_id_or_name}
+fn patch_account_feature(client: &Heroku) {
+    let patch = EnableFeature { enabled: false };
+    let me = client
+        .patch(patch)
+        .account()
+        .account_features()
+        .feature_name("team-internal-routing")
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == PATCH account transfer. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update
+// You can also patch a transfer by name: .get().account().account_app_tranfer().account_id("ID_HERE).execute::<Value>();
+// PATCH /account
+fn patch_account_transfer(client: &Heroku) {
+    #[derive(Serialize, Deserialize, Debug)]
+    struct PatchTransferStatus {
+        state: String,
+    }
+    let patch = PatchTransferStatus {
+        state: String::from("declined"),
+    };
+    let me = client
+        .patch(patch)
+        .account()
+        .account_app_tranfer()
+        .transfer_name("TRANSFER_NAME_HERE")
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == PATCH account by user. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user
+// You can also patch a transfer by name: .get().accounts().account_id("ID_HERE).execute::<Value>();
+// PATCH /users/{account_email_or_id_or_self}
+fn patch_users_account(client: &Heroku) {
+    let patch = PatchAccount {
+        allow_tracking: Some(true),
+        beta: Some(true),
+        name: Some(String::from("heroku-rs-test")),
+    };
+    let me = client
+        .patch(patch)
+        .accounts()
+        .account_email("EMAIL_HERE")
         .execute::<Value>();
     log_response(me);
 }

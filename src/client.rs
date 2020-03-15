@@ -333,6 +333,10 @@ impl<'g> PatchQueryBuilder<'g> {
 
     func_client!(teams, teams::patch::Teams<'g>);
 
+    func_client!(account, account::patch::Account<'g>);
+
+    func_client!(accounts, account::patch::Accounts<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {
