@@ -166,7 +166,3 @@ pub struct PatchTeamLock {
 pub struct PatchTeamTransfer {
     pub owner: String,
 }
-
-pub struct PatchTeamMember {
-    
-}

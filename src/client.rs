@@ -24,6 +24,7 @@ use serde_json;
 use crate::errors::*;
 use crate::teams;
 use crate::apps;
+use crate::account;
 use crate::utils::url_join;
 
 use std::cell::RefCell;
@@ -215,6 +216,12 @@ impl<'g> GetQueryBuilder<'g> {
 
     /// Query the App endpoint
     func_client!(apps, apps::get::Apps<'g>);
+
+    /// Query the Account endpoint
+    func_client!(account, account::get::Account<'g>);
+    
+    /// Query the Users account endpoint
+    func_client!(accounts, account::get::Accounts<'g>);
 
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
