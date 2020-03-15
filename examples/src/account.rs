@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
-    // get_account(&client);
+    get_account(&client);
     // get_account_features(&client);
     // get_specific_account_feature(&client);
     // get_user_account(&client);
@@ -29,7 +29,10 @@ pub fn run(client: Heroku) {
     // patch_account(&client);
     // patch_account_feature(&client);
     // patch_account_transfer(&client);
-    patch_users_account(&client);
+    // patch_users_account(&client);
+    // delete_users_account(&client);
+    // delete_account(&client);
+    // delete_account_app_transfer(&client);
 }
 
 // == GET account ==
@@ -292,7 +295,7 @@ fn patch_account_feature(client: &Heroku) {
 
 // == PATCH account transfer. ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update
-// You can also patch a transfer by name: .get().account().account_app_tranfer().account_id("ID_HERE).execute::<Value>();
+// You can also patch a transfer by name: .account().account_app_tranfer().account_id("ID_HERE").execute::<Value>();
 // PATCH /account
 fn patch_account_transfer(client: &Heroku) {
     #[derive(Serialize, Deserialize, Debug)]
@@ -313,7 +316,7 @@ fn patch_account_transfer(client: &Heroku) {
 
 // == PATCH account by user. ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user
-// You can also patch a transfer by name: .get().accounts().account_id("ID_HERE).execute::<Value>();
+// You can also patch a transfer by name: .accounts().account_id("ID_HERE").execute::<Value>();
 // PATCH /users/{account_email_or_id_or_self}
 fn patch_users_account(client: &Heroku) {
     let patch = PatchAccount {
@@ -326,6 +329,41 @@ fn patch_users_account(client: &Heroku) {
         .accounts()
         .account_email("EMAIL_HERE")
         .execute::<Value>();
+    log_response(me);
+}
+
+// == DELETE account by user. NOTE this action cannot be undone. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#account-delete-by-user
+// You can also delete by email: .delete_empty().accounts().account_id("ID_HERE").execute::<Value>();
+// DELETE /users/{account_email_or_id_or_self}
+fn delete_users_account(client: &Heroku) {
+    let me = client
+        .delete_empty()
+        .accounts()
+        .account_email("EMAIL_HERE")
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == DELETE account. NOTE this action cannot be undone. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#account-delete
+// DELETE /account
+fn delete_account(client: &Heroku) {
+    let me = client.delete_empty().account().execute::<Value>();
+    log_response(me);
+}
+
+// == DELETE account app transfer. ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-delete
+// You can also delete by name: .delete_empty().account().account_app_tranfer().transfer_id("ID_HERE").execute::<Value>();
+// DELETE /account/app-transfers/{app_transfer_id_or_name}
+fn delete_account_app_transfer(client: &Heroku) {
+    let me = client
+    .delete_empty()
+    .account()
+    .account_app_tranfer()
+    .transfer_name("TRANSFER_NAME")
+    .execute::<Value>();
     log_response(me);
 }
 

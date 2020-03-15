@@ -277,6 +277,10 @@ impl<'g> DeleteQueryBuilder<'g> {
 
     func_client!(teams, teams::delete::Teams<'g>);
 
+    func_client!(account, account::delete::Account<'g>);
+
+    func_client!(accounts, account::delete::Accounts<'g>);
+
     /// Add an etag to the headers of the request
     pub fn set_etag(mut self, tag: impl Into<HeaderValue>) -> Self {
         match self.request {

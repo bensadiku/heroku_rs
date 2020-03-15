@@ -215,14 +215,14 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [X] [/teams/{team_name_or_id}/members](https://devcenter.heroku.com/articles/platform-api-reference#team-member-create-or-update)	
 
 ## DELETE
-- [ ] [/account](https://devcenter.heroku.com/articles/platform-api-reference#account-delete)
-- [ ] [/users/{account_email_or_id_or_self}](https://devcenter.heroku.com/articles/platform-api-reference#account-delete-by-user)
+- [X] [/account](https://devcenter.heroku.com/articles/platform-api-reference#account-delete)
+- [X] [/users/{account_email_or_id_or_self}](https://devcenter.heroku.com/articles/platform-api-reference#account-delete-by-user)
 - [ ] [/apps/{app_id_or_name}/addons/{add_on_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#add-on-delete)	
 - [ ] [/addon-attachments/{add_on_attachment_id}](https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-delete)	
 - [ ] [/addons/{add_on_id_or_name}/webhooks/{app_webhook_id}](https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-delete)	
 - [X] [/apps/{app_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#app-delete)	
 - [ ] [/apps/{app_id_or_name}/acm](https://devcenter.heroku.com/articles/platform-api-reference#app-disable-acm)	
-- [ ] [/account/app-transfers/{app_transfer_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-delete)	
+- [X] [/account/app-transfers/{app_transfer_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-delete)	
 - [X] [/apps/{app_id_or_name}/webhooks/{app_webhook_id}](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delete)	
 - [X] [/apps/{app_id_or_name}/build-cache](https://devcenter.heroku.com/articles/platform-api-reference#build-delete-cache)	
 - [X] [/apps/{app_id_or_name}/collaborators/{collaborator_email_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-delete)	
