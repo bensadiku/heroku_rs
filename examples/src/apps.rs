@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
-    let app_name = "heroku-rs-tests";
+    // let app_name = "heroku-rs-tests";
     // get_apps(&client);
     // get_app_features(&client);
     // patch_app(&client);
@@ -56,7 +56,10 @@ pub fn run(client: Heroku) {
     // patch_sni_endpoints(&client, app_name);
     // patch_ssl_endpoints(&client, app_name);
     // patch_addons(&client, app_name);
-    patch_acm(&client, app_name);
+    // patch_acm(&client, app_name);
+    // delete_acm(&client, app_name);
+    // delete_sni_endpoints(&client, app_name);
+    // delete_ssl_endpoints(&client, app_name);
 }
 
 // == Getting an app ==
@@ -878,6 +881,55 @@ fn patch_acm(client: &Heroku, app_name: &str) {
         .apps()
         .app_name(app_name)
         .app_acm()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == DELETE app ACM ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-disable-acm
+// Requires the Heroku client, the app name 
+// DELETE /apps/{app_id_or_name}/acm
+fn delete_acm(client: &Heroku, app_name: &str) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name(app_name)
+        .app_acm()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == DELETE app SNI endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-delete
+// Requires the Heroku client, the app name and the sni endpoint id or name to delete
+// delete a specific SNI endpoint by name: .app_sni_endpoints().sni_endpoint_name("NAME_HERE")
+// DELETE /apps/{app_id_or_name}/sni-endpoints/{sni_endpoint_id_or_name}
+fn delete_sni_endpoints(client: &Heroku, app_name: &str) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name(app_name)
+        .app_sni_endpoints()
+        .sni_endpoint_id("Id_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == DELETE app SSL endpoints ==
+// Endpoint:https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-delete
+// Requires the Heroku client, the app name and the ssl endpoint id or name to delete
+// delete a specific SNI endpoint by name: .app_ssl_endpoints().ssl_endpoint_name("NAME_HERE")
+// DELETE /apps/{app_id_or_name}/ssl-endpoints/{ssl_endpoint_id_or_name}
+fn delete_ssl_endpoints(client: &Heroku, app_name: &str) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name(app_name)
+        .app_ssl_endpoints()
+        .ssl_endpoint_id("Id_HERE")
         .execute::<Value>();
 
     log_response(me);
