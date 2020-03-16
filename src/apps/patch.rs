@@ -69,8 +69,8 @@ impl_macro!(
         |=> app_webhooks ->  Webhooks
         |=> app_config_vars ->  ConfigVars
         |=> app_formations ->  Formations
-        |=> app_sni_endpoints ->  SNIEndpoints
-        |=> app_ssl_endpoints ->  SSLEndpoints
+        |=> app_sni_endpoint ->  SNIEndpoints
+        |=> app_ssl_endpoint ->  SSLEndpoints
         |=> app_addons ->  Addons
         |=> app_acm ->  Acm
         |

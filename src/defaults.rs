@@ -190,7 +190,7 @@ pub struct PatchAccount {
     pub name: Option<String>,
 }
 
-/// A struct to use for patching a app SNI Endpoint
+/// A struct to use for patching  or creating a app SNI Endpoint
 /// Docs https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-update
 /// certificate_chain : raw contents of the public certificate chain (eg: .crt or .pem file)
 /// private_key : contents of the private key (eg .key file)
@@ -200,7 +200,7 @@ pub struct PatchSniEndpoints {
     pub private_key: String,
 }
 
-/// A struct to use for patching a SSL Endpoint
+/// A struct to use for patching or creating a SSL Endpoint
 /// Docs https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-update
 /// certificate_chain : raw contents of the public certificate chain (eg: .crt or .pem file)
 /// private_key : contents of the private key (eg .key file)
@@ -221,4 +221,22 @@ pub struct PatchSslEndpoints {
 pub struct PatchAddons {
     pub name: Option<String>,
     pub plan: String,
+}
+
+/// A struct to use for creating a new release
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#release-create
+/// slug : unique identifier of slug
+/// description : Optional. description of changes in this release
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PostRelease {
+    pub description: Option<String>,
+    pub slug: String,
+}
+
+/// A struct to use for rolling back to an existing release
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#release-rollback
+/// release : UUID unique identifier of release
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PostRollbackRelease {
+    pub release: String,
 }

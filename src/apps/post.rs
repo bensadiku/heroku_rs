@@ -17,6 +17,12 @@ new_type!(
     DynoActionStop
     LogSession
     LogDrain
+    Addons
+    Acm
+    Releases
+    Slugs
+    SNIEndpoints
+    SSLEndpoints
 );
 
 from!(
@@ -32,6 +38,12 @@ from!(
         -> Dyno = "dynos"     
         -> LogSession = "log-sessions"     
         -> LogDrain = "log-drains"  
+        -> Addons = "addons"  
+        -> Acm = "acm"  
+        -> Releases = "releases"  
+        -> Slugs = "slugs"  
+        -> SNIEndpoints = "sni-endpoints"  
+        -> SSLEndpoints = "ssl-endpoints"  
     @Webhooks
         => WebhookId 
     @Dyno
@@ -58,6 +70,12 @@ impl_macro!(
         |=> app_dyno ->  Dyno
         |=> app_log_session ->  LogSession
         |=> app_log_drain ->  LogDrain
+        |=> app_addon ->  Addons
+        |=> app_acm ->  Acm
+        |=> app_release ->  Releases
+        |=> app_slug ->  Slugs
+        |=> app_sni_endpoint ->  SNIEndpoints
+        |=> app_ssl_endpoint ->  SSLEndpoints
         |
     @Webhooks
         |
@@ -91,3 +109,9 @@ exec!(DynoAction);
 exec!(DynoActionStop);
 exec!(LogSession);
 exec!(LogDrain);
+exec!(Addons);
+exec!(Acm);
+exec!(Releases);
+exec!(Slugs);
+exec!(SSLEndpoints);
+exec!(SNIEndpoints);
