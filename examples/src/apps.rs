@@ -2,7 +2,7 @@
 use heroku_rs::client::{Executor, Heroku};
 use heroku_rs::defaults::{
     AppPatch, AppPost, BuildPackUpdate, BuildPost, BuildpackInstallation, EnableFeature,
-    NewCollaborator, SourceBlob, WebhookPost,
+    NewCollaborator, PatchAddons, PatchSniEndpoints, PatchSslEndpoints, SourceBlob, WebhookPost,
 };
 use heroku_rs::errors::Error;
 use heroku_rs::{HeaderMap, StatusCode};
@@ -10,7 +10,6 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
-    
     let app_name = "heroku-rs-tests";
     // get_apps(&client);
     // get_app_features(&client);
@@ -53,7 +52,11 @@ pub fn run(client: Heroku) {
     // get_app_review(&client, app_name);
     // get_app_slug(&client, app_name);
     // get_app_sni_endpoints(&client, app_name);
-    get_app_ssl_endpoints(&client, app_name);
+    // get_app_ssl_endpoints(&client, app_name);
+    // patch_sni_endpoints(&client, app_name);
+    // patch_ssl_endpoints(&client, app_name);
+    // patch_addons(&client, app_name);
+    patch_acm(&client, app_name);
 }
 
 // == Getting an app ==
@@ -801,6 +804,84 @@ fn get_app_ssl_endpoints(client: &Heroku, app_name: &str) {
     log_response(me);
 }
 
+// == PATCH app SNI endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-update
+// Requires the Heroku client, the app name and the sni endpoint id or name to patch
+// patch a specific SNI endpoint by name: .app_sni_endpoints().sni_endpoint_name("NAME_HERE")
+// PATCH /apps/{app_id_or_name}/sni-endpoints/{sni_endpoint_id_or_name}
+fn patch_sni_endpoints(client: &Heroku, app_name: &str) {
+    let patch = PatchSniEndpoints {
+        certificate_chain: String::from("-----BEGIN CERTIFICATE----- ..."),
+        private_key: String::from("-----BEGIN RSA PRIVATE KEY----- ..."),
+    };
+    let me = client
+        .patch(patch)
+        .apps()
+        .app_name(app_name)
+        .app_sni_endpoints()
+        .sni_endpoint_id("Id_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == PATCH app SSL endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-update
+// Requires the Heroku client, the app name and the ssl endpoint id or name to patch
+// patch a specific SNI endpoint by name: .app_ssl_endpoints().ssl_endpoint_name("NAME_HERE")
+// PATCH /apps/{app_id_or_name}/ssl-endpoints/{ssl_endpoint_id_or_name}
+fn patch_ssl_endpoints(client: &Heroku, app_name: &str) {
+    let patch = PatchSslEndpoints {
+        certificate_chain: Some(String::from("-----BEGIN CERTIFICATE----- ...")),
+        private_key: Some(String::from("-----BEGIN RSA PRIVATE KEY----- ...")),
+        preprocess: Some(false),
+    };
+    let me = client
+        .patch(patch)
+        .apps()
+        .app_name(app_name)
+        .app_ssl_endpoints()
+        .ssl_endpoint_id("Id_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == PATCH app ADDONS ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#add-on-update
+// Requires the Heroku client, the app name and the addon id or name to patch
+// patch a specific addon by name: .app_addons().addon_name("NAME_HERE")
+// PATCH /apps/{app_id_or_name}/addons/{add_on_id_or_name}
+fn patch_addons(client: &Heroku, app_name: &str) {
+    let patch = PatchAddons {
+        plan: String::from("heroku-postgresql:dev"),
+        name: None,
+    };
+    let me = client
+        .patch(patch)
+        .apps()
+        .app_name(app_name)
+        .app_addons()
+        .addon_id("Id_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == PATCH app ACM ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-refresh-acm
+// Requires the Heroku client, the app name 
+// PATCH /apps/{app_id_or_name}/acm
+fn patch_acm(client: &Heroku, app_name: &str) {
+    let me = client
+        .patch_empty()
+        .apps()
+        .app_name(app_name)
+        .app_acm()
+        .execute::<Value>();
+
+    log_response(me);
+}
 
 //a generic method to log heroku responses and avoid code duplication
 fn log_response<T>(me: Result<(HeaderMap, StatusCode, Option<T>), Error>)

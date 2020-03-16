@@ -189,3 +189,36 @@ pub struct PatchAccount {
     pub beta: Option<bool>,
     pub name: Option<String>,
 }
+
+/// A struct to use for patching a app SNI Endpoint
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-update
+/// certificate_chain : raw contents of the public certificate chain (eg: .crt or .pem file)
+/// private_key : contents of the private key (eg .key file)
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PatchSniEndpoints {
+    pub certificate_chain: String,
+    pub private_key: String,
+}
+
+/// A struct to use for patching a SSL Endpoint
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-update
+/// certificate_chain : raw contents of the public certificate chain (eg: .crt or .pem file)
+/// private_key : contents of the private key (eg .key file)
+/// preprocess : allow Heroku to modify an uploaded public certificate chain if deemed advantageous by adding missing intermediaries, stripping unnecessary ones, etc.
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PatchSslEndpoints {
+    pub certificate_chain: Option<String>,
+    pub private_key: Option<String>,
+    pub preprocess: Option<bool>,
+}
+
+
+/// A struct to use for patching a Addon
+/// Docs https://devcenter.heroku.com/articles/platform-api-reference#add-on-update
+/// plan : unique identifier or name of this plan
+/// name : Optional. globally unique name of the add-on. pattern: ^[a-zA-Z][A-Za-z0-9_-]+$
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PatchAddons {
+    pub name: Option<String>,
+    pub plan: String,
+}

@@ -14,6 +14,16 @@ new_type!(
     Formations
     FormationId
     FormationType
+    SNIEndpoints
+    SNIEndpointName
+    SNIEndpointId
+    SSLEndpoints
+    SSLEndpointId
+    SSLEndpointName
+    Addons
+    AddonId
+    AddonName
+    Acm
 );
 
 from!(
@@ -26,6 +36,10 @@ from!(
         -> Webhooks = "webhooks"    
         -> ConfigVars = "config-vars"    
         -> Formations = "formation"    
+        -> SNIEndpoints = "sni-endpoints"    
+        -> SSLEndpoints = "ssl-endpoints"    
+        -> Addons = "addons"    
+        -> Acm = "acm"    
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId 
@@ -34,6 +48,15 @@ from!(
     @Formations
         => FormationId
         => FormationType
+    @SNIEndpoints
+        => SNIEndpointId
+        => SNIEndpointName
+    @SSLEndpoints
+        => SSLEndpointId
+        => SSLEndpointName
+    @Addons
+        => AddonId
+        => AddonName
 );
 
 impl_macro!(
@@ -46,6 +69,10 @@ impl_macro!(
         |=> app_webhooks ->  Webhooks
         |=> app_config_vars ->  ConfigVars
         |=> app_formations ->  Formations
+        |=> app_sni_endpoints ->  SNIEndpoints
+        |=> app_ssl_endpoints ->  SSLEndpoints
+        |=> app_addons ->  Addons
+        |=> app_acm ->  Acm
         |
     @AppFeatures
         |
@@ -58,6 +85,18 @@ impl_macro!(
         |
         |=> formation_id -> FormationId = id
         |=> formation_type -> FormationType = ftype
+    @SNIEndpoints
+        |
+        |=> sni_endpoint_id -> SNIEndpointId = id
+        |=> sni_endpoint_name -> SNIEndpointName = name
+    @SSLEndpoints
+        |
+        |=> ssl_endpoint_id -> SSLEndpointId = id
+        |=> ssl_endpoint_name -> SSLEndpointName = name
+    @Addons
+        |
+        |=> addon_id -> AddonId = id
+        |=> addon_name -> AddonName = name
 );
 
 exec!(App);
@@ -71,3 +110,13 @@ exec!(ConfigVars);
 exec!(Formations);
 exec!(FormationId);
 exec!(FormationType);
+exec!(SNIEndpoints);
+exec!(SNIEndpointId);
+exec!(SNIEndpointName);
+exec!(SSLEndpoints);
+exec!(SSLEndpointId);
+exec!(SSLEndpointName);
+exec!(Addons);
+exec!(AddonId);
+exec!(AddonName);
+exec!(Acm);
