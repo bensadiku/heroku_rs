@@ -22,7 +22,13 @@ new_type!(
     LogDrainId
     LogDrainUrl
     LogDrainToken
-
+    Acm
+    SNIEndpoints
+    SNIEndpointId
+    SNIEndpointName
+    SSLEndpoints
+    SSLEndpointId
+    SSLEndpointName
 );
 
 // From implementations for conversion
@@ -38,6 +44,9 @@ from!(
         -> Domain = "domains"
         -> Dyno = "dynos"
         -> LogDrain = "log-drains"
+        -> Acm = "acm"
+        -> SNIEndpoints = "sni-endpoints"
+        -> SSLEndpoints = "ssl-endpoints"
     @Webhooks
         => WebhookId
     @Collaborator
@@ -53,6 +62,12 @@ from!(
         => LogDrainId
         => LogDrainUrl
         => LogDrainToken
+    @SNIEndpoints
+        => SNIEndpointId
+        => SNIEndpointName
+    @SSLEndpoints
+        => SSLEndpointId
+        => SSLEndpointName
       
 );
 
@@ -69,6 +84,9 @@ impl_macro!(
         |=> app_domains -> Domain
         |=> app_dynos -> Dyno
         |=> app_log_drains -> LogDrain
+        |=> app_acm -> Acm
+        |=> app_sni_endpoints ->  SNIEndpoints
+        |=> app_ssl_endpoints ->  SSLEndpoints
         |
     @Webhooks
         |
@@ -90,6 +108,14 @@ impl_macro!(
         |=> log_drain_id -> LogDrainId = id
         |=> log_drain_url -> LogDrainUrl = lurl
         |=> log_drain_token -> LogDrainToken = ltoken
+    @SNIEndpoints
+        |
+        |=> sni_endpoint_id -> SNIEndpointId = id
+        |=> sni_endpoint_name -> SNIEndpointName = name
+    @SSLEndpoints
+        |
+        |=> ssl_endpoint_id -> SSLEndpointId = id
+        |=> ssl_endpoint_name -> SSLEndpointName = name
 );
 
 exec!(App);
@@ -110,3 +136,10 @@ exec!(LogDrain);
 exec!(LogDrainId);
 exec!(LogDrainUrl);
 exec!(LogDrainToken);
+exec!(Acm);
+exec!(SNIEndpoints);
+exec!(SNIEndpointId);
+exec!(SNIEndpointName);
+exec!(SSLEndpoints);
+exec!(SSLEndpointId);
+exec!(SSLEndpointName);

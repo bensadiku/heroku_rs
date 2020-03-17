@@ -38,6 +38,22 @@ new_type!(
     LogDrainId
     LogDrainUrl
     LogDrainToken
+    Addons
+    AddonId
+    AddonName
+    AddonAttachments
+    AddonAttachmentName
+    AddonAttachmentId
+    PipelineCouplings
+    ReviewApp
+    Slugs
+    SlugId
+    SNIEndpoints
+    SNIEndpointId
+    SNIEndpointName
+    SSLEndpoints
+    SSLEndpointId
+    SSLEndpointName
 
 );
 
@@ -61,6 +77,13 @@ from!(
         -> Dyno = "dynos"    
         -> Formation = "formation"    
         -> LogDrains = "log-drains"  
+        -> Addons = "addons"  
+        -> AddonAttachments = "addon-attachments"  
+        -> PipelineCouplings = "pipeline-couplings"  
+        -> ReviewApp = "review-app"  
+        -> Slugs = "slugs"  
+        -> SNIEndpoints = "sni-endpoints"  
+        -> SSLEndpoints = "ssl-endpoints"  
     @AppFeatures
         => AppFeaturesName  
         => AppFeaturesId  
@@ -95,6 +118,20 @@ from!(
         => LogDrainId
         => LogDrainToken
         => LogDrainUrl
+    @Addons
+        => AddonId
+        => AddonName
+    @AddonAttachments
+        => AddonAttachmentId
+        => AddonAttachmentName
+    @Slugs
+        => SlugId
+    @SNIEndpoints
+        => SNIEndpointId
+        => SNIEndpointName
+    @SSLEndpoints
+        => SSLEndpointId
+        => SSLEndpointName
 );
 
 // impls of each type
@@ -117,6 +154,13 @@ impl_macro!(
         |=> app_dynos ->  Dyno
         |=> app_formations ->  Formation
         |=> app_log_drains ->  LogDrains
+        |=> app_addons ->  Addons
+        |=> app_addon_attachments ->  AddonAttachments
+        |=> app_pipeline_couplings ->  PipelineCouplings
+        |=> app_review ->  PipelineCouplings
+        |=> app_slug ->  Slugs
+        |=> app_sni_endpoints ->  SNIEndpoints
+        |=> app_ssl_endpoints ->  SSLEndpoints
         |
     @AppFeatures
         |
@@ -165,6 +209,25 @@ impl_macro!(
         |=> log_drain_id -> LogDrainId = id
         |=> log_drain_url -> LogDrainUrl = lurl
         |=> log_drain_token -> LogDrainToken = ltoken
+    @Addons
+        |
+        |=> addon_id -> AddonId = id
+        |=> addon_name -> AddonName = name
+    @AddonAttachments
+        |
+        |=> addon_attachment_name -> AddonAttachmentName = name
+        |=> addon_attachment_id -> AddonAttachmentId = id
+    @Slugs
+        |
+        |=> slug_id -> SlugId = id
+    @SNIEndpoints
+        |
+        |=> sni_endpoint_id -> SNIEndpointId = id
+        |=> sni_endpoint_name -> SNIEndpointName = name
+    @SSLEndpoints
+        |
+        |=> ssl_endpoint_id -> SSLEndpointId = id
+        |=> ssl_endpoint_name -> SSLEndpointName = name
 );
 
 exec!(App);
@@ -201,5 +264,19 @@ exec!(LogDrains);
 exec!(LogDrainId);
 exec!(LogDrainUrl);
 exec!(LogDrainToken);
-
+exec!(Addons);
+exec!(AddonId);
+exec!(AddonName);
+exec!(AddonAttachments);
+exec!(AddonAttachmentName);
+exec!(AddonAttachmentId);
+exec!(PipelineCouplings);
+exec!(Slugs);
+exec!(SlugId);
+exec!(SNIEndpoints);
+exec!(SNIEndpointId);
+exec!(SNIEndpointName);
+exec!(SSLEndpoints);
+exec!(SSLEndpointId);
+exec!(SSLEndpointName);
 

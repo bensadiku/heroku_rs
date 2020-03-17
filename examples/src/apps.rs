@@ -2,7 +2,8 @@
 use heroku_rs::client::{Executor, Heroku};
 use heroku_rs::defaults::{
     AppPatch, AppPost, BuildPackUpdate, BuildPost, BuildpackInstallation, EnableFeature,
-    NewCollaborator, SourceBlob, WebhookPost,
+    NewCollaborator, PatchAddons, PatchSniEndpoints, PatchSslEndpoints, PostRelease,
+    PostRollbackRelease, SourceBlob, WebhookPost,
 };
 use heroku_rs::errors::Error;
 use heroku_rs::{HeaderMap, StatusCode};
@@ -10,9 +11,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 // Uncomment methods to run them.
 pub fn run(client: Heroku) {
-    
-    // let app_name = "APP_NAME";
-    get_apps(&client);
+    let app_name = "heroku-rs-tests";
+    // get_apps(&client);
     // get_app_features(&client);
     // patch_app(&client);
     // patch_feature(&client);
@@ -33,6 +33,7 @@ pub fn run(client: Heroku) {
     // get_collaborators(&client);
     // delete_collaborators(&client);
     // get_config_vars(&client);
+    // get_app_releases(&client, app_name);
     // patch_config_vars(&client);
     // post_new_domain(&client);
     // get_domains(&client);
@@ -47,6 +48,27 @@ pub fn run(client: Heroku) {
     // delete_log_drain(&client, app_name);
     // get_log_drains(&client, app_name);
     // post_log_sessions(&client, app_name);
+    // get_app_addons(&client, app_name);
+    // get_app_addon_attachments(&client, app_name);
+    // get_app_pipeline_couplings(&client, app_name);
+    // get_app_review(&client, app_name);
+    // get_app_slug(&client, app_name);
+    // get_app_sni_endpoints(&client, app_name);
+    // get_app_ssl_endpoints(&client, app_name);
+    // patch_sni_endpoints(&client, app_name);
+    // patch_ssl_endpoints(&client, app_name);
+    // patch_addons(&client, app_name);
+    // patch_acm(&client, app_name);
+    // delete_acm(&client, app_name);
+    // delete_sni_endpoints(&client, app_name);
+    // delete_ssl_endpoints(&client, app_name);
+    // post_addons(&client, app_name);
+    // post_acm(&client, app_name);
+    // post_new_release(&client, app_name);
+    // post_rollback_release(&client, app_name);
+    // post_app_slug(&client, app_name);
+    // post_sni_endpoint(&client, app_name);
+    post_ssl_endpoint(&client, app_name);
 }
 
 // == Getting an app ==
@@ -409,6 +431,22 @@ fn get_config_vars(client: &Heroku) {
     log_response(me);
 }
 
+// == Get app releases ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#release-list
+// Requires the Heroku client, the app you want to get the releases of
+// You can get all config vars for an app or for a specific release
+// All config vars for a specific app release. See below:
+fn get_app_releases(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_releases() // get all releases
+        .execute::<Value>();
+
+    log_response(me);
+}
+
 // == Patch config vars ==
 // Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#config-vars-update
 // Requires the Heroku client, the app you want to patch the config vars of
@@ -680,6 +718,381 @@ fn post_log_sessions(client: &Heroku, app_name: &str) {
         .app_log_session()
         .execute::<Value>();
 
+    log_response(me);
+}
+
+// == GET app addons ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#add-on-list-by-app
+// Requires the Heroku client and an App to get the addons
+// get a specific addon by id: .app_addons().addon_id("ID_HERE")
+// get a specific addon by name: .app_addons().addon_name("NAME_HERE")
+fn get_app_addons(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_addons()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app addon attachments ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-list-by-app
+// Requires the Heroku client and the app name to get the addon attachments for
+// get a specific addon by id: .app_addon_attachments().addon_attachment_id("ID_HERE")
+// get a specific addon by name: .app_addon_attachments().addon_attachment_name("NAME_HERE")
+fn get_app_addon_attachments(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_addon_attachments()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app pipeline couplings ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-info-by-app
+// Requires the Heroku client and the app name to get the pipeline couplings
+fn get_app_pipeline_couplings(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_pipeline_couplings()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app review ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#review-app-get-review-app-by-app_id
+// Requires the Heroku client and the app name to get the app review
+// GET /apps/{app_id_or_name}/review-app
+fn get_app_review(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_review()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app slug ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#slug-info
+// Requires the Heroku client, the app name and the slug id
+// GET /apps/{app_id_or_name}/slugs/{slug_id}
+fn get_app_slug(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_slug()
+        .slug_id("ID_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app SNI endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-info
+// Requires the Heroku client, the app name
+// get a specific SNI endpoint by id: .app_sni_endpoints().sni_endpoint_id("ID_HERE")
+// get a specific SNI endpoint by name: .app_sni_endpoints().sni_endpoint_name("NAME_HERE")
+// GET /apps/{app_id_or_name}/sni-endpoints/{sni_endpoint_id_or_name}
+fn get_app_sni_endpoints(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_sni_endpoints()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == GET app SSL endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-info
+// Requires the Heroku client, the app name
+// get a specific SSL endpoint by id: .app_ssl_endpoints().ssl_endpoint_id("ID_HERE")
+// get a specific SSL endpoint by name: .app_ssl_endpoints().ssl_endpoint_name("NAME_HERE")
+// GET /apps/{app_id_or_name}/ssl-endpoints/{ssl_endpoint_id_or_name}
+fn get_app_ssl_endpoints(client: &Heroku, app_name: &str) {
+    let me = client
+        .get()
+        .apps()
+        .app_name(app_name)
+        .app_ssl_endpoints()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == PATCH app SNI endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-update
+// Requires the Heroku client, the app name and the sni endpoint id or name to patch
+// patch a specific SNI endpoint by name: .app_sni_endpoints().sni_endpoint_name("NAME_HERE")
+// PATCH /apps/{app_id_or_name}/sni-endpoints/{sni_endpoint_id_or_name}
+fn patch_sni_endpoints(client: &Heroku, app_name: &str) {
+    let patch = PatchSniEndpoints {
+        certificate_chain: String::from("-----BEGIN CERTIFICATE----- ..."),
+        private_key: String::from("-----BEGIN RSA PRIVATE KEY----- ..."),
+    };
+    let me = client
+        .patch(patch)
+        .apps()
+        .app_name(app_name)
+        .app_sni_endpoint()
+        .sni_endpoint_id("Id_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == PATCH app SSL endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-update
+// Requires the Heroku client, the app name and the ssl endpoint id or name to patch
+// patch a specific SNI endpoint by name: .app_ssl_endpoints().ssl_endpoint_name("NAME_HERE")
+// PATCH /apps/{app_id_or_name}/ssl-endpoints/{ssl_endpoint_id_or_name}
+fn patch_ssl_endpoints(client: &Heroku, app_name: &str) {
+    let patch = PatchSslEndpoints {
+        certificate_chain: Some(String::from("-----BEGIN CERTIFICATE----- ...")),
+        private_key: Some(String::from("-----BEGIN RSA PRIVATE KEY----- ...")),
+        preprocess: Some(false),
+    };
+    let me = client
+        .patch(patch)
+        .apps()
+        .app_name(app_name)
+        .app_ssl_endpoint()
+        .ssl_endpoint_id("Id_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == PATCH app ADDONS ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#add-on-update
+// Requires the Heroku client, the app name and the addon id or name to patch
+// patch a specific addon by name: .app_addons().addon_name("NAME_HERE")
+// PATCH /apps/{app_id_or_name}/addons/{add_on_id_or_name}
+fn patch_addons(client: &Heroku, app_name: &str) {
+    let patch = PatchAddons {
+        plan: String::from("heroku-postgresql:dev"),
+        name: None,
+    };
+    let me = client
+        .patch(patch)
+        .apps()
+        .app_name(app_name)
+        .app_addons()
+        .addon_id("Id_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == PATCH app ACM ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-refresh-acm
+// Requires the Heroku client, the app name
+// PATCH /apps/{app_id_or_name}/acm
+fn patch_acm(client: &Heroku, app_name: &str) {
+    let me = client
+        .patch_empty()
+        .apps()
+        .app_name(app_name)
+        .app_acm()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == DELETE app ACM ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-disable-acm
+// Requires the Heroku client, the app name
+// DELETE /apps/{app_id_or_name}/acm
+fn delete_acm(client: &Heroku, app_name: &str) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name(app_name)
+        .app_acm()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == DELETE app SNI endpoints ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-delete
+// Requires the Heroku client, the app name and the sni endpoint id or name to delete
+// delete a specific SNI endpoint by name: .app_sni_endpoints().sni_endpoint_name("NAME_HERE")
+// DELETE /apps/{app_id_or_name}/sni-endpoints/{sni_endpoint_id_or_name}
+fn delete_sni_endpoints(client: &Heroku, app_name: &str) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name(app_name)
+        .app_sni_endpoints()
+        .sni_endpoint_id("Id_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == DELETE app SSL endpoints ==
+// Endpoint:https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-delete
+// Requires the Heroku client, the app name and the ssl endpoint id or name to delete
+// delete a specific SNI endpoint by name: .app_ssl_endpoints().ssl_endpoint_name("NAME_HERE")
+// DELETE /apps/{app_id_or_name}/ssl-endpoints/{ssl_endpoint_id_or_name}
+fn delete_ssl_endpoints(client: &Heroku, app_name: &str) {
+    let me = client
+        .delete_empty()
+        .apps()
+        .app_name(app_name)
+        .app_ssl_endpoints()
+        .ssl_endpoint_id("Id_HERE")
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST app Addon ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#add-on-create
+// Requires the Heroku client, the app name
+// POST /apps/{app_id_or_name}/addons
+fn post_addons(client: &Heroku, app_name: &str) {
+    let addon = serde_json::json!({
+      "attachment": {
+        "name": "DATABASE_FOLLOWER"
+      },
+      "config": {
+        "db-version": "1.2.3"
+      },
+      "confirm": "example",
+      "plan": "01234567-89ab-cdef-0123-456789abcdef",
+      "name": "acme-inc-primary-database"
+    });
+    let me = client
+        .post(addon)
+        .apps()
+        .app_name(app_name)
+        .app_addon()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST app Acm ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#app-enable-acm
+// Requires the Heroku client, the app name
+// POST /apps/{app_id_or_name}/acm
+fn post_acm(client: &Heroku, app_name: &str) {
+    let me = client
+        .post_empty()
+        .apps()
+        .app_name(app_name)
+        .app_acm()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST new app release ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#release-create
+// Requires the Heroku client, the app name
+// POST /apps/{app_id_or_name}/releases
+fn post_new_release(client: &Heroku, app_name: &str) {
+    let release = PostRelease {
+        slug: String::from("SLUG_ID_HERE"),
+        description: None,
+    };
+    let me = client
+        .post(release)
+        .apps()
+        .app_name(app_name)
+        .app_release()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST rollback app release ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#release-rollback
+// Requires the Heroku client, the app name and the UUID of the release you want to rollback to
+// POST /apps/{app_id_or_name}/releases
+fn post_rollback_release(client: &Heroku, app_name: &str) {
+    let release = PostRollbackRelease {
+        release: String::from("RELEASE_ID_TO_ROLLBACK_TO"),
+    };
+    let me = client
+        .post(release)
+        .apps()
+        .app_name(app_name)
+        .app_release()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST app slug ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#slug-create
+// Requires the Heroku client, the app name
+// POST /apps/{app_id_or_name}/slugs
+fn post_app_slug(client: &Heroku, app_name: &str) {
+    let slug = serde_json::json!({
+        "process_types": {
+            "web": "./bin/web -p $PORT"
+          },
+    });
+
+    let me = client
+        .post(slug)
+        .apps()
+        .app_name(app_name)
+        .app_slug()
+        .execute::<Value>();
+
+    log_response(me);
+}
+
+// == POST app sni endpoint ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-create
+// Requires the Heroku client, the app name
+// POST /apps/{app_id_or_name}/sni-endpoints
+fn post_sni_endpoint(client: &Heroku, app_name: &str) {
+    let patch = PatchSniEndpoints {
+        certificate_chain: String::from("-----BEGIN CERTIFICATE----- ..."),
+        private_key: String::from("-----BEGIN RSA PRIVATE KEY----- ..."),
+    };
+    let me = client
+        .post(patch)
+        .apps()
+        .app_name(app_name)
+        .app_sni_endpoint()
+        .execute::<Value>();
+    log_response(me);
+}
+
+// == POST app ssl endpoint ==
+// Endpoint: https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-create
+// Requires the Heroku client, the app name
+// POST /apps/{app_id_or_name}/sni-endpoints
+fn post_ssl_endpoint(client: &Heroku, app_name: &str) {
+    let patch = PatchSslEndpoints {
+        certificate_chain: Some(String::from("-----BEGIN CERTIFICATE----- ...")),
+        private_key: Some(String::from("-----BEGIN RSA PRIVATE KEY----- ...")),
+        preprocess: Some(false),
+    };
+    let me = client
+        .post(patch)
+        .apps()
+        .app_name(app_name)
+        .app_ssl_endpoint()
+        .execute::<Value>();
     log_response(me);
 }
 
