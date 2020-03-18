@@ -28,13 +28,13 @@ where
     fn url(&self, environment: &ApiEnvironment) -> Url {
         Url::from(environment).join(&self.path()).unwrap()
     }
-    fn content_type(&self) -> String {
-        "application/json".to_owned()
+    fn content_type(&self) -> &str {
+        "application/json"
     }
-    fn version(&self) -> String {
-        "application/vnd.heroku+json; version=3".to_owned()
+    fn version(&self) -> &str {
+        "application/vnd.heroku+json; version=3"
     }
-    fn agent(&self) -> String {
-        "heroku_rs".to_owned()
+    fn agent(&self) -> &str {
+        "heroku_rs"
     }
 }
