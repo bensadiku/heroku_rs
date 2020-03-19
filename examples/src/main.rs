@@ -4,7 +4,7 @@ use heroku_rs::endpoints::apps;
 use heroku_rs::framework::{
     apiclient::HerokuApiClient,
     auth::Credentials,
-    response::{ApiResult, ApiResponse},
+    response::{ApiResponse, ApiResult},
     ApiEnvironment, HttpApiClient, HttpApiClientConfig,
 };
 
@@ -25,16 +25,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ApiEnvironment::Production,
     )?;
 
+    // get_app(&api_client);
     list_apps(&api_client);
 
     Ok(())
 }
 
-fn list_apps<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+fn get_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let id = String::from("heroku-rs-tests");
 
     let response = api_client.request(&apps::AppDetails { identifier: id });
     print_response(response);
+}
+
+fn list_apps<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let resp = api_client.request(&apps::AppList {});
+    print_response(resp);
 }
 
 fn print_response<T: ApiResult>(response: ApiResponse<T>) {

@@ -17,3 +17,14 @@ impl HerokuEndpoint<App> for AppDetails {
         format!("apps/{}", self.identifier)
     }
 }
+
+pub struct AppList {}
+
+impl HerokuEndpoint<Vec<App>> for AppList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("apps")
+    }
+}

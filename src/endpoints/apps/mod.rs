@@ -3,6 +3,7 @@ use serde::Deserialize;
 
 pub mod apps;
 pub use apps::AppDetails;
+pub use apps::AppList;
 
 impl ApiResult for App {}
 impl ApiResult for Vec<App> {}
