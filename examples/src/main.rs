@@ -49,7 +49,7 @@ fn list_apps<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 }
 
 fn get_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let application_id = String::from("testing-nell-bot");
+    let application_id = String::from("heroku-rs-tests");
     let dyno_id = String::from("web.1");
 
     let response = api_client.request(&dynos::DynoDetails { app_identifier: application_id, identifier: dyno_id });
@@ -64,14 +64,14 @@ fn list_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 }
 
 fn restart_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let application_id = String::from("testing-nell-bot");
+    let application_id = String::from("heroku-rs-tests");
     let dyno_id = String::from("web.1");
 
     let resp = api_client.request(&dynos::DynoRestart { app_identifier: application_id, identifier: dyno_id });
 }
 
 fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let application_id = String::from("testing-nell-bot");
+    let application_id = String::from("heroku-rs-tests");
 
     let resp = api_client.request(&dynos::DynoAllRestart { app_identifier: application_id });
 }
