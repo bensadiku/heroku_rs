@@ -32,11 +32,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     // create_app(&api_client);
     // delete_app(&api_client);
-    // get_app(&api_client);
-    list_apps(&api_client);
+     get_app(&api_client);
+    // list_apps(&api_client);
     // get_dyno(&api_client);
     // list_dynos(&api_client);
-    // restart_dyno(&api_client);
+     restart_dyno(&api_client);
     // restart_all_dynos(&api_client);
 
     Ok(())

@@ -3,6 +3,7 @@ use crate::framework::ApiEnvironment;
 use serde::Serialize;
 use url::Url;
 
+#[derive(Debug)]
 pub enum Method {
     Get,
     Post,

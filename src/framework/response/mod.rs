@@ -15,6 +15,8 @@ pub fn match_response<T: ApiResult>(resp: reqwest::blocking::Response) -> ApiRes
     }
 }
 
+pub fn return_empty_response<T: ApiResult>(resp: reqwest::blocking::Response) -> ApiResponse<T> {
+
 /// Some endpoints return nothing.
 impl ApiResult for () {}
 
