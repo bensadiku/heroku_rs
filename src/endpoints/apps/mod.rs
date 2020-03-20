@@ -1,11 +1,23 @@
 use crate::framework::response::ApiResult;
 use serde::Deserialize;
 
-pub mod apps;
-pub use apps::{AppCreate, AppCreateParams, AppDelete, AppDetails, AppList};
+pub mod delete_apps;
+pub mod get_apps;
+pub mod patch_apps;
+pub mod post_apps;
+
+pub use delete_apps::{AppDelete, AppDisableAcm};
+pub use get_apps::{AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList};
+pub use patch_apps::{
+    AppFeatureUpdate, AppFeatureUpdateParams, AppRefreshAcm, AppUpdate, AppUpdateParams,
+};
+pub use post_apps::{AppCreate, AppCreateParams, AppEnableAcm};
 
 impl ApiResult for App {}
 impl ApiResult for Vec<App> {}
+
+impl ApiResult for AppFeature {}
+impl ApiResult for Vec<AppFeature> {}
 
 /// Heroku App
 /// An app represents the program that you would like to deploy and run on Heroku.
@@ -76,4 +88,23 @@ pub struct Space {
 pub struct Stack {
     pub id: String,
     pub name: String,
+}
+
+/// Heroku App Feature
+/// An app feature represents a Heroku labs capability that can be enabled or disabled for an app on Heroku.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-feature
+// TODO: (ben) inspect the nullable properties more. As of 20th March 2020, Heroku docs say that none of these properties can be nullable,
+//     but some are... and that's leading so an error decoding response body. e.g. invalid type: null, expected a string.
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct AppFeature {
+    pub created_at: String,
+    pub description: String,
+    pub doc_url: String,
+    pub enabled: bool,
+    pub id: String,
+    pub name: String,
+    pub state: String,
+    pub updated_at: String,
+    pub display_name: Option<String>,
+    pub feedback_email: Option<String>,
 }
