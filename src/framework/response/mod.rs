@@ -15,7 +15,14 @@ pub fn match_response<T: ApiResult>(resp: reqwest::blocking::Response) -> ApiRes
     }
 }
 
-pub fn return_empty_response<T: ApiResult>(resp: reqwest::blocking::Response) -> ApiResponse<T> {
+pub fn return_empty_response(resp: reqwest::blocking::Response) -> ApiResponse<String> {
+    let parsed_resp: Result<std::string::String, reqwest::Error> = resp.text();
+
+    match parsed_resp {
+        Ok(response) => Ok(response),
+        Err(e) => Err(e),
+    }
+}
 
 /// Some endpoints return nothing.
 impl ApiResult for () {}

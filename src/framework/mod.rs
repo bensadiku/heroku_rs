@@ -4,8 +4,9 @@ pub mod endpoint;
 mod reqwest_utils;
 pub mod response;
 
-use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response};
+use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response, response::return_empty_response};
 use crate::framework::response::{ApiResult, ApiResponse};
+use crate::framework::endpoint::Method;
 use failure::Fallible;
 use reqwest_utils::match_reqwest_method;
 use serde::Serialize;
@@ -82,7 +83,6 @@ impl<'a> HerokuApiClient for HttpApiClient {
         BodyType: Serialize,
     {
 
-        println!("endpoint method {:?}", endpoint.method());
         // Build the request
         let mut request = self
             .http_client
@@ -103,18 +103,13 @@ impl<'a> HerokuApiClient for HttpApiClient {
 
         let response = request.send()?;
 
-        if endpoint.method() == "Delete" {
-         
-        } else {
-           match_response(response)
+        match endpoint.method() {
+            Method::Delete => {
+                return_empty_response(response)
+            },
+            _ => {
+                match_response(response)
+            }
         }
     }
-
 }
-
-fn json_text(resp: &reqwest::blocking::Response) {
-}
-
-//fn is_json<T: ApiResult>(response: &reqwest::blocking::Response) -> bool {
-//    true
-//}
