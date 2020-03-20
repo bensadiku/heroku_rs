@@ -2,8 +2,7 @@ use crate::framework::response::ApiResult;
 use serde::Deserialize;
 
 pub mod apps;
-pub use apps::AppDetails;
-pub use apps::AppList;
+pub use apps::{AppCreate, AppCreateParams, AppDelete, AppDetails, AppList};
 
 impl ApiResult for App {}
 impl ApiResult for Vec<App> {}

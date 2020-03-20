@@ -1,5 +1,7 @@
+#![allow(warnings, unused)] // There may be un-used methods in this example code
 extern crate heroku_rs;
 
+use dotenv::dotenv;
 use heroku_rs::endpoints::apps;
 use heroku_rs::endpoints::dynos;
 use heroku_rs::framework::{
@@ -8,11 +10,13 @@ use heroku_rs::framework::{
     response::{ApiResponse, ApiResult},
     ApiEnvironment, HttpApiClient, HttpApiClientConfig,
 };
+use std::env;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let token = Some("API_KEY_TOKEN");
+    let key = "API_KEY";
+    let token = dotenv::var(key).unwrap();
 
-    let credentials: Credentials = if let Some(token) = token {
+    let credentials: Credentials = if let token = token {
         Credentials::UserAuthToken {
             token: token.to_string(),
         }
@@ -25,15 +29,39 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         HttpApiClientConfig::default(),
         ApiEnvironment::Production,
     )?;
-
+    
+    // create_app(&api_client);
+    // delete_app(&api_client);
     // get_app(&api_client);
-    // list_apps(&api_client);
+    list_apps(&api_client);
     // get_dyno(&api_client);
     // list_dynos(&api_client);
     // restart_dyno(&api_client);
-    restart_all_dynos(&api_client);
+    // restart_all_dynos(&api_client);
 
     Ok(())
+}
+
+fn delete_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let app_name = String::from("heroku-rs-tests");
+
+    let response = api_client.request(&apps::AppDelete {
+        app_identifier: app_name,
+    });
+    print_response(response);
+}
+
+fn create_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let app_name = Some(String::from("heroku-rs-tests"));
+
+    let response = api_client.request(&apps::AppCreate {
+        params: apps::AppCreateParams {
+            name: app_name,
+            region: None,
+            stack: None,
+        },
+    });
+    print_response(response);
 }
 
 fn get_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
