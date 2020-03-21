@@ -1,4 +1,4 @@
-use crate::framework::response::ApiResult;
+use crate::framework::response::{ApiResult, Empty};
 use crate::framework::ApiEnvironment;
 use serde::Serialize;
 use url::Url;
@@ -11,7 +11,7 @@ pub enum Method {
     Patch,
 }
 
-pub trait HerokuEndpoint<ResultType = (), QueryType = (), BodyType = ()>
+pub trait HerokuEndpoint<ResultType = Empty, QueryType = (), BodyType = ()>
 where
     ResultType: ApiResult,
     QueryType: Serialize,
