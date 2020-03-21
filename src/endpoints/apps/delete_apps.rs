@@ -1,5 +1,5 @@
 //Anything related to deleting apps and it's properties goes here.
-use super::App;
+use super::{App, AppWebhook};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -34,5 +34,27 @@ impl HerokuEndpoint<App> for AppDisableAcm {
     }
     fn path(&self) -> String {
         format!("apps/{}/acm", self.app_identifier)
+    }
+}
+
+/// App Webhook Delete
+/// Removes an app webhook subscription.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delete
+pub struct AppWebhookDelete {
+    /// app_identifier can be the app id or app name.
+    pub app_identifier: String,
+    /// webhook_identifier is the webhook id.
+    pub webhook_identifier: String,
+}
+
+impl HerokuEndpoint<AppWebhook> for AppWebhookDelete {
+    fn method(&self) -> Method {
+        Method::Delete
+    }
+    fn path(&self) -> String {
+        format!(
+            "apps/{}/webhooks/{}",
+            self.app_identifier, self.webhook_identifier
+        )
     }
 }

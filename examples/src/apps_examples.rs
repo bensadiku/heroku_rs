@@ -24,15 +24,88 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app_features(api_client, app_name);
     // get_app_feature(api_client, app_name);
     // patch_app_feature(api_client, app_name);
+
+    // create_app_webhook(api_client, app_name);
+    // get_app_webhooks(api_client, app_name);
+    // get_app_webhook(api_client, app_name);
+    // patch_app_webhook(api_client, app_name);
+    // delete_app_webhook(api_client, app_name);
+}
+
+/// Patch a specific webhook.
+fn patch_app_webhook<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
+    let webhook_id = String::from("WEBHOOK_ID");
+    let webhook_include = vec!["api:release".to_owned()];
+    let webhook_level = String::from("notify");
+    let webhook_url = String::from("https://www.bing.com");
+    let response = api_client.request(&apps::AppWebhookUpdate {
+        app_identifier: app_name,
+        webhook_identifier: webhook_id,
+        params: apps::AppWebhookUpdateParams {
+            authorization: None,
+            include: Some(webhook_include),
+            level: Some(webhook_level),
+            secret: None,
+            url: Some(webhook_url),
+        },
+    });
+    print_response(response);
+}
+
+/// Gets details about a specific webhook.
+fn get_app_webhook<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
+    let webhook_id = String::from("WEBHOOK_ID");
+    let response = api_client.request(&apps::AppWebhookDetails {
+        app_identifier: app_name,
+        webhook_identifier: webhook_id,
+    });
+    print_response(response);
+}
+
+/// Gets a list of all webhooks that are available in the specified app.
+fn get_app_webhooks<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
+    let response = api_client.request(&apps::AppWebhookList {
+        app_identifier: app_name,
+    });
+    print_response(response);
+}
+
+/// Delete a specific app webhook by id
+fn delete_app_webhook<ApiClientType: HerokuApiClient>(
+    api_client: &ApiClientType,
+    app_name: String,
+) {
+    let webhook_id = String::from("WEBHOOK_ID");
+    let response = api_client.request(&apps::AppWebhookDelete {
+        app_identifier: app_name,
+        webhook_identifier: webhook_id,
+    });
+    print_response(response);
+}
+
+/// Create a new app webhook
+fn create_app_webhook<ApiClientType: HerokuApiClient>(
+    api_client: &ApiClientType,
+    app_name: String,
+) {
+    let response = api_client.request(&apps::AppWebhookCreate {
+        app_identifier: app_name,
+        params: apps::AppWebhookCreateParams {
+            authorization: None,
+            include: vec!["api:release".to_owned()],
+            level: String::from("notify"),
+            secret: None,
+            url: String::from("https://www.google.com"),
+        },
+    });
+    print_response(response);
 }
 
 fn patch_app_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
     let response = api_client.request(&apps::AppFeatureUpdate {
         app_identifier: app_name,
         feature_identifier: String::from("spaces-dns-discovery"),
-        params: apps::AppFeatureUpdateParams {
-            enabled: false
-        }
+        params: apps::AppFeatureUpdateParams { enabled: false },
     });
     print_response(response);
 }

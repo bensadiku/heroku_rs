@@ -6,18 +6,27 @@ pub mod get_apps;
 pub mod patch_apps;
 pub mod post_apps;
 
-pub use delete_apps::{AppDelete, AppDisableAcm};
-pub use get_apps::{AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList};
+pub use delete_apps::{AppDelete, AppDisableAcm, AppWebhookDelete};
+pub use get_apps::{
+    AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList, AppWebhookDetails,
+    AppWebhookList,
+};
 pub use patch_apps::{
     AppFeatureUpdate, AppFeatureUpdateParams, AppRefreshAcm, AppUpdate, AppUpdateParams,
+    AppWebhookUpdate, AppWebhookUpdateParams,
 };
-pub use post_apps::{AppCreate, AppCreateParams, AppEnableAcm};
+pub use post_apps::{
+    AppCreate, AppCreateParams, AppEnableAcm, AppWebhookCreate, AppWebhookCreateParams,
+};
 
 impl ApiResult for App {}
 impl ApiResult for Vec<App> {}
 
 impl ApiResult for AppFeature {}
 impl ApiResult for Vec<AppFeature> {}
+
+impl ApiResult for AppWebhook {}
+impl ApiResult for Vec<AppWebhook> {}
 
 /// Heroku App
 /// An app represents the program that you would like to deploy and run on Heroku.
@@ -107,4 +116,24 @@ pub struct AppFeature {
     pub updated_at: String,
     pub display_name: Option<String>,
     pub feedback_email: Option<String>,
+}
+
+/// Heroku App Webhook
+/// Represents the details of a webhook subscription
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct AppWebhook {
+    pub app: WebhookApp,
+    pub created_at: String,
+    pub id: String,
+    pub include: Vec<String>,
+    pub level: String,
+    pub updated_at: String,
+    pub url: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct WebhookApp {
+    pub id: String,
+    pub name: String,
 }

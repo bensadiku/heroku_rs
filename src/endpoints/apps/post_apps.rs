@@ -1,5 +1,6 @@
 //Anything related to creating apps and it's properties goes here.
 use super::App;
+use super::AppWebhook;
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -46,5 +47,44 @@ impl HerokuEndpoint<App> for AppEnableAcm {
     }
     fn path(&self) -> String {
         format!("apps/{}/acm", self.app_identifier)
+    }
+}
+
+/// App Webhook Create
+/// Create an app webhook subscription.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create
+pub struct AppWebhookCreate {
+    /// This app_idetifier can be the app name or the app id
+    pub app_identifier: String,
+    /// The parameters to pass to the Heroku API
+    pub params: AppWebhookCreateParams,
+}
+
+/// Create a new app webhook with parameters.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create-required-parameters
+#[derive(Serialize, Clone, Debug)]
+pub struct AppWebhookCreateParams {
+    /// A custom Authorization header that Heroku will include with all webhook notifications
+    pub authorization: Option<String>,
+    /// The entities that the subscription provides notifications for
+    pub include: Vec<String>,
+    /// One of: "notify" or "sync"
+    /// If notify, Heroku makes a single, fire-and-forget delivery attempt. If sync, Heroku attempts multiple deliveries until the request is successful or a limit is reached
+    pub level: String,
+    /// A value that Heroku will use to sign all webhook notification requests (the signature is included in the request’s Heroku-Webhook-Hmac-SHA256 header)
+    pub secret: Option<String>,
+    /// The URL where the webhook’s notification requests are sent
+    pub url: String,
+}
+
+impl HerokuEndpoint<AppWebhook, (), AppWebhookCreateParams> for AppWebhookCreate {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/webhooks", self.app_identifier)
+    }
+    fn body(&self) -> Option<AppWebhookCreateParams> {
+        Some(self.params.clone())
     }
 }

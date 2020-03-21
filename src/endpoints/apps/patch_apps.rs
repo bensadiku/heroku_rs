@@ -1,6 +1,5 @@
 //Anything related to patching(updating) apps and it's properties goes here.
-use super::App;
-use super::AppFeature;
+use super::{App, AppFeature, AppWebhook};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -80,6 +79,51 @@ impl HerokuEndpoint<AppFeature, (), AppFeatureUpdateParams> for AppFeatureUpdate
         )
     }
     fn body(&self) -> Option<AppFeatureUpdateParams> {
+        Some(self.params.clone())
+    }
+}
+
+/// App Webhook Update.
+/// Updates the details of an app webhook subscription.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update
+pub struct AppWebhookUpdate {
+    /// app_identifier can be the app id or app name.
+    pub app_identifier: String,
+    /// webhook_identifier is the webhook id.
+    pub webhook_identifier: String,
+    /// params are the parameters sent to the API to patch the webhook.
+    pub params: AppWebhookUpdateParams,
+}
+
+/// Update an existing app webhook with parameters.
+/// All parameters for this patch are Optional.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update-optional-parameters
+#[derive(Serialize, Clone, Debug)]
+pub struct AppWebhookUpdateParams {
+    /// A custom Authorization header that Heroku will include with all webhook notifications
+    pub authorization: Option<String>,
+    /// The entities that the subscription provides notifications for
+    pub include: Option<Vec<String>>,
+    /// One of: "notify" or "sync"
+    /// If notify, Heroku makes a single, fire-and-forget delivery attempt. If sync, Heroku attempts multiple deliveries until the request is successful or a limit is reached
+    pub level: Option<String>,
+    /// A value that Heroku will use to sign all webhook notification requests (the signature is included in the request’s Heroku-Webhook-Hmac-SHA256 header)
+    pub secret: Option<String>,
+    /// The URL where the webhook’s notification requests are sent
+    pub url: Option<String>,
+}
+
+impl HerokuEndpoint<AppWebhook, (), AppWebhookUpdateParams> for AppWebhookUpdate {
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!(
+            "apps/{}/webhooks/{}",
+            self.app_identifier, self.webhook_identifier
+        )
+    }
+    fn body(&self) -> Option<AppWebhookUpdateParams> {
         Some(self.params.clone())
     }
 }
