@@ -9,36 +9,47 @@
 
 ## Intro
 
-This is a rust wrapper inspired by [github-rs](https://github.com/github-rs/github-rs), for the [Heroku](https://heroku.com/) [v3 API](https://devcenter.heroku.com/articles/platform-api-reference/) .
+This is a rust apip wrapper for the [Heroku v3 API](https://devcenter.heroku.com/articles/platform-api-reference/).
 
-This is a work in progress mostly as a way to learn Rust.
 ## Getting Started
 Add the following to your `Cargo.toml`
 
 ```toml
 [dependencies]
-heroku_rs = "0.2"
-serde_json = "1.0"
+heroku_rs = "0.3"
 ```
 run: `cargo build`
 
-then in your main.rs
+Here's a simple example which fetches the apps list. At the moment, the client is blocking by default.
 
 ```rust
-use heroku_rs::client::{Executor, Heroku};
-use serde_json::Value;
+use heroku_rs::framework::{
+    auth::Credentials,
+    response::{ApiResponse, ApiResult},
+    ApiEnvironment, HttpApiClient, HttpApiClientConfig,
+};
+use heroku_rs::endpoints::apps;
 
-let client = Heroku::new("API_KEY_HERE").unwrap();
-let me = client.get().apps().execute::<Value>();
-match me {
-    Ok((headers, status, json)) => {
-        println!("{:#?}", headers);
-        println!("{}", status);
-            if let Some(json) = json {
-                println!("{}", json);
-         }
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+
+    let credentials = Credentials::UserAuthToken {
+        token: String::from("TOKEN_HERE"),
+    };
+
+    let api_client = HttpApiClient::new(
+        credentials,
+        HttpApiClientConfig::default(),
+        ApiEnvironment::Production,
+    )?;
+
+    let response = api_client.request(&apps::AppList {});
+
+    match response {
+        Ok(success) => println!("Success: {:#?}", success),
+        Err(e) => println!("Error: {}", e),
     }
-    Err(e) => println!("Err {}", e),
+
+    Ok(())
 }
 ```
     
