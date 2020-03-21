@@ -9,7 +9,7 @@
 
 ## Intro
 
-This is a rust apip wrapper for the [Heroku v3 API](https://devcenter.heroku.com/articles/platform-api-reference/).
+This is a rust api wrapper for the [Heroku v3 API](https://devcenter.heroku.com/articles/platform-api-reference/).
 
 ## Getting Started
 Add the following to your `Cargo.toml`
