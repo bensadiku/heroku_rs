@@ -6,7 +6,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [X] [/accounts](https://devcenter.heroku.com/articles/platform-api-reference#account-info)
 - [X] [/users/{account_email_or_id_or_self}](https://devcenter.heroku.com/articles/platform-api-reference#account-info-by-user)	
 - [X] [/account/features/{account_feature_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-info)	
-- [ ] [/account/features](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-list)	
+- [X] [/account/features](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-list)	
 - [ ] [/addons](https://devcenter.heroku.com/articles/platform-api-reference#add-on-list)	
 - [ ] [/addons/{add_on_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#add-on-info)	
 - [ ] [/apps/{app_id_or_name}/addons/{add_on_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#add-on-info-by-app)	

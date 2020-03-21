@@ -1,5 +1,5 @@
 //Anything related to PATCH requests for account and it's properties goes here.
-use super::Account;
+use super::{Account, AccountFeature};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -64,6 +64,35 @@ impl HerokuEndpoint<Account, (), UserAccountUpdateParams> for UserAccountUpdate 
         format!("users/{}", self.account_identifier)
     }
     fn body(&self) -> Option<UserAccountUpdateParams> {
+        Some(self.params.clone())
+    }
+}
+
+/// Update account feature.
+/// https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update
+pub struct AccountFeatureUpdate {
+    /// identifier can be the feature name or id.
+    pub account_feature_id: String,
+    /// The parameters to pass to the Heroku API
+    pub params: AccountFeatureUpdateParams,
+}
+
+/// Update account feature with parameters.
+/// https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update-required-parameters
+#[derive(Serialize, Clone, Debug)]
+pub struct AccountFeatureUpdateParams {
+    /// whether or not account feature has been enabled
+    pub enabled: bool,
+}
+
+impl HerokuEndpoint<AccountFeature, (), AccountFeatureUpdateParams> for AccountFeatureUpdate {
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!("account/features/{}", self.account_feature_id)
+    }
+    fn body(&self) -> Option<AccountFeatureUpdateParams> {
         Some(self.params.clone())
     }
 }

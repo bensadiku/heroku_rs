@@ -4,12 +4,39 @@ use heroku_rs::endpoints::account;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 
 pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    // get_account(api_client);
+    get_account(api_client);
     // patch_account(api_client);
     // delete_account(api_client); //Careful here :)
     // get_user_account(api_client);
     // patch_user_account(api_client);
     // delete_user_account(api_client); //Careful here :)
+
+    // get_account_features(api_client);
+    // get_account_feature(api_client);
+    // patch_account_feature(api_client);
+}
+
+// Patch a specidic heroku account feature.
+fn patch_account_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::AccountFeatureUpdate {
+        account_feature_id: String::from("team-internal-routing"),
+        params: account::AccountFeatureUpdateParams { enabled: false },
+    });
+    print_response(response);
+}
+
+// Get a specidic heroku account feature.
+fn get_account_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::AccountFeatureDetails {
+        account_feature_id: String::from("team-internal-routing"),
+    });
+    print_response(response);
+}
+
+// Get heroku account features.
+fn get_account_features<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::AccountFeatureList {});
+    print_response(response);
 }
 
 // Delete heroku user account. NOTE that this action cannot be undone.

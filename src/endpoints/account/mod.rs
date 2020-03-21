@@ -8,10 +8,15 @@ pub mod post;
 pub mod put;
 
 pub use delete::{AccountDelete, UserAccountDelete};
-pub use get::{AccountDetails, UserAccountDetails};
-pub use patch::{AccountUpdate, AccountUpdateParams, UserAccountUpdate, UserAccountUpdateParams};
+pub use get::{AccountDetails, AccountFeatureDetails, AccountFeatureList, UserAccountDetails};
+pub use patch::{
+    AccountFeatureUpdate, AccountFeatureUpdateParams, AccountUpdate, AccountUpdateParams,
+    UserAccountUpdate, UserAccountUpdateParams,
+};
 
 impl ApiResult for Account {}
+impl ApiResult for AccountFeature {}
+impl ApiResult for Vec<AccountFeature> {}
 
 /// Heroku Account
 /// An account represents an individual signed up to use the Heroku platform.
@@ -73,4 +78,23 @@ pub struct DefaultOrganization {
 pub struct DefaultTeam {
     pub id: String,
     pub name: String,
+}
+
+/// Heroku Account Feature
+/// An account feature represents a Heroku labs capability that can be enabled or disabled for an account on Heroku.
+/// hhttps://devcenter.heroku.com/articles/platform-api-reference#account-feature
+// TODO: (ben) inspect the nullable properties more. As of 21th March 2020, Heroku docs say that none of these properties can be nullable,
+//     but some are... and that's leading so an error decoding response body. e.g. invalid type: null, expected a string.
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct AccountFeature {
+    pub created_at: String,
+    pub description: String,
+    pub doc_url: String,
+    pub enabled: bool,
+    pub id: String,
+    pub name: String,
+    pub state: String,
+    pub updated_at: String,
+    pub display_name: Option<String>,
+    pub feedback_email: Option<String>,
 }
