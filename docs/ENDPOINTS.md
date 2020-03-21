@@ -1,5 +1,4 @@
 Heroku V3 API
---------------------------------------------------------------------------------
 Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/articles/platform-api-reference#overview)
 
 
