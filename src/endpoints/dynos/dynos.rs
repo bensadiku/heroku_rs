@@ -2,8 +2,6 @@ use super::Dyno;
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
-use crate::endpoints::apps::App;
-
 /// Get info for existing dyno.
 /// app_identifier can be the app id or app name.
 /// dyno_identifier can be the dyno id or dyno name

@@ -11,19 +11,11 @@ pub type ApiResponse<T> = Result<T, HerokuApiFailure>;
 pub fn match_response<T: ApiResult>(api_response: reqwest::blocking::Response) -> ApiResponse<T> {
     let api_status = api_response.status();
 
-    //TODO: remove this log, only for debugging purposes
-    println!("Status: {}", api_status);
     if api_status.is_success() {
         let parsed_response: Result<T, reqwest::Error> = api_response.json();
         match parsed_response {
-            Ok(response) => {
-                println!("Ok: {:?}", response);
-                Ok(response)
-            }
-            Err(e) => {
-                println!("Err: {:?}", e);
-                Err(HerokuApiFailure::Invalid(e))
-            }
+            Ok(response) => Ok(response),
+            Err(e) => Err(HerokuApiFailure::Invalid(e)),
         }
     } else {
         let parsed: Result<HerokuApiError, reqwest::Error> = api_response.json();
