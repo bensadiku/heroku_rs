@@ -40,7 +40,7 @@ pub struct DynoRestart {
     pub identifier: String,
 }
 
-impl HerokuEndpoint<Dyno> for DynoRestart {
+impl HerokuEndpoint<> for DynoRestart {
     fn method(&self) -> Method {
         Method::Delete
     }
