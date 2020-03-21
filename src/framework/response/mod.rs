@@ -2,18 +2,33 @@ extern crate reqwest;
 extern crate serde_json;
 use serde::de::DeserializeOwned;
 use std::fmt::Debug;
+mod error;
 
-pub type ApiResponse<T> = Result<T, reqwest::Error>;
+pub use error::*;
+pub type ApiResponse<T> = Result<T, HerokuApiFailure>;
 
 /// Match the response we just got from the API and return properly
-pub fn match_response<T: ApiResult>(resp: reqwest::blocking::Response) -> ApiResponse<T> {
-    //TODO: remove this log, only for debugging purposes
-    println!("Status: {}", resp.status());
-    let parsed_resp: Result<T, reqwest::Error> = resp.json();
+pub fn match_response<T: ApiResult>(api_response: reqwest::blocking::Response) -> ApiResponse<T> {
+    let api_status = api_response.status();
 
-    match parsed_resp {
-        Ok(response) => Ok(response),
-        Err(e) => Err(e),
+    //TODO: remove this log, only for debugging purposes
+    println!("Status: {}", api_status);
+    if api_status.is_success() {
+        let parsed_response: Result<T, reqwest::Error> = api_response.json();
+        match parsed_response {
+            Ok(response) => {
+                println!("Ok: {:?}", response);
+                Ok(response)
+            }
+            Err(e) => {
+                println!("Err: {:?}", e);
+                Err(HerokuApiFailure::Invalid(e))
+            }
+        }
+    } else {
+        let parsed: Result<HerokuApiError, reqwest::Error> = api_response.json();
+        let errors = parsed.unwrap_or_default();
+        Err(HerokuApiFailure::Error(api_status, errors))
     }
 }
 
