@@ -1,21 +1,21 @@
 use crate::framework::response::ApiResult;
 use serde::Deserialize;
 
-pub mod delete_apps;
-pub mod get_apps;
-pub mod patch_apps;
-pub mod post_apps;
+pub mod delete;
+pub mod get;
+pub mod patch;
+pub mod post;
 
-pub use delete_apps::{AppDelete, AppDisableAcm, AppWebhookDelete};
-pub use get_apps::{
+pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete};
+pub use get::{
     AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList, AppWebhookDetails,
     AppWebhookList,
 };
-pub use patch_apps::{
+pub use patch::{
     AppFeatureUpdate, AppFeatureUpdateParams, AppRefreshAcm, AppUpdate, AppUpdateParams,
     AppWebhookUpdate, AppWebhookUpdateParams,
 };
-pub use post_apps::{
+pub use post::{
     AppCreate, AppCreateParams, AppEnableAcm, AppWebhookCreate, AppWebhookCreateParams,
 };
 
