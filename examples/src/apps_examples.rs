@@ -5,17 +5,17 @@ use heroku_rs::endpoints::dynos;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 
 pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let app_name = String::from("heroku-rs-tests");
+    // let app_name = String::from("heroku-rs-tests");
 
     // create_app(api_client);
     // delete_app(api_client);
     // patch_app(api_client);
     // get_app(api_client);
-    // list_apps(api_client);
+    list_apps(api_client);
     // list_account_apps(api_client);
     // get_dyno(api_client);
     // list_dynos(api_client);
-    restart_dyno(api_client);
+    // restart_dyno(api_client);
     // restart_all_dynos(api_client);
 
     // enable_app_acm(api_client, app_name);
