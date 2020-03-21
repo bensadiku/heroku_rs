@@ -15,13 +15,26 @@ pub fn match_response<T: ApiResult>(resp: reqwest::blocking::Response) -> ApiRes
     }
 }
 
-pub fn return_empty_response(resp: reqwest::blocking::Response) -> ApiResponse<String> {
-    let parsed_resp: Result<std::string::String, reqwest::Error> = resp.text();
+#[derive(Deserialize, Debug)]
+pub struct EmptyResponse {
+   response: String
+}
 
-    match parsed_resp {
-        Ok(response) => Ok(response),
-        Err(e) => Err(e),
+impl EmptyResponse {
+    fn new() {
     }
+}
+
+impl ApiResult for EmptyResponse {
+
+}
+
+pub fn empty_response<T: ApiResult>(resp: reqwest::blocking::Response) -> ApiResponse<T> {
+    let empty_resp = EmptyResponse::new();
+
+    let parsed_resp: Result<T, reqwest::Error> = Ok(empty_resp);
+
+    parsed_resp
 }
 
 /// Some endpoints return nothing.

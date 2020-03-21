@@ -7,6 +7,7 @@ pub use apps::{AppCreate, AppCreateParams, AppDelete, AppDetails, AppList};
 impl ApiResult for App {}
 impl ApiResult for Vec<App> {}
 
+
 /// Heroku App
 /// An app represents the program that you would like to deploy and run on Heroku.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app

@@ -4,7 +4,7 @@ pub mod endpoint;
 mod reqwest_utils;
 pub mod response;
 
-use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response, response::return_empty_response};
+use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response, response::empty_response};
 use crate::framework::response::{ApiResult, ApiResponse};
 use crate::framework::endpoint::Method;
 use failure::Fallible;
@@ -105,7 +105,7 @@ impl<'a> HerokuApiClient for HttpApiClient {
 
         match endpoint.method() {
             Method::Delete => {
-                return_empty_response(response)
+                empty_response(response)
             },
             _ => {
                 match_response(response)
