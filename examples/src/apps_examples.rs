@@ -11,11 +11,11 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // delete_app(api_client);
     // patch_app(api_client);
     // get_app(api_client);
-    list_apps(api_client);
+    // list_apps(api_client);
     // list_account_apps(api_client);
     // get_dyno(api_client);
     // list_dynos(api_client);
-    // restart_dyno(api_client);
+    restart_dyno(api_client);
     // restart_all_dynos(api_client);
 
     // enable_app_acm(api_client, app_name);
@@ -229,6 +229,7 @@ fn restart_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
         app_identifier: application_id,
         identifier: dyno_id,
     });
+    print_response(resp);
 }
 
 fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
@@ -237,4 +238,6 @@ fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType)
     let resp = api_client.request(&dynos::DynoAllRestart {
         app_identifier: application_id,
     });
+    print_response(resp);
+
 }
