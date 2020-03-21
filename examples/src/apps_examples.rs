@@ -11,7 +11,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // delete_app(api_client);
     // patch_app(api_client);
     // get_app(api_client);
-    list_apps(api_client);
+    // list_apps(api_client);
     // list_account_apps(api_client);
     // get_dyno(api_client);
     // list_dynos(api_client);
@@ -30,6 +30,27 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app_webhook(api_client, app_name);
     // patch_app_webhook(api_client, app_name);
     // delete_app_webhook(api_client, app_name);
+
+    // get_app_webhook_delivery(api_client, app_name);
+    // get_app_webhook_deliveries(api_client, app_name);
+}
+
+/// Gets a list of webhook deliveries.
+fn get_app_webhook_deliveries<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
+    let response = api_client.request(&apps::AppWebhookDeliveryList {
+        app_identifier: app_name,
+    });
+    print_response(response);
+}
+
+/// Gets details about a specific webhook delivery.
+fn get_app_webhook_delivery<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
+    let webhook_id = String::from("WEBHOOK_DELIVERY_ID");
+    let response = api_client.request(&apps::AppWebhookDetails {
+        app_identifier: app_name,
+        webhook_identifier: webhook_id,
+    });
+    print_response(response);
 }
 
 /// Patch a specific webhook.

@@ -8,8 +8,8 @@ pub mod post;
 
 pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete};
 pub use get::{
-    AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList, AppWebhookDetails,
-    AppWebhookList,
+    AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList,
+    AppWebhookDeliveryDetails, AppWebhookDeliveryList, AppWebhookDetails, AppWebhookList,
 };
 pub use patch::{
     AppFeatureUpdate, AppFeatureUpdateParams, AppRefreshAcm, AppUpdate, AppUpdateParams,
@@ -27,6 +27,9 @@ impl ApiResult for Vec<AppFeature> {}
 
 impl ApiResult for AppWebhook {}
 impl ApiResult for Vec<AppWebhook> {}
+
+impl ApiResult for AppWebhookDelivery {}
+impl ApiResult for Vec<AppWebhookDelivery> {}
 
 /// Heroku App
 /// An app represents the program that you would like to deploy and run on Heroku.
@@ -136,4 +139,42 @@ pub struct AppWebhook {
 pub struct WebhookApp {
     pub id: String,
     pub name: String,
+}
+
+/// Heroku App Webhook Delivery
+/// Represents the delivery of a webhook notification, including its current status.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct AppWebhookDelivery {
+    pub created_at: String,
+    pub event: WebhookDeliveryEvent,
+    pub id: String,
+    pub num_attempts: i64,
+    pub next_attempt_at: Option<String>,
+    pub last_attempt: Option<WebhookDeliveryLastAttempt>,
+    pub status: String,
+    pub updated_at: String,
+    pub webhook: WebhookDeliveryWebhook,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct WebhookDeliveryEvent {
+    pub id: String,
+    pub include: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct WebhookDeliveryLastAttempt {
+    pub id: String,
+    pub code: Option<i64>,
+    pub error_class: Option<String>,
+    pub status: String,
+    pub created_at: String,
+    pub updated_at: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct WebhookDeliveryWebhook {
+    pub id: String,
+    pub level: String,
 }

@@ -1,5 +1,5 @@
 //Anything related to getting apps and it's properties goes here.
-use super::{App, AppFeature, AppWebhook};
+use super::{App, AppFeature, AppWebhook, AppWebhookDelivery};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -124,5 +124,44 @@ impl HerokuEndpoint<AppWebhook> for AppWebhookDetails {
             "apps/{}/webhooks/{}",
             self.app_identifier, self.webhook_identifier
         )
+    }
+}
+
+/// App Webhook Delivery
+/// Returns the info for an existing delivery.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-info
+pub struct AppWebhookDeliveryDetails {
+    /// app_identifier can be the app name or id.
+    pub app_identifier: String,
+    /// webhook_delivery_identifier is the webhook delivery id.
+    pub webhook_delivery_identifier: String,
+}
+
+impl HerokuEndpoint<AppWebhookDelivery> for AppWebhookDeliveryDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!(
+            "apps/{}/webhook-deliveries/{}",
+            self.app_identifier, self.webhook_delivery_identifier
+        )
+    }
+}
+
+/// App Webhook Deliveries
+/// Lists existing deliveries for an app.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-list
+pub struct AppWebhookDeliveryList {
+    /// app_identifier can be the app name or id.
+    pub app_identifier: String,
+}
+
+impl HerokuEndpoint<Vec<AppWebhookDelivery>> for AppWebhookDeliveryList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/webhook-deliveries", self.app_identifier,)
     }
 }
