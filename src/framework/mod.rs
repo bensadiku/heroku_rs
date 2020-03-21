@@ -5,7 +5,6 @@ mod reqwest_utils;
 pub mod response;
 
 use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response, response::empty_response};
-use crate::framework::response::{ApiResult, ApiResponse};
 use crate::framework::endpoint::Method;
 use failure::Fallible;
 use reqwest_utils::match_reqwest_method;
