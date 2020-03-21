@@ -33,3 +33,20 @@ impl HerokuEndpoint<Account> for UserAccountDelete {
         format!("users/{}", self.account_identifier)
     }
 }
+
+/// Account Transfer Delete.
+/// Delete an existing app transfer
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-delete
+pub struct AppTransferDelete {
+    /// identifier can be the transfer name or id.
+    pub transfer_id: String,
+}
+
+impl HerokuEndpoint<Account> for AppTransferDelete {
+    fn method(&self) -> Method {
+        Method::Delete
+    }
+    fn path(&self) -> String {
+        format!("account/app-transfers/{}", self.transfer_id)
+    }
+}

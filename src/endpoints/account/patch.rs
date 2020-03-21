@@ -1,5 +1,5 @@
 //Anything related to PATCH requests for account and it's properties goes here.
-use super::{Account, AccountFeature};
+use super::{Account, AccountFeature, AppTransfer};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -93,6 +93,35 @@ impl HerokuEndpoint<AccountFeature, (), AccountFeatureUpdateParams> for AccountF
         format!("account/features/{}", self.account_feature_id)
     }
     fn body(&self) -> Option<AccountFeatureUpdateParams> {
+        Some(self.params.clone())
+    }
+}
+
+/// App Transfer Update
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update
+pub struct AppTransferUpdate {
+    /// unique identifier or the transfer name
+    pub transfer_id: String,
+    /// The parameters to pass to the Heroku API
+    pub params: AppTransferUpdateParams,
+}
+
+/// Update account app transfer with parameters.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update-required-parameters
+#[derive(Serialize, Clone, Debug)]
+pub struct AppTransferUpdateParams {
+    /// the current state of an app transfer, one of:"pending" or "accepted" or "declined"
+    pub state: String,
+}
+
+impl HerokuEndpoint<AppTransfer, (), AppTransferUpdateParams> for AppTransferUpdate {
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!("account/app-transfers/{}", self.transfer_id)
+    }
+    fn body(&self) -> Option<AppTransferUpdateParams> {
         Some(self.params.clone())
     }
 }

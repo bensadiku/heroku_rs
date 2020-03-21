@@ -14,6 +14,57 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_account_features(api_client);
     // get_account_feature(api_client);
     // patch_account_feature(api_client);
+
+    // get_account_transfers(api_client);
+    // get_account_transfer(api_client);
+    // create_account_transfer(api_client);
+    // patch_account_transfer(api_client);
+    // delete_account_transfer(api_client);
+}
+
+// Delete heroku account app transfer.
+fn delete_account_transfer<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::AppTransferDelete {
+        transfer_id: String::from("ID_HERE"),
+    });
+    print_response(response);
+}
+
+// Patch heroku account app transfer.
+fn patch_account_transfer<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::AppTransferUpdate {
+        transfer_id: String::from("ID_HERE"),
+        params: account::AppTransferUpdateParams {
+            state: String::from("declined"),
+        },
+    });
+    print_response(response);
+}
+
+// Create heroku account app transfer.
+fn create_account_transfer<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::AppTransferCreate {
+        params: account::AppTransferCreateParams {
+            app: String::from("ID_OR_APPNAME_HERE"),
+            recipient: String::from("ID_OR_EMAIL_HERE"),
+            silent: Some(false),
+        },
+    });
+    print_response(response);
+}
+
+// Get heroku account app transfer.
+fn get_account_transfer<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::AppTransferDetails {
+        transfer_id: String::from("ID"),
+    });
+    print_response(response);
+}
+
+// Get heroku account app transfers.
+fn get_account_transfers<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::AppTransferList {});
+    print_response(response);
 }
 
 // Patch a specidic heroku account feature.

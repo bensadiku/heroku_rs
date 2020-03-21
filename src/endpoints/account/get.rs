@@ -1,5 +1,5 @@
 //Anything related to GET requests for account and it's properties goes here.
-use super::{Account, AccountFeature};
+use super::{Account, AccountFeature, AppTransfer};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -52,7 +52,7 @@ impl HerokuEndpoint<Vec<AccountFeature>> for AccountFeatureList {
 /// https://devcenter.heroku.com/articles/platform-api-reference#account-feature-info
 pub struct AccountFeatureDetails {
     /// identifier can be the feature name or id.
-    pub account_feature_id: String
+    pub account_feature_id: String,
 }
 
 impl HerokuEndpoint<AccountFeature> for AccountFeatureDetails {
@@ -61,5 +61,36 @@ impl HerokuEndpoint<AccountFeature> for AccountFeatureDetails {
     }
     fn path(&self) -> String {
         format!("account/features/{}", self.account_feature_id)
+    }
+}
+
+/// App Transfer List
+/// List existing apps transfers.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-list
+pub struct AppTransferList {}
+
+impl HerokuEndpoint<Vec<AppTransfer>> for AppTransferList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/app-transfers")
+    }
+}
+
+/// App Transfer Info
+/// Info for existing app transfer.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-info
+pub struct AppTransferDetails {
+    /// identifier can be the transfer name or id.
+    pub transfer_id: String,
+}
+
+impl HerokuEndpoint<AppTransfer> for AppTransferDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/app-transfers/{}", self.transfer_id)
     }
 }

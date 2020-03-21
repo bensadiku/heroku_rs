@@ -7,16 +7,25 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
-pub use delete::{AccountDelete, UserAccountDelete};
-pub use get::{AccountDetails, AccountFeatureDetails, AccountFeatureList, UserAccountDetails};
+pub use delete::{AccountDelete, AppTransferDelete, UserAccountDelete};
+pub use get::{
+    AccountDetails, AccountFeatureDetails, AccountFeatureList, AppTransferDetails, AppTransferList,
+    UserAccountDetails,
+};
 pub use patch::{
     AccountFeatureUpdate, AccountFeatureUpdateParams, AccountUpdate, AccountUpdateParams,
-    UserAccountUpdate, UserAccountUpdateParams,
+    AppTransferUpdate, AppTransferUpdateParams, UserAccountUpdate, UserAccountUpdateParams,
 };
 
+pub use post::{AppTransferCreate, AppTransferCreateParams};
+
 impl ApiResult for Account {}
+
 impl ApiResult for AccountFeature {}
 impl ApiResult for Vec<AccountFeature> {}
+
+impl ApiResult for AppTransfer {}
+impl ApiResult for Vec<AppTransfer> {}
 
 /// Heroku Account
 /// An account represents an individual signed up to use the Heroku platform.
@@ -97,4 +106,36 @@ pub struct AccountFeature {
     pub updated_at: String,
     pub display_name: Option<String>,
     pub feedback_email: Option<String>,
+}
+
+/// Heroku Account App Transfer
+/// An app transfer represents a two party interaction for transferring ownership of an app.
+/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct AppTransfer {
+    pub app: AppTransferApp,
+    pub created_at: String,
+    pub id: String,
+    pub owner: AppTransferOwner,
+    pub recipient: AppTransferRecipient,
+    pub state: String,
+    pub updated_at: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct AppTransferApp {
+    pub name: String,
+    pub id: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct AppTransferOwner {
+    pub email: String,
+    pub id: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct AppTransferRecipient {
+    pub email: String,
+    pub id: String,
 }
