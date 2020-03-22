@@ -26,6 +26,7 @@ Here's a simple example which fetches the apps list. At the moment, the client i
 use heroku_rs::framework::{
     auth::Credentials,
     response::{ApiResponse, ApiResult},
+    apiclient::HerokuApiClient,
     ApiEnvironment, HttpApiClient, HttpApiClientConfig,
 };
 use heroku_rs::endpoints::apps;
