@@ -9,15 +9,17 @@ pub mod put;
 
 pub use delete::{AccountDelete, AppTransferDelete, UserAccountDelete};
 pub use get::{
-    AccountDetails, AccountFeatureDetails, AccountFeatureList, AppTransferDetails, AppTransferList,
-    UserAccountDetails,
+    AccountCreditDetails, AccountCreditList, AccountDetails, AccountFeatureDetails,
+    AccountFeatureList, AppTransferDetails, AppTransferList, UserAccountDetails,
 };
 pub use patch::{
     AccountFeatureUpdate, AccountFeatureUpdateParams, AccountUpdate, AccountUpdateParams,
     AppTransferUpdate, AppTransferUpdateParams, UserAccountUpdate, UserAccountUpdateParams,
 };
 
-pub use post::{AppTransferCreate, AppTransferCreateParams};
+pub use post::{
+    AccountCreditCreate, AccountCreditCreateParams, AppTransferCreate, AppTransferCreateParams,
+};
 
 impl ApiResult for Account {}
 
@@ -26,6 +28,9 @@ impl ApiResult for Vec<AccountFeature> {}
 
 impl ApiResult for AppTransfer {}
 impl ApiResult for Vec<AppTransfer> {}
+
+impl ApiResult for Credit {}
+impl ApiResult for Vec<Credit> {}
 
 /// Heroku Account
 /// An account represents an individual signed up to use the Heroku platform.
@@ -138,4 +143,26 @@ pub struct AppTransferOwner {
 pub struct AppTransferRecipient {
     pub email: String,
     pub id: String,
+}
+
+/// Credit
+/// Stability: development
+/// A credit represents value that will be used up before further charges are assigned to an account.
+/// https://devcenter.heroku.com/articles/platform-api-reference#credit
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct Credit {
+    /// total value of credit in cents
+    pub amount: i64,
+    /// remaining value of credit in cents
+    pub balance: i64,
+    /// when credit was created
+    pub created_at: String,
+    /// when credit will expire
+    pub expires_at: String,
+    /// unique identifier of credit
+    pub id: String,
+    /// a name for credit
+    pub title: String,
+    /// when credit was updated
+    pub updated_at: String,
 }

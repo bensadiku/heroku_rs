@@ -20,6 +20,34 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // create_account_transfer(api_client);
     // patch_account_transfer(api_client);
     // delete_account_transfer(api_client);
+
+    // create_account_credits(api_client);
+    // get_account_credit(api_client);
+    // get_account_credits(api_client);
+}
+
+// Get account credits.
+fn get_account_credits<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::AccountCreditList {});
+    print_response(response);
+}
+
+// Get account credit.
+fn get_account_credit<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let credit_id = String::from("012abc");
+
+    let response = api_client.request(&account::AccountCreditDetails { credit_id });
+    print_response(response);
+}
+
+// Create account credits.
+fn create_account_credits<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let code1 = Some(String::from("012abc"));
+    let code2 = Some(String::from("012abcd"));
+    let response = api_client.request(&account::AccountCreditCreate {
+        params: account::AccountCreditCreateParams { code1, code2 },
+    });
+    print_response(response);
 }
 
 // Delete heroku account app transfer.

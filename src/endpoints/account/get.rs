@@ -1,5 +1,5 @@
 //Anything related to GET requests for account and it's properties goes here.
-use super::{Account, AccountFeature, AppTransfer};
+use super::{Account, AccountFeature, AppTransfer, Credit};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -92,5 +92,36 @@ impl HerokuEndpoint<AppTransfer> for AppTransferDetails {
     }
     fn path(&self) -> String {
         format!("account/app-transfers/{}", self.transfer_id)
+    }
+}
+
+/// Account Credit Info
+/// Info for existing credit.
+/// https://devcenter.heroku.com/articles/platform-api-reference#credit-info
+pub struct AccountCreditDetails {
+    /// credit_id is the credit identifier.
+    pub credit_id: String,
+}
+
+impl HerokuEndpoint<AppTransfer> for AccountCreditDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/credits/{}", self.credit_id)
+    }
+}
+
+/// App Credit List
+/// List existing credits.
+/// https://devcenter.heroku.com/articles/platform-api-reference#credit-list
+pub struct AccountCreditList {}
+
+impl HerokuEndpoint<Vec<Credit>> for AccountCreditList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/credits")
     }
 }

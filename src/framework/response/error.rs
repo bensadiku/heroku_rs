@@ -6,7 +6,6 @@ use std::fmt::Debug;
 pub struct HerokuApiError {
     pub message: String,
     pub id: String,
-    pub url: String,
 }
 
 #[derive(Debug)]
@@ -43,7 +42,7 @@ impl PartialEq for HerokuApiFailure {
 
 impl fmt::Display for HerokuApiError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Error {} {} {}", self.id, self.message, self.url)
+        write!(f, "Error {} {} ", self.id, self.message)
     }
 }
 
@@ -60,7 +59,7 @@ impl fmt::Display for HerokuApiFailure {
                 let mut output = "".to_owned();
                 output.push_str(&format!("HTTP: {}", status));
 
-                output.push_str(&format!("\n{} {} {}", error.id, error.message, error.url));
+                output.push_str(&format!("\n{} {} ", error.id, error.message));
                 write!(f, "{}", output)
             }
             HerokuApiFailure::Invalid(err) => write!(f, "{}", err),

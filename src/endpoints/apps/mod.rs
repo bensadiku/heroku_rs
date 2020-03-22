@@ -5,6 +5,7 @@ pub mod delete;
 pub mod get;
 pub mod patch;
 pub mod post;
+pub mod put;
 
 pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete};
 pub use get::{

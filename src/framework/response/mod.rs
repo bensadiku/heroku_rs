@@ -24,8 +24,9 @@ pub fn match_response<T: ApiResult>(api_response: reqwest::blocking::Response) -
     }
 }
 
-/// Some endpoints return empty objects or empty vectors.
+/// Some endpoints return empty objects, empty vectors or just ().
 impl ApiResult for Empty {}
+impl ApiResult for () {}
 impl ApiResult for Vec<Empty> {}
 
 pub trait ApiResult: DeserializeOwned + Debug {}

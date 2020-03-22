@@ -1,16 +1,19 @@
 extern crate heroku_rs;
 use super::print_response;
 use heroku_rs::endpoints::apps;
+use heroku_rs::endpoints::builds;
+use heroku_rs::endpoints::collaborators;
+use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 
 pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    // let app_name = String::from("heroku-rs-tests");
+    let app_name = String::from("heroku-rs-tests");
 
     // create_app(api_client);
     // delete_app(api_client);
     // patch_app(api_client);
-    // get_app(api_client);
+    get_app(api_client, app_name);
     // list_apps(api_client);
     // list_account_apps(api_client);
     // get_dyno(api_client);
@@ -33,10 +36,162 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // get_app_webhook_delivery(api_client, app_name);
     // get_app_webhook_deliveries(api_client, app_name);
+
+    // create_app_build(api_client, app_name);
+    // get_app_builds(api_client, app_name);
+    // get_app_build(api_client, app_name);
+    // delete_app_build(api_client, app_name);
+
+    // update_buildpack_installation(api_client, app_name);
+    // get_buildpack_installations(api_client, app_name);
+
+    // create_app_collaborate(api_client, app_name);
+    // get_app_collaborators(api_client, app_name);
+    // get_app_collaborator(api_client, app_name);
+    // delete_app_collaborator(api_client, app_name);
+
+    // create_app_domain(api_client, app_name);
+    // get_app_domains(api_client, app_name);
+    // get_app_domain(api_client, app_name);
+    // delete_app_domain(api_client, app_name);
+}
+
+/// Delete domain
+fn delete_app_domain<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let domain_identifier = String::from("DOMAIN_ID_OR_HOSTNAME");
+    let response = api_client.request(&domains::DomainDelete {
+        app_identifier,
+        domain_identifier,
+    });
+    print_response(response);
+}
+
+/// Get domain
+fn get_app_domain<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let domain_identifier = String::from("DOMAIN_ID_OR_HOSTNAME");
+    let response = api_client.request(&domains::DomainDetails {
+        app_identifier,
+        domain_identifier,
+    });
+    print_response(response);
+}
+
+/// Get domains list
+fn get_app_domains<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let response = api_client.request(&domains::DomainList { app_identifier });
+    print_response(response);
+}
+
+/// Create domain
+fn create_app_domain<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let hostname = String::from("heroku-rs.tests.com");
+    let response = api_client.request(&domains::DomainCreate {
+        app_identifier,
+        params: domains::DomainCreateParams { hostname },
+    });
+    print_response(response);
+}
+
+/// Delete app collaborator
+fn delete_app_collaborator<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let collaborator_identifier = String::from("COLLAB_EMAIL_OR_ID");
+    let response = api_client.request(&collaborators::CollaboratorDelete {
+        app_identifier,
+        collaborator_identifier,
+    });
+    print_response(response);
+}
+
+/// Get app collaborator
+fn get_app_collaborator<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let collaborator_identifier = String::from("COLLAB_EMAIL_OR_ID");
+    let response = api_client.request(&collaborators::CollaboratorDetails {
+        app_identifier,
+        collaborator_identifier,
+    });
+    print_response(response);
+}
+
+/// Get a list of app collaborators
+fn get_app_collaborators<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let response = api_client.request(&collaborators::CollaboratorList { app_identifier });
+    print_response(response);
+}
+
+/// Create build pack installations
+fn create_app_collaborate<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let user = String::from("EMAIL_or_ID_HERE");
+    let silent = Some(false);
+    let response = api_client.request(&collaborators::CollaboratorCreate {
+        app_identifier,
+        params: collaborators::CollaboratorCreateParams { user, silent },
+    });
+    print_response(response);
+}
+
+/// Get a list of build pack installations
+fn get_buildpack_installations<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let response = api_client.request(&builds::BuildPackInstallationList { app_identifier });
+    print_response(response);
+}
+
+/// Update build pack installations
+fn update_buildpack_installation<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let buildpack = String::from("https://github.com/heroku/heroku-buildpack-ruby");
+    let response = api_client.request(&builds::BuildpackInstallationUpdate {
+        app_identifier,
+        params: builds::BuildpackInstallationUpdateParams {
+            updates: vec![builds::Update { buildpack }],
+        },
+    });
+    print_response(response);
+}
+
+/// Delete build cache
+fn delete_app_build<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let response = api_client.request(&builds::BuildDelete { app_identifier });
+    print_response(response);
+}
+
+/// Gets info about a specific build
+fn get_app_build<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let build_identifier = String::from("Build_ID");
+    let response = api_client.request(&builds::BuildDetails {
+        app_identifier,
+        build_identifier,
+    });
+    print_response(response);
+}
+
+/// Gets a list of builds
+fn get_app_builds<T: HerokuApiClient>(api_client: &T, app_identifier: String) {
+    let response = api_client.request(&builds::BuildList { app_identifier });
+    print_response(response);
+}
+
+/// Create a new build
+fn create_app_build<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
+    let response = api_client.request(&builds::BuildCreate {
+        app_identifier: app_name,
+        params: builds::BuildCreateParams {
+            buildpacks: None,
+            source_blob: builds::SourceBlob {
+                checksum: Some(String::from(
+                    "SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                )),
+                url: String::from("https://example.com/source.tgz?token=xyz"),
+                version: Some(String::from("2")),
+            },
+        },
+    });
+    print_response(response);
 }
 
 /// Gets a list of webhook deliveries.
-fn get_app_webhook_deliveries<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
+fn get_app_webhook_deliveries<ApiClientType: HerokuApiClient>(
+    api_client: &ApiClientType,
+    app_name: String,
+) {
     let response = api_client.request(&apps::AppWebhookDeliveryList {
         app_identifier: app_name,
     });
@@ -44,7 +199,10 @@ fn get_app_webhook_deliveries<ApiClientType: HerokuApiClient>(api_client: &ApiCl
 }
 
 /// Gets details about a specific webhook delivery.
-fn get_app_webhook_delivery<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
+fn get_app_webhook_delivery<ApiClientType: HerokuApiClient>(
+    api_client: &ApiClientType,
+    app_name: String,
+) {
     let webhook_id = String::from("WEBHOOK_DELIVERY_ID");
     let response = api_client.request(&apps::AppWebhookDetails {
         app_identifier: app_name,
@@ -203,10 +361,8 @@ fn create_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     print_response(response);
 }
 
-fn get_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let id = String::from("heroku-rs-tests");
-
-    let response = api_client.request(&apps::AppDetails { identifier: id });
+fn get_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, identifier: String) {
+    let response = api_client.request(&apps::AppDetails { identifier });
     print_response(response);
 }
 
@@ -260,5 +416,4 @@ fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType)
         app_identifier: application_id,
     });
     print_response(resp);
-
 }
