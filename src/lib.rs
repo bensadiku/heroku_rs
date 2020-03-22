@@ -1,24 +1,11 @@
-
-//! Library to used to access the Heroku API with Rust
-#![allow(dead_code)] // Until every starting struct gets used
-#![deny(//missing_docs,
-        unsafe_code,
-        unused_import_braces,
-        unused_qualifications)]
-
+///! An API client for the [HEROKU API](https://api.heroku.com)
+extern crate chrono;
+extern crate reqwest;
 #[macro_use]
-extern crate error_chain;
+extern crate serde;
+extern crate serde_json;
+extern crate serde_qs;
+extern crate url;
 
-#[macro_use]
-mod macros;
-mod utils;
-
-pub mod client;
-pub mod defaults;
-pub mod errors;
-pub mod headers;
-pub mod apps;
-pub mod teams;
-pub mod account;
-
-pub use hyper::{HeaderMap, StatusCode};
+pub mod endpoints;
+pub mod framework;
