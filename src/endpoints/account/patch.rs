@@ -37,8 +37,8 @@ impl HerokuEndpoint<Account, (), AccountUpdateParams> for AccountUpdate {
 /// Update user account.
 /// https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user
 pub struct UserAccountUpdate {
-    /// identifier can be the account email or id.
-    pub account_identifier: String,
+    /// account_id can be the account email or id.
+    pub account_id: String,
     /// The parameters to pass to the Heroku API
     pub params: UserAccountUpdateParams,
 }
@@ -61,7 +61,7 @@ impl HerokuEndpoint<Account, (), UserAccountUpdateParams> for UserAccountUpdate 
         Method::Patch
     }
     fn path(&self) -> String {
-        format!("users/{}", self.account_identifier)
+        format!("users/{}", self.account_id)
     }
     fn body(&self) -> Option<UserAccountUpdateParams> {
         Some(self.params.clone())
@@ -71,8 +71,8 @@ impl HerokuEndpoint<Account, (), UserAccountUpdateParams> for UserAccountUpdate 
 /// Update account feature.
 /// https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update
 pub struct AccountFeatureUpdate {
-    /// identifier can be the feature name or id.
-    pub account_feature_id: String,
+    /// feature_id can be the feature name or id.
+    pub feature_id: String,
     /// The parameters to pass to the Heroku API
     pub params: AccountFeatureUpdateParams,
 }
@@ -90,7 +90,7 @@ impl HerokuEndpoint<AccountFeature, (), AccountFeatureUpdateParams> for AccountF
         Method::Patch
     }
     fn path(&self) -> String {
-        format!("account/features/{}", self.account_feature_id)
+        format!("account/features/{}", self.feature_id)
     }
     fn body(&self) -> Option<AccountFeatureUpdateParams> {
         Some(self.params.clone())

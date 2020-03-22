@@ -1,13 +1,12 @@
 //Anything related to creating apps and it's properties goes here.
-use super::App;
-use super::AppWebhook;
+use super::{App, AppWebhook};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Create a new app.
-/// No parameters required to create a new app.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-create
 pub struct AppCreate {
+    /// The parameters to pass to the Heroku API
     pub params: AppCreateParams,
 }
 
@@ -16,8 +15,11 @@ pub struct AppCreate {
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-create-optional-parameters
 #[derive(Serialize, Clone, Debug)]
 pub struct AppCreateParams {
+    /// name of app. pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
     pub name: Option<String>,
+    /// unique identifier or name of region
     pub region: Option<String>,
+    /// unique name or identifier of stack
     pub stack: Option<String>,
 }
 
@@ -34,11 +36,10 @@ impl HerokuEndpoint<App, (), AppCreateParams> for AppCreate {
 }
 
 /// Enable ACM flag for an app
-/// app_identifier is required to enable app acm.
-/// app_identifier can be the app id or name.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-enable-acm
 pub struct AppEnableAcm {
-    pub app_identifier: String,
+    /// app_id can be the app id or name.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<App> for AppEnableAcm {
@@ -46,7 +47,7 @@ impl HerokuEndpoint<App> for AppEnableAcm {
         Method::Post
     }
     fn path(&self) -> String {
-        format!("apps/{}/acm", self.app_identifier)
+        format!("apps/{}/acm", self.app_id)
     }
 }
 
@@ -54,8 +55,8 @@ impl HerokuEndpoint<App> for AppEnableAcm {
 /// Create an app webhook subscription.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create
 pub struct AppWebhookCreate {
-    /// This app_idetifier can be the app name or the app id
-    pub app_identifier: String,
+    /// app_id can be the app name or the app id
+    pub app_id: String,
     /// The parameters to pass to the Heroku API
     pub params: AppWebhookCreateParams,
 }
@@ -82,7 +83,7 @@ impl HerokuEndpoint<AppWebhook, (), AppWebhookCreateParams> for AppWebhookCreate
         Method::Post
     }
     fn path(&self) -> String {
-        format!("apps/{}/webhooks", self.app_identifier)
+        format!("apps/{}/webhooks", self.app_id)
     }
     fn body(&self) -> Option<AppWebhookCreateParams> {
         Some(self.params.clone())

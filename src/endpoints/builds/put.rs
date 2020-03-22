@@ -6,8 +6,8 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Buildpack Installations Update
 /// https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update
 pub struct BuildpackInstallationUpdate {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
     /// The parameters to pass to the Heroku API
     pub params: BuildpackInstallationUpdateParams,
 }
@@ -25,7 +25,7 @@ impl HerokuEndpoint<Vec<BuildpackInstallation>, (), BuildpackInstallationUpdateP
         Method::Put
     }
     fn path(&self) -> String {
-        format!("apps/{}/buildpack-installations", self.app_identifier)
+        format!("apps/{}/buildpack-installations", self.app_id)
     }
     fn body(&self) -> Option<BuildpackInstallationUpdateParams> {
         Some(self.params.clone())

@@ -1,16 +1,20 @@
 use crate::framework::response::ApiResult;
 use serde::Deserialize;
 
-pub mod dynos;
-pub use dynos::DynoDetails;
-pub use dynos::DynoList;
-pub use dynos::DynoRestart;
-pub use dynos::DynoAllRestart;
+pub mod delete;
+pub mod get;
+pub mod patch;
+pub mod post;
+pub mod put;
+
+pub use delete::{DynoAllRestart, DynoRestart};
+pub use get::{DynoDetails, DynoList};
 
 impl ApiResult for Dyno {}
 impl ApiResult for Vec<Dyno> {}
 
 /// Heroku Dyno
+/// Stability: production
 /// Dynos encapsulate running processes of an app on Heroku
 /// https://devcenter.heroku.com/articles/platform-api-reference#dyno
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
@@ -31,11 +35,11 @@ pub struct Dyno {
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct App {
     pub id: String,
-    pub name: String
+    pub name: String,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct Release {
     pub id: String,
-    pub version: i64
+    pub version: i64,
 }

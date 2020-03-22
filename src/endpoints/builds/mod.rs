@@ -19,9 +19,10 @@ impl ApiResult for BuildpackInstallation {}
 impl ApiResult for Vec<BuildpackInstallation> {}
 
 /// Build
+/// Stability: production
 /// A build represents the process of transforming a code tarball into a slug.
 /// https://devcenter.heroku.com/articles/platform-api-reference#build
-// TODO: (ben) inspect the nullable properties more. As of 22th March 2020, Heroku docs do not properly reflect the nullable properties of this struct.
+//  TODO: (ben) inspect the nullable properties more. As of 22th March 2020, Heroku docs do not properly reflect the nullable properties of this struct.
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct Build {
     pub app: App,

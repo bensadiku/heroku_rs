@@ -7,8 +7,8 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// List existing builds.
 /// https://devcenter.heroku.com/articles/platform-api-reference#build-list
 pub struct BuildList {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<Vec<Build>> for BuildList {
@@ -16,7 +16,7 @@ impl HerokuEndpoint<Vec<Build>> for BuildList {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("apps/{}/builds", self.app_identifier)
+        format!("apps/{}/builds", self.app_id)
     }
 }
 
@@ -24,10 +24,10 @@ impl HerokuEndpoint<Vec<Build>> for BuildList {
 /// Info for existing build.
 /// https://devcenter.heroku.com/articles/platform-api-reference#build-info
 pub struct BuildDetails {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
-    /// The parameters to pass to the Heroku API
-    pub build_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
+    /// build_id is the build identifier which you want to get
+    pub build_id: String,
 }
 
 impl HerokuEndpoint<Build> for BuildDetails {
@@ -35,10 +35,7 @@ impl HerokuEndpoint<Build> for BuildDetails {
         Method::Get
     }
     fn path(&self) -> String {
-        format!(
-            "apps/{}/builds/{}",
-            self.app_identifier, self.build_identifier
-        )
+        format!("apps/{}/builds/{}", self.app_id, self.build_id)
     }
 }
 
@@ -46,8 +43,8 @@ impl HerokuEndpoint<Build> for BuildDetails {
 /// List an app’s existing buildpack installations.
 /// https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-list
 pub struct BuildPackInstallationList {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<Vec<BuildpackInstallation>> for BuildPackInstallationList {
@@ -55,6 +52,6 @@ impl HerokuEndpoint<Vec<BuildpackInstallation>> for BuildPackInstallationList {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("apps/{}/buildpack-installations", self.app_identifier)
+        format!("apps/{}/buildpack-installations", self.app_id)
     }
 }

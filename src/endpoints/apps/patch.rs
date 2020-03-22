@@ -4,10 +4,11 @@ use super::{App, AppFeature, AppWebhook};
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Update an existing app.
-/// identifier can be the app id or app name.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-update
 pub struct AppUpdate {
-    pub app_identifier: String,
+    /// app_id can be either app id or app name.
+    pub app_id: String,
+    /// params are the parameters sent to the API to patch the App.
     pub params: AppUpdateParams,
 }
 
@@ -16,8 +17,11 @@ pub struct AppUpdate {
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-update-optional-parameters
 #[derive(Serialize, Clone, Debug)]
 pub struct AppUpdateParams {
+    /// unique name or identifier of stack
     pub build_stack: Option<String>,
+    /// maintenance status of app
     pub maintenance: Option<bool>,
+    /// name of app. pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
     pub name: Option<String>,
 }
 
@@ -26,7 +30,7 @@ impl HerokuEndpoint<App, (), AppUpdateParams> for AppUpdate {
         Method::Patch
     }
     fn path(&self) -> String {
-        format!("apps/{}", self.app_identifier)
+        format!("apps/{}", self.app_id)
     }
     fn body(&self) -> Option<AppUpdateParams> {
         Some(self.params.clone())
@@ -34,11 +38,10 @@ impl HerokuEndpoint<App, (), AppUpdateParams> for AppUpdate {
 }
 
 /// Refresh ACM for an app
-/// app_identifier is required to refresh app acm.
-/// app_identifier can be the app id or name.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-refresh-acm
 pub struct AppRefreshAcm {
-    pub app_identifier: String,
+    /// app_id can be either app id or app name.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<App> for AppRefreshAcm {
@@ -46,25 +49,26 @@ impl HerokuEndpoint<App> for AppRefreshAcm {
         Method::Patch
     }
     fn path(&self) -> String {
-        format!("apps/{}/acm", self.app_identifier)
+        format!("apps/{}/acm", self.app_id)
     }
 }
 
 /// Update an existing app feature.
-/// app_identifier can be the app id or app name.
-/// feature_identifier can be the feature id or feature name.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update
 pub struct AppFeatureUpdate {
-    pub app_identifier: String,
-    pub feature_identifier: String,
+    /// app_id can be either app id or app name.
+    pub app_id: String,
+    /// feature_id can be either feature id or feature name.
+    pub feature_id: String,
+    /// params are the parameters sent to the API to patch the feature.
     pub params: AppFeatureUpdateParams,
 }
 
 /// Update an existing app feature with parameters.
-/// enabled: whether or not app feature should be enabled
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update-required-parameters
 #[derive(Serialize, Clone, Debug)]
 pub struct AppFeatureUpdateParams {
+    /// whether or not app feature should be enabled
     pub enabled: bool,
 }
 
@@ -73,10 +77,7 @@ impl HerokuEndpoint<AppFeature, (), AppFeatureUpdateParams> for AppFeatureUpdate
         Method::Patch
     }
     fn path(&self) -> String {
-        format!(
-            "apps/{}/features/{}",
-            self.app_identifier, self.feature_identifier
-        )
+        format!("apps/{}/features/{}", self.app_id, self.feature_id)
     }
     fn body(&self) -> Option<AppFeatureUpdateParams> {
         Some(self.params.clone())
@@ -87,16 +88,16 @@ impl HerokuEndpoint<AppFeature, (), AppFeatureUpdateParams> for AppFeatureUpdate
 /// Updates the details of an app webhook subscription.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update
 pub struct AppWebhookUpdate {
-    /// app_identifier can be the app id or app name.
-    pub app_identifier: String,
-    /// webhook_identifier is the webhook id.
-    pub webhook_identifier: String,
+    /// app_id can be the app id or app name.
+    pub app_id: String,
+    /// webhook_id is the webhook id.
+    pub webhook_id: String,
     /// params are the parameters sent to the API to patch the webhook.
     pub params: AppWebhookUpdateParams,
 }
 
 /// Update an existing app webhook with parameters.
-/// All parameters for this patch are Optional.
+/// All parameters for this patch are optional.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update-optional-parameters
 #[derive(Serialize, Clone, Debug)]
 pub struct AppWebhookUpdateParams {
@@ -118,10 +119,7 @@ impl HerokuEndpoint<AppWebhook, (), AppWebhookUpdateParams> for AppWebhookUpdate
         Method::Patch
     }
     fn path(&self) -> String {
-        format!(
-            "apps/{}/webhooks/{}",
-            self.app_identifier, self.webhook_identifier
-        )
+        format!("apps/{}/webhooks/{}", self.app_id, self.webhook_id)
     }
     fn body(&self) -> Option<AppWebhookUpdateParams> {
         Some(self.params.clone())

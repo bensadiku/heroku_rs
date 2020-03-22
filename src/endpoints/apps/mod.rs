@@ -33,6 +33,7 @@ impl ApiResult for AppWebhookDelivery {}
 impl ApiResult for Vec<AppWebhookDelivery> {}
 
 /// Heroku App
+/// Stability: production
 /// An app represents the program that you would like to deploy and run on Heroku.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
@@ -104,6 +105,7 @@ pub struct Stack {
 }
 
 /// Heroku App Feature
+/// Stability: production
 /// An app feature represents a Heroku labs capability that can be enabled or disabled for an app on Heroku.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-feature
 // TODO: (ben) inspect the nullable properties more. As of 20th March 2020, Heroku docs say that none of these properties can be nullable,
@@ -123,6 +125,7 @@ pub struct AppFeature {
 }
 
 /// Heroku App Webhook
+/// Stability: production
 /// Represents the details of a webhook subscription
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
@@ -142,7 +145,8 @@ pub struct WebhookApp {
     pub name: String,
 }
 
-/// Heroku App Webhook Delivery
+/// App Webhook Delivery
+/// Stability: production
 /// Represents the delivery of a webhook notification, including its current status.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]

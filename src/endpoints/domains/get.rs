@@ -7,10 +7,10 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Info for existing domain.
 /// https://devcenter.heroku.com/articles/platform-api-reference#domain-info
 pub struct DomainDetails {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
-    /// domain_identifier can be the domain hostname or id.
-    pub domain_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
+    /// domain_id can be the domain hostname or id.
+    pub domain_id: String,
 }
 
 impl HerokuEndpoint<Domain> for DomainDetails {
@@ -20,7 +20,7 @@ impl HerokuEndpoint<Domain> for DomainDetails {
     fn path(&self) -> String {
         format!(
             "apps/{}/domains/{}",
-            self.app_identifier, self.domain_identifier
+            self.app_id, self.domain_id
         )
     }
 }
@@ -29,8 +29,8 @@ impl HerokuEndpoint<Domain> for DomainDetails {
 /// List existing domains.
 /// https://devcenter.heroku.com/articles/platform-api-reference#domain-list
 pub struct DomainList {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<Vec<Domain>> for DomainList {
@@ -38,6 +38,6 @@ impl HerokuEndpoint<Vec<Domain>> for DomainList {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("apps/{}/domains", self.app_identifier)
+        format!("apps/{}/domains", self.app_id)
     }
 }

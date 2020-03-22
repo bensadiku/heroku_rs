@@ -15,6 +15,7 @@ impl ApiResult for Collaborator {}
 impl ApiResult for Vec<Collaborator> {}
 
 /// Collaborator
+/// Stability: production
 /// A collaborator represents an account that has been given access to an app on Heroku.
 /// https://devcenter.heroku.com/articles/platform-api-reference#collaborator
 // TODO: (ben) inspect the nullable properties more. As of 22th March 2020, Heroku docs do not properly reflect nullable properties but some are,

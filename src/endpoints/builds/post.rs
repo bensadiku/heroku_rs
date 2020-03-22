@@ -7,8 +7,8 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new build.
 /// https://devcenter.heroku.com/articles/platform-api-reference#build-create
 pub struct BuildCreate {
-    /// This app_idetifier can be the app name or the app id
-    pub app_identifier: String,
+    /// app_id can be the app name or the app id
+    pub app_id: String,
     /// The parameters to pass to the Heroku API
     pub params: BuildCreateParams,
 }
@@ -28,10 +28,7 @@ impl HerokuEndpoint<Build, (), BuildCreateParams> for BuildCreate {
         Method::Post
     }
     fn path(&self) -> String {
-        format!(
-            "apps/{}/builds",
-            self.app_identifier
-        )
+        format!("apps/{}/builds", self.app_id)
     }
     fn body(&self) -> Option<BuildCreateParams> {
         Some(self.params.clone())

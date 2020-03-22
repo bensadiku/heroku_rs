@@ -98,7 +98,7 @@ fn get_account_transfers<ApiClientType: HerokuApiClient>(api_client: &ApiClientT
 // Patch a specidic heroku account feature.
 fn patch_account_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let response = api_client.request(&account::AccountFeatureUpdate {
-        account_feature_id: String::from("team-internal-routing"),
+        feature_id: String::from("team-internal-routing"),
         params: account::AccountFeatureUpdateParams { enabled: false },
     });
     print_response(response);
@@ -107,7 +107,7 @@ fn patch_account_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientT
 // Get a specidic heroku account feature.
 fn get_account_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let response = api_client.request(&account::AccountFeatureDetails {
-        account_feature_id: String::from("team-internal-routing"),
+        feature_id: String::from("team-internal-routing"),
     });
     print_response(response);
 }
@@ -122,9 +122,7 @@ fn get_account_features<ApiClientType: HerokuApiClient>(api_client: &ApiClientTy
 fn delete_user_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let account_id = String::from("USER_ID_OR_EMAIL");
 
-    let response = api_client.request(&account::UserAccountDelete {
-        account_identifier: account_id,
-    });
+    let response = api_client.request(&account::UserAccountDelete { account_id });
     print_response(response);
 }
 
@@ -132,7 +130,7 @@ fn delete_user_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientTyp
 fn patch_user_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let account_id = String::from("USER_ID_OR_EMAIL");
     let response = api_client.request(&account::UserAccountUpdate {
-        account_identifier: account_id,
+        account_id,
         params: account::UserAccountUpdateParams {
             allow_tracking: Some(true),
             beta: Some(false),
@@ -145,9 +143,7 @@ fn patch_user_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientType
 // Get heroku user account by email or id
 fn get_user_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let account_id = String::from("USER_ID_OR_EMAIL");
-    let response = api_client.request(&account::UserAccountDetails {
-        account_identifier: account_id,
-    });
+    let response = api_client.request(&account::UserAccountDetails { account_id });
     print_response(response);
 }
 

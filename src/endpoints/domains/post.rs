@@ -7,8 +7,8 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new domain.
 /// https://devcenter.heroku.com/articles/platform-api-reference#domain-create
 pub struct DomainCreate {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
     /// The parameters to pass to the Heroku API
     pub params: DomainCreateParams,
 }
@@ -26,7 +26,7 @@ impl HerokuEndpoint<Domain, (), DomainCreateParams> for DomainCreate {
         Method::Post
     }
     fn path(&self) -> String {
-        format!("apps/{}/domains", self.app_identifier)
+        format!("apps/{}/domains", self.app_id)
     }
     fn body(&self) -> Option<DomainCreateParams> {
         Some(self.params.clone())

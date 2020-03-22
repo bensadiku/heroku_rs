@@ -7,8 +7,8 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// List existing collaborators.
 /// https://devcenter.heroku.com/articles/platform-api-reference#collaborator-list
 pub struct CollaboratorList {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<Vec<Collaborator>> for CollaboratorList {
@@ -16,7 +16,7 @@ impl HerokuEndpoint<Vec<Collaborator>> for CollaboratorList {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("apps/{}/collaborators", self.app_identifier)
+        format!("apps/{}/collaborators", self.app_id)
     }
 }
 
@@ -24,10 +24,10 @@ impl HerokuEndpoint<Vec<Collaborator>> for CollaboratorList {
 /// Info for existing collaborator.
 /// https://devcenter.heroku.com/articles/platform-api-reference#collaborator-list
 pub struct CollaboratorDetails {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
-    /// collaborator_identifier can be the collaborator email or id.
-    pub collaborator_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
+    /// collaborator_id can be the collaborator email or id.
+    pub collaborator_id: String,
 }
 
 impl HerokuEndpoint<Collaborator> for CollaboratorDetails {
@@ -37,7 +37,7 @@ impl HerokuEndpoint<Collaborator> for CollaboratorDetails {
     fn path(&self) -> String {
         format!(
             "apps/{}/collaborators/{}",
-            self.app_identifier, self.collaborator_identifier
+            self.app_id, self.collaborator_id
         )
     }
 }

@@ -4,10 +4,10 @@ use super::{App, AppFeature, AppWebhook, AppWebhookDelivery};
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Get info for existing app.
-/// identifier can be the app id or app name.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-info
 pub struct AppDetails {
-    pub identifier: String,
+    /// app_id can be the app id or app name.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<App> for AppDetails {
@@ -15,7 +15,7 @@ impl HerokuEndpoint<App> for AppDetails {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("apps/{}", self.identifier)
+        format!("apps/{}", self.app_id)
     }
 }
 
@@ -34,11 +34,11 @@ impl HerokuEndpoint<Vec<App>> for AppList {
 }
 
 /// List owned and collaborated apps (excludes team apps).
-/// account_identifier is required to delete an app.
-/// account_identifier can be the account email, id or self.
+/// account_id is required to delete an app.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-list-owned-and-collaborated
 pub struct AccountAppList {
-    pub account_identifier: String,
+    /// account_id can be the account email, id or self.
+    pub account_id: String,
 }
 
 impl HerokuEndpoint<Vec<App>> for AccountAppList {
@@ -46,17 +46,17 @@ impl HerokuEndpoint<Vec<App>> for AccountAppList {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("users/{}/apps", self.account_identifier)
+        format!("users/{}/apps", self.account_id)
     }
 }
 
 /// Info for an existing app feature.
-/// app_identifier and feature_identifier are required.
-/// app_identifier can be the app name or id.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-feature-info
 pub struct AppFeatureDetails {
-    pub app_identifier: String,
-    pub feature_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
+    /// feature_id can be the feature name or id.
+    pub feature_id: String,
 }
 
 impl HerokuEndpoint<AppFeature> for AppFeatureDetails {
@@ -64,19 +64,15 @@ impl HerokuEndpoint<AppFeature> for AppFeatureDetails {
         Method::Get
     }
     fn path(&self) -> String {
-        format!(
-            "apps/{}/features/{}",
-            self.app_identifier, self.feature_identifier
-        )
+        format!("apps/{}/features/{}", self.app_id, self.feature_id)
     }
 }
 
 /// List existing app features.
-/// app_identifier is required.
-/// app_identifier can be the app name or id.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-feature-list
 pub struct AppFeatureList {
-    pub app_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<Vec<AppFeature>> for AppFeatureList {
@@ -84,7 +80,7 @@ impl HerokuEndpoint<Vec<AppFeature>> for AppFeatureList {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("apps/{}/features", self.app_identifier)
+        format!("apps/{}/features", self.app_id)
     }
 }
 
@@ -92,8 +88,8 @@ impl HerokuEndpoint<Vec<AppFeature>> for AppFeatureList {
 /// List all webhook subscriptions for a particular app.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-list
 pub struct AppWebhookList {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<Vec<AppWebhook>> for AppWebhookList {
@@ -101,7 +97,7 @@ impl HerokuEndpoint<Vec<AppWebhook>> for AppWebhookList {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("apps/{}/webhooks", self.app_identifier)
+        format!("apps/{}/webhooks", self.app_id)
     }
 }
 
@@ -109,10 +105,10 @@ impl HerokuEndpoint<Vec<AppWebhook>> for AppWebhookList {
 /// Returns the info for an app webhook subscription.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-info
 pub struct AppWebhookDetails {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
-    /// webhook_identifier is the webhook id.
-    pub webhook_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
+    /// webhook_id is the webhook id.
+    pub webhook_id: String,
 }
 
 impl HerokuEndpoint<AppWebhook> for AppWebhookDetails {
@@ -120,10 +116,7 @@ impl HerokuEndpoint<AppWebhook> for AppWebhookDetails {
         Method::Get
     }
     fn path(&self) -> String {
-        format!(
-            "apps/{}/webhooks/{}",
-            self.app_identifier, self.webhook_identifier
-        )
+        format!("apps/{}/webhooks/{}", self.app_id, self.webhook_id)
     }
 }
 
@@ -131,10 +124,10 @@ impl HerokuEndpoint<AppWebhook> for AppWebhookDetails {
 /// Returns the info for an existing delivery.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-info
 pub struct AppWebhookDeliveryDetails {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
-    /// webhook_delivery_identifier is the webhook delivery id.
-    pub webhook_delivery_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
+    /// webhook_delivery_id is the webhook delivery id.
+    pub webhook_delivery_id: String,
 }
 
 impl HerokuEndpoint<AppWebhookDelivery> for AppWebhookDeliveryDetails {
@@ -144,7 +137,7 @@ impl HerokuEndpoint<AppWebhookDelivery> for AppWebhookDeliveryDetails {
     fn path(&self) -> String {
         format!(
             "apps/{}/webhook-deliveries/{}",
-            self.app_identifier, self.webhook_delivery_identifier
+            self.app_id, self.webhook_delivery_id
         )
     }
 }
@@ -153,8 +146,8 @@ impl HerokuEndpoint<AppWebhookDelivery> for AppWebhookDeliveryDetails {
 /// Lists existing deliveries for an app.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-list
 pub struct AppWebhookDeliveryList {
-    /// app_identifier can be the app name or id.
-    pub app_identifier: String,
+    /// app_id can be the app name or id.
+    pub app_id: String,
 }
 
 impl HerokuEndpoint<Vec<AppWebhookDelivery>> for AppWebhookDeliveryList {
@@ -162,6 +155,6 @@ impl HerokuEndpoint<Vec<AppWebhookDelivery>> for AppWebhookDeliveryList {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("apps/{}/webhook-deliveries", self.app_identifier,)
+        format!("apps/{}/webhook-deliveries", self.app_id,)
     }
 }

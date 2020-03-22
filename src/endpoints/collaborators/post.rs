@@ -7,8 +7,8 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new collaborator.
 /// https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create
 pub struct CollaboratorCreate {
-    /// This app_idetifier can be the app name or the app id
-    pub app_identifier: String,
+    /// app_id can be the app name or the app id
+    pub app_id: String,
     /// The parameters to pass to the Heroku API
     pub params: CollaboratorCreateParams,
 }
@@ -28,7 +28,7 @@ impl HerokuEndpoint<Collaborator, (), CollaboratorCreateParams> for Collaborator
         Method::Post
     }
     fn path(&self) -> String {
-        format!("apps/{}/collaborators", self.app_identifier)
+        format!("apps/{}/collaborators", self.app_id)
     }
     fn body(&self) -> Option<CollaboratorCreateParams> {
         Some(self.params.clone())

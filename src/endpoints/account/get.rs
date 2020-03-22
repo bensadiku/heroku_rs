@@ -20,8 +20,8 @@ impl HerokuEndpoint<Account> for AccountDetails {
 /// Account Info By User
 /// https://devcenter.heroku.com/articles/platform-api-reference#account-info
 pub struct UserAccountDetails {
-    /// identifier can be the account email or id.
-    pub account_identifier: String,
+    /// account_id can be the account email or id.
+    pub account_id: String,
 }
 
 impl HerokuEndpoint<Account> for UserAccountDetails {
@@ -29,7 +29,7 @@ impl HerokuEndpoint<Account> for UserAccountDetails {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("users/{}", self.account_identifier)
+        format!("users/{}", self.account_id)
     }
 }
 
@@ -51,8 +51,8 @@ impl HerokuEndpoint<Vec<AccountFeature>> for AccountFeatureList {
 /// Info for an existing account feature.
 /// https://devcenter.heroku.com/articles/platform-api-reference#account-feature-info
 pub struct AccountFeatureDetails {
-    /// identifier can be the feature name or id.
-    pub account_feature_id: String,
+    /// feature_id can be the feature name or id.
+    pub feature_id: String,
 }
 
 impl HerokuEndpoint<AccountFeature> for AccountFeatureDetails {
@@ -60,7 +60,7 @@ impl HerokuEndpoint<AccountFeature> for AccountFeatureDetails {
         Method::Get
     }
     fn path(&self) -> String {
-        format!("account/features/{}", self.account_feature_id)
+        format!("account/features/{}", self.feature_id)
     }
 }
 
@@ -82,7 +82,7 @@ impl HerokuEndpoint<Vec<AppTransfer>> for AppTransferList {
 /// Info for existing app transfer.
 /// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-info
 pub struct AppTransferDetails {
-    /// identifier can be the transfer name or id.
+    /// transfer_id can be the transfer name or id.
     pub transfer_id: String,
 }
 
