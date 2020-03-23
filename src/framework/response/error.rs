@@ -2,15 +2,25 @@ use std::error::Error;
 use std::fmt;
 use std::fmt::Debug;
 
+/// HerokuApiError
+/// 
+/// Failing responses will have an appropriate status and a JSON body containing more details about a particular error. See error responses for more example ids.
+/// 
+/// [See the Heroku docs for this error struct](https://devcenter.heroku.com/articles/platform-api-reference#error-attributes)
 #[derive(Deserialize, Debug, Default)]
 pub struct HerokuApiError {
+    /// end user message of error raised
     pub message: String,
+    /// id of error raised
     pub id: String,
 }
 
+/// An enum to classify which errors are what.
 #[derive(Debug)]
 pub enum HerokuApiFailure {
+    /// If Heroku API returned a Error code, this enum is used to handle the error
     Error(reqwest::StatusCode, HerokuApiError),
+    /// If there was a invalid response, or the response failed, this enum is used to handle the error
     Invalid(reqwest::Error),
 }
 

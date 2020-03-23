@@ -4,13 +4,18 @@ use super::{AppTransfer, Credit};
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// App Transfer Create
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create
+///
+/// Create a new app transfer.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create)
 pub struct AppTransferCreate {
+    /// The parameters to pass to the Heroku API
     pub params: AppTransferCreateParams,
 }
 
 /// Update account with parameters.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create-required-parameters
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppTransferCreateParams {
     /// unique identifier or name of app
@@ -34,14 +39,18 @@ impl HerokuEndpoint<AppTransfer, (), AppTransferCreateParams> for AppTransferCre
 }
 
 /// Credit Create
+///
 /// Create a new credit.
-/// https://devcenter.heroku.com/articles/platform-api-reference#credit-create
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-create)
 pub struct AccountCreditCreate {
+    /// The parameters to pass to the Heroku API
     pub params: AccountCreditCreateParams,
 }
 
 /// Update account credits with parameters.
-/// https://devcenter.heroku.com/articles/platform-api-reference#credit-create-optional-parameters
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-create-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AccountCreditCreateParams {
     /// first code from a discount card

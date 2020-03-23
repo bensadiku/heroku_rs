@@ -24,13 +24,13 @@ pub fn match_response<T: ApiResult>(api_response: reqwest::blocking::Response) -
     }
 }
 
-/// Some endpoints return empty objects, empty vectors or just ().
+// Some endpoints return empty objects, empty vectors or just ().
 impl ApiResult for Empty {}
 impl ApiResult for () {}
 impl ApiResult for Vec<Empty> {}
 
 pub trait ApiResult: DeserializeOwned + Debug {}
 
-/// This because Heroku returns a empty object in some responses.
+// This because Heroku returns a empty object in some responses.
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Empty {}

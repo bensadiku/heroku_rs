@@ -4,8 +4,10 @@ use super::Collaborator;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Collaborator Delete
+///
 /// Delete an existing collaborator.
-/// https://devcenter.heroku.com/articles/platform-api-reference#collaborator-delete
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-delete)
 pub struct CollaboratorDelete {
     /// app_id can be the app name or id.
     pub app_id: String,

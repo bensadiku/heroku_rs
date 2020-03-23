@@ -4,8 +4,10 @@ use super::Domain;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Domain Delete
+///
 /// Delete an existing domain
-/// https://devcenter.heroku.com/articles/platform-api-reference#domain-delete
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-delete)
 pub struct DomainDelete {
     /// app_id can be the app name or id.
     pub app_id: String,

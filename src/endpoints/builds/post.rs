@@ -4,8 +4,10 @@ use super::{Build, Buildpack, SourceBlob};
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Build Create
+///
 /// Create a new build.
-/// https://devcenter.heroku.com/articles/platform-api-reference#build-create
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-create)
 pub struct BuildCreate {
     /// app_id can be the app name or the app id
     pub app_id: String,
@@ -14,7 +16,8 @@ pub struct BuildCreate {
 }
 
 /// Create build with parameters.
-/// https://devcenter.heroku.com/articles/platform-api-reference#build-create-required-parameters
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct BuildCreateParams {
     /// Buildpacks are optional parameters

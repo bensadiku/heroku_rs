@@ -1,7 +1,7 @@
 //! This module contains the synchronous (blocking) API client.
 use crate::framework::{
     endpoint::HerokuEndpoint,
-    response::{ApiResult, ApiResponse},
+    response::{ApiResponse, ApiResult},
 };
 use serde::Serialize;
 

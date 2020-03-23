@@ -3,16 +3,21 @@ use super::{App, AppWebhook};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
+/// App Create
+/// 
 /// Create a new app.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-create
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-create)
 pub struct AppCreate {
     /// The parameters to pass to the Heroku API
     pub params: AppCreateParams,
 }
 
 /// Create a new app with parameters.
+/// 
 /// All three paramemters are optional.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-create-optional-parameters
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-create-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppCreateParams {
     /// name of app. pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
@@ -35,8 +40,11 @@ impl HerokuEndpoint<App, (), AppCreateParams> for AppCreate {
     }
 }
 
+/// App Enable ACM
+/// 
 /// Enable ACM flag for an app
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-enable-acm
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-enable-acm)
 pub struct AppEnableAcm {
     /// app_id can be the app id or name.
     pub app_id: String,
@@ -52,8 +60,10 @@ impl HerokuEndpoint<App> for AppEnableAcm {
 }
 
 /// App Webhook Create
+/// 
 /// Create an app webhook subscription.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create)
 pub struct AppWebhookCreate {
     /// app_id can be the app name or the app id
     pub app_id: String,
@@ -62,7 +72,8 @@ pub struct AppWebhookCreate {
 }
 
 /// Create a new app webhook with parameters.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create-required-parameters
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppWebhookCreateParams {
     /// A custom Authorization header that Heroku will include with all webhook notifications

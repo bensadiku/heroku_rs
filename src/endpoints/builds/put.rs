@@ -4,7 +4,10 @@ use super::{BuildpackInstallation, Update};
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Buildpack Installations Update
-/// https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update
+/// 
+/// Update an app’s buildpack installations.
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update)
 pub struct BuildpackInstallationUpdate {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -13,7 +16,8 @@ pub struct BuildpackInstallationUpdate {
 }
 
 /// Update an app’s buildpack installations.
-/// https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update-required-parameters
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct BuildpackInstallationUpdateParams {
     /// The buildpack attribute can accept a name, a url, or a urn.

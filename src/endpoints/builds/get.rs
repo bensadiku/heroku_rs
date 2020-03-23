@@ -3,9 +3,11 @@ use super::{Build, BuildpackInstallation};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
-/// Get info for existing builds.
+/// Build List
+///
 /// List existing builds.
-/// https://devcenter.heroku.com/articles/platform-api-reference#build-list
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-list)
 pub struct BuildList {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -20,9 +22,11 @@ impl HerokuEndpoint<Vec<Build>> for BuildList {
     }
 }
 
-/// Get info for existing build.
+/// Build Info
+///
 /// Info for existing build.
-/// https://devcenter.heroku.com/articles/platform-api-reference#build-info
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-info)
 pub struct BuildDetails {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -40,8 +44,10 @@ impl HerokuEndpoint<Build> for BuildDetails {
 }
 
 /// Buildpack Installations List
+///
 /// List an app’s existing buildpack installations.
-/// https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-list
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-list)
 pub struct BuildPackInstallationList {
     /// app_id can be the app name or id.
     pub app_id: String,

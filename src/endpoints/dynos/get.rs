@@ -5,8 +5,10 @@ use super::Dyno;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Dyno Info
+/// 
 /// Get info for existing dyno.
-/// https://devcenter.heroku.com/articles/platform-api-reference#dyno-info
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-info)
 pub struct DynoDetails {
     /// app_id can be the app name or the app id
     pub app_id: String,
@@ -24,8 +26,10 @@ impl HerokuEndpoint<Dyno> for DynoDetails {
 }
 
 /// Dyno List
+/// 
 /// List existing dynos.
-/// https://devcenter.heroku.com/articles/platform-api-reference#dyno-list
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-list)
 pub struct DynoList {
     /// app_id can be the app name or the app id
     pub app_id: String,

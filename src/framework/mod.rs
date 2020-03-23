@@ -1,3 +1,5 @@
+//! Module for for authentication, api clients and response parsing.
+
 pub mod apiclient;
 pub mod auth;
 pub mod endpoint;

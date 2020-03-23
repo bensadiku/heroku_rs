@@ -3,15 +3,20 @@ use super::{Account, AccountFeature, AppTransfer};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
+/// Account Update
+///
 /// Update account.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-update
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update)
 pub struct AccountUpdate {
     pub params: AccountUpdateParams,
 }
 
 /// Update account with parameters.
+///
 /// All three paramemters are optional.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-update-optional-parameters
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AccountUpdateParams {
     /// whether to allow third party web activity tracking, by default: true
@@ -34,8 +39,11 @@ impl HerokuEndpoint<Account, (), AccountUpdateParams> for AccountUpdate {
     }
 }
 
-/// Update user account.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user
+/// Account Update By User
+///
+/// Update account.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user)
 pub struct UserAccountUpdate {
     /// account_id can be the account email or id.
     pub account_id: String,
@@ -44,8 +52,10 @@ pub struct UserAccountUpdate {
 }
 
 /// Update user account with parameters.
+///
 /// All three paramemters are optional.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user-optional-parameters
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct UserAccountUpdateParams {
     /// whether to allow third party web activity tracking, by default: true
@@ -68,8 +78,11 @@ impl HerokuEndpoint<Account, (), UserAccountUpdateParams> for UserAccountUpdate 
     }
 }
 
-/// Update account feature.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update
+/// Account Feature Update
+///
+/// Update an existing account feature.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update)
 pub struct AccountFeatureUpdate {
     /// feature_id can be the feature name or id.
     pub feature_id: String,
@@ -78,7 +91,8 @@ pub struct AccountFeatureUpdate {
 }
 
 /// Update account feature with parameters.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update-required-parameters
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AccountFeatureUpdateParams {
     /// whether or not account feature has been enabled
@@ -98,7 +112,10 @@ impl HerokuEndpoint<AccountFeature, (), AccountFeatureUpdateParams> for AccountF
 }
 
 /// App Transfer Update
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update
+///
+/// Update an existing app transfer.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update)
 pub struct AppTransferUpdate {
     /// unique identifier or the transfer name
     pub transfer_id: String,
@@ -107,7 +124,8 @@ pub struct AppTransferUpdate {
 }
 
 /// Update account app transfer with parameters.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update-required-parameters
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppTransferUpdateParams {
     /// the current state of an app transfer, one of:"pending" or "accepted" or "declined"
