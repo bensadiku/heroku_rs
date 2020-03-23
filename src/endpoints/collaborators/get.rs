@@ -4,8 +4,10 @@ use super::Collaborator;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Collaborator List
+///
 /// List existing collaborators.
-/// https://devcenter.heroku.com/articles/platform-api-reference#collaborator-list
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-list)
 pub struct CollaboratorList {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -21,8 +23,11 @@ impl HerokuEndpoint<Vec<Collaborator>> for CollaboratorList {
 }
 
 /// Collaborator Info
+///
 /// Info for existing collaborator.
-/// https://devcenter.heroku.com/articles/platform-api-reference#collaborator-list
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-info)
+///
 pub struct CollaboratorDetails {
     /// app_id can be the app name or id.
     pub app_id: String,

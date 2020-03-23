@@ -3,8 +3,10 @@
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Dyno Restart
+/// 
 /// Restart dyno.
-/// https://devcenter.heroku.com/articles/platform-api-reference#dyno-restart
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-restart)
 pub struct DynoRestart {
     /// app_id can be the app name or the app id
     pub app_id: String,
@@ -22,8 +24,10 @@ impl HerokuEndpoint for DynoRestart {
 }
 
 /// Dyno Restart all
+/// 
 /// Restart all dynos.
-/// https://devcenter.heroku.com/articles/platform-api-reference#dyno-restart-all
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-restart-all)
 pub struct DynoAllRestart {
     /// app_id can be the app name or the app id
     pub app_id: String,

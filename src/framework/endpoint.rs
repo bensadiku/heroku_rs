@@ -3,6 +3,7 @@ use crate::framework::ApiEnvironment;
 use serde::Serialize;
 use url::Url;
 
+/// HTTP methods used on this crate.
 pub enum Method {
     Get,
     Post,
@@ -11,6 +12,9 @@ pub enum Method {
     Patch,
 }
 
+/// Heroku Endpoint trait by default has a empty struct and void query types and body types
+/// 
+/// This trait is responsible for the majority of the functionality of this crate.
 pub trait HerokuEndpoint<ResultType = Empty, QueryType = (), BodyType = ()>
 where
     ResultType: ApiResult,

@@ -3,8 +3,11 @@ use super::{App, AppFeature, AppWebhook, AppWebhookDelivery};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
+/// App Info
+/// 
 /// Get info for existing app.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-info
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-info)
 pub struct AppDetails {
     /// app_id can be the app id or app name.
     pub app_id: String,
@@ -19,9 +22,11 @@ impl HerokuEndpoint<App> for AppDetails {
     }
 }
 
+/// App List
+/// 
 /// List existing apps.
-/// No parameters required to get this list.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-list
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-list)
 pub struct AppList {}
 
 impl HerokuEndpoint<Vec<App>> for AppList {
@@ -33,9 +38,11 @@ impl HerokuEndpoint<Vec<App>> for AppList {
     }
 }
 
+/// App List Owned and Collaborated
+/// 
 /// List owned and collaborated apps (excludes team apps).
-/// account_id is required to delete an app.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-list-owned-and-collaborated
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-list-owned-and-collaborated)
 pub struct AccountAppList {
     /// account_id can be the account email, id or self.
     pub account_id: String,
@@ -50,8 +57,11 @@ impl HerokuEndpoint<Vec<App>> for AccountAppList {
     }
 }
 
+/// App Feature Info
+/// 
 /// Info for an existing app feature.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-feature-info
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-info)
 pub struct AppFeatureDetails {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -68,8 +78,11 @@ impl HerokuEndpoint<AppFeature> for AppFeatureDetails {
     }
 }
 
+/// App Feature List
+/// 
 /// List existing app features.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-feature-list
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-list)
 pub struct AppFeatureList {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -85,8 +98,10 @@ impl HerokuEndpoint<Vec<AppFeature>> for AppFeatureList {
 }
 
 /// App Webhook List
+/// 
 /// List all webhook subscriptions for a particular app.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-list
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-list)
 pub struct AppWebhookList {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -102,8 +117,10 @@ impl HerokuEndpoint<Vec<AppWebhook>> for AppWebhookList {
 }
 
 /// App Webhook Info
+/// 
 /// Returns the info for an app webhook subscription.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-info
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-info)
 pub struct AppWebhookDetails {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -121,8 +138,10 @@ impl HerokuEndpoint<AppWebhook> for AppWebhookDetails {
 }
 
 /// App Webhook Delivery
+/// 
 /// Returns the info for an existing delivery.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-info
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-info)
 pub struct AppWebhookDeliveryDetails {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -143,8 +162,10 @@ impl HerokuEndpoint<AppWebhookDelivery> for AppWebhookDeliveryDetails {
 }
 
 /// App Webhook Deliveries
+/// 
 /// Lists existing deliveries for an app.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-list
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-list)
 pub struct AppWebhookDeliveryList {
     /// app_id can be the app name or id.
     pub app_id: String,

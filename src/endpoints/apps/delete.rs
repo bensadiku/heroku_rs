@@ -3,8 +3,11 @@ use super::{App, AppWebhook};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
+/// App Delete
+///
 /// Delete an existing app.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-delete
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-delete)
 pub struct AppDelete {
     /// app_id can be the app id or app name.
     pub app_id: String,
@@ -19,8 +22,11 @@ impl HerokuEndpoint<App> for AppDelete {
     }
 }
 
+/// App Disable ACM
+///
 /// Disable ACM flag for an app
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-disable-acm
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-disable-acm)
 pub struct AppDisableAcm {
     /// app_id can be the app id or name.
     pub app_id: String,
@@ -36,8 +42,10 @@ impl HerokuEndpoint<App> for AppDisableAcm {
 }
 
 /// App Webhook Delete
+///
 /// Removes an app webhook subscription.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delete
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delete)
 pub struct AppWebhookDelete {
     /// app_id can be the app id or app name.
     pub app_id: String,
@@ -50,9 +58,6 @@ impl HerokuEndpoint<AppWebhook> for AppWebhookDelete {
         Method::Delete
     }
     fn path(&self) -> String {
-        format!(
-            "apps/{}/webhooks/{}",
-            self.app_id, self.webhook_id
-        )
+        format!("apps/{}/webhooks/{}", self.app_id, self.webhook_id)
     }
 }

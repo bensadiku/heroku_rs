@@ -4,8 +4,10 @@ use super::Collaborator;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Collaborator Create
+///
 /// Create a new collaborator.
-/// https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create)
 pub struct CollaboratorCreate {
     /// app_id can be the app name or the app id
     pub app_id: String,
@@ -14,7 +16,8 @@ pub struct CollaboratorCreate {
 }
 
 /// Create build with parameters.
-/// https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create-required-parameters
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct CollaboratorCreateParams {
     /// unique email address, identifier of an account or Implicit reference to currently authorized user

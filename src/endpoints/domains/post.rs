@@ -4,8 +4,10 @@ use super::Domain;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Domain Create
+/// 
 /// Create a new domain.
-/// https://devcenter.heroku.com/articles/platform-api-reference#domain-create
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-create)
 pub struct DomainCreate {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -14,7 +16,8 @@ pub struct DomainCreate {
 }
 
 /// Create domain with parameters.
-/// https://devcenter.heroku.com/articles/platform-api-reference#domain-create-required-parameters
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct DomainCreateParams {
     /// full hostname

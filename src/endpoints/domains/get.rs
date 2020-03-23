@@ -4,8 +4,10 @@ use super::Domain;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Domain Info
+/// 
 /// Info for existing domain.
-/// https://devcenter.heroku.com/articles/platform-api-reference#domain-info
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-info)
 pub struct DomainDetails {
     /// app_id can be the app name or id.
     pub app_id: String,
@@ -26,8 +28,10 @@ impl HerokuEndpoint<Domain> for DomainDetails {
 }
 
 /// Domain List
+/// 
 /// List existing domains.
-/// https://devcenter.heroku.com/articles/platform-api-reference#domain-list
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-list)
 pub struct DomainList {
     /// app_id can be the app name or id.
     pub app_id: String,

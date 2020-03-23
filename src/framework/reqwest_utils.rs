@@ -1,6 +1,7 @@
 use crate::framework::endpoint::Method;
 use reqwest;
 
+/// Match the reqwest methods to our enum Method.
 pub fn match_reqwest_method(method: Method) -> reqwest::Method {
     match method {
         Method::Get => reqwest::Method::GET,

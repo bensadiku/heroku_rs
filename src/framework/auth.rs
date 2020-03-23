@@ -1,5 +1,6 @@
 use reqwest::blocking::RequestBuilder;
 
+/// Credentials enum, currently only supporting token authentication
 #[derive(Debug)]
 pub enum Credentials {
     UserAuthToken { token: String },

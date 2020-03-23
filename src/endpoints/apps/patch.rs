@@ -3,8 +3,11 @@ use super::{App, AppFeature, AppWebhook};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
+/// App Update
+/// 
 /// Update an existing app.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-update
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-update)
 pub struct AppUpdate {
     /// app_id can be either app id or app name.
     pub app_id: String,
@@ -13,8 +16,8 @@ pub struct AppUpdate {
 }
 
 /// Update app with parameters.
-/// All three paramemters are optional.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-update-optional-parameters
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppUpdateParams {
     /// unique name or identifier of stack
@@ -37,8 +40,11 @@ impl HerokuEndpoint<App, (), AppUpdateParams> for AppUpdate {
     }
 }
 
+/// App Refresh ACM
+/// 
 /// Refresh ACM for an app
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-refresh-acm
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-refresh-acm)
 pub struct AppRefreshAcm {
     /// app_id can be either app id or app name.
     pub app_id: String,
@@ -53,8 +59,11 @@ impl HerokuEndpoint<App> for AppRefreshAcm {
     }
 }
 
+/// App Feature Update
+/// 
 /// Update an existing app feature.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update)
 pub struct AppFeatureUpdate {
     /// app_id can be either app id or app name.
     pub app_id: String,
@@ -65,7 +74,8 @@ pub struct AppFeatureUpdate {
 }
 
 /// Update an existing app feature with parameters.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update-required-parameters
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppFeatureUpdateParams {
     /// whether or not app feature should be enabled
@@ -85,8 +95,10 @@ impl HerokuEndpoint<AppFeature, (), AppFeatureUpdateParams> for AppFeatureUpdate
 }
 
 /// App Webhook Update.
+/// 
 /// Updates the details of an app webhook subscription.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update)
 pub struct AppWebhookUpdate {
     /// app_id can be the app id or app name.
     pub app_id: String,
@@ -97,8 +109,10 @@ pub struct AppWebhookUpdate {
 }
 
 /// Update an existing app webhook with parameters.
+/// 
 /// All parameters for this patch are optional.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update-optional-parameters
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppWebhookUpdateParams {
     /// A custom Authorization header that Heroku will include with all webhook notifications

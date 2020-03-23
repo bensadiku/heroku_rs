@@ -4,8 +4,10 @@ use super::Account;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Account Delete.
+///
 /// Delete account. Note that this action cannot be undone.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-delete
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-delete)
 pub struct AccountDelete {}
 
 impl HerokuEndpoint<Account> for AccountDelete {
@@ -18,8 +20,10 @@ impl HerokuEndpoint<Account> for AccountDelete {
 }
 
 /// User Account Delete.
+///
 /// Delete user account. Note that this action cannot be undone.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-delete-by-user
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-delete-by-user)
 pub struct UserAccountDelete {
     /// account_id can be the account email or id.
     pub account_id: String,
@@ -35,8 +39,10 @@ impl HerokuEndpoint<Account> for UserAccountDelete {
 }
 
 /// Account Transfer Delete.
+/// 
 /// Delete an existing app transfer
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-delete
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-delete)
 pub struct AppTransferDelete {
     /// transfer_id can be the transfer name or id.
     pub transfer_id: String,

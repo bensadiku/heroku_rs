@@ -3,9 +3,11 @@ use super::{Account, AccountFeature, AppTransfer, Credit};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
+/// Account Info
+///
 /// Info for account.
-/// No parameters required.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-info
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-info)
 pub struct AccountDetails {}
 
 impl HerokuEndpoint<Account> for AccountDetails {
@@ -18,7 +20,10 @@ impl HerokuEndpoint<Account> for AccountDetails {
 }
 
 /// Account Info By User
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-info
+///
+/// Info for account.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference##account-info-by-user)
 pub struct UserAccountDetails {
     /// account_id can be the account email or id.
     pub account_id: String,
@@ -34,8 +39,10 @@ impl HerokuEndpoint<Account> for UserAccountDetails {
 }
 
 /// Account Feature List.
+///
 /// List existing account features.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-feature-list
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-list)
 pub struct AccountFeatureList {}
 
 impl HerokuEndpoint<Vec<AccountFeature>> for AccountFeatureList {
@@ -48,8 +55,10 @@ impl HerokuEndpoint<Vec<AccountFeature>> for AccountFeatureList {
 }
 
 /// Account Feature Info.
+///
 /// Info for an existing account feature.
-/// https://devcenter.heroku.com/articles/platform-api-reference#account-feature-info
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-info)
 pub struct AccountFeatureDetails {
     /// feature_id can be the feature name or id.
     pub feature_id: String,
@@ -64,9 +73,11 @@ impl HerokuEndpoint<AccountFeature> for AccountFeatureDetails {
     }
 }
 
-/// App Transfer List
+/// App Transfer List.
+///
 /// List existing apps transfers.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-list
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-list)
 pub struct AppTransferList {}
 
 impl HerokuEndpoint<Vec<AppTransfer>> for AppTransferList {
@@ -79,8 +90,10 @@ impl HerokuEndpoint<Vec<AppTransfer>> for AppTransferList {
 }
 
 /// App Transfer Info
+///
 /// Info for existing app transfer.
-/// https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-info
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-info)
 pub struct AppTransferDetails {
     /// transfer_id can be the transfer name or id.
     pub transfer_id: String,
@@ -96,8 +109,10 @@ impl HerokuEndpoint<AppTransfer> for AppTransferDetails {
 }
 
 /// Account Credit Info
+/// 
 /// Info for existing credit.
-/// https://devcenter.heroku.com/articles/platform-api-reference#credit-info
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-info)
 pub struct AccountCreditDetails {
     /// credit_id is the credit identifier.
     pub credit_id: String,
@@ -113,8 +128,10 @@ impl HerokuEndpoint<AppTransfer> for AccountCreditDetails {
 }
 
 /// App Credit List
+/// 
 /// List existing credits.
-/// https://devcenter.heroku.com/articles/platform-api-reference#credit-list
+/// 
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-list)
 pub struct AccountCreditList {}
 
 impl HerokuEndpoint<Vec<Credit>> for AccountCreditList {
