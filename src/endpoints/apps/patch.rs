@@ -1,12 +1,12 @@
 //Anything related to patching(updating) apps and it's properties goes here.
-use super::{App, AppFeature, AppWebhook};
+use super::{App, AppFeature, AppWebhook, Formation};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// App Update
-/// 
+///
 /// Update an existing app.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-update)
 pub struct AppUpdate {
     /// app_id can be either app id or app name.
@@ -16,7 +16,7 @@ pub struct AppUpdate {
 }
 
 /// Update app with parameters.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppUpdateParams {
@@ -41,9 +41,9 @@ impl HerokuEndpoint<App, (), AppUpdateParams> for AppUpdate {
 }
 
 /// App Refresh ACM
-/// 
+///
 /// Refresh ACM for an app
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-refresh-acm)
 pub struct AppRefreshAcm {
     /// app_id can be either app id or app name.
@@ -60,9 +60,9 @@ impl HerokuEndpoint<App> for AppRefreshAcm {
 }
 
 /// App Feature Update
-/// 
+///
 /// Update an existing app feature.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update)
 pub struct AppFeatureUpdate {
     /// app_id can be either app id or app name.
@@ -74,7 +74,7 @@ pub struct AppFeatureUpdate {
 }
 
 /// Update an existing app feature with parameters.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppFeatureUpdateParams {
@@ -95,9 +95,9 @@ impl HerokuEndpoint<AppFeature, (), AppFeatureUpdateParams> for AppFeatureUpdate
 }
 
 /// App Webhook Update.
-/// 
+///
 /// Updates the details of an app webhook subscription.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update)
 pub struct AppWebhookUpdate {
     /// app_id can be the app id or app name.
@@ -109,9 +109,9 @@ pub struct AppWebhookUpdate {
 }
 
 /// Update an existing app webhook with parameters.
-/// 
+///
 /// All parameters for this patch are optional.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct AppWebhookUpdateParams {
@@ -136,6 +136,87 @@ impl HerokuEndpoint<AppWebhook, (), AppWebhookUpdateParams> for AppWebhookUpdate
         format!("apps/{}/webhooks/{}", self.app_id, self.webhook_id)
     }
     fn body(&self) -> Option<AppWebhookUpdateParams> {
+        Some(self.params.clone())
+    }
+}
+
+/// Formation Batch Update
+///
+/// Batch update process types
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-batch-update)
+pub struct AppFormationBatchUpdate {
+    /// app_id can be either app id or app name.
+    pub app_id: String,
+    /// params are the parameters sent to the Heroku API.
+    pub params: AppFormationBatchUpdateParams,
+}
+
+/// Update formations in batch with parameters.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-batch-update-required-parameters)
+#[derive(Serialize, Clone, Debug)]
+pub struct AppFormationBatchUpdateParams {
+    /// whether or not app feature should be enabled
+    pub updates: Vec<Update>,
+}
+
+#[derive(Serialize, Clone, Debug)]
+pub struct Update {
+    /// number of processes to maintain
+    pub quantity: i64,
+    /// dyno size (default: “standard-1X”)
+    pub size: String,
+    /// type of process to maintain. pattern: ^[-\w]{1,128}$
+    #[serde(rename = "type")]
+    pub type_field: String,
+}
+
+impl HerokuEndpoint<Vec<Formation>, (), AppFormationBatchUpdateParams> for AppFormationBatchUpdate {
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/formation", self.app_id)
+    }
+    fn body(&self) -> Option<AppFormationBatchUpdateParams> {
+        Some(self.params.clone())
+    }
+}
+
+/// Formation Update
+///
+/// Update process type
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-update)
+pub struct AppFormationUpdate {
+    /// app_id can be either app id or app name.
+    pub app_id: String,
+    /// forma
+    pub formation_id: String,
+    /// params are the parameters sent to the Heroku API.
+    pub params: AppFormationUpdateParams,
+}
+
+/// Update process types
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-update-optional-parameters)
+#[derive(Serialize, Clone, Debug)]
+pub struct AppFormationUpdateParams {
+    /// number of processes to maintain
+    pub quantity: u32,
+    /// dyno size (default: “standard-1X”)
+    pub size: String,
+}
+
+impl HerokuEndpoint<Formation, (), AppFormationUpdateParams> for AppFormationUpdate {
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/formation/{}", self.app_id, self.formation_id)
+    }
+    fn body(&self) -> Option<AppFormationUpdateParams> {
         Some(self.params.clone())
     }
 }

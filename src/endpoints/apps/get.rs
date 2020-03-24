@@ -1,12 +1,12 @@
 //Anything related to getting apps and it's properties goes here.
-use super::{App, AppFeature, AppWebhook, AppWebhookDelivery};
+use super::{App, AppFeature, AppWebhook, AppWebhookDelivery, Formation};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// App Info
-/// 
+///
 /// Get info for existing app.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-info)
 pub struct AppDetails {
     /// app_id can be the app id or app name.
@@ -23,9 +23,9 @@ impl HerokuEndpoint<App> for AppDetails {
 }
 
 /// App List
-/// 
+///
 /// List existing apps.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-list)
 pub struct AppList {}
 
@@ -39,9 +39,9 @@ impl HerokuEndpoint<Vec<App>> for AppList {
 }
 
 /// App List Owned and Collaborated
-/// 
+///
 /// List owned and collaborated apps (excludes team apps).
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-list-owned-and-collaborated)
 pub struct AccountAppList {
     /// account_id can be the account email, id or self.
@@ -58,9 +58,9 @@ impl HerokuEndpoint<Vec<App>> for AccountAppList {
 }
 
 /// App Feature Info
-/// 
+///
 /// Info for an existing app feature.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-info)
 pub struct AppFeatureDetails {
     /// app_id can be the app name or id.
@@ -79,9 +79,9 @@ impl HerokuEndpoint<AppFeature> for AppFeatureDetails {
 }
 
 /// App Feature List
-/// 
+///
 /// List existing app features.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-list)
 pub struct AppFeatureList {
     /// app_id can be the app name or id.
@@ -98,9 +98,9 @@ impl HerokuEndpoint<Vec<AppFeature>> for AppFeatureList {
 }
 
 /// App Webhook List
-/// 
+///
 /// List all webhook subscriptions for a particular app.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-list)
 pub struct AppWebhookList {
     /// app_id can be the app name or id.
@@ -117,9 +117,9 @@ impl HerokuEndpoint<Vec<AppWebhook>> for AppWebhookList {
 }
 
 /// App Webhook Info
-/// 
+///
 /// Returns the info for an app webhook subscription.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-info)
 pub struct AppWebhookDetails {
     /// app_id can be the app name or id.
@@ -138,9 +138,9 @@ impl HerokuEndpoint<AppWebhook> for AppWebhookDetails {
 }
 
 /// App Webhook Delivery
-/// 
+///
 /// Returns the info for an existing delivery.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-info)
 pub struct AppWebhookDeliveryDetails {
     /// app_id can be the app name or id.
@@ -162,9 +162,9 @@ impl HerokuEndpoint<AppWebhookDelivery> for AppWebhookDeliveryDetails {
 }
 
 /// App Webhook Deliveries
-/// 
+///
 /// Lists existing deliveries for an app.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-list)
 pub struct AppWebhookDeliveryList {
     /// app_id can be the app name or id.
@@ -177,5 +177,48 @@ impl HerokuEndpoint<Vec<AppWebhookDelivery>> for AppWebhookDeliveryList {
     }
     fn path(&self) -> String {
         format!("apps/{}/webhook-deliveries", self.app_id,)
+    }
+}
+
+/// Formation List
+///
+/// List process type formation
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-list)
+pub struct AppFormationList {
+    /// app_id can be the app name or id.
+    pub app_id: String,
+}
+
+impl HerokuEndpoint<Vec<Formation>> for AppFormationList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/formation", self.app_id,)
+    }
+}
+
+/// Formation Info
+///
+/// Info for a process type
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-info)
+pub struct AppFormationDetails {
+    /// app_id can be the app name or id.
+    pub app_id: String,
+    /// formation id or type.
+    pub formation_id: String,
+}
+
+impl HerokuEndpoint<Formation> for AppFormationDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!(
+            "apps/{}/formation/{}",
+            self.app_id, self.formation_id
+        )
     }
 }

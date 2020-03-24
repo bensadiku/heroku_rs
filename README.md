@@ -1,4 +1,4 @@
-# heroku-rs
+# heroku_rs
 
 [![crates.io](https://img.shields.io/crates/v/heroku_rs.svg)](https://crates.io/crates/heroku_rs)
 [![Documentation](https://docs.rs/heroku_rs/badge.svg)](https://docs.rs/heroku_rs)

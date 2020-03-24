@@ -54,6 +54,64 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app_domains(api_client, app_name);
     // get_app_domain(api_client, app_name);
     // delete_app_domain(api_client, app_name);
+
+    // dyno_action_stop(api_client, app_name);
+
+    // get_app_formations(api_client, app_name);
+    // get_app_formation(api_client, app_name);
+    // update_batch_app_formation(api_client, app_name);
+    // update_app_formation(api_client, app_name);
+}
+
+/// update app formation in batches
+fn update_app_formation<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let formation_id = String::from("FORMATION_ID_OR_TYPE");
+    let response = api_client.request(&apps::AppFormationUpdate {
+        app_id,
+        formation_id,
+        params: apps::AppFormationUpdateParams {
+            quantity: 10,
+            size: String::from("standard-1X"),
+        },
+    });
+    print_response(response);
+}
+
+// update app formation in batches
+fn update_batch_app_formation<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let updates = vec![apps::patch::Update {
+        quantity: 10,
+        size: String::from("standard-1X"),
+        type_field: String::from("web"),
+    }];
+    let response = api_client.request(&apps::AppFormationBatchUpdate {
+        app_id,
+        params: apps::AppFormationBatchUpdateParams { updates },
+    });
+    print_response(response);
+}
+
+/// Get app formation
+fn get_app_formation<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let formation_id = String::from("FORMATION_ID_OR_TYPE");
+    let response = api_client.request(&apps::AppFormationDetails {
+        app_id,
+        formation_id,
+    });
+    print_response(response);
+}
+
+// Get app formations
+fn get_app_formations<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let response = api_client.request(&apps::AppFormationList { app_id });
+    print_response(response);
+}
+
+/// Stop dyno
+fn dyno_action_stop<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let domain_id = String::from("DYNO_ID_OR_NAME");
+    let response = api_client.request(&domains::DomainDelete { app_id, domain_id });
+    print_response(response);
 }
 
 /// Delete domain
@@ -150,10 +208,7 @@ fn delete_app_build<T: HerokuApiClient>(api_client: &T, app_id: String) {
 /// Gets info about a specific build
 fn get_app_build<T: HerokuApiClient>(api_client: &T, app_id: String) {
     let build_id = String::from("Build_ID");
-    let response = api_client.request(&builds::BuildDetails {
-        app_id,
-        build_id,
-    });
+    let response = api_client.request(&builds::BuildDetails { app_id, build_id });
     print_response(response);
 }
 
@@ -186,9 +241,7 @@ fn get_app_webhook_deliveries<ApiClientType: HerokuApiClient>(
     api_client: &ApiClientType,
     app_name: String,
 ) {
-    let response = api_client.request(&apps::AppWebhookDeliveryList {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppWebhookDeliveryList { app_id: app_name });
     print_response(response);
 }
 
@@ -237,9 +290,7 @@ fn get_app_webhook<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, a
 
 /// Gets a list of all webhooks that are available in the specified app.
 fn get_app_webhooks<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppWebhookList {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppWebhookList { app_id: app_name });
     print_response(response);
 }
 
@@ -292,23 +343,17 @@ fn get_app_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, a
 }
 
 fn get_app_features<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppFeatureList {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppFeatureList { app_id: app_name });
     print_response(response);
 }
 
 fn refresh_app_acm<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppRefreshAcm {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppRefreshAcm { app_id: app_name });
     print_response(response);
 }
 
 fn disable_app_acm<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppDisableAcm {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppDisableAcm { app_id: app_name });
     print_response(response);
 }
 
