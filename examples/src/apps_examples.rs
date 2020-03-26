@@ -62,7 +62,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // get_app_formation(api_client, app_name);
     // list_app_formations(api_client, app_name);
-    update_app_formation(api_client, app_name);
+    // update_app_formation(api_client, app_name);
 }
 
 /// Delete domain
