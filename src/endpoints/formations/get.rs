@@ -12,7 +12,7 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 pub struct FormationDetails {
     /// app_id can be the app name or the app id
     pub app_id: String,
-    /// dyno_id can be the formation id or type
+    /// formation_id can be the formation id or type
     pub formation_id: String,
 }
 

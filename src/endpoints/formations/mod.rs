@@ -8,6 +8,7 @@ pub mod post;
 pub mod put;
 
 pub use get::{FormationDetails, FormationList};
+pub use patch::{FormationUpdate, FormationUpdateParams};
 
 impl ApiResult for Formation {}
 impl ApiResult for Vec<Formation> {}
@@ -46,4 +47,3 @@ pub struct App {
     /// name of app pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
     pub name: String,
 }
-

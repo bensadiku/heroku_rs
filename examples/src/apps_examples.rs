@@ -15,7 +15,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // create_app(api_client, app_name);
     // delete_app(api_client, app_name); // Careful here :)
     // patch_app(api_client, app_name);
-    // get_app(api_client, app_name);
+    get_app(api_client, app_name);
     // list_apps(api_client);
     // list_account_apps(api_client);
     // get_dyno(api_client, app_name);
@@ -62,6 +62,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // get_app_formation(api_client, app_name);
     // list_app_formations(api_client, app_name);
+    update_app_formation(api_client, app_name);
 }
 
 /// Delete domain
@@ -447,5 +448,17 @@ fn list_app_formations<ApiClientType: HerokuApiClient>(api_client: &ApiClientTyp
 
 fn get_app_formation<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
     let resp = api_client.request(&formations::FormationDetails { app_id, formation_id: "web".to_string() });
+    print_response(resp);
+}
+
+fn update_app_formation<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&formations::FormationUpdate { 
+        app_id: app_id, 
+        formation_id: "web".to_string(),
+        params: formations::FormationUpdateParams {
+            quantity: Some(2),
+            size: Some("standard-1X".to_string()),
+        }
+    });
     print_response(resp);
 }
