@@ -14,3 +14,5 @@ pub mod collaborators;
 pub mod domains;
 /// OAuth Authorization
 pub mod oauth;
+/// pipelines
+pub mod pipelines;
