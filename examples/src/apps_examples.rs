@@ -6,6 +6,7 @@ use heroku_rs::endpoints::collaborators;
 use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
 use heroku_rs::framework::apiclient::HerokuApiClient;
+use std::collections::HashMap;
 
 pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let app_name = String::from("heroku-rs-tests");
@@ -13,10 +14,13 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // create_app(api_client, app_name);
     // delete_app(api_client, app_name); // Careful here :)
     // patch_app(api_client, app_name);
-    get_app(api_client, app_name);
+    // get_app(api_client, app_name);
     // list_apps(api_client);
     // list_account_apps(api_client);
     // get_dyno(api_client);
+    // list_dynos(api_client);
+    // create_dyno_simple(api_client, app_name);
+    create_dyno_complex(api_client, app_name);
     // list_dynos(api_client);
     // restart_dyno(api_client);
     // restart_all_dynos(api_client);
@@ -374,6 +378,52 @@ fn list_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     let resp = api_client.request(&dynos::DynoList { app_id });
     print_response(resp);
+}
+
+fn create_dyno_simple<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let response = api_client.request(&dynos::DynoCreate {
+        app_id,
+        params: dynos::DynoCreateParams {
+            command: "bash".to_string(),
+            attach: None,
+            env: None,
+            force_no_tty: None,
+            size: None,
+            time_to_live: None,
+            r#type: None,
+        },
+    });
+
+    print_response(response);
+}
+
+fn create_dyno_complex<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let mut custom_env_vars = HashMap::new();
+
+    custom_env_vars.insert(
+        "COLUMNS".to_string(),
+        "80".to_string()
+    );
+
+    custom_env_vars.insert(
+        "LINES".to_string(),
+        "24".to_string(),
+    );
+
+    let response = api_client.request(&dynos::DynoCreate {
+        app_id: app_id,
+        params: dynos::DynoCreateParams {
+            command: "bash".to_string(),
+            attach: Some(true),
+            env: Some(custom_env_vars),
+            force_no_tty: None,
+            size: None,
+            time_to_live: None,
+            r#type: None,
+        },
+    });
+
+    print_response(response);
 }
 
 fn restart_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
