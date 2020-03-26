@@ -5,6 +5,7 @@ use heroku_rs::endpoints::builds;
 use heroku_rs::endpoints::collaborators;
 use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
+use heroku_rs::endpoints::formations;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 use std::collections::HashMap;
 
@@ -20,7 +21,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_dyno(api_client);
     // list_dynos(api_client);
     // create_dyno_simple(api_client, app_name);
-    create_dyno_complex(api_client, app_name);
+    // create_dyno_complex(api_client, app_name);
     // list_dynos(api_client);
     // restart_dyno(api_client);
     // restart_all_dynos(api_client);
@@ -58,6 +59,9 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app_domains(api_client, app_name);
     // get_app_domain(api_client, app_name);
     // delete_app_domain(api_client, app_name);
+
+    // get_app_formation(api_client, app_name);
+    // list_app_formations(api_client, app_name);
 }
 
 /// Delete domain
@@ -438,5 +442,15 @@ fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType)
     let app_id = String::from("heroku-rs-tests");
 
     let resp = api_client.request(&dynos::DynoAllRestart { app_id });
+    print_response(resp);
+}
+
+fn list_app_formations<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&formations::FormationList { app_id: "testing-nell-bot".to_string() });
+    print_response(resp);
+}
+
+fn get_app_formation<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&formations::FormationDetails { app_id: "testing-nell-bot".to_string(), formation_id: "web".to_string() });
     print_response(resp);
 }

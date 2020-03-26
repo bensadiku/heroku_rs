@@ -12,3 +12,5 @@ pub mod builds;
 pub mod collaborators;
 /// domain endpoints
 pub mod domains;
+/// formations endpoints
+pub mod formations;
