@@ -18,13 +18,13 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app(api_client, app_name);
     // list_apps(api_client);
     // list_account_apps(api_client);
-    // get_dyno(api_client);
-    // list_dynos(api_client);
+    // get_dyno(api_client, app_name);
+    // list_dynos(api_client, app_name);
     // create_dyno_simple(api_client, app_name);
     // create_dyno_complex(api_client, app_name);
-    // list_dynos(api_client);
+    // list_dynos(api_client, app_name);
     // restart_dyno(api_client);
-    // restart_all_dynos(api_client);
+    // restart_all_dynos(api_client, app_name);
 
     // enable_app_acm(api_client, app_name);
     // disable_app_acm(api_client, app_name);
@@ -369,17 +369,14 @@ fn list_apps<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     print_response(resp);
 }
 
-fn get_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let app_id = String::from("heroku-rs-tests");
+fn get_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
     let dyno_id = String::from("web.1");
 
     let response = api_client.request(&dynos::DynoDetails { app_id, dyno_id });
     print_response(response);
 }
 
-fn list_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let app_id = String::from("testing-nell-bot");
-
+fn list_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
     let resp = api_client.request(&dynos::DynoList { app_id });
     print_response(resp);
 }
@@ -438,19 +435,17 @@ fn restart_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     print_response(resp);
 }
 
-fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let app_id = String::from("heroku-rs-tests");
-
+fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String ) {
     let resp = api_client.request(&dynos::DynoAllRestart { app_id });
     print_response(resp);
 }
 
 fn list_app_formations<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let resp = api_client.request(&formations::FormationList { app_id: "testing-nell-bot".to_string() });
+    let resp = api_client.request(&formations::FormationList { app_id });
     print_response(resp);
 }
 
 fn get_app_formation<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let resp = api_client.request(&formations::FormationDetails { app_id: "testing-nell-bot".to_string(), formation_id: "web".to_string() });
+    let resp = api_client.request(&formations::FormationDetails { app_id, formation_id: "web".to_string() });
     print_response(resp);
 }
