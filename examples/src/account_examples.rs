@@ -24,6 +24,33 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // create_account_credits(api_client);
     // get_account_credit(api_client);
     // get_account_credits(api_client);
+
+    // reset_account_password(api_client);
+    // confirm_password(api_client);
+}
+
+// Confirm password reset.
+fn confirm_password<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let password_id = String::from("123");
+    let old_password = String::from("123");
+    let new_password = String::from("123");
+    let response = api_client.request(&account::PasswordResetConfirm {
+        password_id,
+        params: account::PasswordResetConfirmParams {
+            password: old_password,
+            password_confirmation: new_password,
+        },
+    });
+    print_response(response);
+}
+
+// Reset password.
+fn reset_account_password<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let email = String::from("EMAIL");
+    let response = api_client.request(&account::PasswordReset {
+        params: account::PasswordResetParams { email },
+    });
+    print_response(response);
 }
 
 // Get account credits.

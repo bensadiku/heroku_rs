@@ -60,9 +60,18 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app_domain(api_client, app_name);
     // delete_app_domain(api_client, app_name);
 
+    // dyno_action_stop(api_client, app_name);
+
     // get_app_formation(api_client, app_name);
     // list_app_formations(api_client, app_name);
     // update_app_formation(api_client, app_name);
+}
+
+/// Stop dyno
+fn dyno_action_stop<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let domain_id = String::from("DYNO_ID_OR_NAME");
+    let response = api_client.request(&domains::DomainDelete { app_id, domain_id });
+    print_response(response);
 }
 
 /// Delete domain
@@ -159,10 +168,7 @@ fn delete_app_build<T: HerokuApiClient>(api_client: &T, app_id: String) {
 /// Gets info about a specific build
 fn get_app_build<T: HerokuApiClient>(api_client: &T, app_id: String) {
     let build_id = String::from("Build_ID");
-    let response = api_client.request(&builds::BuildDetails {
-        app_id,
-        build_id,
-    });
+    let response = api_client.request(&builds::BuildDetails { app_id, build_id });
     print_response(response);
 }
 
@@ -195,9 +201,7 @@ fn get_app_webhook_deliveries<ApiClientType: HerokuApiClient>(
     api_client: &ApiClientType,
     app_name: String,
 ) {
-    let response = api_client.request(&apps::AppWebhookDeliveryList {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppWebhookDeliveryList { app_id: app_name });
     print_response(response);
 }
 
@@ -246,9 +250,7 @@ fn get_app_webhook<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, a
 
 /// Gets a list of all webhooks that are available in the specified app.
 fn get_app_webhooks<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppWebhookList {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppWebhookList { app_id: app_name });
     print_response(response);
 }
 
@@ -301,23 +303,17 @@ fn get_app_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, a
 }
 
 fn get_app_features<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppFeatureList {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppFeatureList { app_id: app_name });
     print_response(response);
 }
 
 fn refresh_app_acm<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppRefreshAcm {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppRefreshAcm { app_id: app_name });
     print_response(response);
 }
 
 fn disable_app_acm<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppDisableAcm {
-        app_id: app_name,
-    });
+    let response = api_client.request(&apps::AppDisableAcm { app_id: app_name });
     print_response(response);
 }
 
@@ -402,15 +398,9 @@ fn create_dyno_simple<ApiClientType: HerokuApiClient>(api_client: &ApiClientType
 fn create_dyno_complex<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
     let mut custom_env_vars = HashMap::new();
 
-    custom_env_vars.insert(
-        "COLUMNS".to_string(),
-        "80".to_string()
-    );
+    custom_env_vars.insert("COLUMNS".to_string(), "80".to_string());
 
-    custom_env_vars.insert(
-        "LINES".to_string(),
-        "24".to_string(),
-    );
+    custom_env_vars.insert("LINES".to_string(), "24".to_string());
 
     let response = api_client.request(&dynos::DynoCreate {
         app_id: app_id,
@@ -436,7 +426,7 @@ fn restart_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     print_response(resp);
 }
 
-fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String ) {
+fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
     let resp = api_client.request(&dynos::DynoAllRestart { app_id });
     print_response(resp);
 }
@@ -447,18 +437,24 @@ fn list_app_formations<ApiClientType: HerokuApiClient>(api_client: &ApiClientTyp
 }
 
 fn get_app_formation<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let resp = api_client.request(&formations::FormationDetails { app_id, formation_id: "web".to_string() });
+    let resp = api_client.request(&formations::FormationDetails {
+        app_id,
+        formation_id: "web".to_string(),
+    });
     print_response(resp);
 }
 
-fn update_app_formation<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let resp = api_client.request(&formations::FormationUpdate { 
-        app_id: app_id, 
+fn update_app_formation<ApiClientType: HerokuApiClient>(
+    api_client: &ApiClientType,
+    app_id: String,
+) {
+    let resp = api_client.request(&formations::FormationUpdate {
+        app_id: app_id,
         formation_id: "web".to_string(),
         params: formations::FormationUpdateParams {
             quantity: Some(2),
             size: Some("standard-1X".to_string()),
-        }
+        },
     });
     print_response(resp);
 }

@@ -19,7 +19,10 @@ pub use patch::{
 
 pub use post::{
     AccountCreditCreate, AccountCreditCreateParams, AppTransferCreate, AppTransferCreateParams,
+    PasswordReset, PasswordResetConfirm, PasswordResetConfirmParams, PasswordResetParams,
 };
+
+pub use password::PasswordResetResponse;
 
 impl ApiResult for Account {}
 
@@ -32,10 +35,12 @@ impl ApiResult for Vec<AppTransfer> {}
 impl ApiResult for Credit {}
 impl ApiResult for Vec<Credit> {}
 
+impl ApiResult for PasswordResetResponse {}
+
 /// Heroku Account
 ///
 /// Stability: production
-/// 
+///
 /// An account represents an individual signed up to use the Heroku platform.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account)
@@ -96,7 +101,8 @@ pub struct Team {
     /// unique name
     pub name: String,
 }
-/// Organization 
+
+/// Organization
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct Organization {
     /// unique name
@@ -216,13 +222,12 @@ pub struct AppTransferRecipient {
 }
 
 /// Credit
-/// 
+///
 /// Stability: development
-/// 
+///
 /// A credit represents value that will be used up before further charges are assigned to an account.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit)
-/// 
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct Credit {
     /// total value of credit in cents
@@ -239,4 +244,33 @@ pub struct Credit {
     pub title: String,
     /// when credit was updated
     pub updated_at: String,
+}
+
+// password submodule, anything from /password-resets goes here.
+mod password {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// PasswordReset
+    ///
+    /// Stability: production
+    ///
+    /// A password reset represents a in-process password reset attempt.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset)
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct PasswordResetResponse {
+        /// when password reset was created
+        pub created_at: DateTime<Utc>,
+        /// User account
+        pub user: User,
+    }
+
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct User {
+        /// unique email address
+        pub email: String,
+        /// identifier of an account
+        pub id: String,
+    }
 }

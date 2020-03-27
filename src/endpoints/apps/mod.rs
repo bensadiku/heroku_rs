@@ -249,7 +249,7 @@ pub struct AppWebhookDelivery {
     pub webhook: WebhookDeliveryWebhook,
 }
 
-/// WebhookDeliveryEvent 
+/// WebhookDeliveryEvent
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct WebhookDeliveryEvent {
     /// the event’s unique identifier
@@ -258,7 +258,7 @@ pub struct WebhookDeliveryEvent {
     pub include: String,
 }
 
-/// WebhookDeliveryLastAttempt 
+/// WebhookDeliveryLastAttempt
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct WebhookDeliveryLastAttempt {
     /// unique identifier of attempt
