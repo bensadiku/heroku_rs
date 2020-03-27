@@ -33,6 +33,8 @@ pub struct Formation {
     pub id: String,
     /// number of processes to maintain
     pub quantity: i32,
+    /// dyno size
+    pub size: String,
     /// type of process to maintain pattern: ^[-\w]{1,128}$
     pub r#type: String,
     /// when dyno type was updated
