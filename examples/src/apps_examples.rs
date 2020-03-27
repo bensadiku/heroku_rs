@@ -7,6 +7,7 @@ use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
 use heroku_rs::endpoints::formations;
 use heroku_rs::endpoints::slugs;
+use heroku_rs::endpoints::releases;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 use std::collections::HashMap;
 
@@ -70,6 +71,8 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // create_slug(api_client, app_name);
     // get_slug(api_client, app_name);
+    // get_app_release(api_client, app_name, "4".to_string());
+    // list_app_releases(api_client, app_name);
 }
 
 // get info about a slug
@@ -499,5 +502,15 @@ fn update_app_formation<ApiClientType: HerokuApiClient>(
             size: Some("standard-1X".to_string()),
         },
     });
+    print_response(resp);
+}
+
+fn list_app_releases<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&releases::ReleaseList { app_id });
+    print_response(resp);
+}
+
+fn get_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String, release_id: String) {
+    let resp = api_client.request(&releases::ReleaseInfo { app_id, release_id });
     print_response(resp);
 }

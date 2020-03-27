@@ -4,6 +4,8 @@ use serde::Deserialize;
 pub mod get;
 pub mod post;
 
+pub use get::{ReleaseList, ReleaseInfo};
+
 impl ApiResult for Release {}
 impl ApiResult for Vec<Release> {}
 
