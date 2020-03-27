@@ -5,7 +5,9 @@ use heroku_rs::endpoints::builds;
 use heroku_rs::endpoints::collaborators;
 use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
+use heroku_rs::endpoints::formations;
 use heroku_rs::framework::apiclient::HerokuApiClient;
+use std::collections::HashMap;
 
 pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let app_name = String::from("heroku-rs-tests");
@@ -16,10 +18,13 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     get_app(api_client, app_name);
     // list_apps(api_client);
     // list_account_apps(api_client);
-    // get_dyno(api_client);
-    // list_dynos(api_client);
+    // get_dyno(api_client, app_name);
+    // list_dynos(api_client, app_name);
+    // create_dyno_simple(api_client, app_name);
+    // create_dyno_complex(api_client, app_name);
+    // list_dynos(api_client, app_name);
     // restart_dyno(api_client);
-    // restart_all_dynos(api_client);
+    // restart_all_dynos(api_client, app_name);
 
     // enable_app_acm(api_client, app_name);
     // disable_app_acm(api_client, app_name);
@@ -54,6 +59,10 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app_domains(api_client, app_name);
     // get_app_domain(api_client, app_name);
     // delete_app_domain(api_client, app_name);
+
+    // get_app_formation(api_client, app_name);
+    // list_app_formations(api_client, app_name);
+    // update_app_formation(api_client, app_name);
 }
 
 /// Delete domain
@@ -361,19 +370,62 @@ fn list_apps<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     print_response(resp);
 }
 
-fn get_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let app_id = String::from("heroku-rs-tests");
+fn get_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
     let dyno_id = String::from("web.1");
 
     let response = api_client.request(&dynos::DynoDetails { app_id, dyno_id });
     print_response(response);
 }
 
-fn list_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let app_id = String::from("testing-nell-bot");
-
+fn list_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
     let resp = api_client.request(&dynos::DynoList { app_id });
     print_response(resp);
+}
+
+fn create_dyno_simple<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let response = api_client.request(&dynos::DynoCreate {
+        app_id,
+        params: dynos::DynoCreateParams {
+            command: "bash".to_string(),
+            attach: None,
+            env: None,
+            force_no_tty: None,
+            size: None,
+            time_to_live: None,
+            r#type: None,
+        },
+    });
+
+    print_response(response);
+}
+
+fn create_dyno_complex<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let mut custom_env_vars = HashMap::new();
+
+    custom_env_vars.insert(
+        "COLUMNS".to_string(),
+        "80".to_string()
+    );
+
+    custom_env_vars.insert(
+        "LINES".to_string(),
+        "24".to_string(),
+    );
+
+    let response = api_client.request(&dynos::DynoCreate {
+        app_id: app_id,
+        params: dynos::DynoCreateParams {
+            command: "bash".to_string(),
+            attach: Some(true),
+            env: Some(custom_env_vars),
+            force_no_tty: None,
+            size: None,
+            time_to_live: None,
+            r#type: None,
+        },
+    });
+
+    print_response(response);
 }
 
 fn restart_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
@@ -384,9 +436,29 @@ fn restart_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     print_response(resp);
 }
 
-fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let app_id = String::from("heroku-rs-tests");
-
+fn restart_all_dynos<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String ) {
     let resp = api_client.request(&dynos::DynoAllRestart { app_id });
+    print_response(resp);
+}
+
+fn list_app_formations<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&formations::FormationList { app_id });
+    print_response(resp);
+}
+
+fn get_app_formation<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&formations::FormationDetails { app_id, formation_id: "web".to_string() });
+    print_response(resp);
+}
+
+fn update_app_formation<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&formations::FormationUpdate { 
+        app_id: app_id, 
+        formation_id: "web".to_string(),
+        params: formations::FormationUpdateParams {
+            quantity: Some(2),
+            size: Some("standard-1X".to_string()),
+        }
+    });
     print_response(resp);
 }

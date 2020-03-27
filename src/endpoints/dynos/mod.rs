@@ -9,6 +9,7 @@ pub mod put;
 
 pub use delete::{DynoAllRestart, DynoRestart};
 pub use get::{DynoDetails, DynoList};
+pub use post::{DynoCreate, DynoCreateParams};
 
 impl ApiResult for Dyno {}
 impl ApiResult for Vec<Dyno> {}
