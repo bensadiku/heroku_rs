@@ -25,6 +25,44 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_pipline_deployments(api_client);
     // create_pipeline_promotion(api_client);
     // get_pipeline_promotion(api_client);
+
+    // get_pipeline_promotion_target_list(api_client);
+    // get_pipeline_releases(api_client);
+    // get_pipeline_stack(api_client);
+
+    // create_pipeline_transfer(api_client);
+}
+
+// create pipeline transfer
+fn create_pipeline_transfer<T: HerokuApiClient>(api_client: &T) {
+    let pipeline_id = String::from("PIPELINE_ID");
+    let owner_type = String::from("user");
+    let new_owner_id = String::from("OWNER_ID");
+    let response = api_client.request(&pipelines::PipelineTransferCreate {
+        params: pipelines::PipelineTransferCreateParams::new(pipeline_id, new_owner_id, owner_type),
+    });
+    print_response(response);
+}
+
+// get pipline stack
+fn get_pipeline_stack<T: HerokuApiClient>(api_client: &T) {
+    let pipeline_id = String::from("PIPELINE_ID");
+    let response = api_client.request(&pipelines::PipelineStackDetails { pipeline_id });
+    print_response(response);
+}
+
+// get pipline release
+fn get_pipeline_releases<T: HerokuApiClient>(api_client: &T) {
+    let pipeline_id = String::from("PIPELINE_ID");
+    let response = api_client.request(&pipelines::PipelineLatestReleaseList { pipeline_id });
+    print_response(response);
+}
+
+// get pipline promotion target list
+fn get_pipeline_promotion_target_list<T: HerokuApiClient>(api_client: &T) {
+    let promotion_id = String::from("PIPELINE_ID");
+    let response = api_client.request(&pipelines::PipelinePromotionTargetList { promotion_id });
+    print_response(response);
 }
 
 // get pipline promotion

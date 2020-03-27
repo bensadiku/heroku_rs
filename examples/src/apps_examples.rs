@@ -56,55 +56,6 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // delete_app_domain(api_client, app_name);
 
     // dyno_action_stop(api_client, app_name);
-
-    // get_app_formations(api_client, app_name);
-    // get_app_formation(api_client, app_name);
-    // update_batch_app_formation(api_client, app_name);
-    // update_app_formation(api_client, app_name);
-}
-
-/// update app formation in batches
-fn update_app_formation<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let formation_id = String::from("FORMATION_ID_OR_TYPE");
-    let response = api_client.request(&apps::AppFormationUpdate {
-        app_id,
-        formation_id,
-        params: apps::AppFormationUpdateParams {
-            quantity: 10,
-            size: String::from("standard-1X"),
-        },
-    });
-    print_response(response);
-}
-
-// update app formation in batches
-fn update_batch_app_formation<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let updates = vec![apps::patch::Update {
-        quantity: 10,
-        size: String::from("standard-1X"),
-        type_field: String::from("web"),
-    }];
-    let response = api_client.request(&apps::AppFormationBatchUpdate {
-        app_id,
-        params: apps::AppFormationBatchUpdateParams { updates },
-    });
-    print_response(response);
-}
-
-/// Get app formation
-fn get_app_formation<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let formation_id = String::from("FORMATION_ID_OR_TYPE");
-    let response = api_client.request(&apps::AppFormationDetails {
-        app_id,
-        formation_id,
-    });
-    print_response(response);
-}
-
-// Get app formations
-fn get_app_formations<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let response = api_client.request(&apps::AppFormationList { app_id });
-    print_response(response);
 }
 
 /// Stop dyno
