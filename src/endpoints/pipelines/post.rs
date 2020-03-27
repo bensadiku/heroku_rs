@@ -1,5 +1,5 @@
 //Anything related to POST requests for pipelines and it's properties goes here.
-use super::{Pipeline, PipelineCoupling, PipelinePromotion};
+use super::{Pipeline, PipelineCoupling, PipelinePromotion, PipelineTransfer};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -139,6 +139,61 @@ impl HerokuEndpoint<PipelinePromotion, (), PipelinePromotionCreateParams>
         format!("pipeline-promotions")
     }
     fn body(&self) -> Option<PipelinePromotionCreateParams> {
+        Some(self.params.clone())
+    }
+}
+
+/// Pipeline Transfer
+///
+/// A pipeline transfer is the process of changing pipeline ownership along with the contained apps.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-transfer)
+pub struct PipelineTransferCreate {
+    pub params: PipelineTransferCreateParams,
+}
+
+/// Create a new pipeline transfer with parameters.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-transfer-create-required-parameters)
+#[derive(Serialize, Clone, Debug)]
+pub struct PipelineTransferCreateParams {
+    pub pipeline: PipelineParam,
+    pub new_owner: NewOwner,
+}
+
+#[derive(Serialize, Clone, Debug)]
+pub struct NewOwner {
+    /// unique identifier of a pipeline owner
+    pub id: String,
+    /// type of pipeline owner
+    /// pattern: `(^team$
+    #[serde(rename = "type")]
+    pub type_field: String,
+}
+
+impl PipelineTransferCreateParams {
+    pub fn new(
+        pipeline_id: String,
+        new_owner_id: String,
+        new_owner_type: String,
+    ) -> PipelineTransferCreateParams {
+        Self {
+            pipeline: PipelineParam { id: pipeline_id },
+            new_owner: NewOwner {
+                id: new_owner_id,
+                type_field: new_owner_type,
+            },
+        }
+    }
+}
+impl HerokuEndpoint<PipelineTransfer, (), PipelineTransferCreateParams> for PipelineTransferCreate {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("pipeline-transfers")
+    }
+    fn body(&self) -> Option<PipelineTransferCreateParams> {
         Some(self.params.clone())
     }
 }

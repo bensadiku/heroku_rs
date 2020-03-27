@@ -16,3 +16,5 @@ pub mod domains;
 pub mod oauth;
 /// pipelines
 pub mod pipelines;
+/// formations endpoints
+pub mod formations;

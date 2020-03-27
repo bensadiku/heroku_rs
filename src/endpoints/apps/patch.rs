@@ -1,5 +1,5 @@
 //Anything related to patching(updating) apps and it's properties goes here.
-use super::{App, AppFeature, AppWebhook, Formation};
+use super::{App, AppFeature, AppWebhook};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -136,87 +136,6 @@ impl HerokuEndpoint<AppWebhook, (), AppWebhookUpdateParams> for AppWebhookUpdate
         format!("apps/{}/webhooks/{}", self.app_id, self.webhook_id)
     }
     fn body(&self) -> Option<AppWebhookUpdateParams> {
-        Some(self.params.clone())
-    }
-}
-
-/// Formation Batch Update
-///
-/// Batch update process types
-///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-batch-update)
-pub struct AppFormationBatchUpdate {
-    /// app_id can be either app id or app name.
-    pub app_id: String,
-    /// params are the parameters sent to the Heroku API.
-    pub params: AppFormationBatchUpdateParams,
-}
-
-/// Update formations in batch with parameters.
-///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-batch-update-required-parameters)
-#[derive(Serialize, Clone, Debug)]
-pub struct AppFormationBatchUpdateParams {
-    /// whether or not app feature should be enabled
-    pub updates: Vec<Update>,
-}
-
-#[derive(Serialize, Clone, Debug)]
-pub struct Update {
-    /// number of processes to maintain
-    pub quantity: i64,
-    /// dyno size (default: “standard-1X”)
-    pub size: String,
-    /// type of process to maintain. pattern: ^[-\w]{1,128}$
-    #[serde(rename = "type")]
-    pub type_field: String,
-}
-
-impl HerokuEndpoint<Vec<Formation>, (), AppFormationBatchUpdateParams> for AppFormationBatchUpdate {
-    fn method(&self) -> Method {
-        Method::Patch
-    }
-    fn path(&self) -> String {
-        format!("apps/{}/formation", self.app_id)
-    }
-    fn body(&self) -> Option<AppFormationBatchUpdateParams> {
-        Some(self.params.clone())
-    }
-}
-
-/// Formation Update
-///
-/// Update process type
-///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-update)
-pub struct AppFormationUpdate {
-    /// app_id can be either app id or app name.
-    pub app_id: String,
-    /// forma
-    pub formation_id: String,
-    /// params are the parameters sent to the Heroku API.
-    pub params: AppFormationUpdateParams,
-}
-
-/// Update process types
-///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-update-optional-parameters)
-#[derive(Serialize, Clone, Debug)]
-pub struct AppFormationUpdateParams {
-    /// number of processes to maintain
-    pub quantity: u32,
-    /// dyno size (default: “standard-1X”)
-    pub size: String,
-}
-
-impl HerokuEndpoint<Formation, (), AppFormationUpdateParams> for AppFormationUpdate {
-    fn method(&self) -> Method {
-        Method::Patch
-    }
-    fn path(&self) -> String {
-        format!("apps/{}/formation/{}", self.app_id, self.formation_id)
-    }
-    fn body(&self) -> Option<AppFormationUpdateParams> {
         Some(self.params.clone())
     }
 }

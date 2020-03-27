@@ -1,5 +1,5 @@
 //Anything related to getting apps and it's properties goes here.
-use super::{App, AppFeature, AppWebhook, AppWebhookDelivery, Formation};
+use super::{App, AppFeature, AppWebhook, AppWebhookDelivery};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -177,48 +177,5 @@ impl HerokuEndpoint<Vec<AppWebhookDelivery>> for AppWebhookDeliveryList {
     }
     fn path(&self) -> String {
         format!("apps/{}/webhook-deliveries", self.app_id,)
-    }
-}
-
-/// Formation List
-///
-/// List process type formation
-///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-list)
-pub struct AppFormationList {
-    /// app_id can be the app name or id.
-    pub app_id: String,
-}
-
-impl HerokuEndpoint<Vec<Formation>> for AppFormationList {
-    fn method(&self) -> Method {
-        Method::Get
-    }
-    fn path(&self) -> String {
-        format!("apps/{}/formation", self.app_id,)
-    }
-}
-
-/// Formation Info
-///
-/// Info for a process type
-///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-info)
-pub struct AppFormationDetails {
-    /// app_id can be the app name or id.
-    pub app_id: String,
-    /// formation id or type.
-    pub formation_id: String,
-}
-
-impl HerokuEndpoint<Formation> for AppFormationDetails {
-    fn method(&self) -> Method {
-        Method::Get
-    }
-    fn path(&self) -> String {
-        format!(
-            "apps/{}/formation/{}",
-            self.app_id, self.formation_id
-        )
     }
 }

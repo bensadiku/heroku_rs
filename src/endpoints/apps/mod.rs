@@ -9,20 +9,16 @@ pub mod put;
 
 pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete};
 pub use get::{
-    AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppFormationDetails,
-    AppFormationList, AppList, AppWebhookDeliveryDetails, AppWebhookDeliveryList,
-    AppWebhookDetails, AppWebhookList,
+    AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList,
+    AppWebhookDeliveryDetails, AppWebhookDeliveryList, AppWebhookDetails, AppWebhookList,
 };
 pub use patch::{
-    AppFeatureUpdate, AppFeatureUpdateParams, AppFormationBatchUpdate,
-    AppFormationBatchUpdateParams, AppFormationUpdate, AppFormationUpdateParams, AppRefreshAcm,
-    AppUpdate, AppUpdateParams, AppWebhookUpdate, AppWebhookUpdateParams,
+    AppFeatureUpdate, AppFeatureUpdateParams, AppRefreshAcm, AppUpdate, AppUpdateParams,
+    AppWebhookUpdate, AppWebhookUpdateParams,
 };
 pub use post::{
     AppCreate, AppCreateParams, AppEnableAcm, AppWebhookCreate, AppWebhookCreateParams,
 };
-
-pub use formation::Formation;
 
 impl ApiResult for App {}
 impl ApiResult for Vec<App> {}
@@ -35,9 +31,6 @@ impl ApiResult for Vec<AppWebhook> {}
 
 impl ApiResult for AppWebhookDelivery {}
 impl ApiResult for Vec<AppWebhookDelivery> {}
-
-impl ApiResult for formation::Formation {}
-impl ApiResult for Vec<formation::Formation> {}
 
 /// Heroku App
 ///
@@ -291,42 +284,4 @@ pub struct WebhookDeliveryWebhook {
     /// If sync, Heroku attempts multiple deliveries until the request is successful or a limit is reached.
     /// One of:"notify" or "sync"
     pub level: String,
-}
-
-mod formation {
-
-    /// Formation
-    ///
-    /// Stability: production
-    ///
-    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation)
-    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
-    pub struct Formation {
-        /// App struct
-        pub app: App,
-        /// command to use to launch this process
-        pub command: String,
-        /// when process type was created
-        pub created_at: String,
-        /// unique identifier of this process type
-        pub id: String,
-        /// number of processes to maintain
-        pub quantity: i64,
-        /// dyno size (default: “standard-1X”)
-        pub size: String,
-        /// type of process to maintain. pattern: ^[-\w]{1,128}$
-        #[serde(rename = "type")]
-        pub type_field: String,
-        /// when dyno type was updated
-        pub updated_at: String,
-    }
-
-    /// App struct
-    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
-    pub struct App {
-        /// unique identifier
-        pub id: String,
-        /// name of app pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
-        pub name: String,
-    }
 }

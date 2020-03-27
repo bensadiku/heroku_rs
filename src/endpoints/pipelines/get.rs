@@ -1,5 +1,8 @@
 //Anything related to GET requests for pipelines and it's properties goes here.
-use super::{Pipeline, PipelineBuild, PipelineCoupling, PipelineDeployment, PipelinePromotion};
+use super::{
+    Pipeline, PipelineBuild, PipelineCoupling, PipelineDeployment, PipelinePromotion,
+    PipelinePromotionTarget, PipelineRelease, PipelineStack,
+};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -196,5 +199,65 @@ impl HerokuEndpoint<PipelinePromotion> for PipelinePromotionDetails {
     }
     fn path(&self) -> String {
         format!("pipeline-promotions/{}", self.promotion_id)
+    }
+}
+
+/// Pipeline Promotion Target List
+///
+/// List promotion targets belonging to an existing promotion.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-promotion-target-list)
+pub struct PipelinePromotionTargetList {
+    /// unique pipeline identifier.
+    pub promotion_id: String,
+}
+
+impl HerokuEndpoint<Vec<PipelinePromotionTarget>> for PipelinePromotionTargetList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!(
+            "pipeline-promotions/{}/promotion-targets",
+            self.promotion_id
+        )
+    }
+}
+
+/// Pipeline Release
+///
+/// Information about latest releases of apps in a pipeline.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release)
+pub struct PipelineLatestReleaseList {
+    /// unique pipeline identifier.
+    pub pipeline_id: String,
+}
+
+impl HerokuEndpoint<Vec<PipelineRelease>> for PipelineLatestReleaseList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("pipelines/{}/latest-releases", self.pipeline_id)
+    }
+}
+
+/// Pipeline Stack
+///
+/// Information about latest releases of apps in a pipeline.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release)
+pub struct PipelineStackDetails {
+    /// unique pipeline identifier.
+    pub pipeline_id: String,
+}
+
+impl HerokuEndpoint<PipelineStack> for PipelineStackDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("pipelines/{}/pipeline-stack", self.pipeline_id)
     }
 }
