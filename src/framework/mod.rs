@@ -3,10 +3,10 @@
 pub mod apiclient;
 pub mod auth;
 pub mod endpoint;
-mod reqwest_utils;
+pub mod reqwest_utils;
 pub mod response;
 
-use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response, response::match_raw_response};
+use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response};
 use failure::Fallible;
 use reqwest_utils::match_reqwest_method;
 use serde::Serialize;
@@ -108,7 +108,7 @@ impl<'a> HerokuApiClient for HttpApiClient {
     fn request_raw<ResultType, QueryType, BodyType>(
         &self,
         endpoint: &dyn endpoint::HerokuEndpoint<ResultType, QueryType, BodyType>,
-    ) -> response::RawApiResponse
+    ) -> response::ApiResponse<reqwest::blocking::Response>
     where
         ResultType: response::ApiResult,
         QueryType: Serialize,
@@ -135,7 +135,6 @@ impl<'a> HerokuApiClient for HttpApiClient {
         request = request.auth(&self.credentials);
 
         let response = request.send()?;
-        
-        match_raw_response(response)
+        Ok(response)
     }
 }

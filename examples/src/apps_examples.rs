@@ -16,6 +16,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // delete_app(api_client, app_name); // Careful here :)
     // patch_app(api_client, app_name);
     get_app(api_client, app_name);
+    // get_app_raw_response(api_client, app_name);
     // list_apps(api_client);
     // list_account_apps(api_client);
     // get_dyno(api_client, app_name);
@@ -353,6 +354,18 @@ fn create_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id
 fn get_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
     let response = api_client.request(&apps::AppDetails { app_id });
     print_response(response);
+}
+
+fn get_app_raw_response<ApiClientType: HerokuApiClient>(
+    api_client: &ApiClientType,
+    app_id: String,
+) {
+    // If successful, this returns a raw reqwest::blocking::response, do whatever with it!
+    let response = api_client.request_raw(&apps::AppDetails { app_id });
+    match response {
+        Ok(res) => println!("Ok: {:?}", res),
+        Err(e) => println!("Error: {}", e),
+    }
 }
 
 fn list_account_apps<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
