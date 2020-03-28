@@ -6,7 +6,7 @@ pub mod endpoint;
 mod reqwest_utils;
 pub mod response;
 
-use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response};
+use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response, response::match_raw_response};
 use failure::Fallible;
 use reqwest_utils::match_reqwest_method;
 use serde::Serialize;
@@ -46,7 +46,7 @@ pub struct HttpApiClientConfig {
 impl Default for HttpApiClientConfig {
     fn default() -> Self {
         HttpApiClientConfig {
-            http_timeout: Duration::from_secs(30), 
+            http_timeout: Duration::from_secs(30),
             default_headers: http::HeaderMap::default(),
         }
     }
@@ -105,4 +105,37 @@ impl<'a> HerokuApiClient for HttpApiClient {
         match_response(response)
     }
 
+    fn request_raw<ResultType, QueryType, BodyType>(
+        &self,
+        endpoint: &dyn endpoint::HerokuEndpoint<ResultType, QueryType, BodyType>,
+    ) -> response::RawApiResponse
+    where
+        ResultType: response::ApiResult,
+        QueryType: Serialize,
+        BodyType: Serialize,
+    {
+        // Build the raw request
+        let mut request = self
+            .http_client
+            .request(
+                match_reqwest_method(endpoint.method()),
+                endpoint.url(&self.environment),
+            )
+            .query(&endpoint.query());
+
+        // Add body if one was passed
+        // Add header if one was passed
+        if let Some(body) = endpoint.body() {
+            request = request.body(serde_json::to_string(&body).unwrap());
+            request = request.header(reqwest::header::CONTENT_TYPE, endpoint.content_type());
+        }
+
+        request = request.header(reqwest::header::ACCEPT, endpoint.version());
+        request = request.header(reqwest::header::USER_AGENT, endpoint.agent());
+        request = request.auth(&self.credentials);
+
+        let response = request.send()?;
+        
+        match_raw_response(response)
+    }
 }
