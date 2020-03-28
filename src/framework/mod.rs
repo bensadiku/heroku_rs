@@ -3,7 +3,7 @@
 pub mod apiclient;
 pub mod auth;
 pub mod endpoint;
-pub mod reqwest_utils;
+mod reqwest_utils;
 pub mod response;
 
 use crate::framework::{apiclient::HerokuApiClient, auth::AuthClient, response::match_response};
@@ -124,7 +124,6 @@ impl<'a> HerokuApiClient for HttpApiClient {
             .query(&endpoint.query());
 
         // Add body if one was passed
-        // Add header if one was passed
         if let Some(body) = endpoint.body() {
             request = request.body(serde_json::to_string(&body).unwrap());
             request = request.header(reqwest::header::CONTENT_TYPE, endpoint.content_type());
