@@ -69,6 +69,24 @@ impl HttpApiClient {
             http_client,
         })
     }
+
+    pub fn create(token: &str) -> Fallible<HttpApiClient> {
+        let credentials: auth::Credentials = auth::Credentials::UserAuthToken {
+            token: String::from(token),
+        };
+        let config: HttpApiClientConfig = HttpApiClientConfig::default();
+        let environment: ApiEnvironment = ApiEnvironment::Production;
+        let http_client = reqwest::blocking::Client::builder()
+            .timeout(config.http_timeout)
+            .default_headers(config.default_headers)
+            .build()?;
+
+        Ok(HttpApiClient {
+            environment,
+            credentials,
+            http_client,
+        })
+    }
 }
 
 impl<'a> HerokuApiClient for HttpApiClient {
