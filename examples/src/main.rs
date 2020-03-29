@@ -11,6 +11,7 @@ mod apps_examples;
 mod account_examples;
 mod oauth_examples;
 mod pipeline_examples;
+mod misc_examples;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let key = "API_KEY";
@@ -25,10 +26,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ApiEnvironment::Production,
     )?;
 
-    apps_examples::run(&api_client);
+    // apps_examples::run(&api_client);
     // account_examples::run(&api_client);
     // oauth_examples::run(&api_client);
     // pipeline_examples::run(&api_client);
+    misc_examples::run(&api_client);
 
     Ok(())
 }
