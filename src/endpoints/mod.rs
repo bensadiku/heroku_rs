@@ -18,3 +18,5 @@ pub mod oauth;
 pub mod pipelines;
 /// formations endpoints
 pub mod formations;
+/// slug endpoints
+pub mod slugs;
