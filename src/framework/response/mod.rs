@@ -5,9 +5,10 @@ use std::fmt::Debug;
 mod error;
 
 pub use error::*;
+/// A type to return parsed Result<T, heroku_rs::framework::response::error::HerokuApiFailure>
 pub type ApiResponse<T> = Result<T, HerokuApiFailure>;
 
-/// Match the response we just got from the API and return properly
+/// Match the response we just got from the API and return a parsed struct
 pub fn match_response<T: ApiResult>(api_response: reqwest::blocking::Response) -> ApiResponse<T> {
     let api_status = api_response.status();
 
