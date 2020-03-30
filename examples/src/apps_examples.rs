@@ -6,6 +6,7 @@ use heroku_rs::endpoints::collaborators;
 use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
 use heroku_rs::endpoints::formations;
+use heroku_rs::endpoints::slugs;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 use std::collections::HashMap;
 
@@ -66,6 +67,35 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app_formation(api_client, app_name);
     // list_app_formations(api_client, app_name);
     // update_app_formation(api_client, app_name);
+
+    // create_slug(api_client, app_name);
+    // get_slug(api_client, app_name);
+}
+
+// get info about a slug
+fn get_slug<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let slug_id = String::from("SLUG_ID");
+    let response = api_client.request(&slugs::SlugDetails { app_id, slug_id });
+    print_response(response);
+}
+
+/// create a slug
+fn create_slug<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let mut process_types = HashMap::new();
+    process_types.insert("web".to_string(), "./bin/web -p $PORT".to_string());
+
+    let response = api_client.request(&slugs::SlugCreate {
+        app_id,
+        params: slugs::SlugCreateParams {
+            process_types: process_types,
+            buildpack_provided_description: None,
+            checksum: None,
+            commit: None,
+            commit_description: None,
+            stack: None,
+        },
+    });
+    print_response(response);
 }
 
 /// Stop dyno

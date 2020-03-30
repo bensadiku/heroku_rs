@@ -9,6 +9,7 @@ use heroku_rs::framework::{
 
 mod account_examples;
 mod apps_examples;
+mod misc_examples;
 mod oauth_examples;
 mod pipeline_examples;
 
@@ -28,6 +29,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // account_examples::run(&api_client);
     // oauth_examples::run(&api_client);
     // pipeline_examples::run(&api_client);
+    // misc_examples::run(&api_client);
 
     Ok(())
 }
