@@ -22,6 +22,30 @@ impl HerokuEndpoint<HashMap<String, Option<String>>> for AppConfigVarDetails {
     }
 }
 
+/// Config Vars Info for App Release
+///
+/// Get config-vars for an app release.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#config-vars-info-for-app)
+pub struct ReleaseConfigVarDetails {
+    /// unique app identifier.
+    pub app_id: String,
+    // unique release identifier, release id or release version
+    pub release_id: String,
+}
+
+impl HerokuEndpoint<HashMap<String, Option<String>>> for ReleaseConfigVarDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!(
+            "apps/{}/releases/{}/config-vars",
+            self.app_id, self.release_id
+        )
+    }
+}
+
 /// Config Vars Info for Pipeline
 ///
 /// Pipeline Config Vars allow you to manage the configuration information provided to a pipeline.

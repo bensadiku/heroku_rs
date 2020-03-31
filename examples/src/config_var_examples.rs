@@ -6,7 +6,8 @@ use std::collections::HashMap;
 
 pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let app_name = String::from("heroku-rs-tests");
-    get_app_config_vars(api_client, app_name);
+    // get_app_config_vars(api_client, app_name);
+    get_release_config_vars(api_client, app_name);
     // update_app_config_vars(api_client, app_name);
     // delete_app_config_vars(api_client, app_name);
 
@@ -93,6 +94,13 @@ fn update_app_config_vars<T: HerokuApiClient>(api_client: &T, app_id: String) {
         app_id,
         params: cvar,
     });
+    print_response(response);
+}
+
+// get app release config vars
+fn get_release_config_vars<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let release_id = String::from("1");
+    let response = api_client.request(&config_vars::ReleaseConfigVarDetails { app_id, release_id });
     print_response(response);
 }
 
