@@ -8,12 +8,12 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Get config-vars for app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#config-vars-info-for-app)
-pub struct AppConfigVarDetails {
+pub struct AppConfigVarDetails<'a> {
     /// unique app identifier.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl HerokuEndpoint<HashMap<String, Option<String>>> for AppConfigVarDetails {
+impl<'a> HerokuEndpoint<HashMap<String, Option<String>>> for AppConfigVarDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -26,15 +26,15 @@ impl HerokuEndpoint<HashMap<String, Option<String>>> for AppConfigVarDetails {
 ///
 /// Get config-vars for an app release.
 ///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#config-vars-info-for-app)
-pub struct ReleaseConfigVarDetails {
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#config-vars-info-for-app-release)
+pub struct ReleaseConfigVarDetails<'a> {
     /// unique app identifier.
-    pub app_id: String,
+    pub app_id: &'a str,
     // unique release identifier, release id or release version
-    pub release_id: String,
+    pub release_id: &'a str,
 }
 
-impl HerokuEndpoint<HashMap<String, Option<String>>> for ReleaseConfigVarDetails {
+impl<'a> HerokuEndpoint<HashMap<String, Option<String>>> for ReleaseConfigVarDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -51,14 +51,14 @@ impl HerokuEndpoint<HashMap<String, Option<String>>> for ReleaseConfigVarDetails
 /// Pipeline Config Vars allow you to manage the configuration information provided to a pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-config-vars)
-pub struct PipelineConfigVarDetails {
+pub struct PipelineConfigVarDetails<'a> {
     /// unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
     /// pipeline stage
-    pub stage_id: String,
+    pub stage_id: &'a str,
 }
 
-impl HerokuEndpoint<HashMap<String, Option<String>>> for PipelineConfigVarDetails {
+impl<'a> HerokuEndpoint<HashMap<String, Option<String>>> for PipelineConfigVarDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

@@ -5,9 +5,9 @@ use heroku_rs::framework::apiclient::HerokuApiClient;
 use std::collections::HashMap;
 
 pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let app_name = String::from("heroku-rs-tests");
-    // get_app_config_vars(api_client, app_name);
-    get_release_config_vars(api_client, app_name);
+    let app_name = "heroku-rs-tests";
+    get_app_config_vars(api_client, app_name);
+    // get_release_config_vars(api_client, app_name);
     // update_app_config_vars(api_client, app_name);
     // delete_app_config_vars(api_client, app_name);
 
@@ -18,8 +18,8 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
 // delete config vars for a pipeline
 fn delete_pipeline_config_vars<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("97241b2c-e214-4842-a633-52e7f3ddd17c");
-    let stage_id = String::from("test");
+    let pipeline_id = "PIPELINE_ID";
+    let stage_id = "test";
 
     let mut cvar = HashMap::new();
     let cvar_key = String::from("config_var_key"); // config var value key
@@ -37,8 +37,8 @@ fn delete_pipeline_config_vars<T: HerokuApiClient>(api_client: &T) {
 
 // update config vars for a pipeline
 fn update_pipeline_config_vars<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("97241b2c-e214-4842-a633-52e7f3ddd17c");
-    let stage_id = String::from("test");
+    let pipeline_id = "PIPELINE_ID";
+    let stage_id = "test";
 
     let mut cvar = HashMap::new();
     let cvar_key = String::from("config_var_key"); // config var value key
@@ -56,8 +56,8 @@ fn update_pipeline_config_vars<T: HerokuApiClient>(api_client: &T) {
 
 // get config vars for a pipeline
 fn get_pipeline_config_vars<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("97241b2c-e214-4842-a633-52e7f3ddd17c");
-    let stage_id = String::from("test");
+    let pipeline_id = "PIPELINE_ID";
+    let stage_id = "test";
     let response = api_client.request(&config_vars::PipelineConfigVarDetails {
         pipeline_id,
         stage_id,
@@ -66,7 +66,7 @@ fn get_pipeline_config_vars<T: HerokuApiClient>(api_client: &T) {
 }
 
 // delete config vars for an app
-fn delete_app_config_vars<T: HerokuApiClient>(api_client: &T, app_id: String) {
+fn delete_app_config_vars<T: HerokuApiClient>(api_client: &T, app_id: &str) {
     let mut cvar = HashMap::new();
     // config var value key
     let cvar_key = String::from("config_var_key");
@@ -83,7 +83,7 @@ fn delete_app_config_vars<T: HerokuApiClient>(api_client: &T, app_id: String) {
 }
 
 // update config vars for an app
-fn update_app_config_vars<T: HerokuApiClient>(api_client: &T, app_id: String) {
+fn update_app_config_vars<T: HerokuApiClient>(api_client: &T, app_id: &str) {
     let mut cvar = HashMap::new();
     let cvar_key = String::from("config_var_key"); // config var value key
     let cvar_value = String::from("updated_config_var_value"); // config var value to update
@@ -98,14 +98,15 @@ fn update_app_config_vars<T: HerokuApiClient>(api_client: &T, app_id: String) {
 }
 
 // get app release config vars
-fn get_release_config_vars<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let release_id = String::from("1");
+fn get_release_config_vars<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    // release version or id
+    let release_id = "1";
     let response = api_client.request(&config_vars::ReleaseConfigVarDetails { app_id, release_id });
     print_response(response);
 }
 
 // get config vars for an app
-fn get_app_config_vars<T: HerokuApiClient>(api_client: &T, app_id: String) {
+fn get_app_config_vars<T: HerokuApiClient>(api_client: &T, app_id: &str) {
     let response = api_client.request(&config_vars::AppConfigVarDetails { app_id });
     print_response(response);
 }

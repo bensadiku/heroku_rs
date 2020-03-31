@@ -8,15 +8,15 @@ use std::collections::HashMap;
 /// Delete config-vars for an app. You delete the config vars by setting the value to `None`.
 ///
 /// There is no endpoint for this DELETE request, because it's done through a [PATCH](https://devcenter.heroku.com/articles/platform-api-reference#config-vars-update) request, by just setting the `value` to null/None. Separated into it's own file for clarity sakes.
-pub struct AppConfigVarDelete {
+pub struct AppConfigVarDelete<'a> {
     /// app_id is the unique app identifier.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// The parameters to pass to the Heroku API
     pub params: HashMap<String, Option<String>>,
 }
 
-impl HerokuEndpoint<HashMap<String, Option<String>>, (), HashMap<String, Option<String>>>
-    for AppConfigVarDelete
+impl<'a> HerokuEndpoint<HashMap<String, Option<String>>, (), HashMap<String, Option<String>>>
+    for AppConfigVarDelete<'a>
 {
     fn method(&self) -> Method {
         Method::Patch
@@ -34,17 +34,17 @@ impl HerokuEndpoint<HashMap<String, Option<String>>, (), HashMap<String, Option<
 /// Delete config-vars for a pipeline. You delete the config vars by setting the value to `None`.
 ///
 /// There is no endpoint for this DELETE request, because it's done through a [PATCH](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-config-vars-update) request, by just setting the `value` to null/None. Separated into it's own file for clarity sakes.
-pub struct PipelineConfigVarDelete {
+pub struct PipelineConfigVarDelete<'a> {
     /// pipeline_id is the unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
     /// pipeline coupling stage
-    pub stage_id: String,
+    pub stage_id: &'a str,
     /// The parameters to pass to the Heroku API
     pub params: HashMap<String, Option<String>>,
 }
 
-impl HerokuEndpoint<HashMap<String, Option<String>>, (), HashMap<String, Option<String>>>
-    for PipelineConfigVarDelete
+impl<'a> HerokuEndpoint<HashMap<String, Option<String>>, (), HashMap<String, Option<String>>>
+    for PipelineConfigVarDelete<'a>
 {
     fn method(&self) -> Method {
         Method::Patch
