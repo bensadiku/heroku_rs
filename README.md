@@ -23,26 +23,12 @@ run: `cargo build`
 Here's a simple example which fetches the apps list. At the moment, the client is blocking by default.
 
 ```rust
-use heroku_rs::framework::{
-    auth::Credentials,
-    response::{ApiResponse, ApiResult},
-    apiclient::HerokuApiClient,
-    ApiEnvironment, HttpApiClient, HttpApiClientConfig,
-};
+use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
 use heroku_rs::endpoints::apps;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-
-    let credentials = Credentials::UserAuthToken {
-        token: String::from("TOKEN_HERE"),
-    };
-
-    let api_client = HttpApiClient::new(
-        credentials,
-        HttpApiClientConfig::default(),
-        ApiEnvironment::Production,
-    )?;
-
+    let api_client = HttpApiClient::create("API_KEY")?;
+    
     let response = api_client.request(&apps::AppList {});
 
     match response {
