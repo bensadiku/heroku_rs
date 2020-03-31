@@ -21,3 +21,27 @@ impl HerokuEndpoint<HashMap<String, Option<String>>> for AppConfigVarDetails {
         format!("apps/{}/config-vars", self.app_id)
     }
 }
+
+/// Config Vars Info for Pipeline
+///
+/// Pipeline Config Vars allow you to manage the configuration information provided to a pipeline.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-config-vars)
+pub struct PipelineConfigVarDetails {
+    /// unique pipeline identifier.
+    pub pipeline_id: String,
+    /// pipeline stage
+    pub stage_id: String,
+}
+
+impl HerokuEndpoint<HashMap<String, Option<String>>> for PipelineConfigVarDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!(
+            "pipelines/{}/stage/{}/config-vars",
+            self.pipeline_id, self.stage_id
+        )
+    }
+}

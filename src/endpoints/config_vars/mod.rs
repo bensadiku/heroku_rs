@@ -14,9 +14,9 @@ pub mod put;
 /// Config Vars allow you to manage the configuration information provided to an app on Heroku.
 ///
 /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#config-vars)
-pub use get::AppConfigVarDetails;
-pub use patch::AppConfigVarUpdate;
-pub use delete::AppConfigVarDelete;
+pub use get::{AppConfigVarDetails, PipelineConfigVarDetails};
+pub use patch::{AppConfigVarUpdate, PipelineConfigVarUpdate};
+pub use delete::{AppConfigVarDelete, PipelineConfigVarDelete};
 
 impl ApiResult for HashMap<String, Option<String>> {}
 impl ApiResult for Vec<HashMap<String, Option<String>>> {}

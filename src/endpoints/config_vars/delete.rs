@@ -28,3 +28,34 @@ impl HerokuEndpoint<HashMap<String, Option<String>>, (), HashMap<String, Option<
         Some(self.params.clone())
     }
 }
+
+/// Pipeline Config Vars DELETE
+///
+/// Delete config-vars for a pipeline. You delete the config vars by setting the value to `None`.
+///
+/// There is no endpoint for this DELETE request, because it's done through a [PATCH](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-config-vars-update) request, by just setting the `value` to null/None. Separated into it's own file for clarity sakes.
+pub struct PipelineConfigVarDelete {
+    /// pipeline_id is the unique pipeline identifier.
+    pub pipeline_id: String,
+    /// pipeline coupling stage
+    pub stage_id: String,
+    /// The parameters to pass to the Heroku API
+    pub params: HashMap<String, Option<String>>,
+}
+
+impl HerokuEndpoint<HashMap<String, Option<String>>, (), HashMap<String, Option<String>>>
+    for PipelineConfigVarDelete
+{
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!(
+            "pipelines/{}/stage/{}/config-vars",
+            self.pipeline_id, self.stage_id
+        )
+    }
+    fn body(&self) -> Option<HashMap<String, Option<String>>> {
+        Some(self.params.clone())
+    }
+}
