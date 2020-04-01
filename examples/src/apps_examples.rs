@@ -7,6 +7,7 @@ use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
 use heroku_rs::endpoints::formations;
 use heroku_rs::endpoints::slugs;
+use heroku_rs::endpoints::releases;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 use std::collections::HashMap;
 
@@ -70,6 +71,52 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // create_slug(api_client, app_name);
     // get_slug(api_client, app_name);
+
+    // get_app_release_info(api_client, app_name);
+    // get_app_releases(api_client, &app_name);
+    // create_app_release(api_client, &app_name);
+    // rollback_app_release(api_client, &app_name); // Careful here :)
+}
+
+/// Rollback a release
+fn rollback_app_release<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    let release_id = "13";// release version to rollback to
+
+    let response = api_client.request(&releases::ReleaseRollback {
+        app_id,
+        params: releases::ReleaseRollbackParams { release: release_id },
+    });
+    print_response(response);
+}
+
+/// create a new release
+/// Throws the error below if slug isn't found or compiled.
+/// Error: HTTP: 422 Unprocessable Entity: invalid_params Compiled slug couldn't be found
+fn create_app_release<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    let slug_id = "SLUG_ID";
+    let description = "This is drafting a new release";
+
+    let response = api_client.request(&releases::ReleaseCreate {
+        app_id,
+        params: releases::ReleaseCreateParams {
+            slug: slug_id,
+            description: Some(description),
+        },
+    });
+    print_response(response);
+}
+
+/// get info about a release
+fn get_app_releases<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    let response = api_client.request(&releases::ReleaseList { app_id });
+    print_response(response);
+}
+
+/// get info about a release
+fn get_app_release_info<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    let release_id = "RELEASE_ID";
+    let response = api_client.request(&releases::ReleaseDetails { app_id, release_id });
+    print_response(response);
 }
 
 // get info about a slug
