@@ -73,7 +73,8 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_slug(api_client, app_name);
     // get_app_release(api_client, app_name, "4".to_string());
     // list_app_releases(api_client, app_name);
-     create_app_release(api_client, app_name);
+    // create_app_release(api_client, app_name);
+     rollback_app_release(api_client, app_name);
 }
 
 // get info about a slug
@@ -522,6 +523,16 @@ fn create_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType
         params: releases::ReleaseCreateParams {
             slug: "2dbce013-4be8-44e1-8221-c9c74e45949c".to_string(),
             description: Some("added new feature".to_string()),
+        }
+    });
+    print_response(resp);
+}
+
+fn rollback_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&releases::ReleaseRollback { 
+        app_id,
+        params: releases::ReleaseRollbackParams {
+            release: "v17".to_string()
         }
     });
     print_response(resp);

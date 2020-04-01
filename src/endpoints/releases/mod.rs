@@ -5,7 +5,7 @@ pub mod get;
 pub mod post;
 
 pub use get::{ReleaseList, ReleaseInfo};
-pub use post::{ReleaseCreate, ReleaseCreateParams};
+pub use post::{ReleaseCreate, ReleaseCreateParams, ReleaseRollback, ReleaseRollbackParams};
 
 impl ApiResult for Release {}
 impl ApiResult for Vec<Release> {}
