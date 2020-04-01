@@ -13,6 +13,7 @@ mod misc_examples;
 mod oauth_examples;
 mod pipeline_examples;
 mod config_var_examples;
+mod custom_examples;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let key = "API_KEY";
@@ -27,6 +28,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // let api_client = create_custom_client(token)?;
 
     apps_examples::run(&api_client);
+    // custom_examples::run(&api_client);
     // config_var_examples::run(&api_client);
     // account_examples::run(&api_client);
     // oauth_examples::run(&api_client);

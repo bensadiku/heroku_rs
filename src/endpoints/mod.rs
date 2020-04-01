@@ -25,3 +25,5 @@ pub mod slugs;
 /// config vars
 // app config vars, pipeline config vars, release config vars
 pub mod config_vars; 
+/// custom endpoints
+pub mod custom;
