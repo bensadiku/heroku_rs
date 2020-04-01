@@ -22,3 +22,5 @@ pub mod formations;
 pub mod misc; // used for those one off endpoints e.g. ratelimiting, region, stacks etc.
 /// slug endpoints
 pub mod slugs;
+/// app review
+pub mod review;
