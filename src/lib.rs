@@ -15,34 +15,56 @@
 //! 
 //! The heroku client is build on top of [`reqwest`][reqwest] library. 
 //! 
-//! In order to have a fully functional client you need to specify three things. [Credentials][credentials], [HttpApiClientConfig][httpApiClientConfig] and [ApiEnvironment][apiEnviroment]
+//! Creating the Heroku client only takes 1 line. This client has the default 30s http timeout and points to the production Heroku API. 
+//! 
+//! If you wish to custumize the http timeout or the base endpoint. See the Example 2 
+//! 
+//! # Example 1 - Creating a simple client
 //! 
 //! ```rust
-//! use heroku_rs::framework::{
-//!    auth::Credentials,
-//!    apiclient::HerokuApiClient,
-//!    ApiEnvironment, HttpApiClient, HttpApiClientConfig,
-//! };
+//! use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
 //!
 //! fn main() -> Result<(), Box<dyn std::error::Error>> {
-//!     
-//!    let token = String::from("TOKEN_HERE");
-//!    let credentials = Credentials::UserAuthToken { token };
-//!
-//!    let api_client = HttpApiClient::new(
-//!        credentials,
-//!        HttpApiClientConfig::default(),
-//!        ApiEnvironment::Production,
-//!    )?;
-//!
+//!    let api_client = HttpApiClient::create("API_KEY")?;
+//!   
 //!    // You can start making requests here
 //!    
-//! 
 //!    Ok(())
 //! }
 //! ```
+//! In order to have a fully functional custom client you need to specify three things. [Credentials][credentials], [HttpApiClientConfig][httpApiClientConfig] and [ApiEnvironment][apiEnviroment]
 //! 
+//! # Example 2 - Creating a custom client
+//! ```
+//! use heroku_rs::framework::{
+//! auth::Credentials,
+//! apiclient::HerokuApiClient,
+//! ApiEnvironment, HttpApiClient, HttpApiClientConfig,
+//! };
+//! use heroku_rs::endpoints::apps;
 //! 
+//! fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! 
+//!   let credentials = Credentials::UserAuthToken {
+//!       token: String::from("TOKEN_HERE"),
+//!   };
+//!   
+//!   let api_client = HttpApiClient::new(
+//!       credentials,
+//!       HttpApiClientConfig::default(),
+//!       ApiEnvironment::Production,
+//!   )?;
+//!   
+//!   let response = api_client.request(&apps::AppList {});
+//!   
+//!   match response {
+//!       Ok(success) => println!("Success: {:#?}", success),
+//!       Err(e) => println!("Error: {}", e),
+//!   }
+//!   
+//!   Ok(())
+//! }
+//! ```
 //! ## Making a GET request to Heroku.
 //! 
 //!
