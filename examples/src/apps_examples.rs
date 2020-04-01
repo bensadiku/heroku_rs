@@ -17,7 +17,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // create_app(api_client, app_name);
     // delete_app(api_client, app_name); // Careful here :)
     // patch_app(api_client, app_name);
-    get_app(api_client, app_name);
+    // get_app(api_client, app_name);
     // get_app_raw_response(api_client, app_name);
     // list_apps(api_client);
     // list_account_apps(api_client);
@@ -73,6 +73,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_slug(api_client, app_name);
     // get_app_release(api_client, app_name, "4".to_string());
     // list_app_releases(api_client, app_name);
+     create_app_release(api_client, app_name);
 }
 
 // get info about a slug
@@ -512,5 +513,16 @@ fn list_app_releases<ApiClientType: HerokuApiClient>(api_client: &ApiClientType,
 
 fn get_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String, release_id: String) {
     let resp = api_client.request(&releases::ReleaseInfo { app_id, release_id });
+    print_response(resp);
+}
+
+fn create_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&releases::ReleaseCreate { 
+        app_id,
+        params: releases::ReleaseCreateParams {
+            slug: "2dbce013-4be8-44e1-8221-c9c74e45949c".to_string(),
+            description: Some("added new feature".to_string()),
+        }
+    });
     print_response(resp);
 }

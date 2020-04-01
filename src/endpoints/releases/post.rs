@@ -21,3 +21,22 @@ pub struct ReleaseCreate {
 /// Slug parameter is required
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-create-required-parameters)
+#[derive(Serialize, Clone, Debug)]
+pub struct ReleaseCreateParams {
+    /// unique identifier of slug
+    pub slug: String,
+    /// description of changes in release
+    pub description: Option<String>
+}
+
+impl HerokuEndpoint<Release, (), ReleaseCreateParams> for ReleaseCreate {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/releases", self.app_id)
+    }
+    fn body(&self) -> Option<DynoCreateParams> {
+        Some(self.params.clone())
+    }
+}
