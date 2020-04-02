@@ -7,6 +7,7 @@ use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
 use heroku_rs::endpoints::formations;
 use heroku_rs::endpoints::slugs;
+use heroku_rs::endpoints::releases;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 use std::collections::HashMap;
 
@@ -16,7 +17,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // create_app(api_client, app_name);
     // delete_app(api_client, app_name); // Careful here :)
     // patch_app(api_client, app_name);
-    get_app(api_client, app_name);
+    // get_app(api_client, app_name);
     // get_app_raw_response(api_client, app_name);
     // list_apps(api_client);
     // list_account_apps(api_client);
@@ -70,6 +71,10 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // create_slug(api_client, app_name);
     // get_slug(api_client, app_name);
+    // get_app_release(api_client, app_name, "4".to_string());
+    // list_app_releases(api_client, app_name);
+    // create_app_release(api_client, app_name);
+     rollback_app_release(api_client, app_name);
 }
 
 // get info about a slug
@@ -498,6 +503,37 @@ fn update_app_formation<ApiClientType: HerokuApiClient>(
             quantity: Some(2),
             size: Some("standard-1X".to_string()),
         },
+    });
+    print_response(resp);
+}
+
+fn list_app_releases<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&releases::ReleaseList { app_id });
+    print_response(resp);
+}
+
+fn get_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String, release_id: String) {
+    let resp = api_client.request(&releases::ReleaseInfo { app_id, release_id });
+    print_response(resp);
+}
+
+fn create_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&releases::ReleaseCreate { 
+        app_id,
+        params: releases::ReleaseCreateParams {
+            slug: "2dbce013-4be8-44e1-8221-c9c74e45949c".to_string(),
+            description: Some("added new feature".to_string()),
+        }
+    });
+    print_response(resp);
+}
+
+fn rollback_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
+    let resp = api_client.request(&releases::ReleaseRollback { 
+        app_id,
+        params: releases::ReleaseRollbackParams {
+            release: "v17".to_string()
+        }
     });
     print_response(resp);
 }
