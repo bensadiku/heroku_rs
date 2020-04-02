@@ -4,6 +4,7 @@ use serde::Serialize;
 use url::Url;
 
 /// HTTP methods used on this crate.
+#[derive(Copy, Clone)]
 pub enum Method {
     Get,
     Post,
