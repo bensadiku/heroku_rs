@@ -16,7 +16,7 @@ Add the following to your `Cargo.toml`
 
 ```toml
 [dependencies]
-heroku_rs = "0.3"
+heroku_rs = "0.4"
 ```
 run: `cargo build`
 
