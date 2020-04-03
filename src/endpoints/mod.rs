@@ -18,6 +18,7 @@ pub mod oauth;
 pub mod pipelines;
 /// formations endpoints
 pub mod formations;
+/// mixed endpoints
 pub mod misc; // used for those one off endpoints e.g. ratelimiting, region, stacks etc.
 /// slug endpoints
 pub mod slugs;
@@ -30,3 +31,5 @@ pub mod config_vars;
 pub mod custom;
 /// releases
 pub mod releases;
+/// teams
+pub mod teams;
