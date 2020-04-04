@@ -1,4 +1,4 @@
-#![doc(html_root_url = "https://docs.rs/heroku_rs/0.3.1")]
+#![doc(html_root_url = "https://docs.rs/heroku_rs/0.4.0")]
 
 //! # heroku_rs
 //!
@@ -41,19 +41,12 @@
 //! apiclient::HerokuApiClient,
 //! ApiEnvironment, HttpApiClient, HttpApiClientConfig,
 //! };
+//! 
 //! use heroku_rs::endpoints::apps;
 //! 
 //! fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! 
-//!   let credentials = Credentials::UserAuthToken {
-//!       token: String::from("TOKEN_HERE"),
-//!   };
-//!   
-//!   let api_client = HttpApiClient::new(
-//!       credentials,
-//!       HttpApiClientConfig::default(),
-//!       ApiEnvironment::Production,
-//!   )?;
+//!   let api_client = HttpApiClient::create("API_KEY")?;
 //!   
 //!   let response = api_client.request(&apps::AppList {});
 //!   
@@ -72,26 +65,13 @@
 //! 
 //!
 //! ```rust
-//!# use heroku_rs::framework::{
-//!#    auth::Credentials,
-//!#    response::{ApiResponse, ApiResult},
-//!#    apiclient::HerokuApiClient,
-//!#    ApiEnvironment, HttpApiClient, HttpApiClientConfig,
-//!# };
+//!use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
 //!use heroku_rs::endpoints::apps;
 //!
 //!# fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!#
-//!#    let credentials = Credentials::UserAuthToken {
-//!#        token: String::from("TOKEN_HERE"),
-//!#    };
-//!#
-//!#    let api_client = HttpApiClient::new(
-//!#        credentials,
-//!#        HttpApiClientConfig::default(),
-//!#        ApiEnvironment::Production,
-//!#    )?;
-//!#
+//!    let api_client = HttpApiClient::create("API_KEY")?;
+//!
 //!    let response = api_client.request(&apps::AppList {});
 //!
 //!    match response {
@@ -113,26 +93,13 @@
 //! If you can see the `params` parameter in this example, it takes three fields, all three are optional, matched from the Heroku documentation.
 //! 
 //! ```rust
-//!# use heroku_rs::framework::{
-//!#    auth::Credentials,
-//!#    response::{ApiResponse, ApiResult},
-//!#    apiclient::HerokuApiClient,
-//!#    ApiEnvironment, HttpApiClient, HttpApiClientConfig,
-//!# };
+//!use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
 //!use heroku_rs::endpoints::apps;
 //!
 //!# fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!#
-//!#   let credentials = Credentials::UserAuthToken {
-//!#       token: String::from("TOKEN_HERE"),
-//!#   };
-//!#
-//!#   let api_client = HttpApiClient::new(
-//!#       credentials,
-//!#       HttpApiClientConfig::default(),
-//!#       ApiEnvironment::Production,
-//!#   )?;
-//!#
+//!    let api_client = HttpApiClient::create("API_KEY")?;
+//! 
 //!    let app_name = String::from("FOO");
 //! 
 //!    let response = api_client.request(&apps::AppCreate {
@@ -163,26 +130,13 @@
 //! 
 //! 
 //! ```rust
-//!# use heroku_rs::framework::{
-//!#    auth::Credentials,
-//!#    response::{ApiResponse, ApiResult},
-//!#    apiclient::HerokuApiClient,
-//!#    ApiEnvironment, HttpApiClient, HttpApiClientConfig,
-//!# };
+//!use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
 //!use heroku_rs::endpoints::apps;
 //!
 //!# fn main() -> Result<(), Box<dyn std::error::Error>> {
-//!#
-//!#   let credentials = Credentials::UserAuthToken {
-//!#       token: String::from("TOKEN_HERE"),
-//!#   };
-//!#
-//!#   let api_client = HttpApiClient::new(
-//!#       credentials,
-//!#       HttpApiClientConfig::default(),
-//!#       ApiEnvironment::Production,
-//!#   )?;
-//!#
+//! 
+//!    let api_client = HttpApiClient::create("API_KEY")?;
+//! 
 //!    let app_id = String::from("FOO");
 //! 
 //!    // This will delete the `FOO` app.
@@ -205,26 +159,13 @@
 //! 
 //! 
 //! ```rust
-//!# use heroku_rs::framework::{
-//!#    auth::Credentials,
-//!#    response::{ApiResponse, ApiResult},
-//!#    apiclient::HerokuApiClient,
-//!#    ApiEnvironment, HttpApiClient, HttpApiClientConfig,
-//!# };
+//!use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
 //!use heroku_rs::endpoints::apps;
 //!
 //!# fn main() -> Result<(), Box<dyn std::error::Error>> {
-//!#
-//!#   let credentials = Credentials::UserAuthToken {
-//!#       token: String::from("TOKEN_HERE"),
-//!#   };
-//!#
-//!#   let api_client = HttpApiClient::new(
-//!#       credentials,
-//!#       HttpApiClientConfig::default(),
-//!#       ApiEnvironment::Production,
-//!#   )?;
-//!#
+//!
+//!    let api_client = HttpApiClient::create("API_KEY")?;
+//!
 //!    let app_id = String::from("FOO");
 //! 
 //!    // This will enable maintenance for the "FOO" app.
@@ -259,8 +200,6 @@ extern crate reqwest;
 #[macro_use]
 extern crate serde;
 extern crate serde_json;
-extern crate serde_qs;
-extern crate url;
 
 pub mod endpoints;
 pub mod framework;
