@@ -123,11 +123,11 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [ ] [/apps/{app_id_or_name}/ssl-endpoints](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-list)	
 - [X] [/stacks/{stack_name_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#stack-info)	
 - [X] [/stacks](https://devcenter.heroku.com/articles/platform-api-reference#stack-list)	
-- [ ] [/teams](https://devcenter.heroku.com/articles/platform-api-reference#team-team-list-1)	
-- [ ] [/teams/{team_name_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-info)	
+- [X] [/teams](https://devcenter.heroku.com/articles/platform-api-reference#team-list)	
+- [X] [/teams/{team_name_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-info)	
 - [ ] [/teams/{team_name_or_id}/addons](https://devcenter.heroku.com/articles/platform-api-reference#team-add-on-list-for-team)	
-- [ ] [/teams/apps/{team_app_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-info)	
-- [ ] [/teams/{team_name_or_id}/apps](https://devcenter.heroku.com/articles/platform-api-reference#team-app-list-by-team)	
+- [X] [/teams/apps/{team_app_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-info)	
+- [X] [/teams/{team_name_or_id}/apps](https://devcenter.heroku.com/articles/platform-api-reference#team-app-list-by-team)	
 - [ ] [/teams/apps/{team_app_name}/collaborators/{team_app_collaborator_email}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-info)	
 - [ ] [/teams/apps/{team_app_name}/collaborators](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-list)	
 - [ ] [/teams/permissions](https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission-list)	
@@ -198,8 +198,8 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [ ] [/spaces](https://devcenter.heroku.com/articles/platform-api-reference#space-create)	
 - [ ] [/spaces/{space_id_or_name}/transfer](https://devcenter.heroku.com/articles/platform-api-reference#space-transfer-transfer)	
 - [ ] [/apps/{app_id_or_name}/ssl-endpoints](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-create)	
-- [ ] [/teams](https://devcenter.heroku.com/articles/platform-api-reference#team-team-create-1)	
-- [ ] [/teams/apps](https://devcenter.heroku.com/articles/platform-api-reference#team-app-create)	
+- [X] [/teams](https://devcenter.heroku.com/articles/platform-api-reference#team-create)	
+- [X] [/teams/apps](https://devcenter.heroku.com/articles/platform-api-reference#team-app-create)	
 - [ ] [/teams/apps/{app_id_or_name}/collaborators](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-create)	
 - [ ] [/teams/invitations/{team_invitation_token}/accept](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-accept)	
 - [ ] [/teams/{team_name_or_id}/members](https://devcenter.heroku.com/articles/platform-api-reference#team-member-create)	
@@ -244,7 +244,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [ ] [/apps/{app_id_or_name}/sni-endpoints/{sni_endpoint_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-delete)	
 - [ ] [/spaces/{space_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#space-delete)	
 - [ ] [/apps/{app_id_or_name}/ssl-endpoints/{ssl_endpoint_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-delete)	
-- [ ] [/teams/{team_name_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-delete)	
+- [X] [/teams/{team_name_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-delete)	
 - [ ] [/teams/apps/{team_app_name}/collaborators/{team_app_collaborator_email}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-delete)	
 - [ ] [/teams/{team_name_or_id}/invitations/{team_invitation_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-revoke)	
 - [ ] [/teams/{team_name_or_id}/members/{team_member_email_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-member-delete)	
@@ -276,10 +276,10 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [ ] [/spaces/{space_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#space-update)	
 - [ ] [/spaces/{space_id_or_name}/members/{account_email_or_id_or_self}](https://devcenter.heroku.com/articles/platform-api-reference#space-access-update)	
 - [ ] [/apps/{app_id_or_name}/ssl-endpoints/{ssl_endpoint_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-update)	
-- [ ] [/teams/{team_name_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-update)	
-- [ ] [/teams/apps/{team_app_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-update-locked)	
-- [ ] [/teams/apps/{team_app_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-account)	
-- [ ] [/teams/apps/{team_app_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-team)	
+- [X] [/teams/{team_name_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-update)	
+- [X] [/teams/apps/{team_app_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-update-locked)	
+- [X] [/teams/apps/{team_app_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-account)	
+- [X] [/teams/apps/{team_app_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-team)	
 - [ ] [/teams/apps/{team_app_name}/collaborators/{team_app_collaborator_email}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-update)	
 - [ ] [/teams/{team_name_or_id}/members](https://devcenter.heroku.com/articles/platform-api-reference#team-member-update)	
 - [ ] [/teams/{team_preferences_name_or_id}/preference](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-update)	
@@ -300,14 +300,14 @@ Heroku V3 API Enterprise
 - [ ] [/enterprise-accounts/{enterprise_account_id}/usage/daily](https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-daily-usage-enterprise-account-daily-usage)	
 - [ ] [/enterprise-accounts/{enterprise_account_id}/usage/monthly](https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-monthly-usage-enterprise-account-monthly-usage)	
 - [ ] [/enterprise-accounts/{enterprise_account_id}/events](https://devcenter.heroku.com/articles/platform-api-reference#audit-trail-event-list)	
-- [ ] [/enterprise-accounts/{enterprise_account_id}/teams](https://devcenter.heroku.com/articles/platform-api-reference#team-team-list-2)	
+- [X] [/enterprise-accounts/{enterprise_account_id}/teams](https://devcenter.heroku.com/articles/platform-api-reference#team-list-by-enterprise-account)	
 
 
 ## PUT
 
 ## POST	
 - [ ] [/enterprise-accounts/{enterprise_account_id}/members](https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member-create)		
-- [ ] [/enterprise-accounts/{enterprise_account_id}/teams](https://devcenter.heroku.com/articles/platform-api-reference#team-team-create-2)	
+- [X] [/enterprise-accounts/{enterprise_account_id}/teams](https://devcenter.heroku.com/articles/platform-api-reference#team-create-in-enterprise-account)	
 
 
 ## DELETE

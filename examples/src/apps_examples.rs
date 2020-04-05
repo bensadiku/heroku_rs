@@ -17,7 +17,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // create_app(api_client, app_name);
     // delete_app(api_client, app_name); // Careful here :)
     // patch_app(api_client, app_name);
-    // get_app(api_client, app_name);
+    get_app(api_client, app_name);
     // get_app_raw_response(api_client, app_name);
     // list_apps(api_client);
     // list_account_apps(api_client);
@@ -74,7 +74,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app_release(api_client, app_name, "4".to_string());
     // list_app_releases(api_client, app_name);
     // create_app_release(api_client, app_name);
-     rollback_app_release(api_client, app_name);
+    //  rollback_app_release(api_client, app_name);
 }
 
 // get info about a slug

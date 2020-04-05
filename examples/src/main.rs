@@ -15,6 +15,7 @@ mod pipeline_examples;
 mod app_review_examples;
 mod config_var_examples;
 mod custom_examples;
+mod teams_examples;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let key = "API_KEY";
@@ -36,6 +37,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // oauth_examples::run(&api_client);
     // pipeline_examples::run(&api_client);
     // misc_examples::run(&api_client);
+    // teams_examples::run(&api_client);
 
     Ok(())
 }
