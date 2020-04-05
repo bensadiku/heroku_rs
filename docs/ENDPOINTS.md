@@ -130,7 +130,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [X] [/teams/{team_name_or_id}/apps](https://devcenter.heroku.com/articles/platform-api-reference#team-app-list-by-team)	
 - [X] [/teams/apps/{team_app_name}/collaborators/{team_app_collaborator_email}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-info)	
 - [X] [/teams/apps/{team_app_name}/collaborators](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-list)	
-- [ ] [/teams/permissions](https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission-list)	
+- [X] [/teams/permissions](https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission-list)	
 - [ ] [/teams/{team_name_or_id}/features/{team_feature_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-feature-info)	
 - [ ] [/teams/{team_name_or_id}/features](https://devcenter.heroku.com/articles/platform-api-reference#team-feature-list)	
 - [ ] [/teams/{team_name}/invitations](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-list)	

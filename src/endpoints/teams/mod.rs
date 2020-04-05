@@ -7,11 +7,16 @@ pub mod post;
 pub mod put;
 
 pub use delete::TeamDelete;
-pub use get::{TeamAppDetails, TeamDetails, TeamList, TeamListByEA, TeamAppList};
-pub use patch::{TeamAppUpdateLocked, TeamAppUpdateLockedParams, TeamUpdate, TeamUpdateParams, TeamAppTransfer, TeamAppTransferParams};
+pub use get::{
+    TeamAppDetails, TeamAppList, TeamAppPermissionList, TeamDetails, TeamList, TeamListByEA,
+};
+pub use patch::{
+    TeamAppTransfer, TeamAppTransferParams, TeamAppUpdateLocked, TeamAppUpdateLockedParams,
+    TeamUpdate, TeamUpdateParams,
+};
 pub use post::{
-    TeamAppCreate, TeamAppCreateParams, TeamCreate, TeamCreateByEA,
-    TeamCreateByEAParams, TeamCreateOptionalParams, TeamCreateParams,
+    TeamAppCreate, TeamAppCreateParams, TeamCreate, TeamCreateByEA, TeamCreateByEAParams,
+    TeamCreateOptionalParams, TeamCreateParams,
 };
 
 impl ApiResult for Team {}
@@ -20,8 +25,11 @@ impl ApiResult for Vec<Team> {}
 impl ApiResult for TeamApp {}
 impl ApiResult for Vec<TeamApp> {}
 
+impl ApiResult for Vec<TeamAppPermission> {}
+
 pub use team::Team;
 pub use team_app::TeamApp;
+pub use team_permission::TeamAppPermission;
 
 mod team {
     use chrono::offset::Utc;
@@ -182,5 +190,23 @@ mod team_app {
         pub id: String,
         /// unique name
         pub name: String,
+    }
+}
+
+mod team_permission {
+    /// Team App Permission
+    ///
+    /// Stability: prototype
+    ///
+    /// A team app permission is a behavior that is assigned to a user in a team app.
+    ///
+    /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission)
+    ///
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct TeamAppPermission {
+        /// The name of the app permission.
+        pub name: String,
+        /// A description of what the app permission allows.
+        pub description: String,
     }
 }

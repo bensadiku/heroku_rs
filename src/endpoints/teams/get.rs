@@ -1,5 +1,5 @@
 //Anything related to GET requests for Teams and it's variations goes here.
-use super::{Team, TeamApp};
+use super::{Team, TeamApp, TeamAppPermission};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -119,5 +119,27 @@ impl<'a> HerokuEndpoint<Vec<TeamApp>> for TeamAppList<'a> {
     }
     fn path(&self) -> String {
         format!("teams/apps/{}", self.team_id)
+    }
+}
+
+/// Team App Permission List
+///
+/// Lists permissions available to teams.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission-list)
+pub struct TeamAppPermissionList {}
+
+impl TeamAppPermissionList {
+    pub fn new() -> TeamAppPermissionList {
+        TeamAppPermissionList {}
+    }
+}
+
+impl HerokuEndpoint<Vec<TeamAppPermission>> for TeamAppPermissionList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/permissions")
     }
 }

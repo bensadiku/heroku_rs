@@ -17,8 +17,17 @@ pub fn run<T: HerokuApiClient>(api_client: &T) {
     // update_team_app(api_client);
     // transfer_team_app(api_client);
     // team_app_list(api_client);
+
+    // team_permissions(api_c   lient);
 }
 
+// get team permissions
+fn team_permissions<T: HerokuApiClient>(api_client: &T) {
+    let response = api_client.request(&teams::TeamAppPermissionList {});
+    print_response(response);
+}
+
+// get team app list
 fn team_app_list<T: HerokuApiClient>(api_client: &T) {
     let team_id = "123";
     let response = api_client.request(&teams::TeamAppList { team_id });
