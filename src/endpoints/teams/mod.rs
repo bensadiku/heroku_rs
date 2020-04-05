@@ -6,10 +6,10 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
-pub use delete::TeamDelete;
+pub use delete::{TeamDelete, TeamInvitationRevoke};
 pub use get::{
     TeamAppDetails, TeamAppList, TeamAppPermissionList, TeamDetails, TeamFeatureDetails,
-    TeamFeatureList, TeamList, TeamListByEA,
+    TeamFeatureList, TeamInvitationDetails, TeamInvitationList, TeamList, TeamListByEA,
 };
 pub use patch::{
     TeamAppTransfer, TeamAppTransferParams, TeamAppUpdateLocked, TeamAppUpdateLockedParams,
@@ -17,8 +17,9 @@ pub use patch::{
 };
 pub use post::{
     TeamAppCreate, TeamAppCreateParams, TeamCreate, TeamCreateByEA, TeamCreateByEAParams,
-    TeamCreateOptionalParams, TeamCreateParams,
+    TeamCreateOptionalParams, TeamCreateParams, TeamInvitationAccept,
 };
+pub use put::{TeamInvitationCreate, TeamInvitationCreateParams};
 
 impl ApiResult for Team {}
 impl ApiResult for Vec<Team> {}
@@ -31,9 +32,13 @@ impl ApiResult for Vec<TeamAppPermission> {}
 impl ApiResult for TeamFeature {}
 impl ApiResult for Vec<TeamFeature> {}
 
+impl ApiResult for TeamInvitation {}
+impl ApiResult for Vec<TeamInvitation> {}
+
 pub use team::Team;
 pub use team_app::TeamApp;
 pub use team_feature::TeamFeature;
+pub use team_invitation::TeamInvitation;
 pub use team_permission::TeamAppPermission;
 
 mod team {
@@ -249,5 +254,61 @@ mod team_feature {
         pub display_name: String,
         /// e-mail to send feedback about the feature
         pub feedback_email: String,
+    }
+}
+
+mod team_invitation {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Team Invitation
+    ///
+    /// Stability: development
+    ///
+    /// A team invitation represents an invite to a team.
+    ///
+    /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation)
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct TeamInvitation {
+        /// when invitation was created
+        pub created_at: DateTime<Utc>,
+        /// unique identifier of an invitation
+        pub id: String,
+        /// invited by
+        pub invited_by: InvitedBy,
+        /// team invited
+        pub team: Team,
+        /// role in the team
+        ///  one of:"admin" or "collaborator" or "member" or "owner" or null
+        pub role: Option<String>,
+        /// when invitation was updated
+        pub updated_at: DateTime<Utc>,
+        /// account
+        pub user: User,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct InvitedBy {
+        /// unique email address
+        pub email: String,
+        /// identifier of an account
+        pub id: String,
+        /// full name of the account owner
+        pub name: Option<String>,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct Team {
+        /// unique identifier of team
+        pub id: String,
+        /// unique name of team
+        pub name: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct User {
+        /// unique email address
+        pub email: String,
+        /// identifier of an account
+        pub id: String,
+        /// full name of the account owner
+        pub name: Option<String>,
     }
 }

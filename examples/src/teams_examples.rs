@@ -22,9 +22,54 @@ pub fn run<T: HerokuApiClient>(api_client: &T) {
 
     // get_team_features(api_client);
     // get_team_feature(api_client);
+
+    // get_team_invitations(api_client);
+    // create_team_invitation(api_client);
+    // revoke_team_invitation(api_client); // Careful here :)
+    // get_team_invitation(api_client);
+    // accept_team_invitation(api_client);
 }
 
-// get team permissions
+// accept team invitation
+fn accept_team_invitation<T: HerokuApiClient>(api_client: &T) {
+    let token_id = "123";
+    let response = api_client.request(&teams::TeamInvitationAccept { token_id });
+    print_response(response);
+}
+
+// get team invitation
+fn get_team_invitation<T: HerokuApiClient>(api_client: &T) {
+    let token_id = "123";
+    let response = api_client.request(&teams::TeamInvitationDetails { token_id });
+    print_response(response);
+}
+
+// revoke team invitation
+fn revoke_team_invitation<T: HerokuApiClient>(api_client: &T) {
+    let team_id = "123";
+    let invitation_id = "123";
+    let response = api_client.request(&teams::TeamInvitationRevoke::new(team_id, invitation_id));
+    print_response(response);
+}
+
+// create team invitations
+fn create_team_invitation<T: HerokuApiClient>(api_client: &T) {
+    let team_id = "123";
+    let email = "name@gmail.com";
+    // this will send a `null` to the API
+    let role = None;
+    let response = api_client.request(&teams::TeamInvitationCreate::new(team_id, email, role));
+    print_response(response);
+}
+
+// get team invitations
+fn get_team_invitations<T: HerokuApiClient>(api_client: &T) {
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamInvitationList { team_id });
+    print_response(response);
+}
+
+// get team feature
 fn get_team_feature<T: HerokuApiClient>(api_client: &T) {
     let team_id = "123";
     let feature_id = "123";
@@ -35,7 +80,7 @@ fn get_team_feature<T: HerokuApiClient>(api_client: &T) {
     print_response(response);
 }
 
-// get team permissions
+// get team features
 fn get_team_features<T: HerokuApiClient>(api_client: &T) {
     let team_id = "123";
     let response = api_client.request(&teams::TeamFeatureList { team_id });

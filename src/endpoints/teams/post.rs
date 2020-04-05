@@ -1,5 +1,5 @@
 //Anything related to POST requests for Teams and it's variations goes here.
-use super::{Team, TeamApp};
+use super::{Team, TeamApp, TeamInvitation};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -251,5 +251,30 @@ impl<'a> HerokuEndpoint<TeamApp, (), TeamAppCreateParams<'a>> for TeamAppCreate<
     }
     fn body(&self) -> Option<TeamAppCreateParams<'a>> {
         self.params.clone()
+    }
+}
+
+/// Team Invitation Accept
+///
+/// Accept Team Invitation
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-accept)
+pub struct TeamInvitationAccept<'a> {
+    /// unique token identifier
+    pub token_id: &'a str,
+}
+
+impl<'a> TeamInvitationAccept<'a> {
+    pub fn new(token_id: &'a str) -> TeamInvitationAccept<'a> {
+        TeamInvitationAccept { token_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<TeamInvitation> for TeamInvitationAccept<'a> {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("teams/invitations/{}/accept", self.token_id)
     }
 }

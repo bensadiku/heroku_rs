@@ -1,5 +1,5 @@
 //Anything related to GET requests for Teams and it's variations goes here.
-use super::{Team, TeamApp, TeamAppPermission, TeamFeature};
+use super::{Team, TeamApp, TeamAppPermission, TeamFeature, TeamInvitation};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -196,5 +196,55 @@ impl<'a> HerokuEndpoint<TeamFeature> for TeamFeatureDetails<'a> {
     }
     fn path(&self) -> String {
         format!("teams/{}/features/{}", self.team_id, self.feature_id)
+    }
+}
+
+/// Team Invitation List
+///
+/// Get a list of a team’s invites
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-list)
+pub struct TeamInvitationList<'a> {
+    /// unique team identifier, either name or id
+    pub team_id: &'a str,
+}
+
+impl<'a> TeamInvitationList<'a> {
+    pub fn new(team_id: &'a str) -> TeamInvitationList {
+        TeamInvitationList { team_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<TeamInvitation>> for TeamInvitationList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/invitations", self.team_id)
+    }
+}
+
+/// Team Invitation Get
+///
+/// Get an invitation by its token
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-get)
+pub struct TeamInvitationDetails<'a> {
+    /// unique token identifier
+    pub token_id: &'a str,
+}
+
+impl<'a> TeamInvitationDetails<'a> {
+    pub fn new(token_id: &'a str) -> TeamInvitationDetails {
+        TeamInvitationDetails { token_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<TeamInvitation> for TeamInvitationDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/invitations/{}", self.token_id)
     }
 }
