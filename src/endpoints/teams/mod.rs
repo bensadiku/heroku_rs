@@ -6,20 +6,25 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
-pub use delete::{TeamDelete, TeamInvitationRevoke};
+pub use delete::{TeamDelete, TeamInvitationRevoke, TeamMemberDelete};
 pub use get::{
     TeamAppDetails, TeamAppList, TeamAppPermissionList, TeamDetails, TeamFeatureDetails,
-    TeamFeatureList, TeamInvitationDetails, TeamInvitationList, TeamList, TeamListByEA,
+    TeamFeatureList, TeamInvitationDetails, TeamInvitationList, TeamInvoiceDetails,
+    TeamInvoiceList, TeamList, TeamListByEA, TeamMemberAppsList, TeamMemberList,
 };
 pub use patch::{
     TeamAppTransfer, TeamAppTransferParams, TeamAppUpdateLocked, TeamAppUpdateLockedParams,
-    TeamUpdate, TeamUpdateParams,
+    TeamMemberUpdate, TeamMemberUpdateParams, TeamUpdate, TeamUpdateParams,
 };
 pub use post::{
     TeamAppCreate, TeamAppCreateParams, TeamCreate, TeamCreateByEA, TeamCreateByEAParams,
-    TeamCreateOptionalParams, TeamCreateParams, TeamInvitationAccept,
+    TeamCreateOptionalParams, TeamCreateParams, TeamInvitationAccept, TeamMemberCreate,
+    TeamMemberCreateParams,
 };
-pub use put::{TeamInvitationCreate, TeamInvitationCreateParams};
+pub use put::{
+    TeamInvitationCreate, TeamInvitationCreateParams, TeamMemberCreateorUpdate,
+    TeamMemberCreateorUpdateParams,
+};
 
 impl ApiResult for Team {}
 impl ApiResult for Vec<Team> {}
@@ -35,10 +40,18 @@ impl ApiResult for Vec<TeamFeature> {}
 impl ApiResult for TeamInvitation {}
 impl ApiResult for Vec<TeamInvitation> {}
 
+impl ApiResult for TeamInvoice {}
+impl ApiResult for Vec<TeamInvoice> {}
+
+impl ApiResult for TeamMember {}
+impl ApiResult for Vec<TeamMember> {}
+
 pub use team::Team;
 pub use team_app::TeamApp;
 pub use team_feature::TeamFeature;
 pub use team_invitation::TeamInvitation;
+pub use team_invoice::TeamInvoice;
+pub use team_member::TeamMember;
 pub use team_permission::TeamAppPermission;
 
 mod team {
@@ -303,6 +316,120 @@ mod team_invitation {
         pub name: String,
     }
     #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct User {
+        /// unique email address
+        pub email: String,
+        /// identifier of an account
+        pub id: String,
+        /// full name of the account owner
+        pub name: Option<String>,
+    }
+}
+
+mod team_invoice {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Team Invoice
+    ///
+    /// Stability: development
+    ///
+    /// A Team Invoice is an itemized bill of goods for a team which includes pricing and charges.
+    ///
+    /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#team-invoice)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct TeamInvoice {
+        /// total add-ons charges in on this invoice
+        pub addons_total: i64,
+        /// total database charges on this invoice
+        pub database_total: i64,
+        /// total charges on this invoice
+        pub charges_total: i64,
+        /// when invoice was created
+        pub created_at: DateTime<Utc>,
+        /// total credits on this invoice
+        pub credits_total: i64,
+        /// total amount of dyno units consumed across dyno types.
+        pub dyno_units: f64,
+        /// unique identifier of this invoice
+        pub id: String,
+        /// human readable invoice number
+        pub number: i64,
+        /// status of the invoice payment
+        pub payment_status: String,
+        /// the ending date that the invoice covers
+        pub period_end: String,
+        /// the starting date that this invoice covers
+        pub period_start: String,
+        /// total platform charges on this invoice
+        pub platform_total: i64,
+        /// payment status for this invoice (pending, successful, failed)
+        pub state: i64,
+        /// combined total of charges and credits on this invoice
+        pub total: i64,
+        /// when invoice was updated
+        pub updated_at: DateTime<Utc>,
+        /// The total amount of hours consumed across dyno types.
+        pub weighted_dyno_hours: i64,
+    }
+}
+
+mod team_member {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Team Member
+    ///
+    /// Stability: development
+    ///
+    /// A team member is an individual with access to a team.
+    ///
+    /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#team-member)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct TeamMember {
+        /// when the membership record was created
+        pub created_at: DateTime<Utc>,
+        /// email address of the team member
+        pub email: String,
+        /// whether the user is federated and belongs to an Identity Provider
+        pub federated: bool,
+        /// unique identifier of the team member
+        pub id: String,
+        /// Identity Provider information the member is federated with
+        pub identity_provider: Option<IdentityProvider>,
+        /// role in the team
+        /// one of:"admin" or "collaborator" or "member" or "owner" or null
+        pub role: Option<String>,
+        /// whether the Enterprise team member has two factor authentication enabled
+        pub two_factor_authentication: bool,
+        /// when the membership record was updated
+        pub updated_at: DateTime<Utc>,
+        /// account
+        pub user: User,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct IdentityProvider {
+        /// unique identifier of this identity provider
+        pub id: String,
+        /// name of the identity provider
+        pub name: String,
+        /// whether the identity_provider information is redacted or not
+        pub redacted: bool,
+        /// account owner
+        pub owner: Owner,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Owner {
+        /// unique identifier of the owner
+        pub id: String,
+        /// name of the owner
+        pub name: String,
+        /// type of the owner
+        /// one of:"team" or "enterprise-account"
+        #[serde(rename = "type")]
+        pub type_field: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
     pub struct User {
         /// unique email address
         pub email: String,

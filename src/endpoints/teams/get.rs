@@ -1,5 +1,5 @@
 //Anything related to GET requests for Teams and it's variations goes here.
-use super::{Team, TeamApp, TeamAppPermission, TeamFeature, TeamInvitation};
+use super::{Team, TeamApp, TeamAppPermission, TeamFeature, TeamInvitation, TeamInvoice, TeamMember};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -246,5 +246,112 @@ impl<'a> HerokuEndpoint<TeamInvitation> for TeamInvitationDetails<'a> {
     }
     fn path(&self) -> String {
         format!("teams/invitations/{}", self.token_id)
+    }
+}
+
+/// Team Invoice List
+///
+/// List existing invoices.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-list)
+pub struct TeamInvoiceList<'a> {
+    /// unique team identifier, either name or id
+    pub team_id: &'a str,
+}
+
+impl<'a> TeamInvoiceList<'a> {
+    pub fn new(team_id: &'a str) -> TeamInvoiceList {
+        TeamInvoiceList { team_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<TeamInvoice>> for TeamInvoiceList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/invoices", self.team_id)
+    }
+}
+
+/// Team Invoice Info
+///
+/// Info for existing invoice.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-invoice-info)
+pub struct TeamInvoiceDetails<'a> {
+    /// unique token identifier
+    pub team_id: &'a str,
+    /// invoice number
+    pub invoice_id: &'a str,
+}
+
+impl<'a> TeamInvoiceDetails<'a> {
+    pub fn new(team_id: &'a str, invoice_id: &'a str) -> TeamInvoiceDetails<'a> {
+        TeamInvoiceDetails {
+            team_id,
+            invoice_id,
+        }
+    }
+}
+
+impl<'a> HerokuEndpoint<TeamInvoice> for TeamInvoiceDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/invoices/{}", self.team_id, self.invoice_id)
+    }
+}
+
+/// Team Member List
+///
+/// List members of the team.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-member-list)
+pub struct TeamMemberList<'a> {
+    /// unique team identifier, either name or id
+    pub team_id: &'a str,
+}
+
+impl<'a> TeamMemberList<'a> {
+    pub fn new(team_id: &'a str) -> TeamMemberList {
+        TeamMemberList { team_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<TeamMember>> for TeamMemberList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/members", self.team_id)
+    }
+}
+
+/// Team Member Apps List
+///
+/// List the apps of a team member.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-member-list-by-member)
+pub struct TeamMemberAppsList<'a> {
+    /// unique team identifier, either name or id
+    pub team_id: &'a str,
+    /// unique team member identifier, either email or id
+    pub member_id: &'a str,
+}
+
+impl<'a> TeamMemberAppsList<'a> {
+    pub fn new(team_id: &'a str, member_id: &'a str) -> TeamMemberAppsList<'a> {
+        TeamMemberAppsList { team_id, member_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<TeamApp>> for TeamMemberAppsList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/members/{}/apps", self.team_id, self.member_id)
     }
 }

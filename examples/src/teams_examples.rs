@@ -28,6 +28,86 @@ pub fn run<T: HerokuApiClient>(api_client: &T) {
     // revoke_team_invitation(api_client); // Careful here :)
     // get_team_invitation(api_client);
     // accept_team_invitation(api_client);
+
+    // team_invoice_list(api_client);
+    // team_invoice(api_client);
+
+    // team_member_create_or_update(api_client);
+    // team_member_create(api_client);
+    // team_member_update(api_client);
+    // team_member_delete(api_client); // Careful here :)
+    // get_team_member_list(api_client);
+    // get_team_member_app_list(api_client);
+}
+
+// get team member apps
+fn get_team_member_app_list<T: HerokuApiClient>(api_client: &T) {
+    let member_id = "123@example.de";
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamMemberAppsList::new(team_id, member_id));
+    print_response(response);
+}
+
+// get team member list
+fn get_team_member_list<T: HerokuApiClient>(api_client: &T) {
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamMemberList::new(team_id));
+    print_response(response);
+}
+
+// delete a team member
+fn team_member_delete<T: HerokuApiClient>(api_client: &T) {
+    let member_id = "123@example.de";
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamMemberDelete::new(team_id, member_id));
+    print_response(response);
+}
+
+// update a team member
+fn team_member_update<T: HerokuApiClient>(api_client: &T) {
+    let email = "123@example.de";
+    let role = "admin";
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamMemberUpdate::create(team_id, email, role));
+    print_response(response);
+}
+
+// create a team member
+fn team_member_create<T: HerokuApiClient>(api_client: &T) {
+    let email = "123@example.de";
+    let role = "admin";
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamMemberCreate::create(team_id, email, role));
+    print_response(response);
+}
+
+// create or update a team member
+fn team_member_create_or_update<T: HerokuApiClient>(api_client: &T) {
+    let email = "123@example.de";
+    let role = "admin";
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamMemberCreateorUpdate::create(
+        team_id, email, role,
+    ));
+    print_response(response);
+}
+
+// get a specific team invoice
+fn team_invoice<T: HerokuApiClient>(api_client: &T) {
+    let invoice_id = "123";
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamInvoiceDetails {
+        team_id,
+        invoice_id,
+    });
+    print_response(response);
+}
+
+// get a list of existing invoices
+fn team_invoice_list<T: HerokuApiClient>(api_client: &T) {
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamInvoiceList { team_id });
+    print_response(response);
 }
 
 // accept team invitation

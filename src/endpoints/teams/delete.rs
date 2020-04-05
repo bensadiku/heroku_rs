@@ -1,5 +1,5 @@
 //Anything related to GET requests for Teams and it's variations goes here.
-use super::{Team, TeamInvitation};
+use super::{Team, TeamInvitation, TeamMember};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -55,5 +55,32 @@ impl<'a> HerokuEndpoint<TeamInvitation> for TeamInvitationRevoke<'a> {
     }
     fn path(&self) -> String {
         format!("teams/{}/invitations/{}", self.team_id, self.invitation_id)
+    }
+}
+
+/// Team Member Delete
+///
+/// Remove a member from the team.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-member-delete)
+pub struct TeamMemberDelete<'a> {
+    /// unique team identifier.
+    pub team_id: &'a str,
+    /// unique member identifier
+    pub member_id: &'a str,
+}
+
+impl<'a> TeamMemberDelete<'a> {
+    pub fn new(team_id: &'a str, member_id: &'a str) -> TeamMemberDelete<'a> {
+        TeamMemberDelete { team_id, member_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<TeamMember> for TeamMemberDelete<'a> {
+    fn method(&self) -> Method {
+        Method::Delete
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/members/{}", self.team_id, self.member_id)
     }
 }

@@ -1,5 +1,5 @@
 //Anything related to POST requests for Teams and it's variations goes here.
-use super::{Team, TeamApp, TeamInvitation};
+use super::{Team, TeamApp, TeamInvitation, TeamMember};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -276,5 +276,75 @@ impl<'a> HerokuEndpoint<TeamInvitation> for TeamInvitationAccept<'a> {
     }
     fn path(&self) -> String {
         format!("teams/invitations/{}/accept", self.token_id)
+    }
+}
+
+/// Team Member Create
+///
+/// Create a new team member.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-member-create)
+pub struct TeamMemberCreate<'a> {
+    /// unique team identifier
+    pub team_id: &'a str,
+    /// parameters to pass to Heroku
+    pub params: TeamMemberCreateParams<'a>,
+}
+
+impl<'a> TeamMemberCreate<'a> {
+    /// required and optional parameters
+    pub fn new(
+        team_id: &'a str,
+        email: &'a str,
+        role: &'a str,
+        federated: Option<bool>,
+    ) -> TeamMemberCreate<'a> {
+        TeamMemberCreate {
+            team_id,
+            params: TeamMemberCreateParams {
+                email,
+                role,
+                federated,
+            },
+        }
+    }
+    /// Only required parameters passed
+    pub fn create(team_id: &'a str, email: &'a str, role: &'a str) -> TeamMemberCreate<'a> {
+        TeamMemberCreate {
+            team_id,
+            params: TeamMemberCreateParams {
+                email: email,
+                role: role,
+                federated: None,
+            },
+        }
+    }
+}
+
+/// Create team member with parameters
+///
+/// [See Heroku documentation for more information about these paramters](https://devcenter.heroku.com/articles/platform-api-reference#team-member-create-required-parameters)
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct TeamMemberCreateParams<'a> {
+    /// unique email address
+    pub email: &'a str,
+    /// Even though marked with `Option`, this parameter is NOT optional.
+    /// role in the team
+    /// one of:"admin" or "collaborator" or "member" or "owner" or null
+    pub role: &'a str,
+    /// whether the user is federated and belongs to an Identity Provider
+    pub federated: Option<bool>,
+}
+
+impl<'a> HerokuEndpoint<TeamMember, (), TeamMemberCreateParams<'a>> for TeamMemberCreate<'a> {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/members", self.team_id)
+    }
+    fn body(&self) -> Option<TeamMemberCreateParams<'a>> {
+        Some(self.params.clone())
     }
 }

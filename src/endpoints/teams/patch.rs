@@ -1,5 +1,5 @@
 //Anything related to PATCH requests for Teams and it's variations goes here.
-use super::{Team, TeamApp};
+use super::{Team, TeamApp, TeamMember};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -149,6 +149,76 @@ impl<'a> HerokuEndpoint<TeamApp, (), TeamAppTransferParams<'a>> for TeamAppTrans
         format!("teams/apps/{}", self.team_id)
     }
     fn body(&self) -> Option<TeamAppTransferParams<'a>> {
+        Some(self.params.clone())
+    }
+}
+
+/// Team Member Update
+///
+/// Update a team member.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-member-update)
+pub struct TeamMemberUpdate<'a> {
+    /// unique team identifier
+    pub team_id: &'a str,
+    /// parameters to pass to Heroku
+    pub params: TeamMemberUpdateParams<'a>,
+}
+
+impl<'a> TeamMemberUpdate<'a> {
+    /// required and optional parameters
+    pub fn new(
+        team_id: &'a str,
+        email: &'a str,
+        role: &'a str,
+        federated: Option<bool>,
+    ) -> TeamMemberUpdate<'a> {
+        TeamMemberUpdate {
+            team_id,
+            params: TeamMemberUpdateParams {
+                email,
+                role,
+                federated,
+            },
+        }
+    }
+    /// Only required parameters passed
+    pub fn create(team_id: &'a str, email: &'a str, role: &'a str) -> TeamMemberUpdate<'a> {
+        TeamMemberUpdate {
+            team_id,
+            params: TeamMemberUpdateParams {
+                email: email,
+                role: role,
+                federated: None,
+            },
+        }
+    }
+}
+
+/// Update team member with parameters
+///
+/// [See Heroku documentation for more information about these paramters](https://devcenter.heroku.com/articles/platform-api-reference#team-member-update-required-parameters)
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct TeamMemberUpdateParams<'a> {
+    /// unique email address
+    pub email: &'a str,
+    /// Even though marked with `Option`, this parameter is NOT optional.
+    /// role in the team
+    /// one of:"admin" or "collaborator" or "member" or "owner" or null
+    pub role: &'a str,
+    /// whether the user is federated and belongs to an Identity Provider
+    pub federated: Option<bool>,
+}
+
+impl<'a> HerokuEndpoint<TeamMember, (), TeamMemberUpdateParams<'a>> for TeamMemberUpdate<'a> {
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/members", self.team_id)
+    }
+    fn body(&self) -> Option<TeamMemberUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }
