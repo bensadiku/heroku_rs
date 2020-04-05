@@ -16,6 +16,7 @@ mod app_review_examples;
 mod config_var_examples;
 mod custom_examples;
 mod teams_examples;
+mod collaborators_examples;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let key = "API_KEY";
@@ -30,6 +31,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // let api_client = create_custom_client(token)?;
 
     apps_examples::run(&api_client);
+    // collaborators_examples::run(&api_client);
     // custom_examples::run(&api_client);
     // app_review_examples::run(&api_client);
     // config_var_examples::run(&api_client);

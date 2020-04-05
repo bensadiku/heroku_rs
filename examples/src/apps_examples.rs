@@ -2,7 +2,6 @@ extern crate heroku_rs;
 use super::print_response;
 use heroku_rs::endpoints::apps;
 use heroku_rs::endpoints::builds;
-use heroku_rs::endpoints::collaborators;
 use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
 use heroku_rs::endpoints::formations;
@@ -52,11 +51,6 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // update_buildpack_installation(api_client, app_name);
     // get_buildpack_installations(api_client, app_name);
-
-    // create_app_collaborate(api_client, app_name);
-    // get_app_collaborators(api_client, app_name);
-    // get_app_collaborator(api_client, app_name);
-    // delete_app_collaborator(api_client, app_name);
 
     // create_app_domain(api_client, app_name);
     // get_app_domains(api_client, app_name);
@@ -136,43 +130,6 @@ fn create_app_domain<T: HerokuApiClient>(api_client: &T, app_id: String) {
     let response = api_client.request(&domains::DomainCreate {
         app_id,
         params: domains::DomainCreateParams { hostname },
-    });
-    print_response(response);
-}
-
-/// Delete app collaborator
-fn delete_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let collaborator_id = String::from("COLLAB_EMAIL_OR_ID");
-    let response = api_client.request(&collaborators::CollaboratorDelete {
-        app_id,
-        collaborator_id,
-    });
-    print_response(response);
-}
-
-/// Get app collaborator
-fn get_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let collaborator_id = String::from("COLLAB_EMAIL_OR_ID");
-    let response = api_client.request(&collaborators::CollaboratorDetails {
-        app_id,
-        collaborator_id,
-    });
-    print_response(response);
-}
-
-/// Get a list of app collaborators
-fn get_app_collaborators<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let response = api_client.request(&collaborators::CollaboratorList { app_id });
-    print_response(response);
-}
-
-/// Create build pack installations
-fn create_app_collaborate<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let user = String::from("EMAIL_or_ID_HERE");
-    let silent = Some(false);
-    let response = api_client.request(&collaborators::CollaboratorCreate {
-        app_id,
-        params: collaborators::CollaboratorCreateParams { user, silent },
     });
     print_response(response);
 }

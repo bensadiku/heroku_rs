@@ -1,5 +1,5 @@
 //Anything related to PATCH requests for Teams and it's variations goes here.
-use super::Team;
+use super::{Team, TeamApp};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -141,7 +141,7 @@ pub struct TeamAppTransferParams<'a> {
     pub owner: &'a str,
 }
 
-impl<'a> HerokuEndpoint<Team, (), TeamAppTransferParams<'a>> for TeamAppTransfer<'a> {
+impl<'a> HerokuEndpoint<TeamApp, (), TeamAppTransferParams<'a>> for TeamAppTransfer<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
