@@ -1,5 +1,5 @@
 //Anything related to GET requests for Teams and it's variations goes here.
-use super::{Team, TeamApp, TeamAppPermission};
+use super::{Team, TeamApp, TeamAppPermission, TeamFeature};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -141,5 +141,60 @@ impl HerokuEndpoint<Vec<TeamAppPermission>> for TeamAppPermissionList {
     }
     fn path(&self) -> String {
         format!("teams/permissions")
+    }
+}
+
+/// Team Feature List
+///
+/// List existing team features.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-feature-list)
+pub struct TeamFeatureList<'a> {
+    /// unique team identifier, either name or id
+    pub team_id: &'a str,
+}
+
+impl<'a> TeamFeatureList<'a> {
+    pub fn new(team_id: &'a str) -> TeamFeatureList {
+        TeamFeatureList { team_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<TeamFeature>> for TeamFeatureList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/features", self.team_id)
+    }
+}
+
+/// Team Feature Info
+///
+/// Info for an existing team feature.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-feature-info)
+pub struct TeamFeatureDetails<'a> {
+    /// unique team identifier, either name or id
+    pub team_id: &'a str,
+    /// unique feature identifier, either name or id
+    pub feature_id: &'a str,
+}
+
+impl<'a> TeamFeatureDetails<'a> {
+    pub fn new(team_id: &'a str, feature_id: &'a str) -> TeamFeatureDetails<'a> {
+        TeamFeatureDetails {
+            team_id,
+            feature_id,
+        }
+    }
+}
+
+impl<'a> HerokuEndpoint<TeamFeature> for TeamFeatureDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/features/{}", self.team_id, self.feature_id)
     }
 }

@@ -8,7 +8,8 @@ pub mod put;
 
 pub use delete::TeamDelete;
 pub use get::{
-    TeamAppDetails, TeamAppList, TeamAppPermissionList, TeamDetails, TeamList, TeamListByEA,
+    TeamAppDetails, TeamAppList, TeamAppPermissionList, TeamDetails, TeamFeatureDetails,
+    TeamFeatureList, TeamList, TeamListByEA,
 };
 pub use patch::{
     TeamAppTransfer, TeamAppTransferParams, TeamAppUpdateLocked, TeamAppUpdateLockedParams,
@@ -27,8 +28,12 @@ impl ApiResult for Vec<TeamApp> {}
 
 impl ApiResult for Vec<TeamAppPermission> {}
 
+impl ApiResult for TeamFeature {}
+impl ApiResult for Vec<TeamFeature> {}
+
 pub use team::Team;
 pub use team_app::TeamApp;
+pub use team_feature::TeamFeature;
 pub use team_permission::TeamAppPermission;
 
 mod team {
@@ -208,5 +213,41 @@ mod team_permission {
         pub name: String,
         /// A description of what the app permission allows.
         pub description: String,
+    }
+}
+
+mod team_feature {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Team Feature
+    ///
+    /// Stability: development
+    ///
+    /// A team feature represents a feature enabled on a team account.
+    ///
+    /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#team-feature)
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct TeamFeature {
+        /// when team feature was created
+        pub created_at: DateTime<Utc>,
+        /// description of team feature
+        pub description: String,
+        /// documentation URL of team feature
+        pub doc_url: String,
+        /// whether or not team feature has been enabled
+        pub enabled: bool,
+        /// e-mail to send feedback about the feature
+        pub id: String,
+        /// unique name of team feature
+        pub name: String,
+        /// state of team feature
+        pub state: String,
+        /// when team feature was updated
+        pub updated_at: DateTime<Utc>,
+        /// user readable feature name
+        pub display_name: String,
+        /// e-mail to send feedback about the feature
+        pub feedback_email: String,
     }
 }

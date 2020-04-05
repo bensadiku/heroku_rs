@@ -18,7 +18,28 @@ pub fn run<T: HerokuApiClient>(api_client: &T) {
     // transfer_team_app(api_client);
     // team_app_list(api_client);
 
-    // team_permissions(api_c   lient);
+    // team_permissions(api_client);
+
+    // get_team_features(api_client);
+    // get_team_feature(api_client);
+}
+
+// get team permissions
+fn get_team_feature<T: HerokuApiClient>(api_client: &T) {
+    let team_id = "123";
+    let feature_id = "123";
+    let response = api_client.request(&teams::TeamFeatureDetails {
+        team_id,
+        feature_id,
+    });
+    print_response(response);
+}
+
+// get team permissions
+fn get_team_features<T: HerokuApiClient>(api_client: &T) {
+    let team_id = "123";
+    let response = api_client.request(&teams::TeamFeatureList { team_id });
+    print_response(response);
 }
 
 // get team permissions
