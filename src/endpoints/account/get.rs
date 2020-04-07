@@ -10,6 +10,12 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-info)
 pub struct AccountDetails {}
 
+impl AccountDetails {
+    pub fn new() -> AccountDetails {
+        AccountDetails {}
+    }
+}
+
 impl HerokuEndpoint<Account> for AccountDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -29,6 +35,12 @@ pub struct UserAccountDetails {
     pub account_id: String,
 }
 
+impl UserAccountDetails {
+    pub fn new(account_id: String) -> UserAccountDetails {
+        UserAccountDetails { account_id }
+    }
+}
+
 impl HerokuEndpoint<Account> for UserAccountDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -44,6 +56,12 @@ impl HerokuEndpoint<Account> for UserAccountDetails {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-list)
 pub struct AccountFeatureList {}
+
+impl AccountFeatureList {
+    pub fn new() -> AccountFeatureList {
+        AccountFeatureList {}
+    }
+}
 
 impl HerokuEndpoint<Vec<AccountFeature>> for AccountFeatureList {
     fn method(&self) -> Method {
@@ -64,6 +82,12 @@ pub struct AccountFeatureDetails {
     pub feature_id: String,
 }
 
+impl AccountFeatureDetails {
+    pub fn new(feature_id: String) -> AccountFeatureDetails {
+        AccountFeatureDetails { feature_id }
+    }
+}
+
 impl HerokuEndpoint<AccountFeature> for AccountFeatureDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -79,6 +103,12 @@ impl HerokuEndpoint<AccountFeature> for AccountFeatureDetails {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-list)
 pub struct AppTransferList {}
+
+impl AppTransferList {
+    pub fn new() -> AppTransferList {
+        AppTransferList {}
+    }
+}
 
 impl HerokuEndpoint<Vec<AppTransfer>> for AppTransferList {
     fn method(&self) -> Method {
@@ -99,6 +129,12 @@ pub struct AppTransferDetails {
     pub transfer_id: String,
 }
 
+impl AppTransferDetails {
+    pub fn new(transfer_id: String) -> AppTransferDetails {
+        AppTransferDetails { transfer_id }
+    }
+}
+
 impl HerokuEndpoint<AppTransfer> for AppTransferDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -109,13 +145,19 @@ impl HerokuEndpoint<AppTransfer> for AppTransferDetails {
 }
 
 /// Account Credit Info
-/// 
+///
 /// Info for existing credit.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-info)
 pub struct AccountCreditDetails {
     /// credit_id is the credit identifier.
     pub credit_id: String,
+}
+
+impl AccountCreditDetails {
+    pub fn new(credit_id: String) -> AccountCreditDetails {
+        AccountCreditDetails { credit_id }
+    }
 }
 
 impl HerokuEndpoint<AppTransfer> for AccountCreditDetails {
@@ -128,11 +170,17 @@ impl HerokuEndpoint<AppTransfer> for AccountCreditDetails {
 }
 
 /// App Credit List
-/// 
+///
 /// List existing credits.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-list)
 pub struct AccountCreditList {}
+
+impl AccountCreditList {
+    pub fn new() -> AccountCreditList {
+        AccountCreditList {}
+    }
+}
 
 impl HerokuEndpoint<Vec<Credit>> for AccountCreditList {
     fn method(&self) -> Method {

@@ -12,11 +12,38 @@ pub struct AccountUpdate {
     pub params: AccountUpdateParams,
 }
 
+impl AccountUpdate {
+    pub fn new(
+        allow_tracking: Option<bool>,
+        beta: Option<bool>,
+        name: Option<String>,
+    ) -> AccountUpdate {
+        AccountUpdate {
+            params: AccountUpdateParams {
+                allow_tracking,
+                beta,
+                name,
+            },
+        }
+    }
+
+    pub fn create() -> AccountUpdate {
+        AccountUpdate {
+            params: AccountUpdateParams {
+                allow_tracking: None,
+                beta: None,
+                name: None,
+            },
+        }
+    }
+}
+
 /// Update account with parameters.
 ///
 /// All three paramemters are optional.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-optional-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AccountUpdateParams {
     /// whether to allow third party web activity tracking, by default: true
@@ -51,11 +78,41 @@ pub struct UserAccountUpdate {
     pub params: UserAccountUpdateParams,
 }
 
+impl UserAccountUpdate {
+    pub fn new(
+        account_id: String,
+        allow_tracking: Option<bool>,
+        beta: Option<bool>,
+        name: Option<String>,
+    ) -> UserAccountUpdate {
+        UserAccountUpdate {
+            account_id,
+            params: UserAccountUpdateParams {
+                allow_tracking,
+                beta,
+                name,
+            },
+        }
+    }
+
+    pub fn create(account_id: String) -> UserAccountUpdate {
+        UserAccountUpdate {
+            account_id,
+            params: UserAccountUpdateParams {
+                allow_tracking: None,
+                beta: None,
+                name: None,
+            },
+        }
+    }
+}
+
 /// Update user account with parameters.
 ///
 /// All three paramemters are optional.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user-optional-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct UserAccountUpdateParams {
     /// whether to allow third party web activity tracking, by default: true
@@ -90,9 +147,19 @@ pub struct AccountFeatureUpdate {
     pub params: AccountFeatureUpdateParams,
 }
 
+impl AccountFeatureUpdate {
+    pub fn new(feature_id: String, enabled: bool) -> AccountFeatureUpdate {
+        AccountFeatureUpdate {
+            feature_id,
+            params: AccountFeatureUpdateParams { enabled },
+        }
+    }
+}
+
 /// Update account feature with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update-required-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AccountFeatureUpdateParams {
     /// whether or not account feature has been enabled
@@ -123,9 +190,19 @@ pub struct AppTransferUpdate {
     pub params: AppTransferUpdateParams,
 }
 
+impl AppTransferUpdate {
+    pub fn new(transfer_id: String, state: String) -> AppTransferUpdate {
+        AppTransferUpdate {
+            transfer_id,
+            params: AppTransferUpdateParams { state },
+        }
+    }
+}
+
 /// Update account app transfer with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update-required-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AppTransferUpdateParams {
     /// the current state of an app transfer, one of:"pending" or "accepted" or "declined"
