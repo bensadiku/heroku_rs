@@ -15,9 +15,41 @@ pub struct AppUpdate {
     pub params: AppUpdateParams,
 }
 
+impl AppUpdate {
+    /// Update a Heroku app with optional parameters
+    pub fn new(
+        app_id: String,
+        build_stack: Option<String>,
+        maintenance: Option<bool>,
+        name: Option<String>,
+    ) -> AppUpdate {
+        AppUpdate {
+            app_id,
+            params: AppUpdateParams {
+                build_stack,
+                maintenance,
+                name,
+            },
+        }
+    }
+
+    /// Update a Heroku app without optional parameters
+    pub fn create(app_id: String) -> AppUpdate {
+        AppUpdate {
+            app_id: app_id,
+            params: AppUpdateParams {
+                build_stack: None,
+                maintenance: None,
+                name: None,
+            },
+        }
+    }
+}
+
 /// Update app with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-update-optional-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AppUpdateParams {
     /// unique name or identifier of stack
@@ -50,6 +82,12 @@ pub struct AppRefreshAcm {
     pub app_id: String,
 }
 
+impl AppRefreshAcm {
+    pub fn new(app_id: String) -> AppRefreshAcm {
+        AppRefreshAcm { app_id }
+    }
+}
+
 impl HerokuEndpoint<App> for AppRefreshAcm {
     fn method(&self) -> Method {
         Method::Patch
@@ -73,9 +111,20 @@ pub struct AppFeatureUpdate {
     pub params: AppFeatureUpdateParams,
 }
 
+impl AppFeatureUpdate {
+    pub fn new(app_id: String, feature_id: String, enabled: bool) -> AppFeatureUpdate {
+        AppFeatureUpdate {
+            app_id,
+            feature_id,
+            params: AppFeatureUpdateParams { enabled },
+        }
+    }
+}
+
 /// Update an existing app feature with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update-required-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AppFeatureUpdateParams {
     /// whether or not app feature should be enabled
@@ -108,11 +157,36 @@ pub struct AppWebhookUpdate {
     pub params: AppWebhookUpdateParams,
 }
 
+impl AppWebhookUpdate {
+    pub fn new(
+        app_id: String,
+        webhook_id: String,
+        authorization: Option<String>,
+        include: Option<Vec<String>>,
+        level: Option<String>,
+        secret: Option<String>,
+        url: Option<String>,
+    ) -> AppWebhookUpdate {
+        AppWebhookUpdate {
+            app_id,
+            webhook_id,
+            params: AppWebhookUpdateParams {
+                authorization,
+                include,
+                level,
+                secret,
+                url,
+            },
+        }
+    }
+}
+
 /// Update an existing app webhook with parameters.
 ///
 /// All parameters for this patch are optional.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update-optional-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AppWebhookUpdateParams {
     /// A custom Authorization header that Heroku will include with all webhook notifications
