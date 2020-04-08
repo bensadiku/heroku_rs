@@ -67,11 +67,11 @@ pub struct BuildCreateParams {
 
 #[derive(Serialize, Clone, Debug)]
 pub struct SourceBlobParam {
-    /// an optional checksum of the gzipped tarball for verifying its integrity
+    /// an optional checksum of the gzipped tarball for verifying its integrity [Nullable]
     pub checksum: Option<String>,
     /// URL where gzipped tar archive of source code for build was downloaded.
     pub url: String,
-    /// Version of the gzipped tarball.
+    /// Version of the gzipped tarball. [Nullable]
     pub version: Option<String>,
 }
 

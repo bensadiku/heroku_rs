@@ -43,14 +43,15 @@ impl AccountUpdate {
 /// All three paramemters are optional.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-optional-parameters)
-#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AccountUpdateParams {
     /// whether to allow third party web activity tracking, by default: true
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_tracking: Option<bool>,
     /// whether allowed to utilize beta Heroku features
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub beta: Option<bool>,
-    /// full name of the account owner
+    /// full name of the account owner [Nullable]
     pub name: Option<String>,
 }
 
@@ -112,14 +113,15 @@ impl UserAccountUpdate {
 /// All three paramemters are optional.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user-optional-parameters)
-#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct UserAccountUpdateParams {
     /// whether to allow third party web activity tracking, by default: true
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_tracking: Option<bool>,
     /// whether allowed to utilize beta Heroku features
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub beta: Option<bool>,
-    /// full name of the account owner
+    /// full name of the account owner [Nullable]
     pub name: Option<String>,
 }
 

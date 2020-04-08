@@ -146,7 +146,6 @@ impl AppWebhookCreate {
 /// Create a new app webhook with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create-required-parameters)
-#[serde_with::skip_serializing_none] 
 #[derive(Serialize, Clone, Debug)]
 pub struct AppWebhookCreateParams {
     /// A custom Authorization header that Heroku will include with all webhook notifications

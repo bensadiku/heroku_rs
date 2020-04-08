@@ -186,19 +186,21 @@ impl AppWebhookUpdate {
 /// All parameters for this patch are optional.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update-optional-parameters)
-#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AppWebhookUpdateParams {
-    /// A custom Authorization header that Heroku will include with all webhook notifications
+    /// A custom Authorization header that Heroku will include with all webhook notifications [Nullable]
     pub authorization: Option<String>,
-    /// The entities that the subscription provides notifications for
+    /// The entities that the subscription provides notifications for 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub include: Option<Vec<String>>,
     /// One of: "notify" or "sync"
     /// If notify, Heroku makes a single, fire-and-forget delivery attempt. If sync, Heroku attempts multiple deliveries until the request is successful or a limit is reached
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub level: Option<String>,
-    /// A value that Heroku will use to sign all webhook notification requests (the signature is included in the request’s Heroku-Webhook-Hmac-SHA256 header)
+    /// A value that Heroku will use to sign all webhook notification requests (the signature is included in the request’s Heroku-Webhook-Hmac-SHA256 header) [Nullable]
     pub secret: Option<String>,
     /// The URL where the webhook’s notification requests are sent
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
 }
 
