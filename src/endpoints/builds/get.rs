@@ -13,6 +13,12 @@ pub struct BuildList {
     pub app_id: String,
 }
 
+impl BuildList {
+    pub fn new(app_id: String) -> BuildList {
+        BuildList { app_id }
+    }
+}
+
 impl HerokuEndpoint<Vec<Build>> for BuildList {
     fn method(&self) -> Method {
         Method::Get
@@ -34,6 +40,12 @@ pub struct BuildDetails {
     pub build_id: String,
 }
 
+impl BuildDetails {
+    pub fn new(app_id: String, build_id: String) -> BuildDetails {
+        BuildDetails { app_id, build_id }
+    }
+}
+
 impl HerokuEndpoint<Build> for BuildDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -51,6 +63,12 @@ impl HerokuEndpoint<Build> for BuildDetails {
 pub struct BuildPackInstallationList {
     /// app_id can be the app name or id.
     pub app_id: String,
+}
+
+impl BuildPackInstallationList {
+    pub fn new(app_id: String) -> BuildPackInstallationList {
+        BuildPackInstallationList { app_id }
+    }
 }
 
 impl HerokuEndpoint<Vec<BuildpackInstallation>> for BuildPackInstallationList {
