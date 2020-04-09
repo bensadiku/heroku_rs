@@ -13,6 +13,35 @@ pub struct OAuthCreate {
     pub params: OAuthCreateParams,
 }
 
+impl OAuthCreate {
+    pub fn new(
+        scope: Vec<String>,
+        client: Option<String>,
+        description: Option<String>,
+        expires_in: Option<u32>,
+    ) -> OAuthCreate {
+        OAuthCreate {
+            params: OAuthCreateParams {
+                scope,
+                client,
+                description,
+                expires_in,
+            },
+        }
+    }
+
+    pub fn create(scope: Vec<String>) -> OAuthCreate {
+        OAuthCreate {
+            params: OAuthCreateParams {
+                scope: scope,
+                client: None,
+                description: None,
+                expires_in: None,
+            },
+        }
+    }
+}
+
 /// Create a new authorization with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-authorization-create-required-parameters)
@@ -21,10 +50,12 @@ pub struct OAuthCreateParams {
     /// The scope of access OAuth authorization allows
     pub scope: Vec<String>,
     /// unique identifier of this OAuth client
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub client: Option<String>,
     /// human-friendly description of this OAuth authorization
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    /// seconds until OAuth token expires; may be null for tokens with indefinite lifetime
+    /// seconds until OAuth token expires; may be null for tokens with indefinite lifetime [Nullable]
     pub expires_in: Option<u32>,
 }
 
@@ -50,6 +81,12 @@ pub struct OAuthRegenerate {
     pub oauth_id: String,
 }
 
+impl OAuthRegenerate {
+    pub fn new(oauth_id: String) -> OAuthRegenerate {
+        OAuthRegenerate { oauth_id }
+    }
+}
+
 impl HerokuEndpoint<OAuth, (), ()> for OAuthRegenerate {
     fn method(&self) -> Method {
         Method::Post
@@ -70,6 +107,14 @@ impl HerokuEndpoint<OAuth, (), ()> for OAuthRegenerate {
 pub struct OAuthClientCreate {
     /// The parameters to pass to the Heroku API
     pub params: OAuthClientCreateParams,
+}
+
+impl OAuthClientCreate {
+    pub fn new(name: String, redirect_uri: String) -> OAuthClientCreate {
+        OAuthClientCreate {
+            params: OAuthClientCreateParams { name, redirect_uri },
+        }
+    }
 }
 
 /// Create a new oauth client with parameters.
@@ -105,6 +150,12 @@ pub struct OAuthClientRotateCredentials {
     pub client_id: String,
 }
 
+impl OAuthClientRotateCredentials {
+    pub fn new(client_id: String) -> OAuthClientRotateCredentials {
+        OAuthClientRotateCredentials { client_id }
+    }
+}
+
 impl HerokuEndpoint<OAuthClient, (), ()> for OAuthClientRotateCredentials {
     fn method(&self) -> Method {
         Method::Post
@@ -125,6 +176,30 @@ impl HerokuEndpoint<OAuthClient, (), ()> for OAuthClientRotateCredentials {
 pub struct OAuthTokenCreate {
     /// The parameters to pass to the Heroku API
     pub params: OAuthTokenCreateParams,
+}
+
+impl OAuthTokenCreate {
+    pub fn new(
+        client_secret: String,
+        grant_code: String,
+        grant_type: String,
+        refresh_token: String,
+    ) -> OAuthTokenCreate {
+        OAuthTokenCreate {
+            params: OAuthTokenCreateParams {
+                client: Client {
+                    secret: client_secret,
+                },
+                grant: Grant {
+                    code: grant_code,
+                    type_field: grant_type,
+                },
+                refresh_token: RefreshToken {
+                    token: refresh_token,
+                },
+            },
+        }
+    }
 }
 
 /// Create a new oauth token with parameters.

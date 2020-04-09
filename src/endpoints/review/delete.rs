@@ -13,6 +13,12 @@ pub struct ReviewAppDelete {
     pub review_id: String,
 }
 
+impl ReviewAppDelete {
+    pub fn new(review_id: String) -> ReviewAppDelete {
+        ReviewAppDelete { review_id }
+    }
+}
+
 impl HerokuEndpoint<ReviewApp> for ReviewAppDelete {
     fn method(&self) -> Method {
         Method::Delete

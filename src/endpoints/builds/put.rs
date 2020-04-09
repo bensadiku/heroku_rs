@@ -4,9 +4,9 @@ use super::{BuildpackInstallation, Update};
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Buildpack Installations Update
-/// 
+///
 /// Update an app’s buildpack installations.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update)
 pub struct BuildpackInstallationUpdate {
     /// app_id can be the app name or id.
@@ -15,8 +15,22 @@ pub struct BuildpackInstallationUpdate {
     pub params: BuildpackInstallationUpdateParams,
 }
 
+impl BuildpackInstallationUpdate {
+    pub fn new(app_id: String, buildpacks: Vec<String>) -> BuildpackInstallationUpdate {
+        let mut updates = Vec::new();
+        for var in buildpacks {
+            updates.push(Update { buildpack: var });
+        }
+
+        BuildpackInstallationUpdate {
+            app_id,
+            params: BuildpackInstallationUpdateParams { updates },
+        }
+    }
+}
+
 /// Update an app’s buildpack installations.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct BuildpackInstallationUpdateParams {
@@ -24,7 +38,9 @@ pub struct BuildpackInstallationUpdateParams {
     pub updates: Vec<Update>,
 }
 
-impl HerokuEndpoint<Vec<BuildpackInstallation>, (), BuildpackInstallationUpdateParams> for BuildpackInstallationUpdate {
+impl HerokuEndpoint<Vec<BuildpackInstallation>, (), BuildpackInstallationUpdateParams>
+    for BuildpackInstallationUpdate
+{
     fn method(&self) -> Method {
         Method::Put
     }

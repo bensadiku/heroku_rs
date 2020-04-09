@@ -13,6 +13,12 @@ pub struct OAuthDetails {
     pub oauth_id: String,
 }
 
+impl OAuthDetails {
+    pub fn new(oauth_id: String) -> OAuthDetails {
+        OAuthDetails { oauth_id }
+    }
+}
+
 impl HerokuEndpoint<OAuth> for OAuthDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -28,6 +34,12 @@ impl HerokuEndpoint<OAuth> for OAuthDetails {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-authorization-list)
 pub struct OAuthList {}
+
+impl OAuthList {
+    pub fn new() -> OAuthList {
+        OAuthList {}
+    }
+}
 
 impl HerokuEndpoint<Vec<OAuth>> for OAuthList {
     fn method(&self) -> Method {
@@ -48,6 +60,12 @@ pub struct OAuthClientDetails {
     pub client_id: String,
 }
 
+impl OAuthClientDetails {
+    pub fn new(client_id: String) -> OAuthClientDetails {
+        OAuthClientDetails { client_id }
+    }
+}
+
 impl HerokuEndpoint<OAuthClient> for OAuthClientDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -63,6 +81,12 @@ impl HerokuEndpoint<OAuthClient> for OAuthClientDetails {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-list)
 pub struct OAuthClientList {}
+
+impl OAuthClientList {
+    pub fn new() -> OAuthClientList {
+        OAuthClientList {}
+    }
+}
 
 impl HerokuEndpoint<Vec<OAuthClient>> for OAuthClientList {
     fn method(&self) -> Method {

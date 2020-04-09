@@ -20,6 +20,12 @@ pub struct AppConfigVarUpdate<'a> {
     pub params: HashMap<String, String>,
 }
 
+impl<'a> AppConfigVarUpdate<'a> {
+    pub fn new(app_id: &'a str, params: HashMap<String, String>) -> AppConfigVarUpdate {
+        AppConfigVarUpdate { app_id, params }
+    }
+}
+
 impl<'a> HerokuEndpoint<HashMap<String, String>, (), HashMap<String, String>>
     for AppConfigVarUpdate<'a>
 {
@@ -51,6 +57,20 @@ pub struct PipelineConfigVarUpdate<'a> {
      */
     /// The parameters to pass to the Heroku API
     pub params: HashMap<String, String>,
+}
+
+impl<'a> PipelineConfigVarUpdate<'a> {
+    pub fn new(
+        pipeline_id: &'a str,
+        stage_id: &'a str,
+        params: HashMap<String, String>,
+    ) -> PipelineConfigVarUpdate<'a> {
+        PipelineConfigVarUpdate {
+            pipeline_id,
+            stage_id,
+            params,
+        }
+    }
 }
 
 impl<'a> HerokuEndpoint<HashMap<String, String>, (), HashMap<String, String>>

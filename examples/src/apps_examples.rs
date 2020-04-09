@@ -5,8 +5,8 @@ use heroku_rs::endpoints::builds;
 use heroku_rs::endpoints::domains;
 use heroku_rs::endpoints::dynos;
 use heroku_rs::endpoints::formations;
-use heroku_rs::endpoints::slugs;
 use heroku_rs::endpoints::releases;
+use heroku_rs::endpoints::slugs;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 use std::collections::HashMap;
 
@@ -142,13 +142,27 @@ fn get_buildpack_installations<T: HerokuApiClient>(api_client: &T, app_id: Strin
 
 /// Update build pack installations
 fn update_buildpack_installation<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let buildpack = String::from("https://github.com/heroku/heroku-buildpack-ruby");
-    let response = api_client.request(&builds::BuildpackInstallationUpdate {
+    let buildpack_ruby = String::from("https://github.com/heroku/heroku-buildpack-ruby");
+    let buildpack_python = String::from("https://github.com/heroku/heroku-buildpack-python");
+    // let updates = vec![
+    //     builds::Update {
+    //         buildpack: buildpack_ruby,
+    //     },
+    //     builds::Update {
+    //         buildpack: buildpack_python,
+    //     },
+    // ];
+
+    // let response = api_client.request(&builds::BuildpackInstallationUpdate {
+    //     app_id,
+    //     params: builds::BuildpackInstallationUpdateParams { updates },
+    // });
+
+    let builpack_list = vec![buildpack_ruby, buildpack_python];
+    let response = api_client.request(&builds::BuildpackInstallationUpdate::new(
         app_id,
-        params: builds::BuildpackInstallationUpdateParams {
-            updates: vec![builds::Update { buildpack }],
-        },
-    });
+        builpack_list,
+    ));
     print_response(response);
 }
 
@@ -173,19 +187,24 @@ fn get_app_builds<T: HerokuApiClient>(api_client: &T, app_id: String) {
 
 /// Create a new build
 fn create_app_build<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&builds::BuildCreate {
-        app_id: app_name,
-        params: builds::BuildCreateParams {
-            buildpacks: None,
-            source_blob: builds::SourceBlob {
-                checksum: Some(String::from(
-                    "SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                )),
-                url: String::from("https://example.com/source.tgz?token=xyz"),
-                version: Some(String::from("2")),
-            },
-        },
-    });
+    // let response = api_client.request(&builds::BuildCreate {
+    //     app_id: app_name,
+    //     params: builds::BuildCreateParams {
+    //         buildpacks: None,
+    //         source_blob: builds::SourceBlobParam {
+    //             checksum: Some(String::from(
+    //                 "SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    //             )),
+    //             url: String::from("https://example.com/source.tgz?token=xyz"),
+    //             version: Some(String::from("2")),
+    //         },
+    //     },
+    // });
+
+    // `create` method takes only the required parameters
+    // see `new` to pass optional parameters too
+    let url = String::from("https://example.com/source.tgz?token=xyz");
+    let response = api_client.request(&builds::BuildCreate::create(app_name, url));
     print_response(response);
 }
 
@@ -469,28 +488,35 @@ fn list_app_releases<ApiClientType: HerokuApiClient>(api_client: &ApiClientType,
     print_response(resp);
 }
 
-fn get_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String, release_id: String) {
+fn get_app_release<ApiClientType: HerokuApiClient>(
+    api_client: &ApiClientType,
+    app_id: String,
+    release_id: String,
+) {
     let resp = api_client.request(&releases::ReleaseInfo { app_id, release_id });
     print_response(resp);
 }
 
 fn create_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let resp = api_client.request(&releases::ReleaseCreate { 
+    let resp = api_client.request(&releases::ReleaseCreate {
         app_id,
         params: releases::ReleaseCreateParams {
             slug: "2dbce013-4be8-44e1-8221-c9c74e45949c".to_string(),
             description: Some("added new feature".to_string()),
-        }
+        },
     });
     print_response(resp);
 }
 
-fn rollback_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let resp = api_client.request(&releases::ReleaseRollback { 
+fn rollback_app_release<ApiClientType: HerokuApiClient>(
+    api_client: &ApiClientType,
+    app_id: String,
+) {
+    let resp = api_client.request(&releases::ReleaseRollback {
         app_id,
         params: releases::ReleaseRollbackParams {
-            release: "v17".to_string()
-        }
+            release: "v17".to_string(),
+        },
     });
     print_response(resp);
 }

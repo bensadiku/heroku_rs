@@ -15,6 +15,19 @@ pub struct AppConfigVarDelete<'a> {
     pub params: HashMap<String, Option<String>>,
 }
 
+impl<'a> AppConfigVarDelete<'a> {
+    pub fn new(app_id: &'a str, params: HashMap<String, Option<String>>) -> AppConfigVarDelete {
+        AppConfigVarDelete { app_id, params }
+    }
+
+    pub fn create(app_id: &'a str, delete_key: String) -> AppConfigVarDelete<'a> {
+        let mut params = HashMap::new();
+        params.insert(delete_key, None);
+
+        AppConfigVarDelete { app_id, params }
+    }
+}
+
 impl<'a> HerokuEndpoint<HashMap<String, Option<String>>, (), HashMap<String, Option<String>>>
     for AppConfigVarDelete<'a>
 {
@@ -41,6 +54,35 @@ pub struct PipelineConfigVarDelete<'a> {
     pub stage_id: &'a str,
     /// The parameters to pass to the Heroku API
     pub params: HashMap<String, Option<String>>,
+}
+
+impl<'a> PipelineConfigVarDelete<'a> {
+    pub fn new(
+        pipeline_id: &'a str,
+        stage_id: &'a str,
+        params: HashMap<String, Option<String>>,
+    ) -> PipelineConfigVarDelete<'a> {
+        PipelineConfigVarDelete {
+            pipeline_id,
+            stage_id,
+            params,
+        }
+    }
+
+    pub fn create(
+        pipeline_id: &'a str,
+        stage_id: &'a str,
+        delete_key: String,
+    ) -> PipelineConfigVarDelete<'a> {
+        let mut params = HashMap::new();
+        params.insert(delete_key, None);
+
+        PipelineConfigVarDelete {
+            pipeline_id,
+            stage_id,
+            params,
+        }
+    }
 }
 
 impl<'a> HerokuEndpoint<HashMap<String, Option<String>>, (), HashMap<String, Option<String>>>

@@ -13,6 +13,12 @@ pub struct AppDetails {
     pub app_id: String,
 }
 
+impl AppDetails {
+    pub fn new(app_id: String) -> AppDetails {
+        AppDetails { app_id }
+    }
+}
+
 impl HerokuEndpoint<App> for AppDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -28,6 +34,12 @@ impl HerokuEndpoint<App> for AppDetails {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-list)
 pub struct AppList {}
+
+impl AppList {
+    pub fn new() -> AppList {
+        AppList {}
+    }
+}
 
 impl HerokuEndpoint<Vec<App>> for AppList {
     fn method(&self) -> Method {
@@ -46,6 +58,12 @@ impl HerokuEndpoint<Vec<App>> for AppList {
 pub struct AccountAppList {
     /// account_id can be the account email, id or self.
     pub account_id: String,
+}
+
+impl AccountAppList {
+    pub fn new(account_id: String) -> AccountAppList {
+        AccountAppList { account_id }
+    }
 }
 
 impl HerokuEndpoint<Vec<App>> for AccountAppList {
@@ -69,6 +87,12 @@ pub struct AppFeatureDetails {
     pub feature_id: String,
 }
 
+impl AppFeatureDetails {
+    pub fn new(app_id: String, feature_id: String) -> AppFeatureDetails {
+        AppFeatureDetails { app_id, feature_id }
+    }
+}
+
 impl HerokuEndpoint<AppFeature> for AppFeatureDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -88,6 +112,12 @@ pub struct AppFeatureList {
     pub app_id: String,
 }
 
+impl AppFeatureList {
+    pub fn new(app_id: String) -> AppFeatureList {
+        AppFeatureList { app_id }
+    }
+}
+
 impl HerokuEndpoint<Vec<AppFeature>> for AppFeatureList {
     fn method(&self) -> Method {
         Method::Get
@@ -105,6 +135,12 @@ impl HerokuEndpoint<Vec<AppFeature>> for AppFeatureList {
 pub struct AppWebhookList {
     /// app_id can be the app name or id.
     pub app_id: String,
+}
+
+impl AppWebhookList {
+    pub fn new(app_id: String) -> AppWebhookList {
+        AppWebhookList { app_id }
+    }
 }
 
 impl HerokuEndpoint<Vec<AppWebhook>> for AppWebhookList {
@@ -128,6 +164,12 @@ pub struct AppWebhookDetails {
     pub webhook_id: String,
 }
 
+impl AppWebhookDetails {
+    pub fn new(app_id: String, webhook_id: String) -> AppWebhookDetails {
+        AppWebhookDetails { app_id, webhook_id }
+    }
+}
+
 impl HerokuEndpoint<AppWebhook> for AppWebhookDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -147,6 +189,15 @@ pub struct AppWebhookDeliveryDetails {
     pub app_id: String,
     /// webhook_delivery_id is the webhook delivery id.
     pub webhook_delivery_id: String,
+}
+
+impl AppWebhookDeliveryDetails {
+    pub fn new(app_id: String, webhook_delivery_id: String) -> AppWebhookDeliveryDetails {
+        AppWebhookDeliveryDetails {
+            app_id,
+            webhook_delivery_id,
+        }
+    }
 }
 
 impl HerokuEndpoint<AppWebhookDelivery> for AppWebhookDeliveryDetails {
@@ -169,6 +220,12 @@ impl HerokuEndpoint<AppWebhookDelivery> for AppWebhookDeliveryDetails {
 pub struct AppWebhookDeliveryList {
     /// app_id can be the app name or id.
     pub app_id: String,
+}
+
+impl AppWebhookDeliveryList {
+    pub fn new(app_id: String) -> AppWebhookDeliveryList {
+        AppWebhookDeliveryList { app_id }
+    }
 }
 
 impl HerokuEndpoint<Vec<AppWebhookDelivery>> for AppWebhookDeliveryList {

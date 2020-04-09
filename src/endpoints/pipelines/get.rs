@@ -16,6 +16,12 @@ pub struct PipelineDetails {
     pub pipeline_id: String,
 }
 
+impl PipelineDetails {
+    pub fn new(pipeline_id: String) -> PipelineDetails {
+        PipelineDetails { pipeline_id }
+    }
+}
+
 impl HerokuEndpoint<Pipeline> for PipelineDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -31,6 +37,12 @@ impl HerokuEndpoint<Pipeline> for PipelineDetails {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-list)
 pub struct PipelineList {}
+
+impl PipelineList {
+    pub fn new() -> PipelineList {
+        PipelineList {}
+    }
+}
 
 impl HerokuEndpoint<Vec<Pipeline>> for PipelineList {
     fn method(&self) -> Method {
@@ -49,6 +61,12 @@ impl HerokuEndpoint<Vec<Pipeline>> for PipelineList {
 pub struct PipelineLatestBuildsList {
     /// unique pipeline identifier.
     pub pipeline_id: String,
+}
+
+impl PipelineLatestBuildsList {
+    pub fn new(pipeline_id: String) -> PipelineLatestBuildsList {
+        PipelineLatestBuildsList { pipeline_id }
+    }
 }
 
 impl HerokuEndpoint<Vec<PipelineBuild>> for PipelineLatestBuildsList {
@@ -70,6 +88,12 @@ pub struct PipelineCouplingByPipelineList {
     pub pipeline_id: String,
 }
 
+impl PipelineCouplingByPipelineList {
+    pub fn new(pipeline_id: String) -> PipelineCouplingByPipelineList {
+        PipelineCouplingByPipelineList { pipeline_id }
+    }
+}
+
 impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByPipelineList {
     fn method(&self) -> Method {
         Method::Get
@@ -85,6 +109,13 @@ impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByPipelineList {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-list-by-current-user)
 pub struct PipelineCouplingByUserList {}
+
+impl PipelineCouplingByUserList {
+    pub fn new() -> PipelineCouplingByUserList {
+        PipelineCouplingByUserList {}
+    }
+}
+
 impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByUserList {
     fn method(&self) -> Method {
         Method::Get
@@ -103,6 +134,13 @@ pub struct PipelineCouplingByTeamList {
     /// unique team identifier.
     pub team_id: String,
 }
+
+impl PipelineCouplingByTeamList {
+    pub fn new(team_id: String) -> PipelineCouplingByTeamList {
+        PipelineCouplingByTeamList { team_id }
+    }
+}
+
 impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByTeamList {
     fn method(&self) -> Method {
         Method::Get
@@ -121,6 +159,13 @@ pub struct PipelineCouplingByAppDetails {
     /// unique app identifier.
     pub app_id: String,
 }
+
+impl PipelineCouplingByAppDetails {
+    pub fn new(app_id: String) -> PipelineCouplingByAppDetails {
+        PipelineCouplingByAppDetails { app_id }
+    }
+}
+
 impl HerokuEndpoint<PipelineCoupling> for PipelineCouplingByAppDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -136,6 +181,13 @@ impl HerokuEndpoint<PipelineCoupling> for PipelineCouplingByAppDetails {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-list)
 pub struct PipelineCouplingList {}
+
+impl PipelineCouplingList {
+    pub fn new() -> PipelineCouplingList {
+        PipelineCouplingList {}
+    }
+}
+
 impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingList {
     fn method(&self) -> Method {
         Method::Get
@@ -153,6 +205,12 @@ impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingList {
 pub struct PipelineCouplingDetails {
     /// unique pipeline coupling identifier.
     pub coupling_id: String,
+}
+
+impl PipelineCouplingDetails {
+    pub fn new(coupling_id: String) -> PipelineCouplingDetails {
+        PipelineCouplingDetails { coupling_id }
+    }
 }
 
 impl HerokuEndpoint<PipelineCoupling> for PipelineCouplingDetails {
@@ -174,6 +232,12 @@ pub struct PipelineDeploymentList {
     pub pipeline_id: String,
 }
 
+impl PipelineDeploymentList {
+    pub fn new(pipeline_id: String) -> PipelineDeploymentList {
+        PipelineDeploymentList { pipeline_id }
+    }
+}
+
 impl HerokuEndpoint<Vec<PipelineDeployment>> for PipelineDeploymentList {
     fn method(&self) -> Method {
         Method::Get
@@ -193,6 +257,12 @@ pub struct PipelinePromotionDetails {
     pub promotion_id: String,
 }
 
+impl PipelinePromotionDetails {
+    pub fn new(promotion_id: String) -> PipelinePromotionDetails {
+        PipelinePromotionDetails { promotion_id }
+    }
+}
+
 impl HerokuEndpoint<PipelinePromotion> for PipelinePromotionDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -210,6 +280,12 @@ impl HerokuEndpoint<PipelinePromotion> for PipelinePromotionDetails {
 pub struct PipelinePromotionTargetList {
     /// unique pipeline identifier.
     pub promotion_id: String,
+}
+
+impl PipelinePromotionTargetList {
+    pub fn new(promotion_id: String) -> PipelinePromotionTargetList {
+        PipelinePromotionTargetList { promotion_id }
+    }
 }
 
 impl HerokuEndpoint<Vec<PipelinePromotionTarget>> for PipelinePromotionTargetList {
@@ -234,6 +310,12 @@ pub struct PipelineLatestReleaseList {
     pub pipeline_id: String,
 }
 
+impl PipelineLatestReleaseList {
+    pub fn new(pipeline_id: String) -> PipelineLatestReleaseList {
+        PipelineLatestReleaseList { pipeline_id }
+    }
+}
+
 impl HerokuEndpoint<Vec<PipelineRelease>> for PipelineLatestReleaseList {
     fn method(&self) -> Method {
         Method::Get
@@ -251,6 +333,12 @@ impl HerokuEndpoint<Vec<PipelineRelease>> for PipelineLatestReleaseList {
 pub struct PipelineStackDetails {
     /// unique pipeline identifier.
     pub pipeline_id: String,
+}
+
+impl PipelineStackDetails {
+    pub fn new(pipeline_id: String) -> PipelineStackDetails {
+        PipelineStackDetails { pipeline_id }
+    }
 }
 
 impl HerokuEndpoint<PipelineStack> for PipelineStackDetails {

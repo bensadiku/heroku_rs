@@ -13,6 +13,12 @@ pub struct AppConfigVarDetails<'a> {
     pub app_id: &'a str,
 }
 
+impl <'a>AppConfigVarDetails <'a> {
+    pub fn new(app_id: &'a str) -> AppConfigVarDetails {
+        AppConfigVarDetails { app_id}
+    }
+}
+
 impl<'a> HerokuEndpoint<HashMap<String, Option<String>>> for AppConfigVarDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
@@ -32,6 +38,12 @@ pub struct ReleaseConfigVarDetails<'a> {
     pub app_id: &'a str,
     // unique release identifier, release id or release version
     pub release_id: &'a str,
+}
+
+impl <'a>ReleaseConfigVarDetails <'a> {
+    pub fn new(app_id: &'a str, release_id: &'a str) -> ReleaseConfigVarDetails<'a> {
+        ReleaseConfigVarDetails { app_id, release_id}
+    }
 }
 
 impl<'a> HerokuEndpoint<HashMap<String, Option<String>>> for ReleaseConfigVarDetails<'a> {
@@ -56,6 +68,13 @@ pub struct PipelineConfigVarDetails<'a> {
     pub pipeline_id: &'a str,
     /// pipeline stage
     pub stage_id: &'a str,
+}
+
+
+impl <'a>PipelineConfigVarDetails <'a> {
+    pub fn new(pipeline_id: &'a str, stage_id: &'a str) -> PipelineConfigVarDetails<'a> {
+        PipelineConfigVarDetails { pipeline_id, stage_id}
+    }
 }
 
 impl<'a> HerokuEndpoint<HashMap<String, Option<String>>> for PipelineConfigVarDetails<'a> {

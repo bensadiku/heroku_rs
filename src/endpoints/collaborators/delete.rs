@@ -15,6 +15,15 @@ pub struct CollaboratorDelete {
     pub collaborator_id: String,
 }
 
+impl CollaboratorDelete {
+    pub fn new(app_id: String, collaborator_id: String) -> CollaboratorDelete {
+        CollaboratorDelete {
+            app_id,
+            collaborator_id,
+        }
+    }
+}
+
 impl HerokuEndpoint<Collaborator> for CollaboratorDelete {
     fn method(&self) -> Method {
         Method::Delete
