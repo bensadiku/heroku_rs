@@ -13,6 +13,12 @@ pub struct OAuthDelete {
     pub oauth_id: String,
 }
 
+impl OAuthDelete {
+    pub fn new(oauth_id: String) -> OAuthDelete {
+        OAuthDelete { oauth_id }
+    }
+}
+
 impl HerokuEndpoint<OAuth, (), ()> for OAuthDelete {
     fn method(&self) -> Method {
         Method::Delete
@@ -32,6 +38,12 @@ pub struct OAuthClientDelete {
     pub client_id: String,
 }
 
+impl OAuthClientDelete {
+    pub fn new(client_id: String) -> OAuthClientDelete {
+        OAuthClientDelete { client_id }
+    }
+}
+
 impl HerokuEndpoint<OAuthClient, (), ()> for OAuthClientDelete {
     fn method(&self) -> Method {
         Method::Delete
@@ -49,6 +61,12 @@ impl HerokuEndpoint<OAuthClient, (), ()> for OAuthClientDelete {
 pub struct OAuthTokenDelete {
     /// unique identifier of token
     pub token_id: String,
+}
+
+impl OAuthTokenDelete {
+    pub fn new(token_id: String) -> OAuthTokenDelete {
+        OAuthTokenDelete { token_id }
+    }
 }
 
 impl HerokuEndpoint<OAuthToken, (), ()> for OAuthTokenDelete {

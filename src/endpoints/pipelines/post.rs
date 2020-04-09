@@ -13,6 +13,16 @@ pub struct PipelineCreate {
     pub params: PipelineCreateParams,
 }
 
+impl PipelineCreate {
+    pub fn new(pipeline_name: String) -> PipelineCreate {
+        PipelineCreate {
+            params: PipelineCreateParams {
+                name: pipeline_name,
+            },
+        }
+    }
+}
+
 /// Create a new pipeline with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-create-required-parameters)
@@ -42,6 +52,22 @@ impl HerokuEndpoint<Pipeline, (), PipelineCreateParams> for PipelineCreate {
 pub struct PipelineCouplingCreate {
     /// The parameters to pass to the Heroku API
     pub params: PipelineCouplingCreateParams,
+}
+
+impl PipelineCouplingCreate {
+    pub fn new(
+        app_id: String,
+        pipeline_id: String,
+        pipeline_stage: String,
+    ) -> PipelineCouplingCreate {
+        PipelineCouplingCreate {
+            params: PipelineCouplingCreateParams {
+                app: app_id,
+                pipeline: pipeline_id,
+                stage: pipeline_stage,
+            },
+        }
+    }
 }
 
 /// Create a new pipeline coupling with parameters.
@@ -79,6 +105,26 @@ impl HerokuEndpoint<PipelineCoupling, (), PipelineCouplingCreateParams> for Pipe
 pub struct PipelinePromotionCreate {
     /// The parameters to pass to the Heroku API
     pub params: PipelinePromotionCreateParams,
+}
+
+impl PipelinePromotionCreate {
+    pub fn new(
+        pipeline_id: String,
+        source_app_id: String,
+        target_app_id: String,
+    ) -> PipelinePromotionCreate {
+        PipelinePromotionCreate {
+            params: PipelinePromotionCreateParams {
+                pipeline: PipelineParam { id: pipeline_id },
+                source: SourceParam {
+                    app: AppParam { id: source_app_id },
+                },
+                targets: vec![TargetParam {
+                    app: AppParam { id: target_app_id },
+                }],
+            },
+        }
+    }
 }
 
 /// Create a new pipeline promotion with parameters.
@@ -150,6 +196,24 @@ impl HerokuEndpoint<PipelinePromotion, (), PipelinePromotionCreateParams>
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-transfer)
 pub struct PipelineTransferCreate {
     pub params: PipelineTransferCreateParams,
+}
+
+impl PipelineTransferCreate {
+    pub fn new(
+        pipeline_id: String,
+        new_owner_id: String,
+        new_owner_type: String,
+    ) -> PipelineTransferCreate {
+        PipelineTransferCreate {
+            params: PipelineTransferCreateParams {
+                pipeline: PipelineParam { id: pipeline_id },
+                new_owner: NewOwner {
+                    id: new_owner_id,
+                    type_field: new_owner_type,
+                },
+            },
+        }
+    }
 }
 
 /// Create a new pipeline transfer with parameters.

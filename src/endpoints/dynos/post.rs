@@ -17,6 +17,12 @@ pub struct DynoActionStop {
     pub dyno_id: String,
 }
 
+impl DynoActionStop {
+    pub fn new(app_id: String, dyno_id: String) -> DynoActionStop {
+        DynoActionStop { app_id, dyno_id }
+    }
+}
+
 impl HerokuEndpoint<Dyno> for DynoActionStop {
     fn method(&self) -> Method {
         Method::Post
@@ -38,6 +44,46 @@ pub struct DynoCreate {
     pub params: DynoCreateParams,
 }
 
+impl DynoCreate {
+    pub fn new(
+        app_id: String,
+        command: String,
+        attach: Option<bool>,
+        env: Option<HashMap<String, String>>,
+        force_no_tty: Option<bool>,
+        size: Option<String>,
+        time_to_live: Option<i32>,
+        process_type: Option<String>,
+    ) -> DynoCreate  {
+        DynoCreate {
+            app_id,
+            params: DynoCreateParams {
+                command: command,
+                attach: attach,
+                env: env,
+                force_no_tty: force_no_tty,
+                size: size,
+                time_to_live: time_to_live,
+                r#type: process_type,
+            },
+        }
+    }
+    pub fn create(app_id: String, command: String) -> DynoCreate {
+        DynoCreate {
+            app_id,
+            params: DynoCreateParams {
+                command: command,
+                attach: None,
+                env: None,
+                force_no_tty: None,
+                size: None,
+                time_to_live: None,
+                r#type: None,
+            },
+        }
+    }
+}
+
 /// Create a new dyno with parameters.
 ///
 /// Command parameter is required
@@ -52,16 +98,21 @@ pub struct DynoCreateParams {
     /// command used to start process
     pub command: String,
     /// whether to stream output or not
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub attach: Option<bool>,
     /// custom environment to add to the dyno config vars
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub env: Option<HashMap<String, String>>,
-    /// force an attached on-off dyno to not run in a tty
+    /// force an attached on-off dyno to not run in a tty [Nullable]
     pub force_no_tty: Option<bool>,
     /// dyno size
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub size: Option<String>,
     /// seconds until dyno expires
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub time_to_live: Option<i32>,
     /// type of process
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub r#type: Option<String>,
 }
 

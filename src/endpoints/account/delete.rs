@@ -10,6 +10,12 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-delete)
 pub struct AccountDelete {}
 
+impl AccountDelete {
+    pub fn new() -> AccountDelete {
+        AccountDelete {}
+    }
+}
+
 impl HerokuEndpoint<Account> for AccountDelete {
     fn method(&self) -> Method {
         Method::Delete
@@ -29,6 +35,12 @@ pub struct UserAccountDelete {
     pub account_id: String,
 }
 
+impl UserAccountDelete {
+    pub fn new(account_id: String) -> UserAccountDelete {
+        UserAccountDelete { account_id }
+    }
+}
+
 impl HerokuEndpoint<Account> for UserAccountDelete {
     fn method(&self) -> Method {
         Method::Delete
@@ -39,13 +51,19 @@ impl HerokuEndpoint<Account> for UserAccountDelete {
 }
 
 /// Account Transfer Delete.
-/// 
+///
 /// Delete an existing app transfer
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-delete)
 pub struct AppTransferDelete {
     /// transfer_id can be the transfer name or id.
     pub transfer_id: String,
+}
+
+impl AppTransferDelete {
+    pub fn new(transfer_id: String) -> AppTransferDelete {
+        AppTransferDelete { transfer_id }
+    }
 }
 
 impl HerokuEndpoint<Account> for AppTransferDelete {

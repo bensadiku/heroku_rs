@@ -13,6 +13,12 @@ pub struct CollaboratorList {
     pub app_id: String,
 }
 
+impl CollaboratorList {
+    pub fn new(app_id: String) -> CollaboratorList {
+        CollaboratorList { app_id }
+    }
+}
+
 impl HerokuEndpoint<Vec<Collaborator>> for CollaboratorList {
     fn method(&self) -> Method {
         Method::Get
@@ -33,6 +39,15 @@ pub struct CollaboratorDetails {
     pub app_id: String,
     /// collaborator_id can be the collaborator email or id.
     pub collaborator_id: String,
+}
+
+impl CollaboratorDetails {
+    pub fn new(app_id: String, collaborator_id: String) -> CollaboratorDetails {
+        CollaboratorDetails {
+            app_id,
+            collaborator_id,
+        }
+    }
 }
 
 impl HerokuEndpoint<Collaborator> for CollaboratorDetails {
