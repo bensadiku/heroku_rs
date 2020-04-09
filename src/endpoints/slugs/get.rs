@@ -15,6 +15,12 @@ pub struct SlugDetails {
     pub slug_id: String,
 }
 
+impl SlugDetails {
+    pub fn new(app_id: String, slug_id: String) -> SlugDetails {
+        SlugDetails { app_id, slug_id }
+    }
+}
+
 impl HerokuEndpoint<Slug> for SlugDetails {
     fn method(&self) -> Method {
         Method::Get

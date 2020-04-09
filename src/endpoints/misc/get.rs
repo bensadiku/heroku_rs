@@ -13,6 +13,12 @@ pub struct RegionDetails {
     pub region_id: String,
 }
 
+impl RegionDetails {
+    pub fn new(region_id: String) -> RegionDetails {
+        RegionDetails { region_id }
+    }
+}
+
 impl HerokuEndpoint<Region> for RegionDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -28,6 +34,12 @@ impl HerokuEndpoint<Region> for RegionDetails {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#region-list)
 pub struct RegionList {}
+
+impl RegionList {
+    pub fn new() -> RegionList {
+        RegionList {}
+    }
+}
 
 impl HerokuEndpoint<Vec<Region>> for RegionList {
     fn method(&self) -> Method {
@@ -45,6 +57,12 @@ impl HerokuEndpoint<Vec<Region>> for RegionList {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#rate-limit-info)
 pub struct RatelimitDetails {}
 
+impl RatelimitDetails {
+    pub fn new() -> RatelimitDetails {
+        RatelimitDetails {}
+    }
+}
+
 impl HerokuEndpoint<Ratelimit> for RatelimitDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -60,6 +78,13 @@ impl HerokuEndpoint<Ratelimit> for RatelimitDetails {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#stack-list)
 pub struct StackList {}
+
+impl StackList {
+    pub fn new() -> StackList {
+        StackList {}
+    }
+}
+
 impl HerokuEndpoint<Vec<Stack>> for StackList {
     fn method(&self) -> Method {
         Method::Get
@@ -77,6 +102,12 @@ impl HerokuEndpoint<Vec<Stack>> for StackList {
 pub struct StackDetails {
     /// stack_id can be the stack name or stack id
     pub stack_id: String,
+}
+
+impl StackDetails {
+    pub fn new(stack_id: String) -> StackDetails {
+        StackDetails { stack_id }
+    }
 }
 
 impl HerokuEndpoint<Stack> for StackDetails {

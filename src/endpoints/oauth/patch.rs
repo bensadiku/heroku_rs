@@ -15,6 +15,15 @@ pub struct OAuthClientUpdate {
     pub params: OAuthClientUpdateParams,
 }
 
+impl OAuthClientUpdate {
+    pub fn new(client_id: String, name: String, redirect_uri: String) -> OAuthClientUpdate {
+        OAuthClientUpdate {
+            client_id,
+            params: OAuthClientUpdateParams { name, redirect_uri },
+        }
+    }
+}
+
 /// Update existing oauth client with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-update-optional-parameters)

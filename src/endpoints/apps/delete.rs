@@ -13,6 +13,12 @@ pub struct AppDelete {
     pub app_id: String,
 }
 
+impl AppDelete {
+    pub fn create(app_id: String) -> AppDelete {
+        AppDelete { app_id }
+    }
+}
+
 impl HerokuEndpoint<App> for AppDelete {
     fn method(&self) -> Method {
         Method::Delete
@@ -30,6 +36,12 @@ impl HerokuEndpoint<App> for AppDelete {
 pub struct AppDisableAcm {
     /// app_id can be the app id or name.
     pub app_id: String,
+}
+
+impl AppDisableAcm {
+    pub fn new(app_id: String) -> AppDisableAcm {
+        AppDisableAcm { app_id }
+    }
 }
 
 impl HerokuEndpoint<App> for AppDisableAcm {
@@ -51,6 +63,12 @@ pub struct AppWebhookDelete {
     pub app_id: String,
     /// webhook_id is the webhook id.
     pub webhook_id: String,
+}
+
+impl AppWebhookDelete {
+    pub fn new(app_id: String, webhook_id: String) -> AppWebhookDelete {
+        AppWebhookDelete { app_id, webhook_id }
+    }
 }
 
 impl HerokuEndpoint<AppWebhook> for AppWebhookDelete {

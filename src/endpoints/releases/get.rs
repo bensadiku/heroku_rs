@@ -13,6 +13,12 @@ pub struct ReleaseList {
     pub app_id: String,
 }
 
+impl ReleaseList {
+    pub fn new(app_id: String) -> ReleaseList {
+        ReleaseList { app_id }
+    }
+}
+
 impl HerokuEndpoint<Vec<Release>> for ReleaseList {
     fn method(&self) -> Method {
         Method::Get
@@ -29,8 +35,14 @@ impl HerokuEndpoint<Vec<Release>> for ReleaseList {
 pub struct ReleaseInfo {
     /// app_id can be the app name or the app id
     pub app_id: String,
-    /// release_id can be the id or version 
+    /// release_id can be the id or version
     pub release_id: String,
+}
+
+impl ReleaseInfo {
+    pub fn new(app_id: String, release_id: String) -> ReleaseInfo {
+        ReleaseInfo { app_id, release_id }
+    }
 }
 
 impl HerokuEndpoint<Release> for ReleaseInfo {

@@ -13,9 +13,32 @@ pub struct AppTransferCreate {
     pub params: AppTransferCreateParams,
 }
 
+impl AppTransferCreate {
+    pub fn new(app: String, recipient: String, silent: Option<bool>) -> AppTransferCreate {
+        AppTransferCreate {
+            params: AppTransferCreateParams {
+                app: app,
+                recipient: recipient,
+                silent: silent,
+            },
+        }
+    }
+
+    pub fn create(app: String, recipient: String) -> AppTransferCreate {
+        AppTransferCreate {
+            params: AppTransferCreateParams {
+                app: app,
+                recipient: recipient,
+                silent: None,
+            },
+        }
+    }
+}
+
 /// Update account with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create-required-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AppTransferCreateParams {
     /// unique identifier or name of app
@@ -48,9 +71,18 @@ pub struct AccountCreditCreate {
     pub params: AccountCreditCreateParams,
 }
 
+impl AccountCreditCreate {
+    pub fn new(code1: Option<String>, code2: Option<String>) -> AccountCreditCreate {
+        AccountCreditCreate {
+            params: AccountCreditCreateParams { code1, code2 },
+        }
+    }
+}
+
 /// Update account credits with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-create-optional-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AccountCreditCreateParams {
     /// first code from a discount card
@@ -81,9 +113,18 @@ pub struct PasswordReset {
     pub params: PasswordResetParams,
 }
 
+impl PasswordReset {
+    pub fn new(email: String) -> PasswordReset {
+        PasswordReset {
+            params: PasswordResetParams { email },
+        }
+    }
+}
+
 /// Update account credits with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-reset-password-optional-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct PasswordResetParams {
     /// unique email address
@@ -102,22 +143,38 @@ impl HerokuEndpoint<PasswordResetResponse, (), PasswordResetParams> for Password
     }
 }
 
-
 /// PasswordReset Complete Reset Password
 ///
 /// Complete password reset.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-complete-reset-password)
 pub struct PasswordResetConfirm {
-    /// Password token 
+    /// Password token
     pub password_id: String,
     /// The parameters to pass to the Heroku API
     pub params: PasswordResetConfirmParams,
 }
 
+impl PasswordResetConfirm {
+    pub fn new(
+        password_id: String,
+        password: String,
+        password_confirmation: String,
+    ) -> PasswordResetConfirm {
+        PasswordResetConfirm {
+            password_id,
+            params: PasswordResetConfirmParams {
+                password,
+                password_confirmation,
+            },
+        }
+    }
+}
+
 /// Update account credits with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-reset-password-optional-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct PasswordResetConfirmParams {
     /// current password on the account
@@ -126,7 +183,9 @@ pub struct PasswordResetConfirmParams {
     pub password_confirmation: String,
 }
 
-impl HerokuEndpoint<PasswordResetResponse, (), PasswordResetConfirmParams> for PasswordResetConfirm {
+impl HerokuEndpoint<PasswordResetResponse, (), PasswordResetConfirmParams>
+    for PasswordResetConfirm
+{
     fn method(&self) -> Method {
         Method::Post
     }

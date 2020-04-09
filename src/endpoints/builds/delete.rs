@@ -2,13 +2,19 @@
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Build Delete cache
-/// 
+///
 /// Destroy a build cache.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-delete-cache)
 pub struct BuildDelete {
     /// app_id can be the app id or name.
     pub app_id: String,
+}
+
+impl BuildDelete {
+    pub fn new(app_id: String) -> BuildDelete {
+        BuildDelete { app_id }
+    }
 }
 
 impl HerokuEndpoint for BuildDelete {

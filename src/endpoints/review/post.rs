@@ -14,6 +14,45 @@ pub struct ReviewAppCreate {
     pub params: ReviewAppCreateParams,
 }
 
+impl ReviewAppCreate {
+    pub fn new(
+        branch: String,
+        pipeline_id: String,
+        source_blob_url: String,
+        source_blob_version: Option<String>,
+        enviroment: Option<HashMap<String, String>>,
+        fork_repo_id: Option<i64>,
+    ) -> ReviewAppCreate {
+        ReviewAppCreate {
+            params: ReviewAppCreateParams {
+                branch: branch,
+                pipeline: pipeline_id,
+                source_blob: SourceBlob {
+                    url: source_blob_url,
+                    version: source_blob_version,
+                },
+                enviroment: enviroment,
+                fork_repo_id: fork_repo_id,
+            },
+        }
+    }
+
+    pub fn create(branch: String, pipeline_id: String, source_blob_url: String) -> ReviewAppCreate {
+        ReviewAppCreate {
+            params: ReviewAppCreateParams {
+                branch: branch,
+                pipeline: pipeline_id,
+                source_blob: SourceBlob {
+                    url: source_blob_url,
+                    version: None,
+                },
+                enviroment: None,
+                fork_repo_id: None,
+            },
+        }
+    }
+}
+
 /// Create a new review app with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-create-required-parameters)
@@ -25,9 +64,9 @@ pub struct ReviewAppCreateParams {
     pub pipeline: String,
     /// source blob
     pub source_blob: SourceBlob,
-    /// A set of key value pairs which will be put into the environment of the spawned review app process.
+    /// A set of key value pairs which will be put into the environment of the spawned review app process. [Nullable]
     pub enviroment: Option<HashMap<String, String>>,
-    /// repository id of the fork the branch resides in
+    /// repository id of the fork the branch resides in. [Nullable]
     pub fork_repo_id: Option<i64>,
 }
 
@@ -65,7 +104,7 @@ impl ReviewAppCreateParams {
 pub struct SourceBlob {
     /// URL where gzipped tar archive of source code for build was downloaded.
     pub url: String,
-    /// The version number (or SHA) of the code to build.
+    /// The version number (or SHA) of the code to build. [Nullable]
     pub version: Option<String>,
 }
 

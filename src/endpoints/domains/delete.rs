@@ -15,6 +15,12 @@ pub struct DomainDelete {
     pub domain_id: String,
 }
 
+impl DomainDelete {
+    pub fn new(app_id: String, domain_id: String) -> DomainDelete {
+        DomainDelete { app_id, domain_id }
+    }
+}
+
 impl HerokuEndpoint<Domain> for DomainDelete {
     fn method(&self) -> Method {
         Method::Delete

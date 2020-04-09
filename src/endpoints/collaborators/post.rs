@@ -15,14 +15,34 @@ pub struct CollaboratorCreate {
     pub params: CollaboratorCreateParams,
 }
 
+impl CollaboratorCreate {
+    pub fn new(app_id: String, user: String, silent: Option<bool>) -> CollaboratorCreate {
+        CollaboratorCreate {
+            app_id,
+            params: CollaboratorCreateParams { user, silent },
+        }
+    }
+
+    pub fn create(app_id: String, user: String) -> CollaboratorCreate {
+        CollaboratorCreate {
+            app_id,
+            params: CollaboratorCreateParams {
+                user: user,
+                silent: None,
+            },
+        }
+    }
+}
+
 /// Create build with parameters.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct CollaboratorCreateParams {
     /// unique email address, identifier of an account or Implicit reference to currently authorized user
     pub user: String,
     /// whether to suppress email invitation when creating collaborator
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub silent: Option<bool>,
 }
 
