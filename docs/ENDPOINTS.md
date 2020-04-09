@@ -139,7 +139,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [X] [/teams/{team_name_or_id}/invoices](https://devcenter.heroku.com/articles/platform-api-reference#team-invoice-list)	
 - [X] [/teams/{team_name_or_id}/members](https://devcenter.heroku.com/articles/platform-api-reference#team-member-list)	
 - [X] [/teams/{team_name_or_id}/members/{team_member_email_or_id}/apps](https://devcenter.heroku.com/articles/platform-api-reference#team-member-list-by-member)	
-- [ ] [/teams/{team_preferences_name_or_id}/preferences](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-list)	
+- [X] [/teams/{team_preferences_name_or_id}/preferences](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-list)	
 - [ ] [/teams/{team_name_or_id}/spaces](https://devcenter.heroku.com/articles/platform-api-reference#space-2)	
 - [ ] [/teams/{team_id}/usage/daily](https://devcenter.heroku.com/articles/platform-api-reference#team-daily-usage-team-daily-usage)	
 - [ ] [/teams/{team_id}/usage/monthly](https://devcenter.heroku.com/articles/platform-api-reference#team-monthly-usage-team-monthly-usage)	
@@ -282,7 +282,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [X] [/teams/apps/{team_app_name}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-team)	
 - [X] [/teams/apps/{team_app_name}/collaborators/{team_app_collaborator_email}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-update)	
 - [X] [/teams/{team_name_or_id}/members](https://devcenter.heroku.com/articles/platform-api-reference#team-member-update)	
-- [ ] [/teams/{team_preferences_name_or_id}/preference](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-update)	
+- [x] [/teams/{team_preferences_name_or_id}/preference](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-update)	
 - [ ] [/test-runs/{test_run_number}](https://devcenter.heroku.com/articles/platform-api-reference#test-run-update)	
 - [ ] [/users/{user_preferences_self}/preferences](https://devcenter.heroku.com/articles/platform-api-reference#user-preferences-update)	
 
