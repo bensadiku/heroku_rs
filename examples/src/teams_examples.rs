@@ -6,7 +6,7 @@ use heroku_rs::framework::apiclient::HerokuApiClient;
 pub fn run<T: HerokuApiClient>(api_client: &T) {
     // create_team(api_client);
     // create_team_in_enterprise_account(api_client);
-    // get_team(api_client);
+    get_team(api_client);
     // get_teams(api_client);
     // get_enterprise_account_teams(api_client);
     // update_team(api_client);
