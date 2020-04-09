@@ -10,11 +10,11 @@ pub use delete::{TeamDelete, TeamInvitationRevoke, TeamMemberDelete};
 pub use get::{
     TeamAppDetails, TeamAppList, TeamAppPermissionList, TeamDetails, TeamFeatureDetails,
     TeamFeatureList, TeamInvitationDetails, TeamInvitationList, TeamInvoiceDetails,
-    TeamInvoiceList, TeamList, TeamListByEA, TeamMemberAppsList, TeamMemberList,
+    TeamInvoiceList, TeamList, TeamListByEA, TeamMemberAppsList, TeamMemberList, TeamPreferenceList
 };
 pub use patch::{
     TeamAppTransfer, TeamAppTransferParams, TeamAppUpdateLocked, TeamAppUpdateLockedParams,
-    TeamMemberUpdate, TeamMemberUpdateParams, TeamUpdate, TeamUpdateParams,
+    TeamMemberUpdate, TeamMemberUpdateParams, TeamUpdate, TeamUpdateParams, TeamPreferenceUpdate, TeamPreferenceUpdateParams
 };
 pub use post::{
     TeamAppCreate, TeamAppCreateParams, TeamCreate, TeamCreateByEA, TeamCreateByEAParams,
@@ -46,6 +46,9 @@ impl ApiResult for Vec<TeamInvoice> {}
 impl ApiResult for TeamMember {}
 impl ApiResult for Vec<TeamMember> {}
 
+impl ApiResult for TeamPreferences {}
+impl ApiResult for Vec<TeamPreferences> {}
+
 pub use team::Team;
 pub use team_app::TeamApp;
 pub use team_feature::TeamFeature;
@@ -53,6 +56,7 @@ pub use team_invitation::TeamInvitation;
 pub use team_invoice::TeamInvoice;
 pub use team_member::TeamMember;
 pub use team_permission::TeamAppPermission;
+pub use team_preferences::TeamPreferences;
 
 mod team {
     use chrono::offset::Utc;
@@ -437,5 +441,27 @@ mod team_member {
         pub id: String,
         /// full name of the account owner
         pub name: Option<String>,
+    }
+}
+
+
+mod team_preferences {
+
+    /// Team Preferences
+    ///
+    /// Stability: development
+    ///
+    /// Tracks a Team’s Preferences
+    ///
+    /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct TeamPreferences {
+        /// The default permission used when adding new members to the team
+        ///  one of:"admin" or "member" or "viewer" or null 
+        #[serde(rename = "default-permission")]
+        pub default_permission: Option<String>,
+        /// Whether whitelisting rules should be applied to add-on installations
+        #[serde(rename = "whitelisting-enabled")]
+        pub whitelisting_enabled: Option<bool>,
     }
 }

@@ -1,5 +1,8 @@
 //Anything related to GET requests for Teams and it's variations goes here.
-use super::{Team, TeamApp, TeamAppPermission, TeamFeature, TeamInvitation, TeamInvoice, TeamMember};
+use super::{
+    Team, TeamApp, TeamAppPermission, TeamFeature, TeamInvitation, TeamInvoice, TeamMember,
+    TeamPreferences,
+};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -353,5 +356,30 @@ impl<'a> HerokuEndpoint<Vec<TeamApp>> for TeamMemberAppsList<'a> {
     }
     fn path(&self) -> String {
         format!("teams/{}/members/{}/apps", self.team_id, self.member_id)
+    }
+}
+
+/// Team Preferences List
+///
+/// Retrieve Team Preferences
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-list)
+pub struct TeamPreferenceList<'a> {
+    /// unique  identifier.
+    pub id: &'a str,
+}
+
+impl<'a> TeamPreferenceList<'a> {
+    pub fn new(id: &'a str) -> TeamPreferenceList {
+        TeamPreferenceList { id }
+    }
+}
+
+impl<'a> HerokuEndpoint<TeamPreferences> for TeamPreferenceList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/preferences", self.id)
     }
 }

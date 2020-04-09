@@ -39,7 +39,7 @@ pub struct TeamInvitationCreateParams<'a> {
     pub email: &'a str,
     /// Even though marked with `Option`, this parameter is NOT optional.
     /// role in the team
-    /// one of:"admin" or "collaborator" or "member" or "owner" or null
+    /// one of:"admin" or "collaborator" or "member" or "owner" or null. [Nullable]
     pub role: Option<&'a str>,
 }
 

@@ -222,3 +222,54 @@ impl<'a> HerokuEndpoint<TeamMember, (), TeamMemberUpdateParams<'a>> for TeamMemb
         Some(self.params.clone())
     }
 }
+
+
+
+
+/// Team Preferences Update
+///
+/// Update Team Preferences
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-update)
+pub struct TeamPreferenceUpdate<'a> {
+    /// unique identifier
+    pub id: &'a str,
+    /// parameters to pass to Heroku
+    pub params: TeamPreferenceUpdateParams,
+}
+
+impl<'a> TeamPreferenceUpdate<'a> {
+    pub fn new(
+        id: &'a str,
+        whitelisting_enabled: Option<bool>,
+    ) -> TeamPreferenceUpdate<'a> {
+        TeamPreferenceUpdate {
+            id,
+            params: TeamPreferenceUpdateParams {
+                whitelisting_enabled,
+            },
+        }
+    }
+}
+
+/// Update team preference with parameters
+///
+/// [See Heroku documentation for more information about these paramters](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-update-optional-parameters)
+#[derive(Serialize, Clone, Debug)]
+pub struct TeamPreferenceUpdateParams {
+    /// Whether whitelisting rules should be applied to add-on installations. [Nullable]
+    #[serde(rename = "whitelisting-enabled")]
+    pub whitelisting_enabled: Option<bool>,
+}
+
+impl<'a> HerokuEndpoint<TeamMember, (), TeamPreferenceUpdateParams> for TeamPreferenceUpdate<'a> {
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!("teams/{}/preferences", self.id)
+    }
+    fn body(&self) -> Option<TeamPreferenceUpdateParams> {
+        Some(self.params.clone())
+    }
+}

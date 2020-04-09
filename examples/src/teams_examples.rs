@@ -7,7 +7,7 @@ pub fn run<T: HerokuApiClient>(api_client: &T) {
     // create_team(api_client);
     // create_team_in_enterprise_account(api_client);
     // get_team(api_client);
-    get_teams(api_client);
+    // get_teams(api_client);
     // get_enterprise_account_teams(api_client);
     // update_team(api_client);
     // delete_team(api_client);    // Careful here :)
@@ -38,6 +38,25 @@ pub fn run<T: HerokuApiClient>(api_client: &T) {
     // team_member_delete(api_client); // Careful here :)
     // get_team_member_list(api_client);
     // get_team_member_app_list(api_client);
+
+    // get_team_preferences(api_client);
+    // update_team_preferences(api_client);
+}
+
+// update team preferences
+fn update_team_preferences<T: HerokuApiClient>(api_client: &T) {
+    let id = "123";
+    let whitelist_enabled = Some(true);
+    let response = api_client.request(&teams::TeamPreferenceUpdate::new(id, whitelist_enabled));
+    print_response(response);
+}
+
+
+// get team preferences
+fn get_team_preferences<T: HerokuApiClient>(api_client: &T) {
+    let id = "123";
+    let response = api_client.request(&teams::TeamPreferenceList::new(id));
+    print_response(response);
 }
 
 // get team member apps
