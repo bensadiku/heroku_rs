@@ -13,6 +13,12 @@ pub struct ReviewAppDetails {
     pub review_id: String,
 }
 
+impl ReviewAppDetails {
+    pub fn new(review_id: String) -> ReviewAppDetails {
+        ReviewAppDetails { review_id }
+    }
+}
+
 impl HerokuEndpoint<ReviewApp> for ReviewAppDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -32,6 +38,12 @@ pub struct ReviewAppByAppDetails {
     pub app_id: String,
 }
 
+impl ReviewAppByAppDetails {
+    pub fn new(app_id: String) -> ReviewAppByAppDetails {
+        ReviewAppByAppDetails { app_id }
+    }
+}
+
 impl HerokuEndpoint<ReviewApp> for ReviewAppByAppDetails {
     fn method(&self) -> Method {
         Method::Get
@@ -49,6 +61,12 @@ impl HerokuEndpoint<ReviewApp> for ReviewAppByAppDetails {
 pub struct ReviewAppByPipelineList {
     /// app_id is the unique identifier, app name or app id.
     pub pipeline_id: String,
+}
+
+impl ReviewAppByPipelineList {
+    pub fn new(pipeline_id: String) -> ReviewAppByPipelineList {
+        ReviewAppByPipelineList { pipeline_id }
+    }
 }
 
 impl HerokuEndpoint<Vec<ReviewApp>> for ReviewAppByPipelineList {

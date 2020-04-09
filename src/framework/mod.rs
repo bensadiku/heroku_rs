@@ -110,7 +110,6 @@ impl<'a> HerokuApiClient for HttpApiClient {
             .query(&endpoint.query());
 
         if let Some(body) = endpoint.body() {
-            println!("{}",serde_json::to_string(&body).unwrap() );
             request = request.body(serde_json::to_string(&body).unwrap());
             request = request.header(reqwest::header::CONTENT_TYPE, endpoint.content_type());
         }

@@ -5,15 +5,24 @@ use super::Formation;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
 /// Formation Info
-/// 
+///
 /// Get info for a process type
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-info)
 pub struct FormationDetails {
     /// app_id can be the app name or the app id
     pub app_id: String,
     /// formation_id can be the formation id or type
     pub formation_id: String,
+}
+
+impl FormationDetails {
+    pub fn new(app_id: String, formation_id: String) -> FormationDetails {
+        FormationDetails {
+            app_id,
+            formation_id,
+        }
+    }
 }
 
 impl HerokuEndpoint<Formation> for FormationDetails {
@@ -32,6 +41,12 @@ impl HerokuEndpoint<Formation> for FormationDetails {
 pub struct FormationList {
     /// app_id can be the app name or the app id
     pub app_id: String,
+}
+
+impl FormationList {
+    pub fn new(app_id: String) -> FormationList {
+        FormationList { app_id }
+    }
 }
 
 impl HerokuEndpoint<Vec<Formation>> for FormationList {

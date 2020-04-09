@@ -16,6 +16,44 @@ pub struct SlugCreate {
     pub params: SlugCreateParams,
 }
 
+impl SlugCreate {
+    pub fn new(
+        app_id: String,
+        process_types: HashMap<String, String>,
+        buildpack_provided_description: Option<String>,
+        checksum: Option<String>,
+        commit: Option<String>,
+        commit_description: Option<String>,
+        stack: Option<String>,
+    ) -> SlugCreate {
+        SlugCreate {
+            app_id,
+            params: SlugCreateParams {
+                process_types,
+                buildpack_provided_description,
+                checksum,
+                commit,
+                commit_description,
+                stack,
+            },
+        }
+    }
+
+    pub fn create(app_id: String, process_types: HashMap<String, String>) -> SlugCreate {
+        SlugCreate {
+            app_id,
+            params: SlugCreateParams {
+                process_types: process_types,
+                buildpack_provided_description: None,
+                checksum: None,
+                commit: None,
+                commit_description: None,
+                stack: None,
+            },
+        }
+    }
+}
+
 /// Create a new slug with parameters.
 ///
 /// [See Heroku documentation for more information about these required parameters](https://devcenter.heroku.com/articles/platform-api-reference#slug-create-required-parameters)
@@ -23,17 +61,18 @@ pub struct SlugCreate {
 /// [See Heroku documentation for more information about these optional parameters](https://devcenter.heroku.com/articles/platform-api-reference#slug-create-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct SlugCreateParams {
-    /// hash mapping process type names to their respective command
+    /// hash mapping process type names to their respective command. [Nullable]
     pub process_types: HashMap<String, String>,
-    /// human-friendly description from buildpack of slug
+    /// human-friendly description from buildpack of slug. [Nullable]
     pub buildpack_provided_description: Option<String>,
-    //// an optional checksum of the slug for verifying its integrity
+    //// an optional checksum of the slug for verifying its integrity. [Nullable]
     pub checksum: Option<String>,
-    /// identification of the code with your version control system (eg: SHA of the git HEAD)
+    /// identification of the code with your version control system (eg: SHA of the git HEAD). [Nullable]
     pub commit: Option<String>,
-    /// an optional description of the provided commit
+    /// an optional description of the provided commit. [Nullable]
     pub commit_description: Option<String>,
     /// unique name or identifier of stack
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub stack: Option<String>,
 }
 

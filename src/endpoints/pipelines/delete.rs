@@ -13,6 +13,12 @@ pub struct PipelineDelete {
     pub pipeline_id: String,
 }
 
+impl PipelineDelete {
+    pub fn new(pipeline_id: String) -> PipelineDelete {
+        PipelineDelete { pipeline_id }
+    }
+}
+
 impl HerokuEndpoint<Pipeline, (), ()> for PipelineDelete {
     fn method(&self) -> Method {
         Method::Delete
@@ -22,7 +28,6 @@ impl HerokuEndpoint<Pipeline, (), ()> for PipelineDelete {
     }
 }
 
-
 /// Pipeline Coupling Delete
 ///
 /// Delete an existing pipeline coupling.
@@ -31,6 +36,12 @@ impl HerokuEndpoint<Pipeline, (), ()> for PipelineDelete {
 pub struct PipelineCouplingDelete {
     /// unique pipeline coupling identifier.
     pub coupling_id: String,
+}
+
+impl PipelineCouplingDelete {
+    pub fn new(coupling_id: String) -> PipelineCouplingDelete {
+        PipelineCouplingDelete { coupling_id }
+    }
 }
 
 impl HerokuEndpoint<PipelineCoupling, (), ()> for PipelineCouplingDelete {

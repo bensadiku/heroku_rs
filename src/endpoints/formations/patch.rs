@@ -1,6 +1,6 @@
 //Anything related to PATCH requests for formations and it's properties goes here.
 
-use super::{Formation};
+use super::Formation;
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -17,15 +17,31 @@ pub struct FormationUpdate {
     pub params: FormationUpdateParams,
 }
 
+impl FormationUpdate {
+    pub fn new(
+        app_id: String,
+        formation_id: String,
+        quantity: Option<i32>,
+        size: Option<String>,
+    ) -> FormationUpdate {
+        FormationUpdate {
+            app_id,
+            formation_id,
+            params: FormationUpdateParams { quantity, size },
+        }
+    }
+}
+
 /// Update formation with parameters
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-update-optional-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct FormationUpdateParams {
     /// number of processes to maintain
     pub quantity: Option<i32>,
     /// dyno size
-    pub size: Option<String>
+    pub size: Option<String>,
 }
 
 impl HerokuEndpoint<Formation, (), FormationUpdateParams> for FormationUpdate {

@@ -15,9 +15,19 @@ pub struct PipelineUpdate {
     pub params: PipelineUpdateParams,
 }
 
+impl PipelineUpdate {
+    pub fn new(pipeline_id: String, name: Option<String>) -> PipelineUpdate {
+        PipelineUpdate {
+            pipeline_id,
+            params: PipelineUpdateParams { name: name },
+        }
+    }
+}
+
 /// Update pipeline with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-update-optional-parameters)
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct PipelineUpdateParams {
     /// name of pipeline. pattern: ^[a-z][a-z0-9-]{2,29}$
@@ -46,6 +56,15 @@ pub struct PipelineCouplingUpdate {
     pub coupling_id: String,
     /// The parameters to pass to the Heroku API
     pub params: PipelineCouplingUpdateParams,
+}
+
+impl PipelineCouplingUpdate {
+    pub fn new(coupling_id: String, stage: String) -> PipelineCouplingUpdate {
+        PipelineCouplingUpdate {
+            coupling_id,
+            params: PipelineCouplingUpdateParams { stage },
+        }
+    }
 }
 
 /// Update pipeline coupling with parameters.
