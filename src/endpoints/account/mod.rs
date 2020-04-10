@@ -10,7 +10,7 @@ pub mod put;
 pub use delete::{AccountDelete, AppTransferDelete, UserAccountDelete};
 pub use get::{
     AccountCreditDetails, AccountCreditList, AccountDetails, AccountFeatureDetails,
-    AccountFeatureList, AppTransferDetails, AppTransferList, UserAccountDetails,
+    AccountFeatureList, AppTransferDetails, AppTransferList, SmsNumberDetails, UserAccountDetails,
 };
 pub use patch::{
     AccountFeatureUpdate, AccountFeatureUpdateParams, AccountUpdate, AccountUpdateParams,
@@ -20,9 +20,11 @@ pub use patch::{
 pub use post::{
     AccountCreditCreate, AccountCreditCreateParams, AppTransferCreate, AppTransferCreateParams,
     PasswordReset, PasswordResetConfirm, PasswordResetConfirmParams, PasswordResetParams,
+    SmsNumberConfirm, SmsNumberRecover,
 };
 
 pub use password::PasswordResetResponse;
+pub use sms_number::SmsNumber;
 
 impl ApiResult for Account {}
 
@@ -36,6 +38,8 @@ impl ApiResult for Credit {}
 impl ApiResult for Vec<Credit> {}
 
 impl ApiResult for PasswordResetResponse {}
+
+impl ApiResult for SmsNumber {}
 
 /// Heroku Account
 ///
@@ -272,5 +276,20 @@ mod password {
         pub email: String,
         /// identifier of an account
         pub id: String,
+    }
+}
+
+mod sms_number {
+    /// SMS Number
+    ///
+    /// Stability: production
+    ///
+    /// SMS numbers are used for recovery on accounts with two-factor authentication enabled.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sms-number)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct SmsNumber {
+        /// SMS number of account
+        pub sms_number: Option<String>,
     }
 }

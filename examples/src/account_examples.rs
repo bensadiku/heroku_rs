@@ -27,6 +27,32 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // reset_account_password(api_client);
     // confirm_password(api_client);
+
+    // get_account_sms_number(api_client);
+    // recover_account_number(api_client);
+    // confirm_account_number(api_client);
+}
+
+// Confirm account sms number.
+fn confirm_account_number<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let account_id = "123";
+    let response = api_client.request(&account::SmsNumberRecover::new(account_id));
+    print_response(response);
+}
+
+
+// Recover account sms number.
+fn recover_account_number<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let account_id = "123";
+    let response = api_client.request(&account::SmsNumberRecover::new(account_id));
+    print_response(response);
+}
+
+// Get account sms number.
+fn get_account_sms_number<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let account_id = "123";
+    let response = api_client.request(&account::SmsNumberDetails::new(account_id));
+    print_response(response);
 }
 
 // Confirm password reset.

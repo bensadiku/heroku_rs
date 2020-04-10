@@ -1,5 +1,5 @@
 //Anything related to POST requests for account and it's properties goes here.
-use super::{AppTransfer, Credit, PasswordResetResponse};
+use super::{AppTransfer, Credit, PasswordResetResponse, SmsNumber};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -194,5 +194,55 @@ impl HerokuEndpoint<PasswordResetResponse, (), PasswordResetConfirmParams>
     }
     fn body(&self) -> Option<PasswordResetConfirmParams> {
         Some(self.params.clone())
+    }
+}
+
+/// SMS Number Recover
+///
+/// Recover an account using an SMS recovery code
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-reset-password)
+pub struct SmsNumberRecover<'a> {
+    /// unique identifier, email or account id
+    pub account_id: &'a str,
+}
+
+impl<'a> SmsNumberRecover<'a> {
+    pub fn new(account_id: &'a str) -> SmsNumberRecover<'a> {
+        SmsNumberRecover { account_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<SmsNumber> for SmsNumberRecover<'a> {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("users/{}/sms-number/actions/recover", self.account_id)
+    }
+}
+
+/// SMS Number Confirm
+///
+/// Confirm an SMS number change with a confirmation code
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sms-number-confirm)
+pub struct SmsNumberConfirm<'a> {
+    /// unique identifier, email or account id
+    pub account_id: &'a str,
+}
+
+impl<'a> SmsNumberConfirm<'a> {
+    pub fn new(account_id: &'a str) -> SmsNumberConfirm<'a> {
+        SmsNumberConfirm { account_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<SmsNumber> for SmsNumberConfirm<'a> {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("users/{}/sms-number/actions/confirm", self.account_id)
     }
 }
