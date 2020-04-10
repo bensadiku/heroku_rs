@@ -37,6 +37,23 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // get_invoice_address(api_client);
     // update_invoice_address(api_client);
+
+    // get_key(api_client);
+    // get_keys(api_client);
+}
+
+// get key by id or by fingerprint
+fn get_key<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let fingerprint = "FINGER_PRINT_HERE";
+    let response = api_client.request(&account::KeyDetails::new(fingerprint));
+    print_response(response);
+}
+
+
+// get keys
+fn get_keys<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::KeyList::new());
+    print_response(response);
 }
 
 // Update invoice address

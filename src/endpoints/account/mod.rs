@@ -11,7 +11,7 @@ pub use delete::{AccountDelete, AppTransferDelete, UserAccountDelete};
 pub use get::{
     AccountCreditDetails, AccountCreditList, AccountDetails, AccountFeatureDetails,
     AccountFeatureList, AppTransferDetails, AppTransferList, InvoiceAddressDetails, InvoiceDetails,
-    InvoiceList, SmsNumberDetails, UserAccountDetails,
+    InvoiceList, KeyDetails, KeyList, SmsNumberDetails, UserAccountDetails,
 };
 pub use patch::{
     AccountFeatureUpdate, AccountFeatureUpdateParams, AccountUpdate, AccountUpdateParams,
@@ -28,6 +28,7 @@ pub use put::{InvoiceAddressUpdate, InvoiceAddressUpdateParams};
 
 pub use invoice::Invoice;
 pub use invoice_address::InvoiceAddress;
+pub use key::Key;
 pub use password::PasswordResetResponse;
 pub use sms_number::SmsNumber;
 
@@ -51,6 +52,9 @@ impl ApiResult for Vec<Invoice> {}
 
 impl ApiResult for InvoiceAddress {}
 impl ApiResult for Vec<InvoiceAddress> {}
+
+impl ApiResult for Key {}
+impl ApiResult for Vec<Key> {}
 
 /// Heroku Account
 ///
@@ -370,5 +374,35 @@ mod invoice_address {
         pub state: Option<String>,
         /// flag to use the invoice address for an account or not
         pub use_invoice_address: bool,
+    }
+}
+
+mod key {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Key
+    ///
+    /// Stability: production
+    ///
+    /// Keys represent public SSH keys associated with an account and are used to authorize accounts as they are performing git operations.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#key)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Key {
+        /// comment on the key. Example: "username@host"
+        pub comment: String,
+        /// when key was created
+        pub created_at: DateTime<Utc>,
+        /// deprecated. Please refer to ‘comment’ instead
+        pub email: String,
+        /// a unique identifying string based on contents
+        pub fingerprint: String,
+        /// unique identifier of this key
+        pub id: String,
+        /// full public_key as uploaded
+        pub public_key: String,
+        /// when key was updated
+        pub updated_at: DateTime<Utc>,
     }
 }

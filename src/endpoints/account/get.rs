@@ -1,5 +1,7 @@
 //Anything related to GET requests for account and it's properties goes here.
-use super::{Account, AccountFeature, AppTransfer, Credit, Invoice, InvoiceAddress, SmsNumber};
+use super::{
+    Account, AccountFeature, AppTransfer, Credit, Invoice, InvoiceAddress, Key, SmsNumber,
+};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -282,5 +284,52 @@ impl HerokuEndpoint<InvoiceAddress> for InvoiceAddressDetails {
     }
     fn path(&self) -> String {
         format!("account/invoice-address")
+    }
+}
+
+/// Key Info
+///
+/// Info for existing key.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#key-info)
+pub struct KeyDetails<'a> {
+    /// unique key identifier, either key_id or fingerprint
+    pub key_id: &'a str,
+}
+
+impl<'a> KeyDetails<'a> {
+    pub fn new(key_id: &'a str) -> KeyDetails {
+        KeyDetails { key_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Key> for KeyDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/keys/{}", self.key_id)
+    }
+}
+
+/// Key List
+///
+/// List existing keys.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#key-list)
+pub struct KeyList {}
+
+impl KeyList {
+    pub fn new() -> KeyList {
+        KeyList {}
+    }
+}
+
+impl HerokuEndpoint<Vec<Key>> for KeyList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/keys")
     }
 }
