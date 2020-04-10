@@ -28,11 +28,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // see the create_custom_client and uncomment this to use it
     // let api_client = create_custom_client(token)?;
 
-    apps_examples::run(&api_client);
+    // apps_examples::run(&api_client);
     // custom_examples::run(&api_client);
     // app_review_examples::run(&api_client);
     // config_var_examples::run(&api_client);
-    // account_examples::run(&api_client);
+    account_examples::run(&api_client);
     // oauth_examples::run(&api_client);
     // pipeline_examples::run(&api_client);
     // misc_examples::run(&api_client);

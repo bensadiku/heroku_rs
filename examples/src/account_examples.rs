@@ -31,6 +31,37 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_account_sms_number(api_client);
     // recover_account_number(api_client);
     // confirm_account_number(api_client);
+
+    // get_invoices(api_client);
+    // get_invoice(api_client);
+
+    // get_invoice_address(api_client);
+    // update_invoice_address(api_client);
+}
+
+// Update invoice address
+fn update_invoice_address<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::InvoiceAddressUpdate::new(None,None,None,None,None,None,None,true));
+    print_response(response);
+}
+
+// Get invoice address
+fn get_invoice_address<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::InvoiceAddressDetails::new());
+    print_response(response);
+}
+
+// Get invoice
+fn get_invoice<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let invoice_number = "123";
+    let response = api_client.request(&account::InvoiceDetails::new(invoice_number));
+    print_response(response);
+}
+
+// Get invoices
+fn get_invoices<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&account::InvoiceList::new());
+    print_response(response);
 }
 
 // Confirm account sms number.
@@ -39,7 +70,6 @@ fn confirm_account_number<ApiClientType: HerokuApiClient>(api_client: &ApiClient
     let response = api_client.request(&account::SmsNumberRecover::new(account_id));
     print_response(response);
 }
-
 
 // Recover account sms number.
 fn recover_account_number<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {

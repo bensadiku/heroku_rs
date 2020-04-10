@@ -10,7 +10,8 @@ pub mod put;
 pub use delete::{AccountDelete, AppTransferDelete, UserAccountDelete};
 pub use get::{
     AccountCreditDetails, AccountCreditList, AccountDetails, AccountFeatureDetails,
-    AccountFeatureList, AppTransferDetails, AppTransferList, SmsNumberDetails, UserAccountDetails,
+    AccountFeatureList, AppTransferDetails, AppTransferList, InvoiceAddressDetails, InvoiceDetails,
+    InvoiceList, SmsNumberDetails, UserAccountDetails,
 };
 pub use patch::{
     AccountFeatureUpdate, AccountFeatureUpdateParams, AccountUpdate, AccountUpdateParams,
@@ -23,6 +24,10 @@ pub use post::{
     SmsNumberConfirm, SmsNumberRecover,
 };
 
+pub use put::{InvoiceAddressUpdate, InvoiceAddressUpdateParams};
+
+pub use invoice::Invoice;
+pub use invoice_address::InvoiceAddress;
 pub use password::PasswordResetResponse;
 pub use sms_number::SmsNumber;
 
@@ -40,6 +45,12 @@ impl ApiResult for Vec<Credit> {}
 impl ApiResult for PasswordResetResponse {}
 
 impl ApiResult for SmsNumber {}
+
+impl ApiResult for Invoice {}
+impl ApiResult for Vec<Invoice> {}
+
+impl ApiResult for InvoiceAddress {}
+impl ApiResult for Vec<InvoiceAddress> {}
 
 /// Heroku Account
 ///
@@ -291,5 +302,73 @@ mod sms_number {
     pub struct SmsNumber {
         /// SMS number of account
         pub sms_number: Option<String>,
+    }
+}
+
+mod invoice {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Invoice
+    ///
+    /// Stability: development
+    ///
+    /// An invoice is an itemized bill of goods for an account which includes pricing and charges.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Invoice {
+        /// total charges on this invoice
+        pub charges_total: f64,
+        /// when invoice was created
+        pub created_at: DateTime<Utc>,
+        /// total credits on this invoice
+        pub credits_total: f64,
+        /// unique identifier of this invoice
+        pub id: String,
+        /// human readable invoice number
+        pub number: i64,
+        /// the ending date that the invoice covers
+        pub period_end: String,
+        /// the starting date that this invoice covers
+        pub period_start: String,
+        /// payment status for this invoice (pending, successful, failed)
+        pub state: i64,
+        /// combined total of charges and credits on this invoice
+        pub total: f64,
+        /// when invoice was updated
+        pub updated_at: DateTime<Utc>,
+    }
+}
+
+mod invoice_address {
+
+    /// Invoice Address
+    ///
+    /// Stability: development
+    ///
+    /// An invoice address represents the address that should be listed on an invoice.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct InvoiceAddress {
+        /// invoice street address line 1
+        pub address_1: Option<String>,
+        /// invoice street address line 2
+        pub address_2: Option<String>,
+        /// invoice city
+        pub city: Option<String>,
+        /// country
+        pub country: Option<String>,
+        /// heroku_id identifier reference
+        pub heroku_id: String,
+        /// metadata / additional information to go on invoice
+        pub other: Option<String>,
+        /// invoice zip code
+        pub postal_code: Option<String>,
+        /// invoice state
+        pub state: Option<String>,
+        /// flag to use the invoice address for an account or not
+        pub use_invoice_address: bool,
     }
 }

@@ -1,5 +1,5 @@
 //Anything related to GET requests for account and it's properties goes here.
-use super::{Account, AccountFeature, AppTransfer, Credit, SmsNumber};
+use super::{Account, AccountFeature, AppTransfer, Credit, Invoice, InvoiceAddress, SmsNumber};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -213,5 +213,74 @@ impl<'a> HerokuEndpoint<SmsNumber> for SmsNumberDetails<'a> {
     }
     fn path(&self) -> String {
         format!("users/{}/sms-number", self.account_id)
+    }
+}
+
+/// Invoice Info
+///
+/// Info for existing invoice.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-info)
+pub struct InvoiceDetails<'a> {
+    /// invoice number
+    pub invoice_id: &'a str,
+}
+
+impl<'a> InvoiceDetails<'a> {
+    pub fn new(invoice_id: &'a str) -> InvoiceDetails {
+        InvoiceDetails { invoice_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Invoice> for InvoiceDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/invoices/{}", self.invoice_id)
+    }
+}
+
+/// Invoice List
+///
+/// List existing invoices.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-list)
+pub struct InvoiceList {}
+
+impl InvoiceList {
+    pub fn new() -> InvoiceList {
+        InvoiceList {}
+    }
+}
+
+impl HerokuEndpoint<Vec<Invoice>> for InvoiceList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/invoices")
+    }
+}
+
+/// Invoice Address info
+///
+/// Retrieve existing invoice address.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-info)
+pub struct InvoiceAddressDetails {}
+
+impl InvoiceAddressDetails {
+    pub fn new() -> InvoiceAddressDetails {
+        InvoiceAddressDetails {}
+    }
+}
+
+impl HerokuEndpoint<InvoiceAddress> for InvoiceAddressDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/invoice-address")
     }
 }
