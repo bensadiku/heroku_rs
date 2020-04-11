@@ -30,3 +30,5 @@ pub mod config_vars;
 pub mod custom;
 /// releases
 pub mod releases;
+/// heroku logs
+pub mod logs;
