@@ -31,6 +31,8 @@ pub mod config_vars;
 pub mod custom;
 /// releases
 pub mod releases;
+/// addons
+pub mod addons;
 /// teams
 pub mod teams;
 /// heroku logs

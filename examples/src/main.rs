@@ -15,6 +15,7 @@ mod pipeline_examples;
 mod app_review_examples;
 mod config_var_examples;
 mod custom_examples;
+mod addon_examples;
 mod teams_examples;
 mod collaborators_examples;
 mod logs_examples;
@@ -32,6 +33,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // let api_client = create_custom_client(token)?;
 
     apps_examples::run(&api_client);
+    // addon_examples::run(&api_client);
     // collaborators_examples::run(&api_client);
     // logs_examples::run(&api_client);
     // custom_examples::run(&api_client);
