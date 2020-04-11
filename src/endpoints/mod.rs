@@ -18,6 +18,7 @@ pub mod oauth;
 pub mod pipelines;
 /// formations endpoints
 pub mod formations;
+/// mixed endpoints
 pub mod misc; // used for those one off endpoints e.g. ratelimiting, region, stacks etc.
 /// slug endpoints
 pub mod slugs;
@@ -32,3 +33,7 @@ pub mod custom;
 pub mod releases;
 /// addons
 pub mod addons;
+/// teams
+pub mod teams;
+/// heroku logs
+pub mod logs;

@@ -7,9 +7,11 @@ pub mod post;
 pub mod put;
 
 pub use get::{RatelimitDetails, RegionDetails, RegionList, StackDetails, StackList};
+pub use post::SourceCreate;
 
 pub use ratelimit::Ratelimit;
 pub use region::Region;
+pub use sources::SourceBlob;
 pub use stack::Stack;
 
 impl ApiResult for Region {}
@@ -19,6 +21,8 @@ impl ApiResult for Ratelimit {}
 
 impl ApiResult for Stack {}
 impl ApiResult for Vec<Stack> {}
+
+impl ApiResult for SourceBlob {}
 
 mod region {
     use chrono::offset::Utc;
@@ -96,5 +100,27 @@ mod stack {
         pub state: String,
         /// when stack was last modified
         pub updated_at: DateTime<Utc>,
+    }
+}
+
+mod sources {
+    /// Source
+    ///
+    /// Stability: production
+    ///
+    /// A source is a location for uploading and downloading an application’s source code.
+    ///
+    /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#source)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct SourceBlob {
+        /// the urls which you can download or upload the source
+        pub source_blob: SourceBlobData,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct SourceBlobData {
+        /// URL to download the source
+        pub get_url: String,
+        /// URL to upload the source
+        pub put_url: String,
     }
 }

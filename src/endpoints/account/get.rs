@@ -1,5 +1,7 @@
 //Anything related to GET requests for account and it's properties goes here.
-use super::{Account, AccountFeature, AppTransfer, Credit};
+use super::{
+    Account, AccountFeature, AppTransfer, Credit, Invoice, InvoiceAddress, Key, SmsNumber,
+};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -188,5 +190,146 @@ impl HerokuEndpoint<Vec<Credit>> for AccountCreditList {
     }
     fn path(&self) -> String {
         format!("account/credits")
+    }
+}
+
+/// SMS NUMBER
+///
+/// Get sms number by account id or email
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sms-number-sms-number)
+pub struct SmsNumberDetails<'a> {
+    /// unique identifier, email or account id
+    pub account_id: &'a str,
+}
+
+impl<'a> SmsNumberDetails<'a> {
+    pub fn new(account_id: &'a str) -> SmsNumberDetails {
+        SmsNumberDetails { account_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<SmsNumber> for SmsNumberDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("users/{}/sms-number", self.account_id)
+    }
+}
+
+/// Invoice Info
+///
+/// Info for existing invoice.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-info)
+pub struct InvoiceDetails<'a> {
+    /// invoice number
+    pub invoice_id: &'a str,
+}
+
+impl<'a> InvoiceDetails<'a> {
+    pub fn new(invoice_id: &'a str) -> InvoiceDetails {
+        InvoiceDetails { invoice_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Invoice> for InvoiceDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/invoices/{}", self.invoice_id)
+    }
+}
+
+/// Invoice List
+///
+/// List existing invoices.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-list)
+pub struct InvoiceList {}
+
+impl InvoiceList {
+    pub fn new() -> InvoiceList {
+        InvoiceList {}
+    }
+}
+
+impl HerokuEndpoint<Vec<Invoice>> for InvoiceList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/invoices")
+    }
+}
+
+/// Invoice Address info
+///
+/// Retrieve existing invoice address.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-info)
+pub struct InvoiceAddressDetails {}
+
+impl InvoiceAddressDetails {
+    pub fn new() -> InvoiceAddressDetails {
+        InvoiceAddressDetails {}
+    }
+}
+
+impl HerokuEndpoint<InvoiceAddress> for InvoiceAddressDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/invoice-address")
+    }
+}
+
+/// Key Info
+///
+/// Info for existing key.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#key-info)
+pub struct KeyDetails<'a> {
+    /// unique key identifier, either key_id or fingerprint
+    pub key_id: &'a str,
+}
+
+impl<'a> KeyDetails<'a> {
+    pub fn new(key_id: &'a str) -> KeyDetails {
+        KeyDetails { key_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Key> for KeyDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/keys/{}", self.key_id)
+    }
+}
+
+/// Key List
+///
+/// List existing keys.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#key-list)
+pub struct KeyList {}
+
+impl KeyList {
+    pub fn new() -> KeyList {
+        KeyList {}
+    }
+}
+
+impl HerokuEndpoint<Vec<Key>> for KeyList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("account/keys")
     }
 }
