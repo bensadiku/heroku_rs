@@ -8,12 +8,16 @@ pub mod post;
 pub mod put;
 
 pub use delete::{DynoAllRestart, DynoRestart};
-pub use get::{DynoDetails, DynoList};
-pub use post::{DynoCreate, DynoCreateParams, DynoActionStop};
+pub use get::{DynoDetails, DynoList, DynoSizeDetails, DynoSizeList};
+pub use post::{DynoActionStop, DynoCreate, DynoCreateParams};
 
 impl ApiResult for Dyno {}
 impl ApiResult for Vec<Dyno> {}
 
+impl ApiResult for DynoSize {}
+impl ApiResult for Vec<DynoSize> {}
+
+pub use dyno_size::DynoSize;
 /// Heroku Dyno
 ///
 /// Stability: production
@@ -63,4 +67,38 @@ pub struct Release {
     pub id: String,
     /// unique version assigned to the release
     pub version: i64,
+}
+
+mod dyno_size {
+    /// Heroku Dyno Size
+    ///
+    /// Stability: prototype
+    ///
+    /// Dyno sizes are the values and details of sizes that can be assigned to dynos. This information can also be found [here](https://devcenter.heroku.com/articles/dyno-types)
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-size)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct DynoSize {
+        /// minimum vCPUs, non-dedicated may get more depending on load
+        pub compute: i64,
+        /// price information for this dyno size
+        pub cost: Option<Cost>,
+        /// whether this dyno will be dedicated to one user
+        pub dedicated: bool,
+        /// unit of consumption for Heroku Enterprise customers
+        pub dyno_units: i64,
+        /// unique identifier of this dyno size
+        pub id: String,
+        /// amount of RAM in GB
+        pub memory: f64,
+        /// the name of this dyno-size
+        pub name: String,
+        /// whether this dyno can only be provisioned in a private space
+        pub private_space_only: bool,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Cost {
+        pub cents: Option<i64>,
+        pub unit: Option<String>,
+    }
 }

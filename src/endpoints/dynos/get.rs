@@ -1,6 +1,6 @@
 //Anything related to GET requests for dynos and it's properties goes here.
 
-use super::Dyno;
+use super::{Dyno, DynoSize};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -53,5 +53,52 @@ impl HerokuEndpoint<Vec<Dyno>> for DynoList {
     }
     fn path(&self) -> String {
         format!("apps/{}/dynos", self.app_id)
+    }
+}
+
+/// Dyno Size List
+///
+/// List existing dyno sizes.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-size-list)
+pub struct DynoSizeList {}
+
+impl DynoSizeList {
+    pub fn new() -> DynoSizeList {
+        DynoSizeList {}
+    }
+}
+
+impl HerokuEndpoint<Vec<DynoSize>> for DynoSizeList {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("dyno-sizes")
+    }
+}
+
+/// Dyno Size Info
+///
+/// Info for existing dyno size.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-size-info)
+pub struct DynoSizeDetails<'a> {
+    /// unique dyno size identifier
+    pub size_id: &'a str,
+}
+
+impl<'a> DynoSizeDetails<'a> {
+    pub fn new(size_id: &'a str) -> DynoSizeDetails {
+        DynoSizeDetails { size_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<DynoSize> for DynoSizeDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("dyno-sizes/{}", self.size_id)
     }
 }

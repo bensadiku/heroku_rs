@@ -27,6 +27,9 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // list_dynos(api_client, app_name);
     // restart_dyno(api_client);
     // restart_all_dynos(api_client, app_name);
+    
+    // get_dyno_size_list(api_client);
+    // get_dyno_size_details(api_client);
 
     // enable_app_acm(api_client, app_name);
     // disable_app_acm(api_client, app_name);
@@ -388,6 +391,17 @@ fn list_account_apps<ApiClientType: HerokuApiClient>(api_client: &ApiClientType)
 fn list_apps<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let resp = api_client.request(&apps::AppList {});
     print_response(resp);
+}
+
+fn get_dyno_size_list<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let response = api_client.request(&dynos::DynoSizeList {});
+    print_response(response);
+}
+
+fn get_dyno_size_details<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
+    let dyno_size_id = "Shield-L";
+    let response = api_client.request(&dynos::DynoSizeDetails { size_id: dyno_size_id });
+    print_response(response);
 }
 
 fn get_dyno<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {

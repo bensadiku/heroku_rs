@@ -209,7 +209,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 ## PUT
 - [X] [/apps/{app_id_or_name}/buildpack-installations](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update)	
 - [ ] [/spaces/{space_id_or_name}/inbound-ruleset](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-create)	
-- [ ] [/account/invoice-address](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-update)
+- [X] [/account/invoice-address](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-update)
 - [X] [/addons/{add_on_id_or_name}/log-drains/{log_drain_id_or_url_or_token}](https://devcenter.heroku.com/articles/platform-api-reference#log-drain-update) 
 - [ ] [/spaces/{space_id_or_name}/outbound-ruleset](https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-create)	
 - [X] [/teams/{team_name_or_id}/invitations](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-create)	
@@ -262,7 +262,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [X] [/apps/{app_id_or_name}/features/{app_feature_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update)	
 - [X] [/account/app-transfers/{app_transfer_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update)	
 - [X] [/apps/{app_id_or_name}/webhooks/{app_webhook_id}](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update)	
-- [ ] [/apps/{app_id_or_name}/config-vars](https://devcenter.heroku.com/articles/platform-api-reference#config-vars-update)	
+- [X] [/apps/{app_id_or_name}/config-vars](https://devcenter.heroku.com/articles/platform-api-reference#config-vars-update)	
 - [X] [/apps/{app_id_or_name}/formation](https://devcenter.heroku.com/articles/platform-api-reference#formation-batch-update)	
 - [X] [/apps/{app_id_or_name}/formation/{formation_id_or_type}](https://devcenter.heroku.com/articles/platform-api-reference#formation-update)	
 - [ ] [/teams/{team_name}/identity-providers/{identity_provider_id}](https://devcenter.heroku.com/articles/platform-api-reference#identity-provider-update-by-team)	
