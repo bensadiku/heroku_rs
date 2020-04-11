@@ -33,3 +33,5 @@ pub mod custom;
 pub mod releases;
 /// teams
 pub mod teams;
+/// heroku logs
+pub mod logs;

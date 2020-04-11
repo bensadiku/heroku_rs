@@ -11,6 +11,14 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // get_stack(api_client);
     // get_stacks(api_client);
+
+    // create_sources(api_client);
+}
+
+/// Create sources
+fn create_sources<T: HerokuApiClient>(api_client: &T) {
+    let response = api_client.request(&misc::SourceCreate {});
+    print_response(response);
 }
 
 /// Get a specific stack
