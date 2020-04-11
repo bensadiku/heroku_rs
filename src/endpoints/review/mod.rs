@@ -6,14 +6,23 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
-pub use delete::ReviewAppDelete;
-pub use get::{ReviewAppByAppDetails, ReviewAppByPipelineList, ReviewAppDetails};
-pub use post::{ReviewAppCreate, ReviewAppCreateParams};
+pub use delete::{ReviewAppConfigDelete, ReviewAppDelete};
+pub use get::{
+    ReviewAppByAppDetails, ReviewAppByPipelineList, ReviewAppConfigDetails, ReviewAppDetails,
+};
+pub use patch::{ReviewAppConfigUpdate, ReviewAppConfigUpdateParams};
+pub use post::{
+    ReviewAppConfigEnable, ReviewAppConfigEnableParams, ReviewAppCreate, ReviewAppCreateParams,
+};
 
 impl ApiResult for ReviewApp {}
 impl ApiResult for Vec<ReviewApp> {}
 
+impl ApiResult for ReviewAppConfig {}
+impl ApiResult for Vec<ReviewAppConfig> {}
+
 pub use review_app::ReviewApp;
+pub use review_app_config::ReviewAppConfig;
 
 // review app submodule, anything from /review-apps goes here.
 mod review_app {
@@ -79,5 +88,56 @@ mod review_app {
     pub struct ForkRepo {
         /// repository id of the fork the branch resides in
         pub id: Option<String>,
+    }
+}
+
+mod review_app_config {
+    /// Review App Configuration
+    ///
+    /// Stability: production
+    ///
+    /// Review apps can be configured for pipelines.
+    ///
+    /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#review-app-configuration)
+    // TODO(ben): Heroku docs have the wrong response in the documentation on the pipeline field. 
+    //      It's represented as a `pipeline_id: String` field, but in fact in a Pipeline object with the id field. Double check edge cases.
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+    pub struct ReviewAppConfig {
+        /// repo
+        pub repo: Repo,
+        /// enable automatic review apps for pull requests
+        pub automatic_review_apps: Option<bool>,
+        /// the deploy target for the review apps of a pipeline
+        pub deploy_target: Option<DeployTarget>,
+        /// automatically destroy review apps when they haven’t been deployed for a number of days
+        pub destroy_stale_apps: bool,
+        /// number of days without a deployment after which to consider a review app stale
+        pub stale_days: i32,
+        /// unique identifier of pipeline
+        pub pipeline: Pipeline,
+        /// If true, review apps are created only when CI passes
+        pub wait_for_ci: bool,
+        /// A unique prefix that will be used to create review app names
+        pub base_name: Option<String>,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+    pub struct Repo {
+        /// repository id
+        pub id: i32,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+    pub struct Pipeline {
+        /// pipeline id
+        pub id: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+    pub struct DeployTarget {
+        /// unique identifier of deploy target
+        ///  pattern: `(^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$
+        pub id: String,
+        #[serde(rename = "type")]
+        /// type of deploy target
+        ///  pattern: `(^space$
+        pub type_field: String,
     }
 }
