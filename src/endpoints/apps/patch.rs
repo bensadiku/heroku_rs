@@ -1,5 +1,5 @@
 //Anything related to patching(updating) apps and it's properties goes here.
-use super::{App, AppFeature, AppWebhook};
+use super::{App, AppFeature, AppWebhook, SNI};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -190,7 +190,7 @@ impl AppWebhookUpdate {
 pub struct AppWebhookUpdateParams {
     /// A custom Authorization header that Heroku will include with all webhook notifications [Nullable]
     pub authorization: Option<String>,
-    /// The entities that the subscription provides notifications for 
+    /// The entities that the subscription provides notifications for
     #[serde(skip_serializing_if = "Option::is_none")]
     pub include: Option<Vec<String>>,
     /// One of: "notify" or "sync"
@@ -212,6 +212,62 @@ impl HerokuEndpoint<AppWebhook, (), AppWebhookUpdateParams> for AppWebhookUpdate
         format!("apps/{}/webhooks/{}", self.app_id, self.webhook_id)
     }
     fn body(&self) -> Option<AppWebhookUpdateParams> {
+        Some(self.params.clone())
+    }
+}
+
+/// SNI Endpoint Update
+///
+/// Update an existing SNI endpoint.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-update)
+pub struct SNIUpdate<'a> {
+    /// unique app identifier, either app id or app name
+    pub app_id: &'a str,
+    /// unique sni identifier
+    pub sni_id: &'a str,
+    /// The parameters to pass to the Heroku API
+    pub params: SNIUpdateParams<'a>,
+}
+
+impl<'a> SNIUpdate<'a> {
+    /// Update Heroku app's SNI with parameters
+    pub fn new(
+        app_id: &'a str,
+        sni_id: &'a str,
+        certificate_chain: &'a str,
+        private_key: &'a str,
+    ) -> SNIUpdate<'a> {
+        SNIUpdate {
+            app_id,
+            sni_id,
+            params: SNIUpdateParams {
+                certificate_chain,
+                private_key,
+            },
+        }
+    }
+}
+
+/// Update a new app sni with parameters.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-update-required-parameters)
+#[derive(Serialize, Clone, Debug)]
+pub struct SNIUpdateParams<'a> {
+    /// raw contents of the public certificate chain (eg: .crt or .pem file)
+    pub certificate_chain: &'a str,
+    /// contents of the private key (eg .key file)
+    pub private_key: &'a str,
+}
+
+impl<'a> HerokuEndpoint<SNI, (), SNIUpdateParams<'a>> for SNIUpdate<'a> {
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/sni-endpoints/{}", self.app_id, self.sni_id)
+    }
+    fn body(&self) -> Option<SNIUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }

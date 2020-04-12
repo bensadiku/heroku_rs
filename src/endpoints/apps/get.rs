@@ -1,5 +1,5 @@
 //Anything related to getting apps and it's properties goes here.
-use super::{App, AppFeature, AppSetup, AppWebhook, AppWebhookDelivery};
+use super::{App, AppFeature, AppSetup, AppWebhook, AppWebhookDelivery, SNI};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -243,7 +243,7 @@ impl HerokuEndpoint<Vec<AppWebhookDelivery>> for AppWebhookDeliveryList {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-setup-info)
 pub struct AppSetupDetails {
-    /// app_id can be the app name or id.
+    /// setup_id is the unique setup identifier.
     pub setup_id: String,
 }
 
@@ -259,5 +259,57 @@ impl HerokuEndpoint<AppSetup> for AppSetupDetails {
     }
     fn path(&self) -> String {
         format!("app-setups/{}", self.setup_id)
+    }
+}
+
+/// SNI Endpoint Info
+///
+/// Info for existing SNI endpoint.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-info)
+pub struct SNIDetails<'a> {
+    /// app_id can be the app name or id.
+    pub app_id: &'a str,
+    /// sni unique identifier
+    pub sni_id: &'a str,
+}
+
+impl<'a> SNIDetails<'a> {
+    pub fn new(app_id: &'a str, sni_id: &'a str) -> SNIDetails<'a> {
+        SNIDetails { app_id, sni_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<SNI> for SNIDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/sni-endpoints/{}", self.app_id, self.sni_id)
+    }
+}
+
+/// SNI Endpoint List
+///
+/// List existing SNI endpoints.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-list)
+pub struct SNIList<'a> {
+    /// app_id can be the app name or id.
+    pub app_id: &'a str,
+}
+
+impl<'a> SNIList<'a> {
+    pub fn new(app_id: &'a str) -> SNIList<'a> {
+        SNIList { app_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<SNI>> for SNIList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/sni-endpoints", self.app_id)
     }
 }

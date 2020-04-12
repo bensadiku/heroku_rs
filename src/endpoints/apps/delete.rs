@@ -1,5 +1,5 @@
 //Anything related to deleting apps and it's properties goes here.
-use super::{App, AppWebhook};
+use super::{App, AppWebhook, SNI};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -14,7 +14,7 @@ pub struct AppDelete {
 }
 
 impl AppDelete {
-    pub fn create(app_id: String) -> AppDelete {
+    pub fn new(app_id: String) -> AppDelete {
         AppDelete { app_id }
     }
 }
@@ -77,5 +77,32 @@ impl HerokuEndpoint<AppWebhook> for AppWebhookDelete {
     }
     fn path(&self) -> String {
         format!("apps/{}/webhooks/{}", self.app_id, self.webhook_id)
+    }
+}
+
+/// SNI Endpoint Delete
+///
+/// Delete existing SNI endpoint.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-delete)
+pub struct SNIDelete<'a> {
+    /// app_id can be the app id or app name.
+    pub app_id: &'a str,
+    /// sni unique identifier or name
+    pub sni_id: &'a str,
+}
+
+impl<'a> SNIDelete<'a> {
+    pub fn new(app_id: &'a str, sni_id: &'a str) -> SNIDelete<'a> {
+        SNIDelete { app_id, sni_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<SNI> for SNIDelete<'a> {
+    fn method(&self) -> Method {
+        Method::Delete
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/sni-endpoints/{}", self.app_id, self.sni_id)
     }
 }

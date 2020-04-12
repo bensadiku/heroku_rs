@@ -74,6 +74,58 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
     // create_app_setup(api_client);
     // get_app_setup(api_client);
+
+    // create_app_sni(api_client, app_name);
+    // get_app_sni(api_client, app_name);
+    // get_app_sni_list(api_client, app_name);
+    // delete_app_sni(api_client, app_name);
+    // update_app_sni(api_client, app_name);
+}
+
+// update app SNI list
+fn update_app_sni<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let certificate_chain = "chain_here";
+    let private_key = "key_here";
+    let sni_id = "123";
+    let response = api_client.request(&apps::SNIUpdate::new(
+        &app_id,
+        sni_id,
+        certificate_chain,
+        private_key,
+    ));
+    print_response(response);
+}
+
+// delete app SNI list
+fn delete_app_sni<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let sni_id = "123";
+    let response = api_client.request(&apps::SNIDelete::new(&app_id, sni_id));
+    print_response(response);
+}
+
+// get app SNI list
+fn get_app_sni_list<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let response = api_client.request(&apps::SNIList::new(&app_id));
+    print_response(response);
+}
+
+// get app SNI
+fn get_app_sni<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let sni_id = "123";
+    let response = api_client.request(&apps::SNIDetails::new(&app_id, sni_id));
+    print_response(response);
+}
+
+// create app SNI
+fn create_app_sni<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let certificate_chain = "chain_here";
+    let private_key = "key_here";
+    let response = api_client.request(&apps::SNICreate::new(
+        &app_id,
+        certificate_chain,
+        private_key,
+    ));
+    print_response(response);
 }
 
 // get info about a app setup

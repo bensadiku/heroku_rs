@@ -1,5 +1,5 @@
 //Anything related to creating apps and it's properties goes here.
-use super::{App, AppSetup, AppWebhook};
+use super::{App, AppSetup, AppWebhook,SNI};
 use std::collections::HashMap;
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
@@ -319,6 +319,54 @@ impl<'a> HerokuEndpoint<AppSetup, (), AppSetupCreateParams<'a>> for AppSetupCrea
         format!("app-setups")
     }
     fn body(&self) -> Option<AppSetupCreateParams<'a>> {
+        Some(self.params.clone())
+    }
+}
+
+/// SNI Endpoint Create
+///
+/// Create a new SNI endpoint.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-create)
+pub struct SNICreate<'a> {
+    /// unique app identifier, either app id or app name
+    pub app_id: &'a str,
+    /// The parameters to pass to the Heroku API
+    pub params: SNICreateParams<'a>,
+}
+
+impl <'a>SNICreate <'a>{
+    /// Create a new Heroku app SNI with parameters
+    pub fn new(app_id: &'a str,certificate_chain: &'a str, private_key: &'a str) -> SNICreate<'a> {
+        SNICreate {
+            app_id,
+            params: SNICreateParams {
+                certificate_chain,
+                private_key,
+            },
+        }
+    }
+}
+
+/// Create a new app sni with parameters.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-create-required-parameters)
+#[derive(Serialize, Clone, Debug)]
+pub struct SNICreateParams<'a> {
+    /// raw contents of the public certificate chain (eg: .crt or .pem file)
+    pub certificate_chain: &'a str,
+    /// contents of the private key (eg .key file)
+    pub private_key: &'a str,
+}
+
+impl <'a>HerokuEndpoint<SNI, (), SNICreateParams<'a>> for SNICreate<'a> {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/sni-endpoints", self.app_id)
+    }
+    fn body(&self) -> Option<SNICreateParams<'a>> {
         Some(self.params.clone())
     }
 }

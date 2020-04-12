@@ -7,18 +7,19 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
-pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete};
+pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete, SNIDelete};
 pub use get::{
     AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList, AppSetupDetails,
     AppWebhookDeliveryDetails, AppWebhookDeliveryList, AppWebhookDetails, AppWebhookList,
+    SNIDetails, SNIList,
 };
 pub use patch::{
     AppFeatureUpdate, AppFeatureUpdateParams, AppRefreshAcm, AppUpdate, AppUpdateParams,
-    AppWebhookUpdate, AppWebhookUpdateParams,
+    AppWebhookUpdate, AppWebhookUpdateParams, SNIUpdate, SNIUpdateParams
 };
 pub use post::{
     AppCreate, AppCreateParams, AppEnableAcm, AppSetupCreate, AppSetupCreateParams,
-    AppWebhookCreate, AppWebhookCreateParams,
+    AppWebhookCreate, AppWebhookCreateParams, SNICreate, SNICreateParams,
 };
 
 impl ApiResult for App {}
@@ -36,7 +37,11 @@ impl ApiResult for Vec<AppWebhookDelivery> {}
 impl ApiResult for AppSetup {}
 impl ApiResult for Vec<AppSetup> {}
 
+impl ApiResult for SNI {}
+impl ApiResult for Vec<SNI> {}
+
 pub use app_setup::AppSetup;
+pub use sni_endpoints::SNI;
 
 /// Heroku App
 ///
@@ -358,5 +363,34 @@ mod app_setup {
         pub output: String,
         /// The exit code of the postdeploy script
         pub exit_code: i64,
+    }
+}
+
+mod sni_endpoints {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// SNI Endpoint
+    ///
+    /// Stability: development
+    ///
+    /// SNI Endpoint is a public address serving a custom SSL cert for HTTPS traffic, using the SNI TLS extension, to a Heroku app.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct SNI {
+        /// raw contents of the public certificate chain (eg: .crt or .pem file)
+        pub certificate_chain: String,
+        /// deprecated; refer to GET /apps/:id/domains for valid CNAMEs for this app
+        pub cname: String,
+        /// when endpoint was created
+        pub created_at: DateTime<Utc>,
+        /// unique identifier of this SNI endpoint
+        pub id: String,
+        /// unique name for SNI endpoint
+        ///  pattern: ^[a-z][a-z0-9-]{2,29}$
+        pub name: String,
+        /// when SNI endpoint was updated
+        pub updated_at: DateTime<Utc>,
     }
 }
