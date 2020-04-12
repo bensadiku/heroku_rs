@@ -9,7 +9,7 @@ pub mod put;
 
 pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete};
 pub use get::{
-    AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList,
+    AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList, AppSetupDetails,
     AppWebhookDeliveryDetails, AppWebhookDeliveryList, AppWebhookDetails, AppWebhookList,
 };
 pub use patch::{
@@ -17,7 +17,8 @@ pub use patch::{
     AppWebhookUpdate, AppWebhookUpdateParams,
 };
 pub use post::{
-    AppCreate, AppCreateParams, AppEnableAcm, AppWebhookCreate, AppWebhookCreateParams,
+    AppCreate, AppCreateParams, AppEnableAcm, AppSetupCreate, AppSetupCreateParams,
+    AppWebhookCreate, AppWebhookCreateParams,
 };
 
 impl ApiResult for App {}
@@ -31,6 +32,11 @@ impl ApiResult for Vec<AppWebhook> {}
 
 impl ApiResult for AppWebhookDelivery {}
 impl ApiResult for Vec<AppWebhookDelivery> {}
+
+impl ApiResult for AppSetup {}
+impl ApiResult for Vec<AppSetup> {}
+
+pub use app_setup::AppSetup;
 
 /// Heroku App
 ///
@@ -284,4 +290,73 @@ pub struct WebhookDeliveryWebhook {
     /// If sync, Heroku attempts multiple deliveries until the request is successful or a limit is reached.
     /// One of:"notify" or "sync"
     pub level: String,
+}
+
+mod app_setup {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// App Setup
+    ///
+    /// Stability: production
+    ///
+    /// An app setup represents an app on Heroku that is setup using an environment, addons, and scripts described in an app.json manifest file.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-setup)
+    ///
+    // TODO: (ben) inspect the nullable properties more. As of 20th March 2020, Heroku docs say that none of these properties can be nullable,
+    //     but some are... and that's leading so an error decoding response body. e.g. invalid type: null, expected a string.
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct AppSetup {
+        /// unique identifier of app setup
+        pub id: String,
+        /// when app setup was created
+        pub created_at: DateTime<Utc>,
+        /// when app setup was updated
+        pub updated_at: DateTime<Utc>,
+        /// the overall status of app setup
+        ///  one of:"failed" or "pending" or "succeeded"
+        pub status: String,
+        /// reason that app setup has failed
+        pub failure_message: Option<String>,
+        /// app
+        pub app: App,
+        /// identity and status of build
+        pub build: Option<Build>,
+        /// errors associated with invalid app.json manifest file
+        pub manifest_errors: Vec<String>,
+        /// result of postdeploy script
+        pub postdeploy: Option<Postdeploy>,
+        /// fully qualified success url
+        pub resolved_success_url: Option<String>,
+    }
+
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct App {
+        /// unique identifier
+        pub id: String,
+        /// name of app
+        ///  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
+        pub name: String,
+    }
+
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct Build {
+        /// unique identifier of build
+        pub id: String,
+        /// status of build
+        ///  one of:"failed" or "pending" or "succeeded"
+        pub status: String,
+        /// Build process output will be available from this URL as a stream. The stream is available as either text/plain or text/event-stream.
+        /// Clients should be prepared to handle disconnects and can resume the stream by sending a Range header (for text/plain) or a Last-Event-Id header (for text/event-stream).
+        pub output_stream_url: String,
+    }
+
+    #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+    pub struct Postdeploy {
+        /// output of the postdeploy script
+        pub output: String,
+        /// The exit code of the postdeploy script
+        pub exit_code: i64,
+    }
 }

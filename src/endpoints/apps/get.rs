@@ -1,5 +1,5 @@
 //Anything related to getting apps and it's properties goes here.
-use super::{App, AppFeature, AppWebhook, AppWebhookDelivery};
+use super::{App, AppFeature, AppSetup, AppWebhook, AppWebhookDelivery};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -234,5 +234,30 @@ impl HerokuEndpoint<Vec<AppWebhookDelivery>> for AppWebhookDeliveryList {
     }
     fn path(&self) -> String {
         format!("apps/{}/webhook-deliveries", self.app_id,)
+    }
+}
+
+/// App Setup Info
+///
+/// Get the status of an app setup.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-setup-info)
+pub struct AppSetupDetails {
+    /// app_id can be the app name or id.
+    pub setup_id: String,
+}
+
+impl AppSetupDetails {
+    pub fn new(setup_id: String) -> AppSetupDetails {
+        AppSetupDetails { setup_id }
+    }
+}
+
+impl HerokuEndpoint<AppSetup> for AppSetupDetails {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("app-setups/{}", self.setup_id)
     }
 }

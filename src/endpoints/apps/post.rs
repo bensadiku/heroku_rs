@@ -1,5 +1,6 @@
 //Anything related to creating apps and it's properties goes here.
-use super::{App, AppWebhook};
+use super::{App, AppSetup, AppWebhook};
+use std::collections::HashMap;
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -42,7 +43,7 @@ impl AppCreate {
 /// All three paramemters are optional.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-create-optional-parameters)
-#[serde_with::skip_serializing_none] 
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AppCreateParams {
     /// name of app. pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
@@ -169,6 +170,155 @@ impl HerokuEndpoint<AppWebhook, (), AppWebhookCreateParams> for AppWebhookCreate
         format!("apps/{}/webhooks", self.app_id)
     }
     fn body(&self) -> Option<AppWebhookCreateParams> {
+        Some(self.params.clone())
+    }
+}
+
+/// App Setup Create
+///
+/// Create a new app setup from a gzipped tar archive containing an app.json manifest file.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-setup-create)
+pub struct AppSetupCreate<'a> {
+    /// The parameters to pass to the Heroku API
+    pub params: AppSetupCreateParams<'a>,
+}
+
+impl<'a> AppSetupCreate<'a> {
+    /// Create a new Heroku app with required  and optional parameters
+    // :| needs a better solution. Builder pattern?
+    pub fn new(
+        locked: Option<bool>,
+        name: Option<&'a str>,
+        organization: Option<&'a str>,
+        personal: Option<bool>,
+        region: Option<&'a str>,
+        space: Option<&'a str>,
+        stack: Option<&'a str>,
+        checksum: Option<&'a str>,
+        url: &'a str,
+        version: Option<&'a str>,
+        buildpacks_list: Option<Vec<&'a str>>,
+        env: Option<HashMap<&'a str, &'a str>>,
+    ) -> AppSetupCreate<'a> {
+        let buildpacks: Option<Vec<Buildpack>> = match buildpacks_list {
+            Some(buidpacks) => {
+                let mut buildpacks: Vec<Buildpack> = Vec::new();
+                for var in buidpacks {
+                    buildpacks.push(Buildpack { url: var });
+                }
+                Some(buildpacks)
+            }
+            None => None,
+        };
+        AppSetupCreate {
+            params: AppSetupCreateParams {
+                app: Some(SetupApp {
+                    locked,
+                    name,
+                    organization,
+                    personal,
+                    region,
+                    space,
+                    stack,
+                }),
+                source_blob: SourceBlob {
+                    checksum,
+                    url,
+                    version,
+                },
+                overrides: Some(Overrides { buildpacks, env }),
+            },
+        }
+    }
+
+    /// Create a new setup app with required parameters only
+    pub fn create(
+        checksum: Option<&'a str>,
+        url: &'a str,
+        version: Option<&'a str>,
+    ) -> AppSetupCreate<'a> {
+        AppSetupCreate {
+            params: AppSetupCreateParams {
+                app: None,
+                source_blob: SourceBlob {
+                    checksum,
+                    url,
+                    version,
+                },
+                overrides: None,
+            },
+        }
+    }
+}
+
+/// Create a new  setup app with parameters.
+///
+/// All three papparamemters are optional.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-setup-create-required-parameters)
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct AppSetupCreateParams<'a> {
+    pub app: Option<SetupApp<'a>>,
+    pub source_blob: SourceBlob<'a>,
+    pub overrides: Option<Overrides<'a>>,
+}
+
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct SetupApp<'a> {
+    /// are other team members forbidden from joining this app.
+    pub locked: Option<bool>,
+    /// name of app
+    ///  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$ 
+    pub name: Option<&'a str>,
+    /// unique name of team
+    pub organization: Option<&'a str>,
+    /// force creation of the app in the user account even if a default team is set.
+    pub personal: Option<bool>,
+    /// name of region
+    pub region: Option<&'a str>,
+    /// unique name of space
+    ///  pattern: `^[a-z0-9](?:[a-z0-9]
+    pub space: Option<&'a str>,
+    /// unique name
+    pub stack: Option<&'a str>,
+}
+
+#[derive(Serialize, Clone, Debug)]
+pub struct SourceBlob<'a> {
+    /// an optional checksum of the gzipped tarball for verifying its integrity. [Nullable]
+    pub checksum: Option<&'a str>,
+    /// URL of gzipped tarball of source code containing app.json manifest file.
+    pub url: &'a str,
+    /// Version of the gzipped tarball. [Nullable]
+    pub version: Option<&'a str>, 
+}
+
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct Overrides<'a> {
+    /// overrides the buildpacks specified in the app.json manifest file
+    pub buildpacks: Option<Vec<Buildpack<'a>>>,
+    /// overrides of the env specified in the app.json manifest file
+    pub env: Option<HashMap<&'a str, &'a str>>,
+}
+
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct Buildpack<'a> {
+    pub url: &'a str,
+}
+
+impl<'a> HerokuEndpoint<AppSetup, (), AppSetupCreateParams<'a>> for AppSetupCreate<'a> {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("app-setups")
+    }
+    fn body(&self) -> Option<AppSetupCreateParams<'a>> {
         Some(self.params.clone())
     }
 }

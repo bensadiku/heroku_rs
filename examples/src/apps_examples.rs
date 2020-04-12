@@ -27,7 +27,6 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // list_dynos(api_client, app_name);
     // restart_dyno(api_client);
     // restart_all_dynos(api_client, app_name);
-    
     // get_dyno_size_list(api_client);
     // get_dyno_size_details(api_client);
 
@@ -72,6 +71,23 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // list_app_releases(api_client, app_name);
     // create_app_release(api_client, app_name);
     //  rollback_app_release(api_client, app_name);
+
+    // create_app_setup(api_client);
+    // get_app_setup(api_client);
+}
+
+// get info about a app setup
+fn get_app_setup<T: HerokuApiClient>(api_client: &T) {
+    let setup_id = String::from("APP_SETUP_ID");
+    let response = api_client.request(&apps::AppSetupDetails { setup_id });
+    print_response(response);
+}
+
+// create app setup
+fn create_app_setup<T: HerokuApiClient>(api_client: &T) {
+    let source_blob_url = "https://github.com/heroku/ruby-rails-sample/tarball/master/";
+    let response = api_client.request(&apps::AppSetupCreate::create(None, source_blob_url, None));
+    print_response(response);
 }
 
 // get info about a slug
@@ -400,7 +416,9 @@ fn get_dyno_size_list<ApiClientType: HerokuApiClient>(api_client: &ApiClientType
 
 fn get_dyno_size_details<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let dyno_size_id = "Shield-L";
-    let response = api_client.request(&dynos::DynoSizeDetails { size_id: dyno_size_id });
+    let response = api_client.request(&dynos::DynoSizeDetails {
+        size_id: dyno_size_id,
+    });
     print_response(response);
 }
 
