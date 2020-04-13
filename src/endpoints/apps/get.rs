@@ -1,5 +1,5 @@
 //Anything related to getting apps and it's properties goes here.
-use super::{App, AppFeature, AppSetup, AppWebhook, AppWebhookDelivery, SNI};
+use super::{App, AppFeature, AppSetup, AppWebhook, AppWebhookDelivery, SNI, SSL};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -311,5 +311,57 @@ impl<'a> HerokuEndpoint<Vec<SNI>> for SNIList<'a> {
     }
     fn path(&self) -> String {
         format!("apps/{}/sni-endpoints", self.app_id)
+    }
+}
+
+/// SSL Endpoint List
+///
+/// List existing SSL endpoints.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-list)
+pub struct SSLList<'a> {
+    /// app_id can be the app name or id.
+    pub app_id: &'a str,
+}
+
+impl<'a> SSLList<'a> {
+    pub fn new(app_id: &'a str) -> SSLList<'a> {
+        SSLList { app_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<SSL>> for SSLList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/ssl-endpoints", self.app_id)
+    }
+}
+
+/// SSL Endpoint Info
+///
+/// Info for existing SSL endpoint.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-info)
+pub struct SSLDetails<'a> {
+    /// app_id can be the app name or id.
+    pub app_id: &'a str,
+    /// ssl unique identifier
+    pub ssl_id: &'a str,
+}
+
+impl<'a> SSLDetails<'a> {
+    pub fn new(app_id: &'a str, ssl_id: &'a str) -> SSLDetails<'a> {
+        SSLDetails { app_id, ssl_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<SSL> for SSLDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/ssl-endpoints/{}", self.app_id, self.ssl_id)
     }
 }

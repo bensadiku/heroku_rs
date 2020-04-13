@@ -1,5 +1,5 @@
 //Anything related to deleting apps and it's properties goes here.
-use super::{App, AppWebhook, SNI};
+use super::{App, AppWebhook, SNI, SSL};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -104,5 +104,32 @@ impl<'a> HerokuEndpoint<SNI> for SNIDelete<'a> {
     }
     fn path(&self) -> String {
         format!("apps/{}/sni-endpoints/{}", self.app_id, self.sni_id)
+    }
+}
+
+/// SNI Endpoint Delete
+///
+/// Delete existing SNI endpoint.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-delete)
+pub struct SSLDelete<'a> {
+    /// app_id can be the app id or app name.
+    pub app_id: &'a str,
+    /// ssl unique identifier or name
+    pub ssl_id: &'a str,
+}
+
+impl<'a> SSLDelete<'a> {
+    pub fn new(app_id: &'a str, ssl_id: &'a str) -> SSLDelete<'a> {
+        SSLDelete { app_id, ssl_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<SSL> for SSLDelete<'a> {
+    fn method(&self) -> Method {
+        Method::Delete
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/ssl-endpoints/{}", self.app_id, self.ssl_id)
     }
 }

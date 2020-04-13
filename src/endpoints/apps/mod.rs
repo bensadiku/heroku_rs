@@ -7,19 +7,19 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
-pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete, SNIDelete};
+pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete, SNIDelete, SSLDelete};
 pub use get::{
     AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList, AppSetupDetails,
-    AppWebhookDeliveryDetails, AppWebhookDeliveryList, AppWebhookDetails, AppWebhookList,
+    AppWebhookDeliveryDetails, AppWebhookDeliveryList, AppWebhookDetails, AppWebhookList, SSLList, SSLDetails,
     SNIDetails, SNIList,
 };
 pub use patch::{
     AppFeatureUpdate, AppFeatureUpdateParams, AppRefreshAcm, AppUpdate, AppUpdateParams,
-    AppWebhookUpdate, AppWebhookUpdateParams, SNIUpdate, SNIUpdateParams
+    AppWebhookUpdate, AppWebhookUpdateParams, SNIUpdate, SNIUpdateParams, SSLUpdate, SSLUpdateParams
 };
 pub use post::{
     AppCreate, AppCreateParams, AppEnableAcm, AppSetupCreate, AppSetupCreateParams,
-    AppWebhookCreate, AppWebhookCreateParams, SNICreate, SNICreateParams,
+    AppWebhookCreate, AppWebhookCreateParams, SNICreate, SNICreateParams, SSLCreate, SSLCreateParams
 };
 
 impl ApiResult for App {}
@@ -40,8 +40,12 @@ impl ApiResult for Vec<AppSetup> {}
 impl ApiResult for SNI {}
 impl ApiResult for Vec<SNI> {}
 
+impl ApiResult for SSL {}
+impl ApiResult for Vec<SSL> {}
+
 pub use app_setup::AppSetup;
 pub use sni_endpoints::SNI;
+pub use ssl_endpoints::SSL;
 
 /// Heroku App
 ///
@@ -393,4 +397,45 @@ mod sni_endpoints {
         /// when SNI endpoint was updated
         pub updated_at: DateTime<Utc>,
     }
+}
+
+mod ssl_endpoints {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// SNI Endpoint
+    ///
+    /// Stability: development
+    ///
+    /// SNI Endpoint is a public address serving a custom SSL cert for HTTPS traffic, using the SNI TLS extension, to a Heroku app.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct SSL {
+        /// app
+        pub app: App,
+        /// raw contents of the public certificate chain (eg: .crt or .pem file)
+        pub certificate_chain: String,
+        /// canonical name record, the address to point a domain at
+        pub cname: String,
+        /// when endpoint was created
+        pub created_at: DateTime<Utc>,
+        /// unique identifier of this SSL endpoint
+        pub id: String,
+        /// unique name for SSL endpoint
+        ///  pattern: ^[a-z][a-z0-9-]{2,29}$ 
+        pub name: String,
+        /// when endpoint was updated
+        pub updated_at: DateTime<Utc>,
+    }
+    
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct App {
+        /// unique identifier
+        pub id: String,
+        /// name of app
+        ///  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$ 
+        pub name: String,
+    }
+    
 }

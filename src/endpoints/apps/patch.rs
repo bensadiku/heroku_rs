@@ -1,5 +1,5 @@
 //Anything related to patching(updating) apps and it's properties goes here.
-use super::{App, AppFeature, AppWebhook, SNI};
+use super::{App, AppFeature, AppWebhook, SNI, SSL};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -268,6 +268,68 @@ impl<'a> HerokuEndpoint<SNI, (), SNIUpdateParams<'a>> for SNIUpdate<'a> {
         format!("apps/{}/sni-endpoints/{}", self.app_id, self.sni_id)
     }
     fn body(&self) -> Option<SNIUpdateParams<'a>> {
+        Some(self.params.clone())
+    }
+}
+
+/// SSL Endpoint Update
+///
+/// Update an existing SSL endpoint.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-update)
+pub struct SSLUpdate<'a> {
+    /// unique app identifier, either app id or app name
+    pub app_id: &'a str,
+    /// unique ssl identifier
+    pub ssl_id: &'a str,
+    /// The parameters to pass to the Heroku API
+    pub params: SSLUpdateParams<'a>,
+}
+
+impl<'a> SSLUpdate<'a> {
+    /// Update Heroku app SSL with parameters
+    pub fn new(
+        app_id: &'a str,
+        ssl_id: &'a str,
+        certificate_chain: Option<&'a str>,
+        private_key: Option<&'a str>,
+        preprocess: Option<bool>,
+    ) -> SSLUpdate<'a> {
+        SSLUpdate {
+            app_id,
+            ssl_id,
+            params: SSLUpdateParams {
+                certificate_chain,
+                private_key,
+                preprocess,
+            },
+        }
+    }
+}
+
+/// Update app's ssl endpoint with parameters.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-update-optional-parameters)
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct SSLUpdateParams<'a> {
+    /// raw contents of the public certificate chain (eg: .crt or .pem file)
+    pub certificate_chain: Option<&'a str>,
+    /// contents of the private key (eg .key file)
+    pub private_key: Option<&'a str>,
+    /// allow Heroku to modify an uploaded public certificate chain if deemed advantageous by adding missing intermediaries, stripping unnecessary ones, etc.
+    ///  default: true
+    pub preprocess: Option<bool>,
+}
+
+impl<'a> HerokuEndpoint<SSL, (), SSLUpdateParams<'a>> for SSLUpdate<'a> {
+    fn method(&self) -> Method {
+        Method::Patch
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/ssl-endpoints/{}", self.app_id, self.ssl_id)
+    }
+    fn body(&self) -> Option<SSLUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }

@@ -1,5 +1,5 @@
 //Anything related to creating apps and it's properties goes here.
-use super::{App, AppSetup, AppWebhook,SNI};
+use super::{App, AppSetup, AppWebhook, SNI, SSL};
 use std::collections::HashMap;
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
@@ -271,7 +271,7 @@ pub struct SetupApp<'a> {
     /// are other team members forbidden from joining this app.
     pub locked: Option<bool>,
     /// name of app
-    ///  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$ 
+    ///  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
     pub name: Option<&'a str>,
     /// unique name of team
     pub organization: Option<&'a str>,
@@ -293,7 +293,7 @@ pub struct SourceBlob<'a> {
     /// URL of gzipped tarball of source code containing app.json manifest file.
     pub url: &'a str,
     /// Version of the gzipped tarball. [Nullable]
-    pub version: Option<&'a str>, 
+    pub version: Option<&'a str>,
 }
 
 #[serde_with::skip_serializing_none]
@@ -335,9 +335,9 @@ pub struct SNICreate<'a> {
     pub params: SNICreateParams<'a>,
 }
 
-impl <'a>SNICreate <'a>{
+impl<'a> SNICreate<'a> {
     /// Create a new Heroku app SNI with parameters
-    pub fn new(app_id: &'a str,certificate_chain: &'a str, private_key: &'a str) -> SNICreate<'a> {
+    pub fn new(app_id: &'a str, certificate_chain: &'a str, private_key: &'a str) -> SNICreate<'a> {
         SNICreate {
             app_id,
             params: SNICreateParams {
@@ -359,7 +359,7 @@ pub struct SNICreateParams<'a> {
     pub private_key: &'a str,
 }
 
-impl <'a>HerokuEndpoint<SNI, (), SNICreateParams<'a>> for SNICreate<'a> {
+impl<'a> HerokuEndpoint<SNI, (), SNICreateParams<'a>> for SNICreate<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
@@ -367,6 +367,79 @@ impl <'a>HerokuEndpoint<SNI, (), SNICreateParams<'a>> for SNICreate<'a> {
         format!("apps/{}/sni-endpoints", self.app_id)
     }
     fn body(&self) -> Option<SNICreateParams<'a>> {
+        Some(self.params.clone())
+    }
+}
+
+/// SSL Endpoint Create
+///
+/// Create a new SSL endpoint.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-create)
+pub struct SSLCreate<'a> {
+    /// unique app identifier, either app id or app name
+    pub app_id: &'a str,
+    /// The parameters to pass to the Heroku API
+    pub params: SSLCreateParams<'a>,
+}
+
+impl<'a> SSLCreate<'a> {
+    /// Update Heroku app SSL with parameters
+    pub fn new(
+        app_id: &'a str,
+        certificate_chain: &'a str,
+        private_key: &'a str,
+        preprocess: Option<bool>,
+    ) -> SSLCreate<'a> {
+        SSLCreate {
+            app_id,
+            params: SSLCreateParams {
+                certificate_chain,
+                private_key,
+                preprocess,
+            },
+        }
+    }
+    /// Create a new Heroku app SSL with required parameters only
+    pub fn create(
+        app_id: &'a str,
+        certificate_chain: &'a str,
+        private_key: &'a str,
+    ) -> SSLCreate<'a> {
+        SSLCreate {
+            app_id,
+            params: SSLCreateParams {
+                certificate_chain: certificate_chain,
+                private_key: private_key,
+                preprocess: None,
+            },
+        }
+    }
+}
+
+/// Create a new app ssl endpoint with parameters.
+///
+/// [See Heroku documentation for more information about this endpoint](hhttps://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-create-required-parameters)
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct SSLCreateParams<'a> {
+    /// raw contents of the public certificate chain (eg: .crt or .pem file)
+    pub certificate_chain: &'a str,
+    /// contents of the private key (eg .key file)
+    pub private_key: &'a str,
+    /// allow Heroku to modify an uploaded public certificate chain if deemed advantageous by adding missing intermediaries, stripping unnecessary ones, etc.
+    ///  default: true
+    pub preprocess: Option<bool>,
+}
+
+impl<'a> HerokuEndpoint<SSL, (), SSLCreateParams<'a>> for SSLCreate<'a> {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/ssl-endpoints", self.app_id)
+    }
+    fn body(&self) -> Option<SSLCreateParams<'a>> {
         Some(self.params.clone())
     }
 }

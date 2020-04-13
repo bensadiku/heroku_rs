@@ -80,6 +80,63 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_app_sni_list(api_client, app_name);
     // delete_app_sni(api_client, app_name);
     // update_app_sni(api_client, app_name);
+
+    // get_app_ssl_list(api_client, app_name);
+    // get_app_ssl(api_client, app_name);
+    // delete_app_ssl(api_client, app_name); // Careful here.
+    // create_app_ssl(api_client, app_name);
+    // update_app_ssl(api_client, app_name);
+}
+
+// Update app SSL
+fn update_app_ssl<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let certificate_chain = Some("chain_here");
+    let private_key = Some("key_here");
+    let ssl_id = "123";
+    // `create` method takes only the required parameters
+    // see `new` to pass optional parameters too
+    let response = api_client.request(&apps::SSLUpdate::new(
+        &app_id,
+        ssl_id,
+        certificate_chain,
+        private_key,
+        None,
+    ));
+    print_response(response);
+}
+
+// Create app SSL
+fn create_app_ssl<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let certificate_chain = "chain_here";
+    let private_key = "key_here";
+    // `create` method takes only the required parameters
+    // see `new` to pass optional parameters too
+    let response = api_client.request(&apps::SSLCreate::create(
+        &app_id,
+        certificate_chain,
+        private_key,
+    ));
+    print_response(response);
+}
+
+// delete app SSL
+fn delete_app_ssl<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let ssl_id = "123";
+    let response = api_client.request(&apps::SSLDelete::new(&app_id, ssl_id));
+    print_response(response);
+}
+
+// get app SSL
+fn get_app_ssl<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let ssl_id = "123";
+    let response = api_client.request(&apps::SSLDetails::new(&app_id, ssl_id));
+    print_response(response);
+}
+
+// get app SSL list
+fn get_app_ssl_list<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let response = api_client.request(&apps::SSLList::new(&app_id));
+    print_response(response);
 }
 
 // update app SNI list
