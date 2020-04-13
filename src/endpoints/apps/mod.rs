@@ -10,16 +10,18 @@ pub mod put;
 pub use delete::{AppDelete, AppDisableAcm, AppWebhookDelete, SNIDelete, SSLDelete};
 pub use get::{
     AccountAppList, AppDetails, AppFeatureDetails, AppFeatureList, AppList, AppSetupDetails,
-    AppWebhookDeliveryDetails, AppWebhookDeliveryList, AppWebhookDetails, AppWebhookList, SSLList, SSLDetails,
-    SNIDetails, SNIList,
+    AppWebhookDeliveryDetails, AppWebhookDeliveryList, AppWebhookDetails, AppWebhookList,
+    SNIDetails, SNIList, SSLDetails, SSLList, WebhookEventDetails, WebhookEventList,
 };
 pub use patch::{
     AppFeatureUpdate, AppFeatureUpdateParams, AppRefreshAcm, AppUpdate, AppUpdateParams,
-    AppWebhookUpdate, AppWebhookUpdateParams, SNIUpdate, SNIUpdateParams, SSLUpdate, SSLUpdateParams
+    AppWebhookUpdate, AppWebhookUpdateParams, SNIUpdate, SNIUpdateParams, SSLUpdate,
+    SSLUpdateParams,
 };
 pub use post::{
     AppCreate, AppCreateParams, AppEnableAcm, AppSetupCreate, AppSetupCreateParams,
-    AppWebhookCreate, AppWebhookCreateParams, SNICreate, SNICreateParams, SSLCreate, SSLCreateParams
+    AppWebhookCreate, AppWebhookCreateParams, SNICreate, SNICreateParams, SSLCreate,
+    SSLCreateParams,
 };
 
 impl ApiResult for App {}
@@ -43,9 +45,13 @@ impl ApiResult for Vec<SNI> {}
 impl ApiResult for SSL {}
 impl ApiResult for Vec<SSL> {}
 
+impl ApiResult for WebhookEvent {}
+impl ApiResult for Vec<WebhookEvent> {}
+
 pub use app_setup::AppSetup;
 pub use sni_endpoints::SNI;
 pub use ssl_endpoints::SSL;
+pub use webhook_event::WebhookEvent;
 
 /// Heroku App
 ///
@@ -423,19 +429,68 @@ mod ssl_endpoints {
         /// unique identifier of this SSL endpoint
         pub id: String,
         /// unique name for SSL endpoint
-        ///  pattern: ^[a-z][a-z0-9-]{2,29}$ 
+        ///  pattern: ^[a-z][a-z0-9-]{2,29}$
         pub name: String,
         /// when endpoint was updated
         pub updated_at: DateTime<Utc>,
     }
-    
     #[derive(Deserialize, Serialize, Debug, Clone)]
     pub struct App {
         /// unique identifier
         pub id: String,
         /// name of app
-        ///  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$ 
+        ///  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
         pub name: String,
     }
-    
+}
+
+mod webhook_event {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+    use serde_json::Value;
+
+    /// App Webhook Event
+    ///
+    /// Stability: production
+    ///
+    /// Represents a webhook event that occurred.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-event)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct WebhookEvent {
+        /// when event was created
+        pub created_at: DateTime<Utc>,
+        /// the event’s unique identifier
+        pub id: String,
+        /// the type of entity that the event is related to
+        pub include: String,
+        /// the type of event that occurred
+        pub payload: Payload,
+        /// when the event was last updated
+        pub updated_at: DateTime<Utc>,
+    }
+
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Payload {
+        /// the type of event that occurred
+        pub action: String,
+        /// payload actor
+        pub actor: Actor,
+        /// the current details of the event
+        pub data: Value,
+        /// previous details of the event (if any)
+        pub previous_data: Value,
+        /// the type of resource associated with the event
+        pub resource: String,
+        /// the version of the details provided for the event
+        pub version: String,
+    }
+
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Actor {
+        /// unique email address
+        pub email: String,
+        /// identifier of an account
+        pub id: String,
+    }
 }

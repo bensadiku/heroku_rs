@@ -1,5 +1,5 @@
 //Anything related to getting apps and it's properties goes here.
-use super::{App, AppFeature, AppSetup, AppWebhook, AppWebhookDelivery, SNI, SSL};
+use super::{App, AppFeature, AppSetup, AppWebhook, AppWebhookDelivery, WebhookEvent, SNI, SSL};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -363,5 +363,57 @@ impl<'a> HerokuEndpoint<SSL> for SSLDetails<'a> {
     }
     fn path(&self) -> String {
         format!("apps/{}/ssl-endpoints/{}", self.app_id, self.ssl_id)
+    }
+}
+
+/// App Webhook Event Info
+///
+/// Returns the info for a specified webhook event.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-event-info)
+pub struct WebhookEventDetails<'a> {
+    /// app_id can be the app name or id.
+    pub app_id: &'a str,
+    /// webhook event's unique identifier
+    pub event_id: &'a str,
+}
+
+impl<'a> WebhookEventDetails<'a> {
+    pub fn new(app_id: &'a str, event_id: &'a str) -> WebhookEventDetails<'a> {
+        WebhookEventDetails { app_id, event_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<WebhookEvent> for WebhookEventDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/webhook-events/{}", self.app_id, self.event_id)
+    }
+}
+
+/// App Webhook Event List
+///
+/// Lists existing webhook events for an app.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-event-list)
+pub struct WebhookEventList<'a> {
+    /// app_id can be the app name or id.
+    pub app_id: &'a str,
+}
+
+impl<'a> WebhookEventList<'a> {
+    pub fn new(app_id: &'a str) -> WebhookEventList<'a> {
+        WebhookEventList { app_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<WebhookEvent>> for WebhookEventList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("apps/{}/webhook-events", self.app_id)
     }
 }
