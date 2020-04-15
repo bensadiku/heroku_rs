@@ -5,22 +5,21 @@
 [![MIT/Apache-2 licensed](https://img.shields.io/crates/l/heroku_rs.svg)](./LICENSE)
 [![CI](https://github.com/bensadiku/heroku_rs/workflows/Heroku/badge.svg)](https://github.com/bensadiku/heroku_rs/actions?query=workflow%3AHerokuCI)
 
-**This project is currently under development**
-
 ## Intro
 
-This is a rust api wrapper for the [Heroku v3 API](https://devcenter.heroku.com/articles/platform-api-reference/).
+This crate is a API wrapper for the [Heroku v3 API](https://devcenter.heroku.com/articles/platform-api-reference/).
+
+See the [documentation](https://github.com/bensadiku/heroku_rs/blob/master/docs/ENDPOINTS.md) for more information on which endpoints are covered by the crate. 
 
 ## Getting Started
-Add the following to your `Cargo.toml`
+Add the following to your `Cargo.toml` and run `cargo build`. Voila.
 
 ```toml
 [dependencies]
-heroku_rs = "0.4"
+heroku_rs = "0.4.1"
 ```
-run: `cargo build`
 
-Here's a simple example which fetches the apps list. At the moment, the client is blocking by default.
+Here's a simple example which fetches the apps list. At the moment, the client is blocking by default. For more examples see the [examples directory](https://github.com/bensadiku/heroku_rs/tree/master/examples).
 
 ```rust
 use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
@@ -39,7 +38,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
-    
+
+You can also call custom endpoints that have not been supported by the library yet. e.g. :
+
+
+```rust
+use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
+use heroku_rs::framework::endpoint::Method;
+use heroku_rs::endpoints::custom;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+
+    let api_client = HttpApiClient::create("API_KEY")?;
+    let query = format!("{}{}", "apps/", "my_app_name_here");
+    let method = Method::Get;
+    let response = api_client.request(&custom::CustomEndpointSimple::new(query, method);
+
+    Ok(())
+}    
+
+```
+
+See more [examples](https://github.com/bensadiku/heroku_rs/blob/master/examples/src/custom_examples.rs) on how to use these custom endpoints.
+
 ### Useful links
 
 [Heroku quickstart](https://devcenter.heroku.com/articles/platform-api-quickstart) 

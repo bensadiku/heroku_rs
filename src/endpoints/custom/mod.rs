@@ -21,6 +21,16 @@ where
     pub params: T,
 }
 
+impl<T: Serialize + Clone> CustomEndpoint<T> {
+    pub fn new(query: String, method: Method, params: T) -> CustomEndpoint<T> {
+        CustomEndpoint {
+            query,
+            method,
+            params,
+        }
+    }
+}
+
 impl<T> HerokuEndpoint<Value, (), T> for CustomEndpoint<T>
 where
     T: Serialize + Clone,
@@ -45,6 +55,12 @@ pub struct CustomEndpointSimple {
     /// the API method to use
     /// One of: Get, Post, Put, Delete, Patch
     pub method: Method,
+}
+
+impl CustomEndpointSimple {
+    pub fn new(query: String, method: Method) -> CustomEndpointSimple {
+        CustomEndpointSimple { query, method }
+    }
 }
 
 impl HerokuEndpoint<Value> for CustomEndpointSimple {
