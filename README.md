@@ -22,12 +22,10 @@ heroku_rs = "0.4.1"
 Here's a simple example which fetches the apps list. At the moment, the client is blocking by default. For more examples see the [examples directory](https://github.com/bensadiku/heroku_rs/tree/master/examples).
 
 ```rust
-use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
-use heroku_rs::endpoints::apps;
+use heroku_rs::prelude::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let api_client = HttpApiClient::create("API_KEY")?;
-    
     let response = api_client.request(&apps::AppList {});
 
     match response {
@@ -43,13 +41,12 @@ You can also call custom endpoints that have not been supported by the library y
 
 
 ```rust
-use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
-use heroku_rs::framework::endpoint::Method;
-use heroku_rs::endpoints::custom;
+use heroku_rs::prelude::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-
     let api_client = HttpApiClient::create("API_KEY")?;
+
+    // This will do a GET request on https://api.heroku.com/apps/my_app_name_here
     let query = format!("{}{}", "apps/", "my_app_name_here");
     let method = Method::Get;
     let response = api_client.request(&custom::CustomEndpointSimple::new(query, method);

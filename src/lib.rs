@@ -203,3 +203,25 @@ extern crate serde_json;
 
 pub mod endpoints;
 pub mod framework;
+
+/// A module meant to be glob imported when using heroku_rs.
+///
+/// For instance:
+///
+/// ```
+/// use heroku_rs::prelude::*;
+/// ```
+///
+/// This module contains several important traits that provide many
+/// of the convenience methods in heroku_rs.
+pub mod prelude {
+    #[doc(no_inline)]
+    pub use crate::framework::{
+        apiclient::HerokuApiClient, auth::Credentials, ApiEnvironment, HttpApiClient,
+        HttpApiClientConfig,
+    };
+    #[doc(no_inline)]
+    pub use crate::endpoints::*;
+    #[doc(no_inline)]
+    pub use crate::framework::endpoint::Method;
+}
