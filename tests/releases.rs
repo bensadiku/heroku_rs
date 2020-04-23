@@ -25,7 +25,7 @@ mod tests {
         let release_id = "456abc";
         let response = util::get_client().request(&releases::ReleaseInfo {
             app_id: app_id.to_owned(),
-            release_id: release_id.to_owned()
+            release_id: release_id.to_owned(),
         });
 
         let endpoint = format!("{}{}{}{}", "apps/", app_id, "/releases/", release_id);
@@ -40,12 +40,9 @@ mod tests {
             params: releases::ReleaseCreateParams {
                 slug: "fooslug".to_string(),
                 description: Some("releasing the thing".to_string()),
-            }
+            },
         });
-        let endpoint = format!(
-            "{}{}{}",
-            "apps/", app_id, "/releases"
-        );
+        let endpoint = format!("{}{}{}", "apps/", app_id, "/releases");
         assert_valid_url(response, endpoint)
     }
 
@@ -56,13 +53,10 @@ mod tests {
         let response = util::get_client().request(&releases::ReleaseRollback {
             app_id: app_id.to_owned(),
             params: releases::ReleaseRollbackParams {
-                release: "v40".to_string()
-            }
+                release: "v40".to_string(),
+            },
         });
-        let endpoint = format!(
-            "{}{}{}",
-            "apps/", app_id, "/releases"
-        );
+        let endpoint = format!("{}{}{}", "apps/", app_id, "/releases");
         assert_valid_url(response, endpoint)
     }
 }

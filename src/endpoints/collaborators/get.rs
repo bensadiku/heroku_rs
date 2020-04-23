@@ -99,7 +99,7 @@ pub struct TeamCollaboratorDetails<'a> {
 }
 
 impl<'a> TeamCollaboratorDetails<'a> {
-    pub fn new(app_id: &'a str, collaborator_id: &'a str) -> TeamCollaboratorDetails<'a>{
+    pub fn new(app_id: &'a str, collaborator_id: &'a str) -> TeamCollaboratorDetails<'a> {
         TeamCollaboratorDetails {
             app_id,
             collaborator_id,

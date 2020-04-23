@@ -3,9 +3,9 @@ use std::fmt;
 use std::fmt::Debug;
 
 /// HerokuApiError
-/// 
+///
 /// Failing responses will have an appropriate status and a JSON body containing more details about a particular error. See error responses for more example ids.
-/// 
+///
 /// [See the Heroku docs for this error struct](https://devcenter.heroku.com/articles/platform-api-reference#error-attributes)
 #[derive(Deserialize, Debug, Default)]
 pub struct HerokuApiError {

@@ -46,12 +46,9 @@ mod tests {
                 size: None,
                 time_to_live: None,
                 r#type: None,
-            }
+            },
         });
-        let endpoint = format!(
-            "{}{}{}",
-            "apps/", app_id, "/dynos"
-        );
+        let endpoint = format!("{}{}{}", "apps/", app_id, "/dynos");
         assert_valid_url(response, endpoint)
     }
 }

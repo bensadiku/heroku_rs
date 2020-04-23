@@ -51,7 +51,6 @@ fn update_team_preferences<T: HerokuApiClient>(api_client: &T) {
     print_response(response);
 }
 
-
 // get team preferences
 fn get_team_preferences<T: HerokuApiClient>(api_client: &T) {
     let id = "123";

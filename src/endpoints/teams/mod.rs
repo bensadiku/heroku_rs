@@ -10,11 +10,13 @@ pub use delete::{TeamDelete, TeamInvitationRevoke, TeamMemberDelete};
 pub use get::{
     TeamAppDetails, TeamAppList, TeamAppPermissionList, TeamDetails, TeamFeatureDetails,
     TeamFeatureList, TeamInvitationDetails, TeamInvitationList, TeamInvoiceDetails,
-    TeamInvoiceList, TeamList, TeamListByEA, TeamMemberAppsList, TeamMemberList, TeamPreferenceList
+    TeamInvoiceList, TeamList, TeamListByEA, TeamMemberAppsList, TeamMemberList,
+    TeamPreferenceList,
 };
 pub use patch::{
     TeamAppTransfer, TeamAppTransferParams, TeamAppUpdateLocked, TeamAppUpdateLockedParams,
-    TeamMemberUpdate, TeamMemberUpdateParams, TeamUpdate, TeamUpdateParams, TeamPreferenceUpdate, TeamPreferenceUpdateParams
+    TeamMemberUpdate, TeamMemberUpdateParams, TeamPreferenceUpdate, TeamPreferenceUpdateParams,
+    TeamUpdate, TeamUpdateParams,
 };
 pub use post::{
     TeamAppCreate, TeamAppCreateParams, TeamCreate, TeamCreateByEA, TeamCreateByEAParams,
@@ -444,7 +446,6 @@ mod team_member {
     }
 }
 
-
 mod team_preferences {
 
     /// Team Preferences
@@ -457,7 +458,7 @@ mod team_preferences {
     #[derive(Deserialize, Serialize, Debug, Clone)]
     pub struct TeamPreferences {
         /// The default permission used when adding new members to the team
-        ///  one of:"admin" or "member" or "viewer" or null 
+        ///  one of:"admin" or "member" or "viewer" or null
         #[serde(rename = "default-permission")]
         pub default_permission: Option<String>,
         /// Whether whitelisting rules should be applied to add-on installations

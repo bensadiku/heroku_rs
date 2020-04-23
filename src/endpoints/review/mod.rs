@@ -99,7 +99,7 @@ mod review_app_config {
     /// Review apps can be configured for pipelines.
     ///
     /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#review-app-configuration)
-    // TODO(ben): Heroku docs have the wrong response in the documentation on the pipeline field. 
+    // TODO(ben): Heroku docs have the wrong response in the documentation on the pipeline field.
     //      It's represented as a `pipeline_id: String` field, but in fact in a Pipeline object with the id field. Double check edge cases.
     #[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
     pub struct ReviewAppConfig {

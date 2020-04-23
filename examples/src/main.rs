@@ -8,17 +8,17 @@ use heroku_rs::framework::{
 };
 
 mod account_examples;
+mod addon_examples;
+mod app_review_examples;
 mod apps_examples;
+mod collaborators_examples;
+mod config_var_examples;
+mod custom_examples;
+mod logs_examples;
 mod misc_examples;
 mod oauth_examples;
 mod pipeline_examples;
-mod app_review_examples;
-mod config_var_examples;
-mod custom_examples;
-mod addon_examples;
 mod teams_examples;
-mod collaborators_examples;
-mod logs_examples;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let key = "API_KEY";

@@ -9,9 +9,7 @@ pub enum Credentials {
 impl Credentials {
     pub fn headers(&self) -> Vec<(&'static str, String)> {
         match self {
-            Self::UserAuthToken { token } => {
-                vec![("Authorization", format!("Bearer {}", token))]
-            }
+            Self::UserAuthToken { token } => vec![("Authorization", format!("Bearer {}", token))],
         }
     }
 }

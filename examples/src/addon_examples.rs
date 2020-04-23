@@ -63,7 +63,6 @@ fn get_webhook_events<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
     print_response(response);
 }
 
-
 // get addon webhook deliveries
 fn get_webhook_deliveries<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
     let response = api_client.request(&addons::WebhookDeliveryList::new(addon_id));

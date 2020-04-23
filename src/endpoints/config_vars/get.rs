@@ -13,9 +13,9 @@ pub struct AppConfigVarDetails<'a> {
     pub app_id: &'a str,
 }
 
-impl <'a>AppConfigVarDetails <'a> {
+impl<'a> AppConfigVarDetails<'a> {
     pub fn new(app_id: &'a str) -> AppConfigVarDetails {
-        AppConfigVarDetails { app_id}
+        AppConfigVarDetails { app_id }
     }
 }
 
@@ -40,9 +40,9 @@ pub struct ReleaseConfigVarDetails<'a> {
     pub release_id: &'a str,
 }
 
-impl <'a>ReleaseConfigVarDetails <'a> {
+impl<'a> ReleaseConfigVarDetails<'a> {
     pub fn new(app_id: &'a str, release_id: &'a str) -> ReleaseConfigVarDetails<'a> {
-        ReleaseConfigVarDetails { app_id, release_id}
+        ReleaseConfigVarDetails { app_id, release_id }
     }
 }
 
@@ -70,10 +70,12 @@ pub struct PipelineConfigVarDetails<'a> {
     pub stage_id: &'a str,
 }
 
-
-impl <'a>PipelineConfigVarDetails <'a> {
+impl<'a> PipelineConfigVarDetails<'a> {
     pub fn new(pipeline_id: &'a str, stage_id: &'a str) -> PipelineConfigVarDetails<'a> {
-        PipelineConfigVarDetails { pipeline_id, stage_id}
+        PipelineConfigVarDetails {
+            pipeline_id,
+            stage_id,
+        }
     }
 }
 

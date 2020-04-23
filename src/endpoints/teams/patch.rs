@@ -223,9 +223,6 @@ impl<'a> HerokuEndpoint<TeamMember, (), TeamMemberUpdateParams<'a>> for TeamMemb
     }
 }
 
-
-
-
 /// Team Preferences Update
 ///
 /// Update Team Preferences
@@ -239,10 +236,7 @@ pub struct TeamPreferenceUpdate<'a> {
 }
 
 impl<'a> TeamPreferenceUpdate<'a> {
-    pub fn new(
-        id: &'a str,
-        whitelisting_enabled: Option<bool>,
-    ) -> TeamPreferenceUpdate<'a> {
+    pub fn new(id: &'a str, whitelisting_enabled: Option<bool>) -> TeamPreferenceUpdate<'a> {
         TeamPreferenceUpdate {
             id,
             params: TeamPreferenceUpdateParams {

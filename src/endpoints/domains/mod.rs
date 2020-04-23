@@ -15,11 +15,11 @@ impl ApiResult for Domain {}
 impl ApiResult for Vec<Domain> {}
 
 /// Domain
-/// 
+///
 /// Stability: production
-/// 
+///
 /// Domains define what web routes should be routed to an app on Heroku.
-/// 
+///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain)
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct Domain {

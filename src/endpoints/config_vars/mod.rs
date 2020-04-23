@@ -7,6 +7,7 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
+pub use delete::{AppConfigVarDelete, PipelineConfigVarDelete};
 /// Config Vars
 ///
 /// Stability: production
@@ -16,7 +17,6 @@ pub mod put;
 /// [For more information please refer to the Heroku documentation](https://devcenter.heroku.com/articles/platform-api-reference#config-vars)
 pub use get::{AppConfigVarDetails, PipelineConfigVarDetails, ReleaseConfigVarDetails};
 pub use patch::{AppConfigVarUpdate, PipelineConfigVarUpdate};
-pub use delete::{AppConfigVarDelete, PipelineConfigVarDelete};
 
 impl ApiResult for HashMap<String, Option<String>> {}
 impl ApiResult for Vec<HashMap<String, Option<String>>> {}

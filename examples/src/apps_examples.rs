@@ -91,14 +91,12 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // update_app_ssl(api_client, app_name);
 }
 
-
 // get a specific webhook event
 fn get_app_webhook_event<T: HerokuApiClient>(api_client: &T, app_id: String) {
     let event_id = "123";
     let response = api_client.request(&apps::WebhookEventDetails::new(&app_id, event_id));
     print_response(response);
 }
-
 
 // get webhook events list
 fn get_app_webhook_events<T: HerokuApiClient>(api_client: &T, app_id: String) {

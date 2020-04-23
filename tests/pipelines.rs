@@ -40,5 +40,4 @@ mod tests {
         let endpoint = format!("{}", "pipeline-couplings");
         assert_valid_url(response, endpoint)
     }
-
 }

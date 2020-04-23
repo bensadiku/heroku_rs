@@ -9,7 +9,7 @@ pub mod put;
 
 pub use delete::BuildDelete;
 pub use get::{BuildDetails, BuildList, BuildPackInstallationList};
-pub use post::{BuildCreate, BuildCreateParams, SourceBlobParam, BuildpackParam};
+pub use post::{BuildCreate, BuildCreateParams, BuildpackParam, SourceBlobParam};
 pub use put::{BuildpackInstallationUpdate, BuildpackInstallationUpdateParams};
 
 impl ApiResult for Build {}

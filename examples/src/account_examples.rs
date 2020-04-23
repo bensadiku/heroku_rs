@@ -49,7 +49,6 @@ fn get_key<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     print_response(response);
 }
 
-
 // get keys
 fn get_keys<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let response = api_client.request(&account::KeyList::new());
@@ -58,7 +57,9 @@ fn get_keys<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
 // Update invoice address
 fn update_invoice_address<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let response = api_client.request(&account::InvoiceAddressUpdate::new(None,None,None,None,None,None,None,true));
+    let response = api_client.request(&account::InvoiceAddressUpdate::new(
+        None, None, None, None, None, None, None, true,
+    ));
     print_response(response);
 }
 

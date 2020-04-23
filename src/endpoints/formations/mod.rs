@@ -40,7 +40,7 @@ pub struct Formation {
     /// when dyno type was updated
     pub updated_at: String,
 }
- 
+
 /// An app represents the program that you would like to deploy and run on Heroku.
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct App {

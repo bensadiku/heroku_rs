@@ -54,7 +54,7 @@ impl DynoCreate {
         size: Option<String>,
         time_to_live: Option<i32>,
         process_type: Option<String>,
-    ) -> DynoCreate  {
+    ) -> DynoCreate {
         DynoCreate {
             app_id,
             params: DynoCreateParams {
