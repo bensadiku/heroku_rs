@@ -1,4 +1,4 @@
-#![doc(html_root_url = "https://docs.rs/heroku_rs/0.4.1")]
+#![doc(html_root_url = "https://docs.rs/heroku_rs/0.4.2")]
 
 //! # heroku_rs
 //!
