@@ -19,6 +19,7 @@ mod misc_examples;
 mod oauth_examples;
 mod pipeline_examples;
 mod teams_examples;
+mod spaces_examples;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let key = "API_KEY";
@@ -32,7 +33,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // see the create_custom_client and uncomment this to use it
     // let api_client = create_custom_client(token)?;
 
-    apps_examples::run(&api_client);
+    // apps_examples::run(&api_client);
     // addon_examples::run(&api_client);
     // collaborators_examples::run(&api_client);
     // logs_examples::run(&api_client);
@@ -44,6 +45,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // pipeline_examples::run(&api_client);
     // misc_examples::run(&api_client);
     // teams_examples::run(&api_client);
+    spaces_examples::run(&api_client);
 
     Ok(())
 }
