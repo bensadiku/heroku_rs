@@ -6,13 +6,25 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
-pub use post::{SpaceCreate, SpaceCreateParams};
-pub use patch::{SpaceUpdate, SpaceUpdateParams};
-pub use get::{SpaceDetails, SpaceList};
+pub use get::{SpaceAccessDetails, SpaceAccessList, SpaceDetails, SpaceList, SpaceNATDetails};
+pub use patch::{SpaceAccessUpdate, SpaceAccessUpdateParams, SpaceUpdate, SpaceUpdateParams};
+pub use post::{SpaceCreate, SpaceCreateParams, SpaceTransferCreate , SpaceTransferCreateParams};
 
 impl ApiResult for Space {}
 impl ApiResult for Vec<Space> {}
 
+impl ApiResult for SpaceAccess {}
+impl ApiResult for Vec<SpaceAccess> {}
+
+impl ApiResult for SpaceNAT {}
+impl ApiResult for Vec<SpaceNAT> {}
+
+impl ApiResult for SpaceTransfer {}
+impl ApiResult for Vec<SpaceTransfer> {}
+
+pub use space_access::SpaceAccess;
+pub use space_nat::SpaceNAT;
+pub use space_transfer::SpaceTransfer;
 pub use spaces::Space;
 
 mod spaces {
@@ -75,6 +87,120 @@ mod spaces {
         /// unique identifier
         pub id: String,
         /// name of region
+        pub name: String,
+    }
+}
+
+mod space_access {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Space Access
+    ///
+    /// Stability: prototype
+    ///
+    /// Space access represents the permissions a particular user has on a particular space.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-access)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct SpaceAccess {
+        /// space object
+        pub space: Space,
+        /// when space was created
+        pub created_at: DateTime<Utc>,
+        /// unique identifier of space
+        pub id: String,
+        /// permissions
+        pub permissions: Vec<Permission>,
+        /// when space was updated
+        pub updated_at: DateTime<Utc>,
+        /// account
+        pub user: User,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Space {
+        /// name of app
+        ///  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
+        pub name: String,
+        /// unique identifier
+        pub id: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Permission {
+        pub description: String,
+        pub name: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct User {
+        /// unique email address
+        pub email: String,
+        /// identifier of an account
+        pub id: String,
+    }
+}
+
+mod space_nat {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Space Network Address Translation
+    ///
+    /// Stability: prototype
+    ///
+    /// Network address translation (NAT) for stable outbound IP addresses from a space
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-network-address-translation)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct SpaceNAT {
+        /// when network address translation for a space was created
+        pub created_at: DateTime<Utc>,
+        /// potential IPs from which outbound network traffic will originate
+        pub sources: Vec<String>,
+        /// availability of network address translation for a space
+        ///  one of:"disabled" or "updating" or "enabled"
+        pub state: String,
+        /// when network address translation for a space was updated
+        pub updated_at: DateTime<Utc>,
+    }
+}
+
+mod space_transfer {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Space Transfer
+    ///
+    /// Stability: development
+    ///
+    /// Transfer spaces between enterprise teams with the same Enterprise Account.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-transfer)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct SpaceTransfer {
+        pub created_at: DateTime<Utc>,
+        pub id: String,
+        pub name: String,
+        pub organization: Organization,
+        pub team: Team,
+        pub region: Region,
+        pub shield: bool,
+        pub state: String,
+        pub updated_at: DateTime<Utc>,
+        pub cidr: String,
+        pub data_cidr: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Organization {
+        pub name: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Team {
+        pub id: String,
+        pub name: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Region {
+        pub id: String,
         pub name: String,
     }
 }

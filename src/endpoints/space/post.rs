@@ -1,5 +1,5 @@
 //Anything related to POST requests for spaces goes here.
-use super::Space;
+use super::{Space, SpaceTransfer};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -89,6 +89,51 @@ impl<'a> HerokuEndpoint<Space, (), SpaceCreateParams<'a>> for SpaceCreate<'a> {
         format!("spaces")
     }
     fn body(&self) -> Option<SpaceCreateParams<'a>> {
+        Some(self.params.clone())
+    }
+}
+
+/// Space Transfer
+///
+/// Transfer space between enterprise teams
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-transfer-transfer)
+pub struct SpaceTransferCreate<'a> {
+    /// unique space identifier, either space name or space id
+    pub space_id: &'a str,
+    /// The parameters to pass to the Heroku API
+    pub params: SpaceTransferCreateParams<'a>,
+}
+
+impl<'a> SpaceTransferCreate<'a> {
+    pub fn new(space_id: &'a str, new_owner: &'a str) -> SpaceTransferCreate<'a> {
+        SpaceTransferCreate {
+            space_id,
+            params: SpaceTransferCreateParams { new_owner },
+        }
+    }
+}
+
+/// Create a new space transfer with parameters
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-transfer-transfer-required-parameters)
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct SpaceTransferCreateParams<'a> {
+    /// unique name of team
+    pub new_owner: &'a str,
+}
+
+impl<'a> HerokuEndpoint<SpaceTransfer, (), SpaceTransferCreateParams<'a>>
+    for SpaceTransferCreate<'a>
+{
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("spaces/{}/transfer", self.space_id)
+    }
+    fn body(&self) -> Option<SpaceTransferCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
