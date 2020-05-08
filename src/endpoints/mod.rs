@@ -37,3 +37,5 @@ pub mod review;
 pub mod slugs;
 /// teams
 pub mod teams;
+/// spaces
+pub mod space;
