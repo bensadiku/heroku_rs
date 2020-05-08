@@ -16,6 +16,50 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_space_nat(api_client);
 
     // create_space_transfer (api_client);
+
+    // get_inbound_ruleset_list(api_client);
+    // get_inbound_ruleset_current(api_client);
+    // get_inbound_ruleset_details(api_client);
+    // create_inbound_ruleset(api_client);
+}
+
+// create inbound ruleset
+fn create_inbound_ruleset<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let space = &space::InboundRulesetCreate::new(space_id)
+        .rule("allow", "1.1.1.1/1")
+        .build();
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
+// get inbound ruleset details
+fn get_inbound_ruleset_details<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let ruleset_id = "123";
+    let space = &space::InboundRulesetDetails::new(space_id, ruleset_id);
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
+// get inbound ruleset current
+fn get_inbound_ruleset_current<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let space = &space::InboundRulesetCurrent::new(space_id);
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
+// get inbound ruleset list
+fn get_inbound_ruleset_list<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let space = &space::InboundRulesetList::new(space_id);
+    let response = api_client.request(space);
+
+    print_response(response);
 }
 
 // get Space Network Address Translation Info

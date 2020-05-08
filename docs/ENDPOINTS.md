@@ -62,9 +62,9 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [X] [/apps/{app_id_or_name}/formation/{formation_id_or_type}](https://devcenter.heroku.com/articles/platform-api-reference#formation-info)	
 - [X] [/apps/{app_id_or_name}/formation](https://devcenter.heroku.com/articles/platform-api-reference#formation-list)	
 - [ ] [/teams/{team_name}/identity-providers](https://devcenter.heroku.com/articles/platform-api-reference#identity-provider-list-by-team)	
-- [ ] [/spaces/{space_id_or_name}/inbound-ruleset](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-current)	
-- [ ] [/spaces/{space_id_or_name}/inbound-rulesets/{inbound_ruleset_id}](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-info)	
-- [ ] [/spaces/{space_id_or_name}/inbound-rulesets](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-list)	
+- [X] [/spaces/{space_id_or_name}/inbound-ruleset](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-current)	
+- [X] [/spaces/{space_id_or_name}/inbound-rulesets/{inbound_ruleset_id}](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-info)	
+- [X] [/spaces/{space_id_or_name}/inbound-rulesets](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-list)	
 - [X] [/account/invoices/{invoice_number}](https://devcenter.heroku.com/articles/platform-api-reference#invoice-info)	
 - [X] [/account/invoices](https://devcenter.heroku.com/articles/platform-api-reference#invoice-list)	
 - [X] [/account/invoice-address](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-info)	
@@ -208,7 +208,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 
 ## PUT
 - [X] [/apps/{app_id_or_name}/buildpack-installations](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update)	
-- [ ] [/spaces/{space_id_or_name}/inbound-ruleset](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-create)	
+- [X] [/spaces/{space_id_or_name}/inbound-ruleset](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-create)	
 - [X] [/account/invoice-address](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-update)
 - [X] [/addons/{add_on_id_or_name}/log-drains/{log_drain_id_or_url_or_token}](https://devcenter.heroku.com/articles/platform-api-reference#log-drain-update) 
 - [ ] [/spaces/{space_id_or_name}/outbound-ruleset](https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-create)	

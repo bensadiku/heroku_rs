@@ -6,9 +6,13 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
-pub use get::{SpaceAccessDetails, SpaceAccessList, SpaceDetails, SpaceList, SpaceNATDetails};
+pub use get::{
+    InboundRulesetCurrent, InboundRulesetDetails, InboundRulesetList, SpaceAccessDetails,
+    SpaceAccessList, SpaceDetails, SpaceList, SpaceNATDetails,
+};
 pub use patch::{SpaceAccessUpdate, SpaceAccessUpdateParams, SpaceUpdate, SpaceUpdateParams};
-pub use post::{SpaceCreate, SpaceCreateParams, SpaceTransferCreate , SpaceTransferCreateParams};
+pub use post::{SpaceCreate, SpaceCreateParams, SpaceTransferCreate, SpaceTransferCreateParams};
+pub use put::{InboundRulesetCreate, InboundRulesetCreateParams};
 
 impl ApiResult for Space {}
 impl ApiResult for Vec<Space> {}
@@ -22,6 +26,10 @@ impl ApiResult for Vec<SpaceNAT> {}
 impl ApiResult for SpaceTransfer {}
 impl ApiResult for Vec<SpaceTransfer> {}
 
+impl ApiResult for InboundRuleset {}
+impl ApiResult for Vec<InboundRuleset> {}
+
+pub use inbound_ruleset::InboundRuleset;
 pub use space_access::SpaceAccess;
 pub use space_nat::SpaceNAT;
 pub use space_transfer::SpaceTransfer;
@@ -202,5 +210,44 @@ mod space_transfer {
     pub struct Region {
         pub id: String,
         pub name: String,
+    }
+}
+
+mod inbound_ruleset {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Inbound Ruleset
+    ///
+    /// Stability: prototype
+    ///
+    /// An inbound-ruleset is a collection of rules that specify what hosts can or cannot connect to an application.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct InboundRuleset {
+        /// unique identifier of an inbound-ruleset
+        pub id: String,
+        /// space
+        pub space: Space,
+        /// when inbound-ruleset was created
+        pub created_at: DateTime<Utc>,
+        /// rules
+        pub rules: Vec<Rule>,
+        /// unique email address
+        pub created_by: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Space {
+        /// unique identifier of space
+        pub id: String,
+        ///  pattern: `^[a-z0-9](?:[a-z0-9]
+        pub name: String,
+    }
+    /// example: [{"action":"allow","source":"1.1.1.1/1"}]
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Rule {
+        pub action: String,
+        pub source: String,
     }
 }

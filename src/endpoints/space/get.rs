@@ -1,5 +1,5 @@
 //Anything related to GET requests for spaces goes here.
-use super::{Space, SpaceAccess, SpaceNAT};
+use super::{InboundRuleset, Space, SpaceAccess, SpaceNAT};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -105,7 +105,6 @@ impl<'a> HerokuEndpoint<Vec<SpaceAccess>> for SpaceAccessList<'a> {
     }
 }
 
-
 /// Space Network Address Translation Info
 ///
 /// Current state of network address translation for a space.
@@ -128,5 +127,88 @@ impl<'a> HerokuEndpoint<SpaceNAT> for SpaceNATDetails<'a> {
     }
     fn path(&self) -> String {
         format!("spaces/{}/nat", self.space_id)
+    }
+}
+
+/// Inbound Ruleset Current
+///
+/// Current inbound ruleset for a space
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-current)
+pub struct InboundRulesetCurrent<'a> {
+    /// space_id can be the space name or space id
+    pub space_id: &'a str,
+}
+
+impl<'a> InboundRulesetCurrent<'a> {
+    pub fn new(space_id: &'a str) -> InboundRulesetCurrent<'a> {
+        InboundRulesetCurrent { space_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<InboundRuleset> for InboundRulesetCurrent<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("spaces/{}/inbound-ruleset", self.space_id)
+    }
+}
+
+/// Inbound Ruleset Info
+///
+/// Info on an existing Inbound Ruleset
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-info)
+pub struct InboundRulesetDetails<'a> {
+    /// space_id can be the space name or space id
+    pub space_id: &'a str,
+    /// unique inbound ruleset identifier
+    pub ruleset_id: &'a str,
+}
+
+impl<'a> InboundRulesetDetails<'a> {
+    pub fn new(space_id: &'a str, ruleset_id: &'a str) -> InboundRulesetDetails<'a> {
+        InboundRulesetDetails {
+            space_id,
+            ruleset_id,
+        }
+    }
+}
+
+impl<'a> HerokuEndpoint<InboundRuleset> for InboundRulesetDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!(
+            "spaces/{}/inbound-rulesets/{}",
+            self.space_id, self.ruleset_id
+        )
+    }
+}
+
+/// Inbound Ruleset List
+///
+/// List all inbound rulesets for a space
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-list)
+pub struct InboundRulesetList<'a> {
+    /// space_id can be the space name or space id
+    pub space_id: &'a str,
+}
+
+impl<'a> InboundRulesetList<'a> {
+    pub fn new(space_id: &'a str) -> InboundRulesetList<'a> {
+        InboundRulesetList { space_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<InboundRuleset>> for InboundRulesetList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("spaces/{}/inbound-rulesets", self.space_id)
     }
 }
