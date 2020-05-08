@@ -7,12 +7,16 @@ pub mod post;
 pub mod put;
 
 pub use get::{
-    InboundRulesetCurrent, InboundRulesetDetails, InboundRulesetList, SpaceAccessDetails,
-    SpaceAccessList, SpaceDetails, SpaceList, SpaceNATDetails,
+    InboundRulesetCurrent, InboundRulesetDetails, InboundRulesetList, OutboundRulesetCurrent,
+    OutboundRulesetDetails, OutboundRulesetList, SpaceAccessDetails, SpaceAccessList, SpaceDetails,
+    SpaceList, SpaceNATDetails,
 };
 pub use patch::{SpaceAccessUpdate, SpaceAccessUpdateParams, SpaceUpdate, SpaceUpdateParams};
 pub use post::{SpaceCreate, SpaceCreateParams, SpaceTransferCreate, SpaceTransferCreateParams};
-pub use put::{InboundRulesetCreate, InboundRulesetCreateParams};
+pub use put::{
+    InboundRulesetCreate, InboundRulesetCreateParams, OutboundRulesetCreate,
+    OutboundRulesetCreateParams,
+};
 
 impl ApiResult for Space {}
 impl ApiResult for Vec<Space> {}
@@ -29,7 +33,11 @@ impl ApiResult for Vec<SpaceTransfer> {}
 impl ApiResult for InboundRuleset {}
 impl ApiResult for Vec<InboundRuleset> {}
 
+impl ApiResult for OutboundRuleset {}
+impl ApiResult for Vec<OutboundRuleset> {}
+
 pub use inbound_ruleset::InboundRuleset;
+pub use outbound_ruleset::OutboundRuleset;
 pub use space_access::SpaceAccess;
 pub use space_nat::SpaceNAT;
 pub use space_transfer::SpaceTransfer;
@@ -233,7 +241,7 @@ mod inbound_ruleset {
         /// when inbound-ruleset was created
         pub created_at: DateTime<Utc>,
         /// rules
-        pub rules: Vec<Rule>,
+        pub rules: Option<Vec<Rule>>,
         /// unique email address
         pub created_by: String,
     }
@@ -249,5 +257,46 @@ mod inbound_ruleset {
     pub struct Rule {
         pub action: String,
         pub source: String,
+    }
+}
+
+mod outbound_ruleset {
+    use chrono::offset::Utc;
+    use chrono::DateTime;
+
+    /// Outbound Ruleset
+    ///
+    /// Stability: prototype
+    ///
+    /// An outbound-ruleset is a collection of rules that specify what hosts Dynos are allowed to communicate with.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct OutboundRuleset {
+        /// unique identifier of an outbound-ruleset
+        pub id: String,
+        /// space object
+        pub space: Space,
+        /// when outbound-ruleset was created
+        pub created_at: DateTime<Utc>,
+        /// rules
+        pub rules: Option<Vec<Rule>>,
+        /// unique email address
+        pub created_by: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Space {
+        /// unique identifier of space
+        pub id: String,
+        /// unique name of space
+        ///  pattern: `^[a-z0-9](?:[a-z0-9]
+        pub name: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Rule {
+        pub target: String,
+        pub from_port: i64,
+        pub to_port: i64,
+        pub protocol: String,
     }
 }

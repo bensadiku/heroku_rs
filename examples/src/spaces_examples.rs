@@ -21,6 +21,53 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_inbound_ruleset_current(api_client);
     // get_inbound_ruleset_details(api_client);
     // create_inbound_ruleset(api_client);
+
+    // get_outbound_ruleset_list(api_client);
+    // get_outbound_ruleset_current(api_client);
+    // get_outbound_ruleset_details(api_client);
+    // create_inbound_ruleset(api_client);
+}
+// create outbound ruleset
+fn create_outbound_ruleset<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let target = "1.1.1.1/1";
+    let protocol = "tcp";
+    let to_port = 80;
+    let from_port = 80;
+    let space = &space::OutboundRulesetCreate::new(space_id)
+        .rule(target, protocol, from_port, to_port)
+        .build();
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
+// get outbound ruleset details
+fn get_outbound_ruleset_details<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let outbound_ruleset_id = "123";
+    let space = &space::OutboundRulesetDetails::new(space_id, outbound_ruleset_id);
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
+// get outbound ruleset current
+fn get_outbound_ruleset_current<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let space = &space::OutboundRulesetCurrent::new(space_id);
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
+// get outbound ruleset list
+fn get_outbound_ruleset_list<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let space = &space::OutboundRulesetList::new(space_id);
+    let response = api_client.request(space);
+
+    print_response(response);
 }
 
 // create inbound ruleset
