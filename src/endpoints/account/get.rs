@@ -32,18 +32,18 @@ impl HerokuEndpoint<Account> for AccountDetails {
 /// Info for account.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference##account-info-by-user)
-pub struct UserAccountDetails {
+pub struct UserAccountDetails<'a> {
     /// account_id can be the account email or id.
-    pub account_id: String,
+    pub account_id: &'a str,
 }
 
-impl UserAccountDetails {
-    pub fn new(account_id: String) -> UserAccountDetails {
+impl<'a> UserAccountDetails<'a> {
+    pub fn new(account_id: &'a str) -> UserAccountDetails {
         UserAccountDetails { account_id }
     }
 }
 
-impl HerokuEndpoint<Account> for UserAccountDetails {
+impl<'a> HerokuEndpoint<Account> for UserAccountDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -79,18 +79,18 @@ impl HerokuEndpoint<Vec<AccountFeature>> for AccountFeatureList {
 /// Info for an existing account feature.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-info)
-pub struct AccountFeatureDetails {
+pub struct AccountFeatureDetails<'a> {
     /// feature_id can be the feature name or id.
-    pub feature_id: String,
+    pub feature_id: &'a str,
 }
 
-impl AccountFeatureDetails {
-    pub fn new(feature_id: String) -> AccountFeatureDetails {
+impl<'a> AccountFeatureDetails<'a> {
+    pub fn new(feature_id: &'a str) -> AccountFeatureDetails {
         AccountFeatureDetails { feature_id }
     }
 }
 
-impl HerokuEndpoint<AccountFeature> for AccountFeatureDetails {
+impl<'a> HerokuEndpoint<AccountFeature> for AccountFeatureDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -126,18 +126,18 @@ impl HerokuEndpoint<Vec<AppTransfer>> for AppTransferList {
 /// Info for existing app transfer.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-info)
-pub struct AppTransferDetails {
+pub struct AppTransferDetails<'a> {
     /// transfer_id can be the transfer name or id.
-    pub transfer_id: String,
+    pub transfer_id: &'a str,
 }
 
-impl AppTransferDetails {
-    pub fn new(transfer_id: String) -> AppTransferDetails {
+impl<'a> AppTransferDetails<'a> {
+    pub fn new(transfer_id: &'a str) -> AppTransferDetails {
         AppTransferDetails { transfer_id }
     }
 }
 
-impl HerokuEndpoint<AppTransfer> for AppTransferDetails {
+impl<'a> HerokuEndpoint<AppTransfer> for AppTransferDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -151,18 +151,18 @@ impl HerokuEndpoint<AppTransfer> for AppTransferDetails {
 /// Info for existing credit.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-info)
-pub struct AccountCreditDetails {
+pub struct AccountCreditDetails<'a> {
     /// credit_id is the credit identifier.
-    pub credit_id: String,
+    pub credit_id: &'a str,
 }
 
-impl AccountCreditDetails {
-    pub fn new(credit_id: String) -> AccountCreditDetails {
+impl<'a> AccountCreditDetails<'a> {
+    pub fn new(credit_id: &'a str) -> AccountCreditDetails {
         AccountCreditDetails { credit_id }
     }
 }
 
-impl HerokuEndpoint<AppTransfer> for AccountCreditDetails {
+impl<'a> HerokuEndpoint<AppTransfer> for AccountCreditDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

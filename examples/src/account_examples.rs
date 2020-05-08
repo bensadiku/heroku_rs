@@ -48,7 +48,6 @@ fn get_key<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let response = api_client.request(&account::KeyDetails::new(fingerprint));
     print_response(response);
 }
-
 // get keys
 fn get_keys<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let response = api_client.request(&account::KeyList::new());
@@ -57,9 +56,11 @@ fn get_keys<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
 // Update invoice address
 fn update_invoice_address<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let response = api_client.request(&account::InvoiceAddressUpdate::new(
-        None, None, None, None, None, None, None, true,
-    ));
+    let update_invoice = &account::InvoiceAddressUpdate::new()
+        .address_1("Grove Street")
+        .address_2("Not Grove Street")
+        .build();
+    let response = api_client.request(update_invoice);
     print_response(response);
 }
 
@@ -105,25 +106,19 @@ fn get_account_sms_number<ApiClientType: HerokuApiClient>(api_client: &ApiClient
 
 // Confirm password reset.
 fn confirm_password<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let password_id = String::from("123");
-    let old_password = String::from("123");
-    let new_password = String::from("123");
-    let response = api_client.request(&account::PasswordResetConfirm {
-        password_id,
-        params: account::PasswordResetConfirmParams {
-            password: old_password,
-            password_confirmation: new_password,
-        },
-    });
+    let password_id = "123";
+    let password_confimation = &account::PasswordResetConfirm::new(password_id)
+        .password("123")
+        .password_confirmation("123")
+        .build();
+    let response = api_client.request(password_confimation);
     print_response(response);
 }
 
 // Reset password.
 fn reset_account_password<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let email = String::from("EMAIL");
-    let response = api_client.request(&account::PasswordReset {
-        params: account::PasswordResetParams { email },
-    });
+    let email = "EMAIL";
+    let response = api_client.request(&account::PasswordReset::new(email));
     print_response(response);
 }
 
@@ -135,7 +130,7 @@ fn get_account_credits<ApiClientType: HerokuApiClient>(api_client: &ApiClientTyp
 
 // Get account credit.
 fn get_account_credit<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let credit_id = String::from("012abc");
+    let credit_id = "012abc";
 
     let response = api_client.request(&account::AccountCreditDetails { credit_id });
     print_response(response);
@@ -143,50 +138,41 @@ fn get_account_credit<ApiClientType: HerokuApiClient>(api_client: &ApiClientType
 
 // Create account credits.
 fn create_account_credits<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let code1 = Some(String::from("012abc"));
-    let code2 = Some(String::from("012abcd"));
-    let response = api_client.request(&account::AccountCreditCreate {
-        params: account::AccountCreditCreateParams { code1, code2 },
-    });
+    let create_credit = &account::AccountCreditCreate::new()
+        .code_1("012abc")
+        .code_2("012abcd")
+        .build();
+    let response = api_client.request(create_credit);
     print_response(response);
 }
 
 // Delete heroku account app transfer.
 fn delete_account_transfer<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let response = api_client.request(&account::AppTransferDelete {
-        transfer_id: String::from("ID_HERE"),
-    });
+    let response = api_client.request(&account::AppTransferDelete::new("ID_HERE"));
     print_response(response);
 }
 
 // Patch heroku account app transfer.
 fn patch_account_transfer<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let response = api_client.request(&account::AppTransferUpdate {
-        transfer_id: String::from("ID_HERE"),
-        params: account::AppTransferUpdateParams {
-            state: String::from("declined"),
-        },
-    });
+    let response = api_client.request(&account::AppTransferUpdate::new("TRANFER_ID", "declined"));
     print_response(response);
 }
 
 // Create heroku account app transfer.
 fn create_account_transfer<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let response = api_client.request(&account::AppTransferCreate {
-        params: account::AppTransferCreateParams {
-            app: String::from("ID_OR_APPNAME_HERE"),
-            recipient: String::from("ID_OR_EMAIL_HERE"),
-            silent: Some(false),
-        },
-    });
+    let app_id = "APP_ID_HERE";
+    let recipient = "ID_OR_EMAIL_HERE";
+    let transfer = &account::AppTransferCreate::new(app_id, recipient)
+        .silent(false)
+        .build();
+
+    let response = api_client.request(transfer);
     print_response(response);
 }
 
 // Get heroku account app transfer.
 fn get_account_transfer<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let response = api_client.request(&account::AppTransferDetails {
-        transfer_id: String::from("ID"),
-    });
+    let response = api_client.request(&account::AppTransferDetails::new("transfer_id"));
     print_response(response);
 }
 
@@ -198,18 +184,18 @@ fn get_account_transfers<ApiClientType: HerokuApiClient>(api_client: &ApiClientT
 
 // Patch a specidic heroku account feature.
 fn patch_account_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let response = api_client.request(&account::AccountFeatureUpdate {
-        feature_id: String::from("team-internal-routing"),
-        params: account::AccountFeatureUpdateParams { enabled: false },
-    });
+    let feature_id = "team-internal-routing";
+    let enable = true;
+
+    let response = api_client.request(&account::AccountFeatureUpdate::new(feature_id, enable));
     print_response(response);
 }
 
 // Get a specidic heroku account feature.
 fn get_account_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let response = api_client.request(&account::AccountFeatureDetails {
-        feature_id: String::from("team-internal-routing"),
-    });
+    let response = api_client.request(&account::AccountFeatureDetails::new(
+        "team-internal-routing",
+    ));
     print_response(response);
 }
 
@@ -221,7 +207,7 @@ fn get_account_features<ApiClientType: HerokuApiClient>(api_client: &ApiClientTy
 
 // Delete heroku user account. NOTE that this action cannot be undone.
 fn delete_user_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let account_id = String::from("USER_ID_OR_EMAIL");
+    let account_id = "USER_ID_OR_EMAIL";
 
     let response = api_client.request(&account::UserAccountDelete { account_id });
     print_response(response);
@@ -229,22 +215,19 @@ fn delete_user_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientTyp
 
 // Patch heroku user account
 fn patch_user_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let account_id = String::from("USER_ID_OR_EMAIL");
-    let response = api_client.request(&account::UserAccountUpdate {
-        account_id,
-        params: account::UserAccountUpdateParams {
-            allow_tracking: Some(true),
-            beta: Some(false),
-            name: Some(String::from("Heroku-testing")),
-        },
-    });
+    let account_id = "USER_ID_OR_EMAIL";
+    let account_patch = &account::UserAccountUpdate::new(account_id)
+        .beta(false)
+        .allow_tracking(true)
+        .name("yet-another-name")
+        .build();
+    let response = api_client.request(account_patch);
     print_response(response);
 }
 
 // Get heroku user account by email or id
 fn get_user_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let account_id = String::from("USER_ID_OR_EMAIL");
-    let response = api_client.request(&account::UserAccountDetails { account_id });
+    let response = api_client.request(&account::UserAccountDetails::new("USER_ID_OR_EMAIL"));
     print_response(response);
 }
 
@@ -256,13 +239,13 @@ fn delete_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
 // Patch heroku account
 fn patch_account<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let response = api_client.request(&account::AccountUpdate {
-        params: account::AccountUpdateParams {
-            allow_tracking: Some(true),
-            beta: Some(false),
-            name: Some(String::from("Heroku-test")),
-        },
-    });
+    let patch = &account::AccountUpdate::new()
+        .allow_tracking(true)
+        .beta(false)
+        .name("heroku-examples-new-name")
+        .build();
+    let response = api_client.request(patch);
+
     print_response(response);
 }
 
