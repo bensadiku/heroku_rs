@@ -278,27 +278,14 @@ fn create_app_domain<T: HerokuApiClient>(api_client: &T, app_id: String) {
 
 /// Get a list of build pack installations
 fn get_buildpack_installations<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let response = api_client.request(&builds::BuildPackInstallationList { app_id });
+    let response = api_client.request(&builds::BuildPackInstallationList::new(&app_id));
     print_response(response);
 }
 
 /// Update build pack installations
-fn update_buildpack_installation<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let buildpack_ruby = String::from("https://github.com/heroku/heroku-buildpack-ruby");
-    let buildpack_python = String::from("https://github.com/heroku/heroku-buildpack-python");
-    // let updates = vec![
-    //     builds::Update {
-    //         buildpack: buildpack_ruby,
-    //     },
-    //     builds::Update {
-    //         buildpack: buildpack_python,
-    //     },
-    // ];
-
-    // let response = api_client.request(&builds::BuildpackInstallationUpdate {
-    //     app_id,
-    //     params: builds::BuildpackInstallationUpdateParams { updates },
-    // });
+fn update_buildpack_installation<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    let buildpack_ruby = "https://github.com/heroku/heroku-buildpack-ruby";
+    let buildpack_python = "https://github.com/heroku/heroku-buildpack-python";
 
     let builpack_list = vec![buildpack_ruby, buildpack_python];
     let response = api_client.request(&builds::BuildpackInstallationUpdate::new(
@@ -309,44 +296,29 @@ fn update_buildpack_installation<T: HerokuApiClient>(api_client: &T, app_id: Str
 }
 
 /// Delete build cache
-fn delete_app_build<T: HerokuApiClient>(api_client: &T, app_id: String) {
+fn delete_app_build<T: HerokuApiClient>(api_client: &T, app_id: &str) {
     let response = api_client.request(&builds::BuildDelete { app_id });
     print_response(response);
 }
 
 /// Gets info about a specific build
-fn get_app_build<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let build_id = String::from("Build_ID");
+fn get_app_build<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    let build_id = "Build_ID";
     let response = api_client.request(&builds::BuildDetails { app_id, build_id });
     print_response(response);
 }
 
 /// Gets a list of builds
-fn get_app_builds<T: HerokuApiClient>(api_client: &T, app_id: String) {
+fn get_app_builds<T: HerokuApiClient>(api_client: &T, app_id: &str) {
     let response = api_client.request(&builds::BuildList { app_id });
     print_response(response);
 }
 
 /// Create a new build
-fn create_app_build<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    // let response = api_client.request(&builds::BuildCreate {
-    //     app_id: app_name,
-    //     params: builds::BuildCreateParams {
-    //         buildpacks: None,
-    //         source_blob: builds::SourceBlobParam {
-    //             checksum: Some(String::from(
-    //                 "SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    //             )),
-    //             url: String::from("https://example.com/source.tgz?token=xyz"),
-    //             version: Some(String::from("2")),
-    //         },
-    //     },
-    // });
-
-    // `create` method takes only the required parameters
-    // see `new` to pass optional parameters too
-    let url = String::from("https://example.com/source.tgz?token=xyz");
-    let response = api_client.request(&builds::BuildCreate::create(app_name, url));
+fn create_app_build<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: &str) {
+    // `new` method takes only the required parameters
+    let blob_url = "https://example.com/source.tgz?token=xyz";
+    let response = api_client.request(&builds::BuildCreate::new(app_name, blob_url));
     print_response(response);
 }
 

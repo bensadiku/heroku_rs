@@ -8,38 +8,17 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new build.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-create)
-pub struct BuildCreate {
+pub struct BuildCreate<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: BuildCreateParams,
+    pub params: BuildCreateParams<'a>,
 }
 
-impl BuildCreate {
-    /// Create a new build with required and optional parameters
-    /// NOTE: Fields that are not passed are sent as NULL to the api.
-    pub fn new(
-        app_id: String,
-        source_blob_checksum: Option<String>,
-        source_blob_url: String,
-        source_blob_version: Option<String>,
-        buildpacks: Option<Vec<BuildpackParam>>,
-    ) -> BuildCreate {
-        BuildCreate {
-            app_id,
-            params: BuildCreateParams {
-                buildpacks: buildpacks,
-                source_blob: SourceBlobParam {
-                    checksum: source_blob_checksum,
-                    url: source_blob_url,
-                    version: source_blob_version,
-                },
-            },
-        }
-    }
-
+impl<'a> BuildCreate<'a> {
     /// Create a new build only with required parameters
-    pub fn create(app_id: String, source_blob_url: String) -> BuildCreate {
+    /// NOTE: Fields that are not passed are sent as NULL to the api.
+    pub fn new(app_id: &'a str, source_blob_url: &'a str) -> BuildCreate<'a> {
         BuildCreate {
             app_id,
             params: BuildCreateParams {
@@ -52,45 +31,73 @@ impl BuildCreate {
             },
         }
     }
+
+    pub fn checksum(&mut self, checksum: &'a str) -> &mut Self {
+        self.params.source_blob.checksum = Some(checksum);
+        self
+    }
+    pub fn version(&mut self, version: &'a str) -> &mut Self {
+        self.params.source_blob.version = Some(version);
+        self
+    }
+
+    pub fn buildpack(&mut self, url: &'a str, name: &'a str) -> &mut Self {
+        self.params.buildpacks = Some(vec![BuildpackParam { url, name }]);
+        self
+    }
+
+    pub fn build(&self) -> BuildCreate<'a> {
+        BuildCreate {
+            app_id: self.app_id,
+            params: BuildCreateParams {
+                buildpacks: self.params.buildpacks.clone(),
+                source_blob: SourceBlobParam {
+                    checksum: self.params.source_blob.checksum,
+                    url: self.params.source_blob.url,
+                    version: self.params.source_blob.version,
+                },
+            },
+        }
+    }
 }
 
 /// Create build with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct BuildCreateParams {
+pub struct BuildCreateParams<'a> {
     /// Buildpacks are optional parameters
     /// https://devcenter.heroku.com/articles/platform-api-reference#build-create-optional-parameters
-    pub buildpacks: Option<Vec<BuildpackParam>>,
-    pub source_blob: SourceBlobParam,
+    pub buildpacks: Option<Vec<BuildpackParam<'a>>>,
+    pub source_blob: SourceBlobParam<'a>,
 }
 
 #[derive(Serialize, Clone, Debug)]
-pub struct SourceBlobParam {
+pub struct SourceBlobParam<'a> {
     /// an optional checksum of the gzipped tarball for verifying its integrity [Nullable]
-    pub checksum: Option<String>,
+    pub checksum: Option<&'a str>,
     /// URL where gzipped tar archive of source code for build was downloaded.
-    pub url: String,
+    pub url: &'a str,
     /// Version of the gzipped tarball. [Nullable]
-    pub version: Option<String>,
+    pub version: Option<&'a str>,
 }
 
 #[derive(Serialize, Clone, Debug)]
-pub struct BuildpackParam {
+pub struct BuildpackParam<'a> {
     /// location of the buildpack for the app. Either a url (unofficial buildpacks) or an internal urn (heroku official buildpacks).
-    pub url: String,
+    pub url: &'a str,
     /// either the Buildpack Registry name or a URL of the buildpack for the app
-    pub name: String,
+    pub name: &'a str,
 }
 
-impl HerokuEndpoint<Build, (), BuildCreateParams> for BuildCreate {
+impl<'a> HerokuEndpoint<Build, (), BuildCreateParams<'a>> for BuildCreate<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("apps/{}/builds", self.app_id)
     }
-    fn body(&self) -> Option<BuildCreateParams> {
+    fn body(&self) -> Option<BuildCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
