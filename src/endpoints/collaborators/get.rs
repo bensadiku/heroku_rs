@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// List existing collaborators.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-list)
-pub struct CollaboratorList {
+pub struct CollaboratorList<'a> {
     /// app_id can be the app name or id.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl CollaboratorList {
-    pub fn new(app_id: String) -> CollaboratorList {
+impl<'a> CollaboratorList<'a> {
+    pub fn new(app_id: &'a str) -> CollaboratorList {
         CollaboratorList { app_id }
     }
 }
 
-impl HerokuEndpoint<Vec<Collaborator>> for CollaboratorList {
+impl<'a> HerokuEndpoint<Vec<Collaborator>> for CollaboratorList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -34,15 +34,15 @@ impl HerokuEndpoint<Vec<Collaborator>> for CollaboratorList {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-info)
 ///
-pub struct CollaboratorDetails {
+pub struct CollaboratorDetails<'a> {
     /// app_id can be the app name or id.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// collaborator_id can be the collaborator email or id.
-    pub collaborator_id: String,
+    pub collaborator_id: &'a str,
 }
 
-impl CollaboratorDetails {
-    pub fn new(app_id: String, collaborator_id: String) -> CollaboratorDetails {
+impl<'a> CollaboratorDetails<'a> {
+    pub fn new(app_id: &'a str, collaborator_id: &'a str) -> CollaboratorDetails<'a> {
         CollaboratorDetails {
             app_id,
             collaborator_id,
@@ -50,7 +50,7 @@ impl CollaboratorDetails {
     }
 }
 
-impl HerokuEndpoint<Collaborator> for CollaboratorDetails {
+impl<'a> HerokuEndpoint<Collaborator> for CollaboratorDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

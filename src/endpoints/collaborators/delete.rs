@@ -8,15 +8,15 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing collaborator.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-delete)
-pub struct CollaboratorDelete {
+pub struct CollaboratorDelete<'a> {
     /// app_id can be the app name or id.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// collaborator_id can be the collaborator email or id.
-    pub collaborator_id: String,
+    pub collaborator_id: &'a str,
 }
 
-impl CollaboratorDelete {
-    pub fn new(app_id: String, collaborator_id: String) -> CollaboratorDelete {
+impl<'a> CollaboratorDelete<'a> {
+    pub fn new(app_id: &'a str, collaborator_id: &'a str) -> CollaboratorDelete<'a> {
         CollaboratorDelete {
             app_id,
             collaborator_id,
@@ -24,7 +24,7 @@ impl CollaboratorDelete {
     }
 }
 
-impl HerokuEndpoint<Collaborator> for CollaboratorDelete {
+impl<'a> HerokuEndpoint<Collaborator> for CollaboratorDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }
