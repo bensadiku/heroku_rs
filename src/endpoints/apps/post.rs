@@ -9,30 +9,44 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-create)
-pub struct AppCreate {
+pub struct AppCreate<'a> {
     /// The parameters to pass to the Heroku API
-    pub params: AppCreateParams,
+    pub params: AppCreateParams<'a>,
 }
 
-impl AppCreate {
-    /// Create a new Heroku app with parameters
-    pub fn new(name: Option<String>, region: Option<String>, stack: Option<String>) -> AppCreate {
-        AppCreate {
-            params: AppCreateParams {
-                name,
-                region,
-                stack,
-            },
-        }
-    }
-
+impl<'a> AppCreate<'a> {
     /// Create a new Heroku app without parameters
-    pub fn create() -> AppCreate {
+    pub fn new() -> AppCreate<'a> {
         AppCreate {
             params: AppCreateParams {
                 name: None,
                 region: None,
                 stack: None,
+            },
+        }
+    }
+
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+
+    pub fn region(&mut self, region: &'a str) -> &mut Self {
+        self.params.region = Some(region);
+        self
+    }
+
+    pub fn stack(&mut self, stack: &'a str) -> &mut Self {
+        self.params.stack = Some(stack);
+        self
+    }
+
+    pub fn build(&self) -> AppCreate<'a> {
+        AppCreate {
+            params: AppCreateParams {
+                name: self.params.name,
+                region: self.params.region,
+                stack: self.params.stack,
             },
         }
     }
@@ -45,23 +59,23 @@ impl AppCreate {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-create-optional-parameters)
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct AppCreateParams {
+pub struct AppCreateParams<'a> {
     /// name of app. pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
-    pub name: Option<String>,
+    pub name: Option<&'a str>,
     /// unique identifier or name of region
-    pub region: Option<String>,
+    pub region: Option<&'a str>,
     /// unique name or identifier of stack
-    pub stack: Option<String>,
+    pub stack: Option<&'a str>,
 }
 
-impl HerokuEndpoint<App, (), AppCreateParams> for AppCreate {
+impl<'a> HerokuEndpoint<App, (), AppCreateParams<'a>> for AppCreate<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("apps")
     }
-    fn body(&self) -> Option<AppCreateParams> {
+    fn body(&self) -> Option<AppCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -71,18 +85,18 @@ impl HerokuEndpoint<App, (), AppCreateParams> for AppCreate {
 /// Enable ACM flag for an app
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-enable-acm)
-pub struct AppEnableAcm {
+pub struct AppEnableAcm<'a> {
     /// app_id can be the app id or name.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl AppEnableAcm {
-    pub fn new(app_id: String) -> AppEnableAcm {
+impl<'a> AppEnableAcm<'a> {
+    pub fn new(app_id: &'a str) -> AppEnableAcm<'a> {
         AppEnableAcm { app_id }
     }
 }
 
-impl HerokuEndpoint<App> for AppEnableAcm {
+impl<'a> HerokuEndpoint<App> for AppEnableAcm<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
@@ -96,41 +110,21 @@ impl HerokuEndpoint<App> for AppEnableAcm {
 /// Create an app webhook subscription.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create)
-pub struct AppWebhookCreate {
+pub struct AppWebhookCreate<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: AppWebhookCreateParams,
+    pub params: AppWebhookCreateParams<'a>,
 }
 
-impl AppWebhookCreate {
-    /// Create a new webhook with optional parameters
-    pub fn new(
-        app_id: String,
-        authorization: Option<String>,
-        include: Vec<String>,
-        level: String,
-        secret: Option<String>,
-        url: String,
-    ) -> AppWebhookCreate {
-        AppWebhookCreate {
-            app_id,
-            params: AppWebhookCreateParams {
-                authorization,
-                include,
-                level,
-                secret,
-                url,
-            },
-        }
-    }
+impl<'a> AppWebhookCreate<'a> {
     /// Create a new webhook without optional parameters
-    pub fn create(
-        app_id: String,
-        include: Vec<String>,
-        level: String,
-        url: String,
-    ) -> AppWebhookCreate {
+    pub fn new(
+        app_id: &'a str,
+        include: Vec<&'a str>,
+        level: &'a str,
+        url: &'a str,
+    ) -> AppWebhookCreate<'a> {
         AppWebhookCreate {
             app_id: app_id,
             params: AppWebhookCreateParams {
@@ -142,34 +136,57 @@ impl AppWebhookCreate {
             },
         }
     }
+
+    pub fn authorization(&mut self, authorization: &'a str) -> &mut Self {
+        self.params.authorization = Some(authorization);
+        self
+    }
+
+    pub fn secret(&mut self, secret: &'a str) -> &mut Self {
+        self.params.secret = Some(secret);
+        self
+    }
+
+    pub fn build(&self) -> AppWebhookCreate<'a> {
+        AppWebhookCreate {
+            app_id: self.app_id,
+            params: AppWebhookCreateParams {
+                authorization: self.params.authorization,
+                include: self.params.include.clone(),
+                level: self.params.level,
+                secret: self.params.secret,
+                url: self.params.url,
+            },
+        }
+    }
 }
 
 /// Create a new app webhook with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct AppWebhookCreateParams {
+pub struct AppWebhookCreateParams<'a> {
     /// A custom Authorization header that Heroku will include with all webhook notifications
-    pub authorization: Option<String>,
+    pub authorization: Option<&'a str>,
     /// The entities that the subscription provides notifications for
-    pub include: Vec<String>,
+    pub include: Vec<&'a str>,
     /// One of: "notify" or "sync"
     /// If notify, Heroku makes a single, fire-and-forget delivery attempt. If sync, Heroku attempts multiple deliveries until the request is successful or a limit is reached
-    pub level: String,
+    pub level: &'a str,
     /// A value that Heroku will use to sign all webhook notification requests (the signature is included in the request’s Heroku-Webhook-Hmac-SHA256 header)
-    pub secret: Option<String>,
+    pub secret: Option<&'a str>,
     /// The URL where the webhook’s notification requests are sent
-    pub url: String,
+    pub url: &'a str,
 }
 
-impl HerokuEndpoint<AppWebhook, (), AppWebhookCreateParams> for AppWebhookCreate {
+impl<'a> HerokuEndpoint<AppWebhook, (), AppWebhookCreateParams<'a>> for AppWebhookCreate<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("apps/{}/webhooks", self.app_id)
     }
-    fn body(&self) -> Option<AppWebhookCreateParams> {
+    fn body(&self) -> Option<AppWebhookCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -185,68 +202,89 @@ pub struct AppSetupCreate<'a> {
 }
 
 impl<'a> AppSetupCreate<'a> {
-    /// Create a new Heroku app with required  and optional parameters
-    // :| needs a better solution. Builder pattern?
-    pub fn new(
-        locked: Option<bool>,
-        name: Option<&'a str>,
-        organization: Option<&'a str>,
-        personal: Option<bool>,
-        region: Option<&'a str>,
-        space: Option<&'a str>,
-        stack: Option<&'a str>,
-        checksum: Option<&'a str>,
-        url: &'a str,
-        version: Option<&'a str>,
-        buildpacks_list: Option<Vec<&'a str>>,
-        env: Option<HashMap<&'a str, &'a str>>,
-    ) -> AppSetupCreate<'a> {
-        let buildpacks: Option<Vec<Buildpack>> = match buildpacks_list {
-            Some(buidpacks) => {
-                let mut buildpacks: Vec<Buildpack> = Vec::new();
-                for var in buidpacks {
-                    buildpacks.push(Buildpack { url: var });
-                }
-                Some(buildpacks)
-            }
-            None => None,
-        };
+    /// Create a new setup app with required parameters only
+    pub fn new(url: &'a str) -> AppSetupCreate<'a> {
         AppSetupCreate {
             params: AppSetupCreateParams {
-                app: Some(SetupApp {
-                    locked,
-                    name,
-                    organization,
-                    personal,
-                    region,
-                    space,
-                    stack,
-                }),
-                source_blob: SourceBlob {
-                    checksum,
-                    url,
-                    version,
+                app: SetupApp {
+                    locked: None,
+                    name: None,
+                    organization: None,
+                    personal: None,
+                    region: None,
+                    space: None,
+                    stack: None,
                 },
-                overrides: Some(Overrides { buildpacks, env }),
+                source_blob: SourceBlob {
+                    checksum: None,
+                    url: url,
+                    version: None,
+                },
+                overrides: Overrides {
+                    buildpacks: None,
+                    env: None,
+                },
             },
         }
     }
 
-    /// Create a new setup app with required parameters only
-    pub fn create(
-        checksum: Option<&'a str>,
-        url: &'a str,
-        version: Option<&'a str>,
-    ) -> AppSetupCreate<'a> {
+    pub fn version(&mut self, version: &'a str) -> &mut Self {
+        self.params.source_blob.version = Some(version);
+        self
+    }
+    pub fn checksum(&mut self, checksum: &'a str) -> &mut Self {
+        self.params.source_blob.checksum = Some(checksum);
+        self
+    }
+
+    pub fn locked(&mut self, locked: bool) -> &mut Self {
+        self.params.app.locked = Some(locked);
+        self
+    }
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.app.name = Some(name);
+        self
+    }
+    pub fn organization(&mut self, organization: &'a str) -> &mut Self {
+        self.params.app.organization = Some(organization);
+        self
+    }
+    pub fn personal(&mut self, personal: bool) -> &mut Self {
+        self.params.app.personal = Some(personal);
+        self
+    }
+    pub fn region(&mut self, region: &'a str) -> &mut Self {
+        self.params.app.region = Some(region);
+        self
+    }
+    pub fn space(&mut self, space: &'a str) -> &mut Self {
+        self.params.app.space = Some(space);
+        self
+    }
+    pub fn stack(&mut self, stack: &'a str) -> &mut Self {
+        self.params.app.stack = Some(stack);
+        self
+    }
+
+    pub fn buildpacks(&mut self, buildpacks_list: Vec<&'a str>) -> &mut Self {
+        let mut buildpacks: Vec<Buildpack> = Vec::new();
+        for var in buildpacks_list {
+            buildpacks.push(Buildpack { url: var });
+        }
+        self.params.overrides.buildpacks = Some(buildpacks);
+        self
+    }
+    pub fn env(&mut self, env: HashMap<&'a str, &'a str>) -> &mut Self {
+        self.params.overrides.env = Some(env);
+        self
+    }
+    /// Create a new Heroku app with required  and optional parameters
+    pub fn build(&self) -> AppSetupCreate<'a> {
         AppSetupCreate {
             params: AppSetupCreateParams {
-                app: None,
-                source_blob: SourceBlob {
-                    checksum,
-                    url,
-                    version,
-                },
-                overrides: None,
+                app: self.params.app.clone(),
+                source_blob: self.params.source_blob.clone(),
+                overrides: self.params.overrides.clone(),
             },
         }
     }
@@ -260,9 +298,9 @@ impl<'a> AppSetupCreate<'a> {
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
 pub struct AppSetupCreateParams<'a> {
-    pub app: Option<SetupApp<'a>>,
+    pub app: SetupApp<'a>,
     pub source_blob: SourceBlob<'a>,
-    pub overrides: Option<Overrides<'a>>,
+    pub overrides: Overrides<'a>,
 }
 
 #[serde_with::skip_serializing_none]
@@ -389,22 +427,6 @@ impl<'a> SSLCreate<'a> {
         app_id: &'a str,
         certificate_chain: &'a str,
         private_key: &'a str,
-        preprocess: Option<bool>,
-    ) -> SSLCreate<'a> {
-        SSLCreate {
-            app_id,
-            params: SSLCreateParams {
-                certificate_chain,
-                private_key,
-                preprocess,
-            },
-        }
-    }
-    /// Create a new Heroku app SSL with required parameters only
-    pub fn create(
-        app_id: &'a str,
-        certificate_chain: &'a str,
-        private_key: &'a str,
     ) -> SSLCreate<'a> {
         SSLCreate {
             app_id,
@@ -412,6 +434,21 @@ impl<'a> SSLCreate<'a> {
                 certificate_chain: certificate_chain,
                 private_key: private_key,
                 preprocess: None,
+            },
+        }
+    }
+
+    pub fn preprocess(&mut self, preprocess: bool) -> &mut Self {
+        self.params.preprocess = Some(preprocess);
+        self
+    }
+    pub fn build(&self) -> SSLCreate<'a> {
+        SSLCreate {
+            app_id: self.app_id,
+            params: SSLCreateParams {
+                certificate_chain: self.params.certificate_chain,
+                private_key: self.params.private_key,
+                preprocess: self.params.preprocess,
             },
         }
     }

@@ -18,7 +18,7 @@ mod tests {
     fn assert_valid_url_get_app_details() {
         let app_id = "123xyz";
         let response = util::get_client().request(&apps::AppDetails {
-            app_id: app_id.to_owned(),
+            app_id: app_id,
         });
         let endpoint = format!("{}{}", "apps/", app_id);
         assert_valid_url(response, endpoint)

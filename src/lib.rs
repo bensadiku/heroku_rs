@@ -17,8 +17,6 @@
 //!
 //! Creating the Heroku client only takes 1 line. This client has the default 30s http timeout and points to the production Heroku API.
 //!
-//! If you wish to custumize the http timeout or the base endpoint. See the Example 2
-//!
 //! # Example 1 - Creating a simple client
 //!
 //! ```rust
@@ -32,32 +30,9 @@
 //!    Ok(())
 //! }
 //! ```
-//! In order to have a fully functional custom client you need to specify three things. [Credentials][credentials], [HttpApiClientConfig][httpApiClientConfig] and [ApiEnvironment][apiEnviroment]
+//! If you want a custom client, you need to specify three things. [Credentials][credentials], [HttpApiClientConfig][httpApiClientConfig] and [ApiEnvironment][apiEnviroment] See this [example][example_custom]
+//! 
 //!
-//! # Example 2 - Creating a custom client
-//! ```
-//! use heroku_rs::framework::{
-//! auth::Credentials,
-//! apiclient::HerokuApiClient,
-//! ApiEnvironment, HttpApiClient, HttpApiClientConfig,
-//! };
-//!
-//! use heroku_rs::endpoints::apps;
-//!
-//! fn main() -> Result<(), Box<dyn std::error::Error>> {
-//!
-//!   let api_client = HttpApiClient::create("API_KEY")?;
-//!   
-//!   let response = api_client.request(&apps::AppList {});
-//!   
-//!   match response {
-//!       Ok(success) => println!("Success: {:#?}", success),
-//!       Err(e) => println!("Error: {}", e),
-//!   }
-//!   
-//!   Ok(())
-//! }
-//! ```
 //! ## Making a GET request to Heroku.
 //!
 //!
@@ -93,23 +68,14 @@
 //! If you can see the `params` parameter in this example, it takes three fields, all three are optional, matched from the Heroku documentation.
 //!
 //! ```rust
-//!use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
-//!use heroku_rs::endpoints::apps;
+//!use heroku_rs::prelude::*;
 //!
 //!# fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!#
 //!    let api_client = HttpApiClient::create("API_KEY")?;
 //!
-//!    let app_name = String::from("FOO");
-//!
-//!    let response = api_client.request(&apps::AppCreate {
-//!        // This will create an app with the name name `FOO_APP`
-//!        params: apps::AppCreateParams {
-//!            name: Some(app_name),
-//!            region: None,
-//!            stack: None,
-//!        },
-//!    });
+//!    let new_app = &apps::AppCreate::new().name("FOO").build();
+//!    let response = api_client.request(new_app);
 //!
 //!    match response {
 //!       Ok(success) => println!("Success: {:#?}", success),
@@ -130,17 +96,14 @@
 //!
 //!
 //! ```rust
-//!use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
-//!use heroku_rs::endpoints::apps;
+//!use heroku_rs::prelude::*;
 //!
 //!# fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!
 //!    let api_client = HttpApiClient::create("API_KEY")?;
 //!
-//!    let app_id = String::from("FOO");
-//!
 //!    // This will delete the `FOO` app.
-//!    let response = api_client.request(&apps::AppDelete { app_id });
+//!    let response = api_client.request(&apps::AppDelete::new("FOO"));
 //!
 //!    match response {
 //!       Ok(success) => println!("Success: {:#?}", success),
@@ -155,28 +118,20 @@
 //! ## Making PATCH requests to Heroku.
 //!
 //!
-//! Similar to POST requests, Some PATCH requests do not need body paramers.
-//!
+//! Similar to POST requests, Some PATCH requests do not need body paramers, in this case we are updating the app name from "FOO" to "BAZ" and turning maintenance off.
 //!
 //! ```rust
-//!use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
-//!use heroku_rs::endpoints::apps;
+//!use heroku_rs::prelude::*;
 //!
 //!# fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!
 //!    let api_client = HttpApiClient::create("API_KEY")?;
 //!
-//!    let app_id = String::from("FOO");
-//!
-//!    // This will enable maintenance for the "FOO" app.
-//!     let response = api_client.request(&apps::AppUpdate {
-//!         app_id,
-//!         params: apps::AppUpdateParams {
-//!             build_stack: None,
-//!             maintenance: Some(true),
-//!             name: None,
-//!         },
-//!     });
+//!    let patch = &apps::AppUpdate::new("FOO")
+//!         .name("BAZ")
+//!         .maintenance(false)
+//!         .build();
+//!    let response = api_client.request(patch);
 //!
 //!    match response {
 //!       Ok(success) => println!("Success: {:#?}", success),
@@ -194,6 +149,7 @@
 //! [apiEnviroment]: framework/enum.ApiEnvironment.html
 //! [httpApiClientConfig]: framework/struct.HttpApiClientConfig.html
 //! [credentials]: framework/auth/enum.Credentials.html
+//! [example_custom]: https://github.com/bensadiku/heroku_rs/blob/5d26382089b608cc7dcb08ebd921aa7320e228f8/examples/src/main.rs#L57
 
 extern crate chrono;
 extern crate reqwest;

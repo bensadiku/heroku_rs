@@ -106,18 +106,13 @@ fn get_app_webhook_events<T: HerokuApiClient>(api_client: &T, app_id: String) {
 
 // Update app SSL
 fn update_app_ssl<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let certificate_chain = Some("chain_here");
-    let private_key = Some("key_here");
     let ssl_id = "123";
-    // `create` method takes only the required parameters
-    // see `new` to pass optional parameters too
-    let response = api_client.request(&apps::SSLUpdate::new(
-        &app_id,
-        ssl_id,
-        certificate_chain,
-        private_key,
-        None,
-    ));
+    // `new` method takes only the required parameters
+    let update_ssl = &apps::SSLUpdate::new(&app_id, ssl_id)
+        .certificate_chain("chain_here")
+        .private_key("key_here")
+        .build();
+    let response = api_client.request(update_ssl);
     print_response(response);
 }
 
@@ -125,9 +120,8 @@ fn update_app_ssl<T: HerokuApiClient>(api_client: &T, app_id: String) {
 fn create_app_ssl<T: HerokuApiClient>(api_client: &T, app_id: String) {
     let certificate_chain = "chain_here";
     let private_key = "key_here";
-    // `create` method takes only the required parameters
-    // see `new` to pass optional parameters too
-    let response = api_client.request(&apps::SSLCreate::create(
+    // `new` method takes only the required parameters
+    let response = api_client.request(&apps::SSLCreate::new(
         &app_id,
         certificate_chain,
         private_key,
@@ -203,15 +197,19 @@ fn create_app_sni<T: HerokuApiClient>(api_client: &T, app_id: String) {
 
 // get info about a app setup
 fn get_app_setup<T: HerokuApiClient>(api_client: &T) {
-    let setup_id = String::from("APP_SETUP_ID");
-    let response = api_client.request(&apps::AppSetupDetails { setup_id });
+    let setup_id = "APP_SETUP_ID";
+    let response = api_client.request(&apps::AppSetupDetails::new(setup_id));
     print_response(response);
 }
 
 // create app setup
 fn create_app_setup<T: HerokuApiClient>(api_client: &T) {
     let source_blob_url = "https://github.com/heroku/ruby-rails-sample/tarball/master/";
-    let response = api_client.request(&apps::AppSetupCreate::create(None, source_blob_url, None));
+    let new_app_setup = &apps::AppSetupCreate::new(source_blob_url)
+        .locked(true)
+        .name("gotye-probably")
+        .build();
+    let response = api_client.request(new_app_setup);
     print_response(response);
 }
 
@@ -357,157 +355,120 @@ fn get_app_webhook_deliveries<ApiClientType: HerokuApiClient>(
     api_client: &ApiClientType,
     app_name: String,
 ) {
-    let response = api_client.request(&apps::AppWebhookDeliveryList { app_id: app_name });
+    let response = api_client.request(&apps::AppWebhookDeliveryList { app_id: &app_name });
     print_response(response);
 }
 
 /// Gets details about a specific webhook delivery.
-fn get_app_webhook_delivery<ApiClientType: HerokuApiClient>(
-    api_client: &ApiClientType,
-    app_name: String,
-) {
-    let webhook_id = String::from("WEBHOOK_DELIVERY_ID");
-    let response = api_client.request(&apps::AppWebhookDetails {
-        app_id: app_name,
-        webhook_id: webhook_id,
-    });
+fn get_app_webhook_delivery<T: HerokuApiClient>(api_client: &T, app_name: String) {
+    let webhook_id = "WEBHOOK_DELIVERY_ID";
+    let response = api_client.request(&apps::AppWebhookDetails::new(&app_name, webhook_id));
+
     print_response(response);
 }
 
 /// Patch a specific webhook.
 fn patch_app_webhook<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let webhook_id = String::from("WEBHOOK_ID");
-    let webhook_include = vec!["api:release".to_owned()];
-    let webhook_level = String::from("notify");
-    let webhook_url = String::from("https://www.bing.com");
-    let response = api_client.request(&apps::AppWebhookUpdate {
-        app_id: app_name,
-        webhook_id: webhook_id,
-        params: apps::AppWebhookUpdateParams {
-            authorization: None,
-            include: Some(webhook_include),
-            level: Some(webhook_level),
-            secret: None,
-            url: Some(webhook_url),
-        },
-    });
+    let webhook_id = "WEBHOOK_ID";
+    let update_app_webhook = &apps::AppWebhookUpdate::new(&app_name, webhook_id)
+        .include(vec!["api:release"])
+        .level("notify")
+        .url("https://www.bing.com")
+        .build();
+
+    let response = api_client.request(update_app_webhook);
     print_response(response);
 }
 
 /// Gets details about a specific webhook.
 fn get_app_webhook<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let webhook_id = String::from("WEBHOOK_ID");
-    let response = api_client.request(&apps::AppWebhookDetails {
-        app_id: app_name,
-        webhook_id: webhook_id,
-    });
+    let webhook_id = "WEBHOOK_ID";
+    let response = api_client.request(&apps::AppWebhookDetails::new(&app_name, webhook_id));
     print_response(response);
 }
 
 /// Gets a list of all webhooks that are available in the specified app.
 fn get_app_webhooks<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppWebhookList { app_id: app_name });
+    let response = api_client.request(&apps::AppWebhookList::new(&app_name));
     print_response(response);
 }
 
 /// Delete a specific app webhook by id
-fn delete_app_webhook<ApiClientType: HerokuApiClient>(
-    api_client: &ApiClientType,
-    app_name: String,
-) {
-    let webhook_id = String::from("WEBHOOK_ID");
-    let response = api_client.request(&apps::AppWebhookDelete {
-        app_id: app_name,
-        webhook_id: webhook_id,
-    });
+fn delete_app_webhook<T: HerokuApiClient>(api_client: &T, app_name: String) {
+    let webhook_id = "WEBHOOK_ID";
+    let response = api_client.request(&apps::AppWebhookDelete::new(&app_name, webhook_id));
     print_response(response);
 }
 
 /// Create a new app webhook
-fn create_app_webhook<ApiClientType: HerokuApiClient>(
-    api_client: &ApiClientType,
-    app_name: String,
-) {
-    let response = api_client.request(&apps::AppWebhookCreate {
-        app_id: app_name,
-        params: apps::AppWebhookCreateParams {
-            authorization: None,
-            include: vec!["api:release".to_owned()],
-            level: String::from("notify"),
-            secret: None,
-            url: String::from("https://www.google.com"),
-        },
-    });
+fn create_app_webhook<T: HerokuApiClient>(api_client: &T, app_name: String) {
+    let webhook = &apps::AppWebhookCreate::new(
+        &app_name,
+        vec!["api:release"],
+        "notify",
+        "https://www.google.com",
+    );
+
+    let response = api_client.request(webhook);
     print_response(response);
 }
 
 fn patch_app_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppFeatureUpdate {
-        app_id: app_name,
-        feature_id: String::from("spaces-dns-discovery"),
-        params: apps::AppFeatureUpdateParams { enabled: false },
-    });
+    let update_feature = &apps::AppFeatureUpdate::new(&app_name, "spaces-dns-discovery", false);
+    let response = api_client.request(update_feature);
     print_response(response);
 }
 
 fn get_app_feature<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
     let response = api_client.request(&apps::AppFeatureDetails {
-        app_id: app_name,
-        feature_id: String::from("spaces-dns-discovery"),
+        app_id: &app_name,
+        feature_id: "spaces-dns-discovery",
     });
     print_response(response);
 }
 
 fn get_app_features<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppFeatureList { app_id: app_name });
+    let response = api_client.request(&apps::AppFeatureList { app_id: &app_name });
     print_response(response);
 }
 
 fn refresh_app_acm<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppRefreshAcm { app_id: app_name });
+    let response = api_client.request(&apps::AppRefreshAcm::new(&app_name));
     print_response(response);
 }
 
 fn disable_app_acm<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppDisableAcm { app_id: app_name });
+    let response = api_client.request(&apps::AppDisableAcm { app_id: &app_name });
     print_response(response);
 }
 
 fn enable_app_acm<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: String) {
-    let response = api_client.request(&apps::AppEnableAcm { app_id: app_name });
+    let response = api_client.request(&apps::AppEnableAcm::new(&app_name));
     print_response(response);
 }
 
-fn patch_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let response = api_client.request(&apps::AppUpdate {
-        app_id,
-        params: apps::AppUpdateParams {
-            build_stack: None,
-            maintenance: Some(false),
-            name: None,
-        },
-    });
+fn patch_app<T: HerokuApiClient>(api_client: &T, app_id: String) {
+    let patch = &apps::AppUpdate::new(&app_id)
+        .name("cool-name")
+        .maintenance(false)
+        .build();
+    let response = api_client.request(patch);
     print_response(response);
 }
 
 fn delete_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let response = api_client.request(&apps::AppDelete { app_id });
+    let response = api_client.request(&apps::AppDelete::new(&app_id));
     print_response(response);
 }
 
 fn create_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let response = api_client.request(&apps::AppCreate {
-        params: apps::AppCreateParams {
-            name: Some(app_id),
-            region: None,
-            stack: None,
-        },
-    });
+    let new_app = &apps::AppCreate::new().name(&app_id).build();
+    let response = api_client.request(new_app);
     print_response(response);
 }
 
 fn get_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: String) {
-    let response = api_client.request(&apps::AppDetails { app_id });
+    let response = api_client.request(&apps::AppDetails::new(&app_id));
     print_response(response);
 }
 
@@ -516,7 +477,7 @@ fn get_app_raw_response<ApiClientType: HerokuApiClient>(
     app_id: String,
 ) {
     // If successful, this returns a raw reqwest::blocking::response, do whatever with it!
-    let response = api_client.request_raw(&apps::AppDetails { app_id });
+    let response = api_client.request_raw(&apps::AppDetails::new(&app_id));
     match response {
         Ok(res) => println!("Ok: {:?}", res),
         Err(e) => println!("Error: {}", e),
@@ -524,8 +485,8 @@ fn get_app_raw_response<ApiClientType: HerokuApiClient>(
 }
 
 fn list_account_apps<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let account_id = String::from("my-heroku-email@here.io");
-    let resp = api_client.request(&apps::AccountAppList { account_id });
+    let account_id = "my-heroku-email@here.io";
+    let resp = api_client.request(&apps::AccountAppList::new(account_id));
     print_response(resp);
 }
 
