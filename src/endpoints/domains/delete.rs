@@ -8,20 +8,20 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing domain
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-delete)
-pub struct DomainDelete {
+pub struct DomainDelete<'a> {
     /// app_id can be the app name or id.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// domain_id can be the domain hostname or id.
-    pub domain_id: String,
+    pub domain_id: &'a str,
 }
 
-impl DomainDelete {
-    pub fn new(app_id: String, domain_id: String) -> DomainDelete {
+impl<'a> DomainDelete<'a> {
+    pub fn new(app_id: &'a str, domain_id: &'a str) -> DomainDelete<'a> {
         DomainDelete { app_id, domain_id }
     }
 }
 
-impl HerokuEndpoint<Domain> for DomainDelete {
+impl<'a> HerokuEndpoint<Domain> for DomainDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }

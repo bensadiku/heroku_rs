@@ -8,26 +8,45 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 ///
 /// Update process type
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-update)
-pub struct FormationUpdate {
+pub struct FormationUpdate<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
     /// formation_id can be the formation id or type
-    pub formation_id: String,
+    pub formation_id: &'a str,
     /// params are the parameters sent to the API to patch the Formation
-    pub params: FormationUpdateParams,
+    pub params: FormationUpdateParams<'a>,
 }
 
-impl FormationUpdate {
-    pub fn new(
-        app_id: String,
-        formation_id: String,
-        quantity: Option<i32>,
-        size: Option<String>,
-    ) -> FormationUpdate {
+impl<'a> FormationUpdate<'a> {
+    pub fn new(app_id: &'a str, formation_id: &'a str) -> FormationUpdate<'a> {
         FormationUpdate {
             app_id,
             formation_id,
-            params: FormationUpdateParams { quantity, size },
+            params: FormationUpdateParams {
+                quantity: None,
+                size: None,
+            },
+        }
+    }
+
+    pub fn size(&mut self, size: &'a str) -> &mut Self {
+        self.params.size = Some(size);
+        self
+    }
+
+    pub fn quantity(&mut self, quantity: i32) -> &mut Self {
+        self.params.quantity = Some(quantity);
+        self
+    }
+
+    pub fn build(&self) -> FormationUpdate<'a> {
+        FormationUpdate {
+            app_id: self.app_id,
+            formation_id: self.app_id,
+            params: FormationUpdateParams {
+                quantity: self.params.quantity,
+                size: self.params.size,
+            },
         }
     }
 }
@@ -37,21 +56,21 @@ impl FormationUpdate {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-update-optional-parameters)
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct FormationUpdateParams {
+pub struct FormationUpdateParams<'a> {
     /// number of processes to maintain
     pub quantity: Option<i32>,
     /// dyno size
-    pub size: Option<String>,
+    pub size: Option<&'a str>,
 }
 
-impl HerokuEndpoint<Formation, (), FormationUpdateParams> for FormationUpdate {
+impl<'a> HerokuEndpoint<Formation, (), FormationUpdateParams<'a>> for FormationUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
     fn path(&self) -> String {
         format!("apps/{}/formation/{}", self.app_id, self.formation_id)
     }
-    fn body(&self) -> Option<FormationUpdateParams> {
+    fn body(&self) -> Option<FormationUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }

@@ -7,20 +7,20 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Restart dyno.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-restart)
-pub struct DynoRestart {
+pub struct DynoRestart<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
     /// dyno_id can be the dyno name or the dyno id
-    pub dyno_id: String,
+    pub dyno_id: &'a str,
 }
 
-impl DynoRestart {
-    pub fn new(app_id: String, dyno_id: String) -> DynoRestart {
+impl<'a> DynoRestart<'a> {
+    pub fn new(app_id: &'a str, dyno_id: &'a str) -> DynoRestart<'a> {
         DynoRestart { app_id, dyno_id }
     }
 }
 
-impl HerokuEndpoint for DynoRestart {
+impl<'a> HerokuEndpoint for DynoRestart<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }
@@ -34,18 +34,18 @@ impl HerokuEndpoint for DynoRestart {
 /// Restart all dynos.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-restart-all)
-pub struct DynoAllRestart {
+pub struct DynoAllRestart<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl DynoAllRestart {
-    pub fn new(app_id: String) -> DynoAllRestart {
+impl<'a> DynoAllRestart<'a> {
+    pub fn new(app_id: &'a str) -> DynoAllRestart<'a> {
         DynoAllRestart { app_id }
     }
 }
 
-impl HerokuEndpoint for DynoAllRestart {
+impl<'a> HerokuEndpoint for DynoAllRestart<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }

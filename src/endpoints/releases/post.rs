@@ -9,27 +9,35 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-create)
 #[derive(Serialize)]
-pub struct ReleaseCreate {
+pub struct ReleaseCreate<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: ReleaseCreateParams,
+    pub params: ReleaseCreateParams<'a>,
 }
 
-impl ReleaseCreate {
-    pub fn new(app_id: String, slug: String, description: Option<String>) -> ReleaseCreate {
-        ReleaseCreate {
-            app_id,
-            params: ReleaseCreateParams { slug, description },
-        }
-    }
-
-    pub fn create(app_id: String, slug: String) -> ReleaseCreate {
+impl<'a> ReleaseCreate<'a> {
+    pub fn new(app_id: &'a str, slug: &'a str) -> ReleaseCreate<'a> {
         ReleaseCreate {
             app_id,
             params: ReleaseCreateParams {
                 slug: slug,
                 description: None,
+            },
+        }
+    }
+
+    pub fn description(&mut self, description: &'a str) -> &mut Self {
+        self.params.description = Some(description);
+        self
+    }
+
+    pub fn build(&self) -> ReleaseCreate<'a> {
+        ReleaseCreate {
+            app_id: self.app_id,
+            params: ReleaseCreateParams {
+                slug: self.params.slug,
+                description: self.params.description,
             },
         }
     }
@@ -42,21 +50,21 @@ impl ReleaseCreate {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-create-required-parameters)
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct ReleaseCreateParams {
+pub struct ReleaseCreateParams<'a> {
     /// unique identifier of slug
-    pub slug: String,
+    pub slug: &'a str,
     /// description of changes in release
-    pub description: Option<String>,
+    pub description: Option<&'a str>,
 }
 
-impl HerokuEndpoint<Release, (), ReleaseCreateParams> for ReleaseCreate {
+impl<'a> HerokuEndpoint<Release, (), ReleaseCreateParams<'a>> for ReleaseCreate<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("apps/{}/releases", self.app_id)
     }
-    fn body(&self) -> Option<ReleaseCreateParams> {
+    fn body(&self) -> Option<ReleaseCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -67,15 +75,15 @@ impl HerokuEndpoint<Release, (), ReleaseCreateParams> for ReleaseCreate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-rollback)
 #[derive(Serialize)]
-pub struct ReleaseRollback {
+pub struct ReleaseRollback<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: ReleaseRollbackParams,
+    pub params: ReleaseRollbackParams<'a>,
 }
 
-impl ReleaseRollback {
-    pub fn new(app_id: String, release_id: String) -> ReleaseRollback {
+impl<'a> ReleaseRollback<'a> {
+    pub fn new(app_id: &'a str, release_id: &'a str) -> ReleaseRollback<'a> {
         ReleaseRollback {
             app_id,
             params: ReleaseRollbackParams {
@@ -91,19 +99,19 @@ impl ReleaseRollback {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-rollback-required-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct ReleaseRollbackParams {
+pub struct ReleaseRollbackParams<'a> {
     /// unique identifier of release
-    pub release: String,
+    pub release: &'a str,
 }
 
-impl HerokuEndpoint<Release, (), ReleaseRollbackParams> for ReleaseRollback {
+impl<'a> HerokuEndpoint<Release, (), ReleaseRollbackParams<'a>> for ReleaseRollback<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("apps/{}/releases", self.app_id)
     }
-    fn body(&self) -> Option<ReleaseRollbackParams> {
+    fn body(&self) -> Option<ReleaseRollbackParams<'a>> {
         Some(self.params.clone())
     }
 }

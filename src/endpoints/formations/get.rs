@@ -9,15 +9,15 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Get info for a process type
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-info)
-pub struct FormationDetails {
+pub struct FormationDetails<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
-    /// formation_id can be the formation id or type
-    pub formation_id: String,
+    pub app_id: &'a str,
+    /// formation_id can &'a str the formation id or type
+    pub formation_id: &'a str,
 }
 
-impl FormationDetails {
-    pub fn new(app_id: String, formation_id: String) -> FormationDetails {
+impl<'a> FormationDetails <'a>{
+    pub fn new(app_id: &'a str, formation_id: &'a str) -> FormationDetails <'a>{
         FormationDetails {
             app_id,
             formation_id,
@@ -25,7 +25,7 @@ impl FormationDetails {
     }
 }
 
-impl HerokuEndpoint<Formation> for FormationDetails {
+impl <'a>HerokuEndpoint<Formation> for FormationDetails <'a>{
     fn method(&self) -> Method {
         Method::Get
     }
@@ -38,18 +38,18 @@ impl HerokuEndpoint<Formation> for FormationDetails {
 ///
 /// List process type formation
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-list)
-pub struct FormationList {
+pub struct FormationList <'a>{
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl FormationList {
-    pub fn new(app_id: String) -> FormationList {
+impl<'a> FormationList <'a>{
+    pub fn new(app_id: &'a str) -> FormationList<'a> {
         FormationList { app_id }
     }
 }
 
-impl HerokuEndpoint<Vec<Formation>> for FormationList {
+impl<'a> HerokuEndpoint<Vec<Formation>> for FormationList <'a>{
     fn method(&self) -> Method {
         Method::Get
     }
