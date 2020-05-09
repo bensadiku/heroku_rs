@@ -35,110 +35,105 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
 // create pipeline transfer
 fn create_pipeline_transfer<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
-    let owner_type = String::from("user");
-    let new_owner_id = String::from("OWNER_ID");
-    let response = api_client.request(&pipelines::PipelineTransferCreate {
-        params: pipelines::PipelineTransferCreateParams::new(pipeline_id, new_owner_id, owner_type),
-    });
+    let pipeline_id = "PIPELINE_ID";
+    let owner_type = "user";
+    let new_owner_id = "OWNER_ID";
+    let response = api_client.request(&pipelines::PipelineTransferCreate::new(
+        pipeline_id,
+        new_owner_id,
+        owner_type,
+    ));
     print_response(response);
 }
 
 // get pipline stack
 fn get_pipeline_stack<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
+    let pipeline_id = "PIPELINE_ID";
     let response = api_client.request(&pipelines::PipelineStackDetails { pipeline_id });
     print_response(response);
 }
 
 // get pipline release
 fn get_pipeline_releases<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
+    let pipeline_id = "PIPELINE_ID";
     let response = api_client.request(&pipelines::PipelineLatestReleaseList { pipeline_id });
     print_response(response);
 }
 
 // get pipline promotion target list
 fn get_pipeline_promotion_target_list<T: HerokuApiClient>(api_client: &T) {
-    let promotion_id = String::from("PIPELINE_ID");
+    let promotion_id = "PIPELINE_ID";
     let response = api_client.request(&pipelines::PipelinePromotionTargetList { promotion_id });
     print_response(response);
 }
 
 // get pipline promotion
 fn get_pipeline_promotion<T: HerokuApiClient>(api_client: &T) {
-    let promotion_id = String::from("PIPELINE_ID");
+    let promotion_id = "PIPELINE_ID";
     let response = api_client.request(&pipelines::PipelinePromotionDetails { promotion_id });
     print_response(response);
 }
 
 // create pipeline promotion
 fn create_pipeline_promotion<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
-    let source_app_id = String::from("SOURCE_APP_ID");
-    let target_app_id = String::from("TARGET_APP_ID");
-    let response = api_client.request(&pipelines::PipelinePromotionCreate {
-        params: pipelines::PipelinePromotionCreateParams::new(
-            pipeline_id,
-            source_app_id,
-            target_app_id,
-        ),
-    });
+    let pipeline_id = "PIPELINE_ID";
+    let source_app_id = "SOURCE_APP_ID";
+    let target_app_id = "TARGET_APP_ID";
+    let response = api_client.request(&pipelines::PipelinePromotionCreate::new(
+        pipeline_id,
+        source_app_id,
+        target_app_id,
+    ));
     print_response(response);
 }
 
 // get pipline deployments
 fn get_pipline_deployments<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
+    let pipeline_id = "PIPELINE_ID";
     let response = api_client.request(&pipelines::PipelineDeploymentList { pipeline_id });
     print_response(response);
 }
 
 // delete pipeline coupling
 fn delete_pipeline_coupling<T: HerokuApiClient>(api_client: &T) {
-    let coupling_id = String::from("COUPLING_ID");
+    let coupling_id = "COUPLING_ID";
     let response = api_client.request(&pipelines::PipelineCouplingDelete { coupling_id });
     print_response(response);
 }
 
 // get app pipeline coupling details
 fn get_app_pipeline_coupling<T: HerokuApiClient>(api_client: &T) {
-    let app_id = String::from("APP_ID");
+    let app_id = "APP_ID";
     let response = api_client.request(&pipelines::PipelineCouplingByAppDetails { app_id });
     print_response(response);
 }
 
 // update pipeline coupling
 fn update_pipeline_coupling<T: HerokuApiClient>(api_client: &T) {
-    let coupling_id = String::from("COUPLING_ID");
-    let response = api_client.request(&pipelines::PipelineCouplingUpdate {
-        coupling_id,
-        params: pipelines::PipelineCouplingUpdateParams {
-            stage: String::from("development"),
-        },
-    });
+    let coupling_id = "COUPLING_ID";
+    let response = api_client.request(
+        &pipelines::PipelineCouplingUpdate::new(coupling_id)
+            .stage("development")
+            .build(),
+    );
     print_response(response);
 }
 
 // get pipeline coupling details
 fn get_pipeline_coupling<T: HerokuApiClient>(api_client: &T) {
-    let coupling_id = String::from("COUPLING_ID");
+    let coupling_id = "COUPLING_ID";
     let response = api_client.request(&pipelines::PipelineCouplingDetails { coupling_id });
     print_response(response);
 }
 
 // craete pipeline coupling
 fn create_pipeline_coupling<T: HerokuApiClient>(api_client: &T) {
-    let app = String::from("APP_ID"); // can be app name or app id
-    let pipeline = String::from("PIPELINE_ID"); // pipeline id
-    let stage = String::from("test");
-    let response = api_client.request(&pipelines::PipelineCouplingCreate {
-        params: pipelines::PipelineCouplingCreateParams {
-            app,
-            pipeline,
-            stage,
-        },
-    });
+    let app = "APP_ID"; // can be app name or app id
+    let pipeline = "PIPELINE_ID"; // pipeline id
+    let stage = "test";
+    let response = api_client.request(&pipelines::PipelineCouplingCreate::new(
+        app, pipeline, stage,
+    ));
     print_response(response);
 }
 
@@ -150,7 +145,7 @@ fn get_pipeline_couplings<T: HerokuApiClient>(api_client: &T) {
 
 // get team pipeline couplings
 fn get_team_pipeline_couplings<T: HerokuApiClient>(api_client: &T) {
-    let team_id = String::from("TEAM_ID");
+    let team_id = "TEAM_ID";
     let response = api_client.request(&pipelines::PipelineCouplingByTeamList { team_id });
     print_response(response);
 }
@@ -163,39 +158,39 @@ fn get_user_pipeline_couplings<T: HerokuApiClient>(api_client: &T) {
 
 // get pipeline couplings by pipeline id
 fn get_pipeline_pipeline_couplings<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
+    let pipeline_id = "PIPELINE_ID";
     let response = api_client.request(&pipelines::PipelineCouplingByPipelineList { pipeline_id });
     print_response(response);
 }
 
 // get pipeline latest builds
 fn get_pipeline_latest_builds<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
+    let pipeline_id = "PIPELINE_ID";
     let response = api_client.request(&pipelines::PipelineLatestBuildsList { pipeline_id });
     print_response(response);
 }
 
 // delete pipeline
 fn delete_pipeline<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
+    let pipeline_id = "PIPELINE_ID";
     let response = api_client.request(&pipelines::PipelineDelete { pipeline_id });
     print_response(response);
 }
 
 // update pipeline
 fn update_pipeline<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
-    let name = String::from("my-renamed-pipe");
-    let response = api_client.request(&pipelines::PipelineUpdate {
-        pipeline_id,
-        params: pipelines::PipelineUpdateParams { name: Some(name) },
-    });
+    let pipeline_id = "PIPELINE_ID";
+    let response = api_client.request(
+        &pipelines::PipelineUpdate::new(pipeline_id)
+            .name("my-renamed-pipe")
+            .build(),
+    );
     print_response(response);
 }
 
 // get pipeline info
 fn get_pipeline<T: HerokuApiClient>(api_client: &T) {
-    let pipeline_id = String::from("PIPELINE_ID");
+    let pipeline_id = "PIPELINE_ID";
     let response = api_client.request(&pipelines::PipelineDetails { pipeline_id });
     print_response(response);
 }
@@ -208,10 +203,6 @@ fn get_pipelines<T: HerokuApiClient>(api_client: &T) {
 
 // create a new pipeline
 fn create_pipeline<T: HerokuApiClient>(api_client: &T) {
-    let response = api_client.request(&pipelines::PipelineCreate {
-        params: pipelines::PipelineCreateParams {
-            name: String::from("my-pipe"),
-        },
-    });
+    let response = api_client.request(&pipelines::PipelineCreate::new("my-pipe"));
     print_response(response);
 }

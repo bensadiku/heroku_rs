@@ -8,13 +8,13 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-create)
-pub struct PipelineCreate {
+pub struct PipelineCreate<'a> {
     /// The parameters to pass to the Heroku API
-    pub params: PipelineCreateParams,
+    pub params: PipelineCreateParams<'a>,
 }
 
-impl PipelineCreate {
-    pub fn new(pipeline_name: String) -> PipelineCreate {
+impl<'a> PipelineCreate<'a> {
+    pub fn new(pipeline_name: &'a str) -> PipelineCreate<'a> {
         PipelineCreate {
             params: PipelineCreateParams {
                 name: pipeline_name,
@@ -27,19 +27,19 @@ impl PipelineCreate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct PipelineCreateParams {
+pub struct PipelineCreateParams<'a> {
     /// name of pipeline. pattern: ^[a-z][a-z0-9-]{2,29}$
-    pub name: String,
+    pub name: &'a str,
 }
 
-impl HerokuEndpoint<Pipeline, (), PipelineCreateParams> for PipelineCreate {
+impl<'a> HerokuEndpoint<Pipeline, (), PipelineCreateParams<'a>> for PipelineCreate<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("pipelines")
     }
-    fn body(&self) -> Option<PipelineCreateParams> {
+    fn body(&self) -> Option<PipelineCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -49,17 +49,17 @@ impl HerokuEndpoint<Pipeline, (), PipelineCreateParams> for PipelineCreate {
 /// Create a new pipeline coupling.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-create)
-pub struct PipelineCouplingCreate {
+pub struct PipelineCouplingCreate<'a> {
     /// The parameters to pass to the Heroku API
-    pub params: PipelineCouplingCreateParams,
+    pub params: PipelineCouplingCreateParams<'a>,
 }
 
-impl PipelineCouplingCreate {
+impl<'a> PipelineCouplingCreate<'a> {
     pub fn new(
-        app_id: String,
-        pipeline_id: String,
-        pipeline_stage: String,
-    ) -> PipelineCouplingCreate {
+        app_id: &'a str,
+        pipeline_id: &'a str,
+        pipeline_stage: &'a str,
+    ) -> PipelineCouplingCreate<'a> {
         PipelineCouplingCreate {
             params: PipelineCouplingCreateParams {
                 app: app_id,
@@ -74,45 +74,45 @@ impl PipelineCouplingCreate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct PipelineCouplingCreateParams {
+pub struct PipelineCouplingCreateParams<'a> {
     /// unique identifier or name of app
-    pub app: String,
+    pub app: &'a str,
     /// unique identifier of pipeline
-    pub pipeline: String,
+    pub pipeline: &'a str,
     /// target pipeline stage. one of:"test" or "review" or "development" or "staging" or "production"
-    pub stage: String,
+    pub stage: &'a str,
 }
 
-impl HerokuEndpoint<PipelineCoupling, (), PipelineCouplingCreateParams> for PipelineCouplingCreate {
+impl<'a> HerokuEndpoint<PipelineCoupling, (), PipelineCouplingCreateParams<'a>>
+    for PipelineCouplingCreate<'a>
+{
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("pipeline-couplings")
     }
-    fn body(&self) -> Option<PipelineCouplingCreateParams> {
+    fn body(&self) -> Option<PipelineCouplingCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
 
-///
-///
 /// Pipeline Promotion Create
 ///
 /// Create a new promotion.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-promotion-create)
-pub struct PipelinePromotionCreate {
+pub struct PipelinePromotionCreate<'a> {
     /// The parameters to pass to the Heroku API
-    pub params: PipelinePromotionCreateParams,
+    pub params: PipelinePromotionCreateParams<'a>,
 }
 
-impl PipelinePromotionCreate {
+impl<'a> PipelinePromotionCreate<'a> {
     pub fn new(
-        pipeline_id: String,
-        source_app_id: String,
-        target_app_id: String,
-    ) -> PipelinePromotionCreate {
+        pipeline_id: &'a str,
+        source_app_id: &'a str,
+        target_app_id: &'a str,
+    ) -> PipelinePromotionCreate<'a> {
         PipelinePromotionCreate {
             params: PipelinePromotionCreateParams {
                 pipeline: PipelineParam { id: pipeline_id },
@@ -131,52 +131,34 @@ impl PipelinePromotionCreate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-promotion-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct PipelinePromotionCreateParams {
-    pub pipeline: PipelineParam,
-    pub source: SourceParam,
-    pub targets: Vec<TargetParam>,
-}
-
-impl PipelinePromotionCreateParams {
-    pub fn new(
-        pipeline_id: String,
-        source_app_id: String,
-        target_app_id: String,
-    ) -> PipelinePromotionCreateParams {
-        Self {
-            pipeline: PipelineParam { id: pipeline_id },
-            source: SourceParam {
-                app: AppParam { id: source_app_id },
-            },
-            targets: vec![TargetParam {
-                app: AppParam { id: target_app_id },
-            }],
-        }
-    }
+pub struct PipelinePromotionCreateParams<'a> {
+    pub pipeline: PipelineParam<'a>,
+    pub source: SourceParam<'a>,
+    pub targets: Vec<TargetParam<'a>>,
 }
 
 #[derive(Serialize, Clone, Debug)]
-pub struct PipelineParam {
-    pub id: String,
+pub struct PipelineParam<'a> {
+    pub id: &'a str,
 }
 
 #[derive(Serialize, Clone, Debug)]
-pub struct SourceParam {
-    pub app: AppParam,
+pub struct SourceParam<'a> {
+    pub app: AppParam<'a>,
 }
 
 #[derive(Serialize, Clone, Debug)]
-pub struct AppParam {
-    pub id: String,
+pub struct AppParam<'a> {
+    pub id: &'a str,
 }
 
 #[derive(Serialize, Clone, Debug)]
-pub struct TargetParam {
-    pub app: AppParam,
+pub struct TargetParam<'a> {
+    pub app: AppParam<'a>,
 }
 
-impl HerokuEndpoint<PipelinePromotion, (), PipelinePromotionCreateParams>
-    for PipelinePromotionCreate
+impl<'a> HerokuEndpoint<PipelinePromotion, (), PipelinePromotionCreateParams<'a>>
+    for PipelinePromotionCreate<'a>
 {
     fn method(&self) -> Method {
         Method::Post
@@ -184,7 +166,7 @@ impl HerokuEndpoint<PipelinePromotion, (), PipelinePromotionCreateParams>
     fn path(&self) -> String {
         format!("pipeline-promotions")
     }
-    fn body(&self) -> Option<PipelinePromotionCreateParams> {
+    fn body(&self) -> Option<PipelinePromotionCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -194,16 +176,16 @@ impl HerokuEndpoint<PipelinePromotion, (), PipelinePromotionCreateParams>
 /// A pipeline transfer is the process of changing pipeline ownership along with the contained apps.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-transfer)
-pub struct PipelineTransferCreate {
-    pub params: PipelineTransferCreateParams,
+pub struct PipelineTransferCreate<'a> {
+    pub params: PipelineTransferCreateParams<'a>,
 }
 
-impl PipelineTransferCreate {
+impl<'a> PipelineTransferCreate<'a> {
     pub fn new(
-        pipeline_id: String,
-        new_owner_id: String,
-        new_owner_type: String,
-    ) -> PipelineTransferCreate {
+        pipeline_id: &'a str,
+        new_owner_id: &'a str,
+        new_owner_type: &'a str,
+    ) -> PipelineTransferCreate<'a> {
         PipelineTransferCreate {
             params: PipelineTransferCreateParams {
                 pipeline: PipelineParam { id: pipeline_id },
@@ -220,44 +202,31 @@ impl PipelineTransferCreate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-transfer-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct PipelineTransferCreateParams {
-    pub pipeline: PipelineParam,
-    pub new_owner: NewOwner,
+pub struct PipelineTransferCreateParams<'a> {
+    pub pipeline: PipelineParam<'a>,
+    pub new_owner: NewOwner<'a>,
 }
 
 #[derive(Serialize, Clone, Debug)]
-pub struct NewOwner {
+pub struct NewOwner<'a> {
     /// unique identifier of a pipeline owner
-    pub id: String,
+    pub id: &'a str,
     /// type of pipeline owner
     /// pattern: `(^team$
     #[serde(rename = "type")]
-    pub type_field: String,
+    pub type_field: &'a str,
 }
 
-impl PipelineTransferCreateParams {
-    pub fn new(
-        pipeline_id: String,
-        new_owner_id: String,
-        new_owner_type: String,
-    ) -> PipelineTransferCreateParams {
-        Self {
-            pipeline: PipelineParam { id: pipeline_id },
-            new_owner: NewOwner {
-                id: new_owner_id,
-                type_field: new_owner_type,
-            },
-        }
-    }
-}
-impl HerokuEndpoint<PipelineTransfer, (), PipelineTransferCreateParams> for PipelineTransferCreate {
+impl<'a> HerokuEndpoint<PipelineTransfer, (), PipelineTransferCreateParams<'a>>
+    for PipelineTransferCreate<'a>
+{
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("pipeline-transfers")
     }
-    fn body(&self) -> Option<PipelineTransferCreateParams> {
+    fn body(&self) -> Option<PipelineTransferCreateParams<'a>> {
         Some(self.params.clone())
     }
 }

@@ -8,18 +8,32 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update an existing pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-update)
-pub struct PipelineUpdate {
+pub struct PipelineUpdate<'a> {
     /// unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: PipelineUpdateParams,
+    pub params: PipelineUpdateParams<'a>,
 }
 
-impl PipelineUpdate {
-    pub fn new(pipeline_id: String, name: Option<String>) -> PipelineUpdate {
+impl<'a> PipelineUpdate<'a> {
+    pub fn new(pipeline_id: &'a str) -> PipelineUpdate<'a> {
         PipelineUpdate {
             pipeline_id,
-            params: PipelineUpdateParams { name: name },
+            params: PipelineUpdateParams { name: None },
+        }
+    }
+
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+
+    pub fn build(&self) -> PipelineUpdate<'a> {
+        PipelineUpdate {
+            pipeline_id: self.pipeline_id,
+            params: PipelineUpdateParams {
+                name: self.params.name,
+            },
         }
     }
 }
@@ -29,19 +43,19 @@ impl PipelineUpdate {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-update-optional-parameters)
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct PipelineUpdateParams {
+pub struct PipelineUpdateParams<'a> {
     /// name of pipeline. pattern: ^[a-z][a-z0-9-]{2,29}$
-    pub name: Option<String>,
+    pub name: Option<&'a str>,
 }
 
-impl HerokuEndpoint<Pipeline, (), PipelineUpdateParams> for PipelineUpdate {
+impl<'a> HerokuEndpoint<Pipeline, (), PipelineUpdateParams<'a>> for PipelineUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
     fn path(&self) -> String {
         format!("pipelines/{}", self.pipeline_id)
     }
-    fn body(&self) -> Option<PipelineUpdateParams> {
+    fn body(&self) -> Option<PipelineUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -51,18 +65,32 @@ impl HerokuEndpoint<Pipeline, (), PipelineUpdateParams> for PipelineUpdate {
 /// Update an existing pipeline coupling.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-update)
-pub struct PipelineCouplingUpdate {
+pub struct PipelineCouplingUpdate<'a> {
     /// unique pipeline coupling identifier.
-    pub coupling_id: String,
+    pub coupling_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: PipelineCouplingUpdateParams,
+    pub params: PipelineCouplingUpdateParams<'a>,
 }
 
-impl PipelineCouplingUpdate {
-    pub fn new(coupling_id: String, stage: String) -> PipelineCouplingUpdate {
+impl<'a> PipelineCouplingUpdate<'a> {
+    pub fn new(coupling_id: &'a str) -> PipelineCouplingUpdate {
         PipelineCouplingUpdate {
             coupling_id,
-            params: PipelineCouplingUpdateParams { stage },
+            params: PipelineCouplingUpdateParams { stage: None },
+        }
+    }
+
+    pub fn stage(&mut self, stage: &'a str) -> &mut Self {
+        self.params.stage = Some(stage);
+        self
+    }
+
+    pub fn build(&self) -> PipelineCouplingUpdate<'a> {
+        PipelineCouplingUpdate {
+            coupling_id: self.coupling_id,
+            params: PipelineCouplingUpdateParams {
+                stage: self.params.stage,
+            },
         }
     }
 }
@@ -71,19 +99,21 @@ impl PipelineCouplingUpdate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct PipelineCouplingUpdateParams {
+pub struct PipelineCouplingUpdateParams<'a> {
     /// target pipeline stage. one of:"test" or "review" or "development" or "staging" or "production"
-    pub stage: String,
+    pub stage: Option<&'a str>,
 }
 
-impl HerokuEndpoint<PipelineCoupling, (), PipelineCouplingUpdateParams> for PipelineCouplingUpdate {
+impl<'a> HerokuEndpoint<PipelineCoupling, (), PipelineCouplingUpdateParams<'a>>
+    for PipelineCouplingUpdate<'a>
+{
     fn method(&self) -> Method {
         Method::Patch
     }
     fn path(&self) -> String {
         format!("pipeline-couplings/{}", self.coupling_id)
     }
-    fn body(&self) -> Option<PipelineCouplingUpdateParams> {
+    fn body(&self) -> Option<PipelineCouplingUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }

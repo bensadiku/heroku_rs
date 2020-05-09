@@ -18,7 +18,7 @@ mod tests {
     fn assert_valid_url_get_pipeline_details() {
         let pipeline_id = "123xyz";
         let response = util::get_client().request(&pipelines::PipelineDetails {
-            pipeline_id: pipeline_id.to_owned(),
+            pipeline_id: pipeline_id,
         });
         let endpoint = format!("{}{}", "pipelines/", pipeline_id);
         assert_valid_url(response, endpoint)
@@ -28,7 +28,7 @@ mod tests {
     fn assert_valid_url_get_pipeline_coupling_details() {
         let coupling_id = "123xyz";
         let response = util::get_client().request(&pipelines::PipelineCouplingDetails {
-            coupling_id: coupling_id.to_owned(),
+            coupling_id: coupling_id,
         });
         let endpoint = format!("{}{}", "pipeline-couplings/", coupling_id);
         assert_valid_url(response, endpoint)

@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Info for an OAuth authorization.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-authorization-info)
-pub struct OAuthDetails {
+pub struct OAuthDetails<'a> {
     /// oauth_id is the unique identifier.
-    pub oauth_id: String,
+    pub oauth_id: &'a str,
 }
 
-impl OAuthDetails {
-    pub fn new(oauth_id: String) -> OAuthDetails {
+impl<'a> OAuthDetails<'a> {
+    pub fn new(oauth_id: &'a str) -> OAuthDetails<'a> {
         OAuthDetails { oauth_id }
     }
 }
 
-impl HerokuEndpoint<OAuth> for OAuthDetails {
+impl<'a> HerokuEndpoint<OAuth> for OAuthDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -55,18 +55,18 @@ impl HerokuEndpoint<Vec<OAuth>> for OAuthList {
 /// Info for an OAuth client
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-info)
-pub struct OAuthClientDetails {
+pub struct OAuthClientDetails<'a> {
     /// unique identifier of OAuth Client authorization
-    pub client_id: String,
+    pub client_id: &'a str,
 }
 
-impl OAuthClientDetails {
-    pub fn new(client_id: String) -> OAuthClientDetails {
+impl<'a> OAuthClientDetails<'a> {
+    pub fn new(client_id: &'a str) -> OAuthClientDetails<'a> {
         OAuthClientDetails { client_id }
     }
 }
 
-impl HerokuEndpoint<OAuthClient> for OAuthClientDetails {
+impl<'a> HerokuEndpoint<OAuthClient> for OAuthClientDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

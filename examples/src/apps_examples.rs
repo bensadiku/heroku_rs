@@ -13,82 +13,82 @@ use std::collections::HashMap;
 pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     let app_name = "heroku-rs-tests";
 
-    create_app(api_client, app_name);
-    delete_app(api_client, app_name); // Careful here :)
-    patch_app(api_client, app_name);
+    // create_app(api_client, app_name);
+    // delete_app(api_client, app_name); // Careful here :)
+    // patch_app(api_client, app_name);
     get_app(api_client, app_name);
-    get_app_raw_response(api_client, app_name);
-    list_apps(api_client);
-    list_account_apps(api_client);
-    get_dyno(api_client, app_name);
-    list_dynos(api_client, app_name);
-    create_dyno_simple(api_client, app_name);
-    create_dyno_complex(api_client, app_name);
-    list_dynos(api_client, app_name);
-    restart_dyno(api_client);
-    restart_all_dynos(api_client, app_name);
-    get_dyno_size_list(api_client);
-    get_dyno_size_details(api_client);
+    // get_app_raw_response(api_client, app_name);
+    // list_apps(api_client);
+    // list_account_apps(api_client);
+    // get_dyno(api_client, app_name);
+    // list_dynos(api_client, app_name);
+    // create_dyno_simple(api_client, app_name);
+    // create_dyno_complex(api_client, app_name);
+    // list_dynos(api_client, app_name);
+    // restart_dyno(api_client);
+    // restart_all_dynos(api_client, app_name);
+    // get_dyno_size_list(api_client);
+    // get_dyno_size_details(api_client);
 
-    enable_app_acm(api_client, app_name);
-    disable_app_acm(api_client, app_name);
-    refresh_app_acm(api_client, app_name);
-    get_app_features(api_client, app_name);
-    get_app_feature(api_client, app_name);
-    patch_app_feature(api_client, app_name);
+    // enable_app_acm(api_client, app_name);
+    // disable_app_acm(api_client, app_name);
+    // refresh_app_acm(api_client, app_name);
+    // get_app_features(api_client, app_name);
+    // get_app_feature(api_client, app_name);
+    // patch_app_feature(api_client, app_name);
 
-    create_app_webhook(api_client, app_name);
-    get_app_webhooks(api_client, app_name);
-    get_app_webhook(api_client, app_name);
-    patch_app_webhook(api_client, app_name);
-    delete_app_webhook(api_client, app_name);
+    // create_app_webhook(api_client, app_name);
+    // get_app_webhooks(api_client, app_name);
+    // get_app_webhook(api_client, app_name);
+    // patch_app_webhook(api_client, app_name);
+    // delete_app_webhook(api_client, app_name);
 
-    get_app_webhook_delivery(api_client, app_name);
-    get_app_webhook_deliveries(api_client, app_name);
+    // get_app_webhook_delivery(api_client, app_name);
+    // get_app_webhook_deliveries(api_client, app_name);
 
-    get_app_webhook_event(api_client, app_name);
-    get_app_webhook_events(api_client, app_name);
+    // get_app_webhook_event(api_client, app_name);
+    // get_app_webhook_events(api_client, app_name);
 
-    create_app_build(api_client, app_name);
-    get_app_builds(api_client, app_name);
-    get_app_build(api_client, app_name);
-    delete_app_build(api_client, app_name);
+    // create_app_build(api_client, app_name);
+    // get_app_builds(api_client, app_name);
+    // get_app_build(api_client, app_name);
+    // delete_app_build(api_client, app_name);
 
-    update_buildpack_installation(api_client, app_name);
-    get_buildpack_installations(api_client, app_name);
+    // update_buildpack_installation(api_client, app_name);
+    // get_buildpack_installations(api_client, app_name);
 
-    create_app_domain(api_client, app_name);
-    get_app_domains(api_client, app_name);
-    get_app_domain(api_client, app_name);
-    delete_app_domain(api_client, app_name);
+    // create_app_domain(api_client, app_name);
+    // get_app_domains(api_client, app_name);
+    // get_app_domain(api_client, app_name);
+    // delete_app_domain(api_client, app_name);
 
-    dyno_action_stop(api_client, app_name);
+    // dyno_action_stop(api_client, app_name);
 
-    get_app_formation(api_client, app_name);
-    list_app_formations(api_client, app_name);
-    update_app_formation(api_client, app_name);
+    // get_app_formation(api_client, app_name);
+    // list_app_formations(api_client, app_name);
+    // update_app_formation(api_client, app_name);
 
-    create_slug(api_client, app_name);
-    get_slug(api_client, app_name);
-    get_app_release(api_client, app_name, "4");
-    list_app_releases(api_client, app_name);
-    create_app_release(api_client, app_name);
-    rollback_app_release(api_client, app_name);
+    // create_slug(api_client, app_name);
+    // get_slug(api_client, app_name);
+    // get_app_release(api_client, app_name, "4");
+    // list_app_releases(api_client, app_name);
+    // create_app_release(api_client, app_name);
+    // rollback_app_release(api_client, app_name);
 
-    create_app_setup(api_client);
-    get_app_setup(api_client);
+    // create_app_setup(api_client);
+    // get_app_setup(api_client);
 
-    create_app_sni(api_client, app_name);
-    get_app_sni(api_client, app_name);
-    get_app_sni_list(api_client, app_name);
-    delete_app_sni(api_client, app_name);
-    update_app_sni(api_client, app_name);
+    // create_app_sni(api_client, app_name);
+    // get_app_sni(api_client, app_name);
+    // get_app_sni_list(api_client, app_name);
+    // delete_app_sni(api_client, app_name);
+    // update_app_sni(api_client, app_name);
 
-    get_app_ssl_list(api_client, app_name);
-    get_app_ssl(api_client, app_name);
-    delete_app_ssl(api_client, app_name); // Careful here.
-    create_app_ssl(api_client, app_name);
-    update_app_ssl(api_client, app_name);
+    // get_app_ssl_list(api_client, app_name);
+    // get_app_ssl(api_client, app_name);
+    // delete_app_ssl(api_client, app_name); // Careful here.
+    // create_app_ssl(api_client, app_name);
+    // update_app_ssl(api_client, app_name);
 }
 
 // get a specific webhook event
@@ -561,11 +561,7 @@ fn create_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType
 }
 
 fn rollback_app_release<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: &str) {
-    let resp = api_client.request(&releases::ReleaseRollback {
-        app_id,
-        params: releases::ReleaseRollbackParams {
-            release: "v17",
-        },
-    });
+    let release_to_rollback = "v17";
+    let resp = api_client.request(&releases::ReleaseRollback::new(app_id, release_to_rollback));
     print_response(resp);
 }

@@ -39,7 +39,7 @@ mod tests {
     fn assert_valid_url_get_dyno_list() {
         let region_id = "123xyz";
         let response = get_client().request(&misc::RegionDetails {
-            region_id: region_id.to_owned(),
+            region_id: region_id,
         });
         let endpoint = format!("{}{}", "regions/", region_id);
         assert_valid_url(response, endpoint)

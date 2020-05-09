@@ -23,7 +23,7 @@ fn create_sources<T: HerokuApiClient>(api_client: &T) {
 
 /// Get a specific stack
 fn get_stack<T: HerokuApiClient>(api_client: &T) {
-    let stack_id = String::from("69bee368-352b-4bd0-9b7c-819d860a2588"); // heroku-18 stack
+    let stack_id = "69bee368-352b-4bd0-9b7c-819d860a2588"; // heroku-18 stack
     let response = api_client.request(&misc::StackDetails { stack_id });
     print_response(response);
 }
@@ -48,7 +48,7 @@ fn get_regions<T: HerokuApiClient>(api_client: &T) {
 
 /// Get specific region
 fn get_region<T: HerokuApiClient>(api_client: &T) {
-    let region_id = String::from("6f2b2ec9-b087-4976-8ec9-5d2f62276aeb"); // Dublin - Ireland
+    let region_id = "6f2b2ec9-b087-4976-8ec9-5d2f62276aeb"; // Dublin - Ireland
     let response = api_client.request(&misc::RegionDetails { region_id });
     print_response(response);
 }

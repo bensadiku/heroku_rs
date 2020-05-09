@@ -8,18 +8,41 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update OAuth client
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-update)
-pub struct OAuthClientUpdate {
+pub struct OAuthClientUpdate<'a> {
     /// unique identifier of OAuth Client authorization
-    pub client_id: String,
+    pub client_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: OAuthClientUpdateParams,
+    pub params: OAuthClientUpdateParams<'a>,
 }
 
-impl OAuthClientUpdate {
-    pub fn new(client_id: String, name: String, redirect_uri: String) -> OAuthClientUpdate {
+impl<'a> OAuthClientUpdate<'a> {
+    pub fn new(client_id: &'a str) -> OAuthClientUpdate<'a> {
         OAuthClientUpdate {
             client_id,
-            params: OAuthClientUpdateParams { name, redirect_uri },
+            params: OAuthClientUpdateParams {
+                name: None,
+                redirect_uri: None,
+            },
+        }
+    }
+
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+
+    pub fn redirect_uri(&mut self, redirect_uri: &'a str) -> &mut Self {
+        self.params.redirect_uri = Some(redirect_uri);
+        self
+    }
+
+    pub fn build(&self) -> OAuthClientUpdate<'a> {
+        OAuthClientUpdate {
+            client_id: self.client_id,
+            params: OAuthClientUpdateParams {
+                name: self.params.name,
+                redirect_uri: self.params.redirect_uri,
+            },
         }
     }
 }
@@ -28,21 +51,21 @@ impl OAuthClientUpdate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct OAuthClientUpdateParams {
+pub struct OAuthClientUpdateParams<'a> {
     /// OAuth client name
-    pub name: String,
+    pub name: Option<&'a str>,
     /// endpoint for redirection after authorization with OAuth client
-    pub redirect_uri: String,
+    pub redirect_uri: Option<&'a str>,
 }
 
-impl HerokuEndpoint<OAuthClient, (), OAuthClientUpdateParams> for OAuthClientUpdate {
+impl<'a> HerokuEndpoint<OAuthClient, (), OAuthClientUpdateParams<'a>> for OAuthClientUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
     fn path(&self) -> String {
         format!("oauth/clients/{}", self.client_id)
     }
-    fn body(&self) -> Option<OAuthClientUpdateParams> {
+    fn body(&self) -> Option<OAuthClientUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }
