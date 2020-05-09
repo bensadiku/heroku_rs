@@ -49,7 +49,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // This will do a GET request on https://api.heroku.com/apps/my_app_name_here
     let query = format!("{}{}", "apps/", "my_app_name_here");
     let method = Method::Get;
-    let response = api_client.request(&custom::CustomEndpointSimple::new(query, method);
+    let response = api_client.request(&custom::CustomEndpointSimple::new(query, method));
 
     Ok(())
 }    

@@ -20,7 +20,7 @@
 //! # Example 1 - Creating a simple client
 //!
 //! ```rust
-//! use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
+//! use heroku_rs::prelude::*;
 //!
 //! fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!    let api_client = HttpApiClient::create("API_KEY")?;
@@ -40,8 +40,7 @@
 //!
 //!
 //! ```rust
-//!use heroku_rs::framework::{apiclient::HerokuApiClient, HttpApiClient};
-//!use heroku_rs::endpoints::apps;
+//!use heroku_rs::prelude::*;
 //!
 //!# fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!#
