@@ -31,7 +31,7 @@
 //! }
 //! ```
 //! If you want a custom client, you need to specify three things. [Credentials][credentials], [HttpApiClientConfig][httpApiClientConfig] and [ApiEnvironment][apiEnviroment] See this [example][example_custom]
-//! 
+//!
 //!
 //! ## Making a GET request to Heroku.
 //!

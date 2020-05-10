@@ -247,13 +247,13 @@ pub struct AppSetupDetails<'a> {
     pub setup_id: &'a str,
 }
 
-impl <'a>AppSetupDetails <'a>{
+impl<'a> AppSetupDetails<'a> {
     pub fn new(setup_id: &'a str) -> AppSetupDetails<'a> {
         AppSetupDetails { setup_id }
     }
 }
 
-impl <'a>HerokuEndpoint<AppSetup> for AppSetupDetails <'a>{
+impl<'a> HerokuEndpoint<AppSetup> for AppSetupDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

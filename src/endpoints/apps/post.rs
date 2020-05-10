@@ -423,11 +423,7 @@ pub struct SSLCreate<'a> {
 
 impl<'a> SSLCreate<'a> {
     /// Update Heroku app SSL with parameters
-    pub fn new(
-        app_id: &'a str,
-        certificate_chain: &'a str,
-        private_key: &'a str,
-    ) -> SSLCreate<'a> {
+    pub fn new(app_id: &'a str, certificate_chain: &'a str, private_key: &'a str) -> SSLCreate<'a> {
         SSLCreate {
             app_id,
             params: SSLCreateParams {

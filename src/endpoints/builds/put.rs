@@ -19,7 +19,9 @@ impl<'a> BuildpackInstallationUpdate<'a> {
     pub fn new(app_id: &'a str, buildpacks: Vec<&'a str>) -> BuildpackInstallationUpdate<'a> {
         let mut updates = Vec::new();
         for var in buildpacks {
-            updates.push(Update { buildpack: var.to_owned() });
+            updates.push(Update {
+                buildpack: var.to_owned(),
+            });
         }
 
         BuildpackInstallationUpdate {
@@ -33,7 +35,7 @@ impl<'a> BuildpackInstallationUpdate<'a> {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update-required-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct BuildpackInstallationUpdateParams{
+pub struct BuildpackInstallationUpdateParams {
     /// The buildpack attribute can accept a name, a url, or a urn.
     pub updates: Vec<Update>,
 }

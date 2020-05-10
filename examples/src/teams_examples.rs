@@ -291,10 +291,13 @@ fn get_team<T: HerokuApiClient>(api_client: &T) {
 
 /// Create a new team
 fn create_team<T: HerokuApiClient>(api_client: &T) {
-
     // `new` method takes only the required parameters and gives access to the builder pattern
     //address_2 is optional, but showcasing builder pattern
-    let response = api_client.request(&teams::TeamCreate::new("herokursteam2020").address_2("test").build());
+    let response = api_client.request(
+        &teams::TeamCreate::new("herokursteam2020")
+            .address_2("test")
+            .build(),
+    );
     print_response(response);
 }
 

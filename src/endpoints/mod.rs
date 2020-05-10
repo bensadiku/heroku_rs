@@ -35,7 +35,7 @@ pub mod releases;
 pub mod review;
 /// slug endpoints
 pub mod slugs;
-/// teams endpoints
-pub mod teams;
 /// spaces endpoints
 pub mod space;
+/// teams endpoints
+pub mod teams;

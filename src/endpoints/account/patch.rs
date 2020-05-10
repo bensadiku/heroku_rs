@@ -234,7 +234,7 @@ pub struct AppTransferUpdateParams<'a> {
     pub state: &'a str,
 }
 
-impl <'a> HerokuEndpoint<AppTransfer, (), AppTransferUpdateParams<'a>> for AppTransferUpdate <'a>{
+impl<'a> HerokuEndpoint<AppTransfer, (), AppTransferUpdateParams<'a>> for AppTransferUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }

@@ -33,7 +33,7 @@ impl<'a> HerokuEndpoint<Vec<Build>> for BuildList<'a> {
 /// Info for existing build.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-info)
-pub struct BuildDetails <'a>{
+pub struct BuildDetails<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
     /// build_id is the build identifier which you want to get

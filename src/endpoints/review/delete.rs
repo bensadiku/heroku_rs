@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing review app
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-delete)
-pub struct ReviewAppDelete <'a>{
+pub struct ReviewAppDelete<'a> {
     /// review_id is the unique identifier.
     pub review_id: &'a str,
 }
 
-impl<'a> ReviewAppDelete <'a>{
-    pub fn new(review_id: &'a str) -> ReviewAppDelete <'a>{
+impl<'a> ReviewAppDelete<'a> {
+    pub fn new(review_id: &'a str) -> ReviewAppDelete<'a> {
         ReviewAppDelete { review_id }
     }
 }
 
-impl<'a> HerokuEndpoint<ReviewApp> for ReviewAppDelete <'a>{
+impl<'a> HerokuEndpoint<ReviewApp> for ReviewAppDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }

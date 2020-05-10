@@ -15,13 +15,13 @@ pub struct DomainDetails<'a> {
     pub domain_id: &'a str,
 }
 
-impl <'a>DomainDetails <'a>{
+impl<'a> DomainDetails<'a> {
     pub fn new(app_id: &'a str, domain_id: &'a str) -> DomainDetails<'a> {
         DomainDetails { app_id, domain_id }
     }
 }
 
-impl <'a>HerokuEndpoint<Domain> for DomainDetails<'a> {
+impl<'a> HerokuEndpoint<Domain> for DomainDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

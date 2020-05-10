@@ -188,7 +188,7 @@ pub struct OAuthTokenCreate<'a> {
     pub params: OAuthTokenCreateParams<'a>,
 }
 
-impl <'a>OAuthTokenCreate<'a> {
+impl<'a> OAuthTokenCreate<'a> {
     pub fn new(
         client_secret: &'a str,
         grant_code: &'a str,

@@ -13,13 +13,13 @@ pub struct ReviewAppDetails<'a> {
     pub review_id: &'a str,
 }
 
-impl <'a>ReviewAppDetails <'a>{
-    pub fn new(review_id: &'a str) -> ReviewAppDetails <'a>{
+impl<'a> ReviewAppDetails<'a> {
+    pub fn new(review_id: &'a str) -> ReviewAppDetails<'a> {
         ReviewAppDetails { review_id }
     }
 }
 
-impl <'a>HerokuEndpoint<ReviewApp> for ReviewAppDetails <'a>{
+impl<'a> HerokuEndpoint<ReviewApp> for ReviewAppDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -38,13 +38,13 @@ pub struct ReviewAppByAppDetails<'a> {
     pub app_id: &'a str,
 }
 
-impl <'a>ReviewAppByAppDetails<'a> {
+impl<'a> ReviewAppByAppDetails<'a> {
     pub fn new(app_id: &'a str) -> ReviewAppByAppDetails<'a> {
         ReviewAppByAppDetails { app_id }
     }
 }
 
-impl <'a>HerokuEndpoint<ReviewApp> for ReviewAppByAppDetails<'a> {
+impl<'a> HerokuEndpoint<ReviewApp> for ReviewAppByAppDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -64,7 +64,7 @@ pub struct ReviewAppByPipelineList<'a> {
 }
 
 impl<'a> ReviewAppByPipelineList<'a> {
-    pub fn new(pipeline_id: &'a str) -> ReviewAppByPipelineList <'a>{
+    pub fn new(pipeline_id: &'a str) -> ReviewAppByPipelineList<'a> {
         ReviewAppByPipelineList { pipeline_id }
     }
 }

@@ -11,9 +11,7 @@ mod tests {
     #[test]
     fn assert_valid_url_get_release_list() {
         let app_id = "123xyz";
-        let response = util::get_client().request(&releases::ReleaseList {
-            app_id: app_id,
-        });
+        let response = util::get_client().request(&releases::ReleaseList { app_id: app_id });
 
         let endpoint = format!("{}{}{}", "apps/", app_id, "/releases");
         assert_valid_url(response, endpoint)
@@ -52,9 +50,7 @@ mod tests {
 
         let response = util::get_client().request(&releases::ReleaseRollback {
             app_id: app_id,
-            params: releases::ReleaseRollbackParams {
-                release: "v40",
-            },
+            params: releases::ReleaseRollbackParams { release: "v40" },
         });
         let endpoint = format!("{}{}{}", "apps/", app_id, "/releases");
         assert_valid_url(response, endpoint)

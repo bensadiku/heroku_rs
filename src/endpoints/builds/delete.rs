@@ -11,7 +11,7 @@ pub struct BuildDelete<'a> {
     pub app_id: &'a str,
 }
 
-impl <'a>BuildDelete <'a>{
+impl<'a> BuildDelete<'a> {
     pub fn new(app_id: &'a str) -> BuildDelete<'a> {
         BuildDelete { app_id }
     }
