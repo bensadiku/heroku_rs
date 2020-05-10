@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-delete)
-pub struct AppDelete {
+pub struct AppDelete<'a> {
     /// app_id can be the app id or app name.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl AppDelete {
-    pub fn new(app_id: String) -> AppDelete {
+impl<'a> AppDelete<'a> {
+    pub fn new(app_id: &'a str) -> AppDelete {
         AppDelete { app_id }
     }
 }
 
-impl HerokuEndpoint<App> for AppDelete {
+impl<'a> HerokuEndpoint<App> for AppDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }
@@ -33,18 +33,18 @@ impl HerokuEndpoint<App> for AppDelete {
 /// Disable ACM flag for an app
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-disable-acm)
-pub struct AppDisableAcm {
+pub struct AppDisableAcm<'a> {
     /// app_id can be the app id or name.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl AppDisableAcm {
-    pub fn new(app_id: String) -> AppDisableAcm {
+impl<'a> AppDisableAcm<'a> {
+    pub fn new(app_id: &'a str) -> AppDisableAcm {
         AppDisableAcm { app_id }
     }
 }
 
-impl HerokuEndpoint<App> for AppDisableAcm {
+impl<'a> HerokuEndpoint<App> for AppDisableAcm<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }
@@ -58,20 +58,19 @@ impl HerokuEndpoint<App> for AppDisableAcm {
 /// Removes an app webhook subscription.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delete)
-pub struct AppWebhookDelete {
+pub struct AppWebhookDelete<'a> {
     /// app_id can be the app id or app name.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// webhook_id is the webhook id.
-    pub webhook_id: String,
+    pub webhook_id: &'a str,
 }
-
-impl AppWebhookDelete {
-    pub fn new(app_id: String, webhook_id: String) -> AppWebhookDelete {
+impl<'a> AppWebhookDelete<'a> {
+    pub fn new(app_id: &'a str, webhook_id: &'a str) -> AppWebhookDelete<'a> {
         AppWebhookDelete { app_id, webhook_id }
     }
 }
 
-impl HerokuEndpoint<AppWebhook> for AppWebhookDelete {
+impl<'a> HerokuEndpoint<AppWebhook> for AppWebhookDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }

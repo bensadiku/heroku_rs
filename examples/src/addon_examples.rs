@@ -80,15 +80,11 @@ fn get_webhook_delivery<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
 fn update_addon_webhook<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
     let webhook_id = "123";
     let webhook_include = vec!["api:release"];
-    let response = api_client.request(&addons::WebhookUpdate::new(
-        addon_id,
-        webhook_id,
-        None,
-        Some(webhook_include),
-        None,
-        None,
-        None,
-    ));
+    let response = api_client.request(
+        &addons::WebhookUpdate::new(addon_id, webhook_id)
+            .include(webhook_include)
+            .build(),
+    );
     print_response(response);
 }
 
@@ -112,12 +108,12 @@ fn delete_addon_webhook<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
     print_response(response);
 }
 
-// create a new webhookaddon
+// create a new addon webhook
 fn create_addon_webhook<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
     let webhook_include = vec!["api:release"];
     let webhook_level = "notify";
     let webhook_url = "https://www.bing.com";
-    let response = api_client.request(&addons::WebhookCreate::create(
+    let response = api_client.request(&addons::WebhookCreate::new(
         addon_id,
         webhook_include,
         webhook_level,
@@ -161,13 +157,13 @@ fn get_addon_regions_list<T: HerokuApiClient>(api_client: &T) {
 
 // update addon configs
 fn update_addon_config<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
-    let config_key = String::from("key");
-    let config_value = String::from("value");
-    let config = vec![addons::AddonConfig {
-        name: config_key,
-        value: config_value,
-    }];
-    let response = api_client.request(&addons::AddonConfigUpdate::new(addon_id, config));
+    let config_key = "key";
+    let config_value = "value";
+    let response = api_client.request(
+        &addons::AddonConfigUpdate::new(addon_id)
+            .config(config_key, config_value)
+            .build(),
+    );
     print_response(response);
 }
 
@@ -180,7 +176,7 @@ fn get_addon_config_list<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
 // create heroku addon attachment resolution
 fn create_addon_attachment_resolution<T: HerokuApiClient>(api_client: &T) {
     let attachment_id = "123";
-    let response = api_client.request(&addons::AttachmentResolutionCreate::create(attachment_id));
+    let response = api_client.request(&addons::AttachmentResolutionCreate::new(attachment_id));
     print_response(response);
 }
 
@@ -228,9 +224,12 @@ fn get_addon_attachment<T: HerokuApiClient>(api_client: &T) {
 // Create heroku addon attachment
 fn create_addon_attachment<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
     let app_id = "123";
-    // `create` method takes only the required parameters
-    // see `new` to pass optional parameters too
-    let response = api_client.request(&addons::AttachmentCreate::create(addon_id, app_id));
+    // `new` method takes only the required parameters
+    let response = api_client.request(
+        &addons::AttachmentCreate::new(addon_id, app_id)
+            .namespace("role:analytics")
+            .build(),
+    );
     print_response(response);
 }
 
@@ -248,9 +247,12 @@ fn provision_addon<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
 
 // Create heroku addon resolution
 fn create_addon_resolution<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
-    // `create` method takes only the required parameters
-    // see `new` to pass optional parameters too
-    let response = api_client.request(&addons::AddonResolutionCreate::create(addon_id));
+    // `new` method takes only the required parameters
+    let response = api_client.request(
+        &addons::AddonResolutionCreate::new(addon_id)
+            .addon_service("heroku-postgresql")
+            .build(),
+    );
     print_response(response);
 }
 
@@ -258,9 +260,8 @@ fn create_addon_resolution<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
 fn create_addon<T: HerokuApiClient>(api_client: &T) {
     let app_id = "123";
     let plan = "heroku-postgresql:dev";
-    // `create` method takes only the required parameters
-    // see `new` to pass optional parameters too
-    let response = api_client.request(&addons::AddonCreate::create(app_id, plan));
+    // `new` method takes only the required parameters
+    let response = api_client.request(&addons::AddonCreate::new(app_id, plan));
     print_response(response);
 }
 
@@ -268,9 +269,8 @@ fn create_addon<T: HerokuApiClient>(api_client: &T) {
 fn update_addon<T: HerokuApiClient>(api_client: &T, addon_id: &str) {
     let app_id = "123";
     let plan = "heroku-postgresql:dev";
-    // `create` method takes only the required parameters
-    // see `new` to pass optional parameters too
-    let response = api_client.request(&addons::AddonUpdate::create(app_id, addon_id, plan));
+    // `new` method takes only the required parameters
+    let response = api_client.request(&addons::AddonUpdate::new(app_id, addon_id, plan));
     print_response(response);
 }
 

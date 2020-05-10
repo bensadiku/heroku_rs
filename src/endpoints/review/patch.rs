@@ -15,35 +15,63 @@ pub struct ReviewAppConfigUpdate<'a> {
 }
 
 impl<'a> ReviewAppConfigUpdate<'a> {
-    pub fn new(
-        pipeline_id: &'a str,
-        automatic_review_apps: Option<bool>,
-        destroy_stale_apps: Option<bool>,
-        stale_days: Option<&'a str>,
-        deploy_target_id: Option<&'a str>,
-        deploy_target_type: Option<&'a str>,
-        wait_for_ci: Option<bool>,
-        base_name: Option<&'a str>,
-    ) -> ReviewAppConfigUpdate<'a> {
-        // tl;dr DeployTarget is nullable in the API and both fields should either provided or not.
-        let deploy_type: Option<DeployTarget> = match (deploy_target_id, deploy_target_type) {
-            (Some(target_id), Some(type_id)) => Some(DeployTarget {
-                id: target_id,
-                type_field: type_id
-            }),
-            (None, None) =>  None,
-            _ => panic!("deploy_target_id and deploy_target_type have to be either both Some or both None, but not in-between!"),
-        };
-
+    pub fn new(pipeline_id: &'a str) -> ReviewAppConfigUpdate<'a> {
         ReviewAppConfigUpdate {
             pipeline_id,
             params: ReviewAppConfigUpdateParams {
-                automatic_review_apps: automatic_review_apps,
-                destroy_stale_apps: destroy_stale_apps,
-                stale_days: stale_days,
-                deploy_target: deploy_type,
-                wait_for_ci: wait_for_ci,
-                base_name: base_name,
+                automatic_review_apps: None,
+                destroy_stale_apps: None,
+                stale_days: None,
+                deploy_target: None,
+                wait_for_ci: None,
+                base_name: None,
+            },
+        }
+    }
+
+    pub fn base_name(&mut self, base_name: &'a str) -> &mut Self {
+        self.params.base_name = Some(base_name);
+        self
+    }
+
+    pub fn wait_for_ci(&mut self, wait_for_ci: bool) -> &mut Self {
+        self.params.wait_for_ci = Some(wait_for_ci);
+        self
+    }
+
+    pub fn deploy_target(&mut self, id: &'a str, t_type: &'a str) -> &mut Self {
+        self.params.deploy_target = Some(DeployTarget {
+            id: id,
+            type_field: t_type,
+        });
+        self
+    }
+
+    pub fn stale_days(&mut self, stale_days: &'a str) -> &mut Self {
+        self.params.stale_days = Some(stale_days);
+        self
+    }
+
+    pub fn destroy_stale_apps(&mut self, destroy_stale_apps: bool) -> &mut Self {
+        self.params.destroy_stale_apps = Some(destroy_stale_apps);
+        self
+    }
+
+    pub fn automatic_review_apps(&mut self, automatic_review_apps: bool) -> &mut Self {
+        self.params.automatic_review_apps = Some(automatic_review_apps);
+        self
+    }
+
+    pub fn build(&self) -> ReviewAppConfigUpdate<'a> {
+        ReviewAppConfigUpdate {
+            pipeline_id: self.pipeline_id,
+            params: ReviewAppConfigUpdateParams {
+                automatic_review_apps: self.params.automatic_review_apps,
+                destroy_stale_apps: self.params.destroy_stale_apps,
+                stale_days: self.params.stale_days,
+                deploy_target: self.params.deploy_target.clone(),
+                wait_for_ci: self.params.wait_for_ci,
+                base_name: self.params.base_name,
             },
         }
     }

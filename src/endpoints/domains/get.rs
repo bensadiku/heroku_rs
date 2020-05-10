@@ -8,20 +8,20 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Info for existing domain.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-info)
-pub struct DomainDetails {
+pub struct DomainDetails<'a> {
     /// app_id can be the app name or id.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// domain_id can be the domain hostname or id.
-    pub domain_id: String,
+    pub domain_id: &'a str,
 }
 
-impl DomainDetails {
-    pub fn new(app_id: String, domain_id: String) -> DomainDetails {
+impl <'a>DomainDetails <'a>{
+    pub fn new(app_id: &'a str, domain_id: &'a str) -> DomainDetails<'a> {
         DomainDetails { app_id, domain_id }
     }
 }
 
-impl HerokuEndpoint<Domain> for DomainDetails {
+impl <'a>HerokuEndpoint<Domain> for DomainDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -35,18 +35,18 @@ impl HerokuEndpoint<Domain> for DomainDetails {
 /// List existing domains.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-list)
-pub struct DomainList {
+pub struct DomainList<'a> {
     /// app_id can be the app name or id.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl DomainList {
-    pub fn new(app_id: String) -> DomainList {
+impl<'a> DomainList<'a> {
+    pub fn new(app_id: &'a str) -> DomainList<'a> {
         DomainList { app_id }
     }
 }
 
-impl HerokuEndpoint<Vec<Domain>> for DomainList {
+impl<'a> HerokuEndpoint<Vec<Domain>> for DomainList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

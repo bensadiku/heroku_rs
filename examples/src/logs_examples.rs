@@ -18,9 +18,8 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
 
 // creat log session
 fn create_log_session<T: HerokuApiClient>(api_client: &T, app_id: &str) {
-    // `create` method takes only the required parameters
-    // see `new` to pass optional parameters too
-    let response = api_client.request(&logs::LogSessionCreate::create(app_id));
+    // `new` method takes only the required parameters
+    let response = api_client.request(&logs::LogSessionCreate::new(app_id).tail(false).build());
     print_response(response);
 }
 

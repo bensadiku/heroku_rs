@@ -30,18 +30,18 @@ impl HerokuEndpoint<Account> for AccountDelete {
 /// Delete user account. Note that this action cannot be undone.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-delete-by-user)
-pub struct UserAccountDelete {
+pub struct UserAccountDelete<'a> {
     /// account_id can be the account email or id.
-    pub account_id: String,
+    pub account_id: &'a str,
 }
 
-impl UserAccountDelete {
-    pub fn new(account_id: String) -> UserAccountDelete {
+impl<'a> UserAccountDelete<'a> {
+    pub fn new(account_id: &'a str) -> UserAccountDelete<'a> {
         UserAccountDelete { account_id }
     }
 }
 
-impl HerokuEndpoint<Account> for UserAccountDelete {
+impl<'a> HerokuEndpoint<Account> for UserAccountDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }
@@ -55,18 +55,18 @@ impl HerokuEndpoint<Account> for UserAccountDelete {
 /// Delete an existing app transfer
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-delete)
-pub struct AppTransferDelete {
+pub struct AppTransferDelete<'a> {
     /// transfer_id can be the transfer name or id.
-    pub transfer_id: String,
+    pub transfer_id: &'a str,
 }
 
-impl AppTransferDelete {
-    pub fn new(transfer_id: String) -> AppTransferDelete {
+impl<'a> AppTransferDelete<'a> {
+    pub fn new(transfer_id: &'a str) -> AppTransferDelete {
         AppTransferDelete { transfer_id }
     }
 }
 
-impl HerokuEndpoint<Account> for AppTransferDelete {
+impl<'a> HerokuEndpoint<Account> for AppTransferDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }

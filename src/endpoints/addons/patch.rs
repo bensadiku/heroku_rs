@@ -18,26 +18,28 @@ pub struct AddonUpdate<'a> {
 }
 
 impl<'a> AddonUpdate<'a> {
-    pub fn new(
-        app_id: &'a str,
-        addon_id: &'a str,
-        plan: &'a str,
-        name: Option<&'a str>,
-    ) -> AddonUpdate<'a> {
-        AddonUpdate {
-            app_id,
-            addon_id,
-            params: AddonUpdateParams { plan, name },
-        }
-    }
-
-    pub fn create(app_id: &'a str, addon_id: &'a str, plan: &'a str) -> AddonUpdate<'a> {
+    pub fn new(app_id: &'a str, addon_id: &'a str, plan: &'a str) -> AddonUpdate<'a> {
         AddonUpdate {
             app_id,
             addon_id,
             params: AddonUpdateParams {
                 plan: plan,
                 name: None,
+            },
+        }
+    }
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+
+    pub fn build(&self) -> AddonUpdate<'a> {
+        AddonUpdate {
+            app_id: self.app_id,
+            addon_id: self.addon_id,
+            params: AddonUpdateParams {
+                plan: self.params.plan,
+                name: self.params.name,
             },
         }
     }
@@ -81,11 +83,26 @@ pub struct AddonConfigUpdate<'a> {
 }
 
 impl<'a> AddonConfigUpdate<'a> {
-    pub fn new(addon_id: &'a str, config: Vec<AddonConfig>) -> AddonConfigUpdate<'a> {
+    pub fn new(addon_id: &'a str) -> AddonConfigUpdate<'a> {
         AddonConfigUpdate {
             addon_id,
+            params: AddonConfigUpdateParams { config: None },
+        }
+    }
+
+    pub fn config(&mut self, config_name: &'a str, config_value: &'a str) -> &mut Self {
+        self.params.config = Some(vec![AddonConfig {
+            name: config_name.to_owned(),
+            value: config_value.to_owned(),
+        }]);
+        self
+    }
+
+    pub fn build(&self) -> AddonConfigUpdate<'a> {
+        AddonConfigUpdate {
+            addon_id: self.addon_id,
             params: AddonConfigUpdateParams {
-                config: Some(config),
+                config: self.params.config.clone(),
             },
         }
     }
@@ -129,24 +146,52 @@ pub struct WebhookUpdate<'a> {
 
 impl<'a> WebhookUpdate<'a> {
     /// Update webhook with optional parameters
-    pub fn new(
-        addon_id: &'a str,
-        webhook_id: &'a str,
-        authorization: Option<&'a str>,
-        include: Option<Vec<&'a str>>,
-        level: Option<&'a str>,
-        secret: Option<&'a str>,
-        url: Option<&'a str>,
-    ) -> WebhookUpdate<'a> {
+    pub fn new(addon_id: &'a str, webhook_id: &'a str) -> WebhookUpdate<'a> {
         WebhookUpdate {
             addon_id,
             webhook_id,
             params: WebhookUpdateParams {
-                authorization,
-                include,
-                level,
-                secret,
-                url,
+                authorization: None,
+                include: None,
+                level: None,
+                secret: None,
+                url: None,
+            },
+        }
+    }
+
+    pub fn authorization(&mut self, authorization: &'a str) -> &mut Self {
+        self.params.authorization = Some(authorization);
+        self
+    }
+    pub fn include(&mut self, include: Vec<&'a str>) -> &mut Self {
+        self.params.include = Some(include);
+        self
+    }
+
+    pub fn level(&mut self, level: &'a str) -> &mut Self {
+        self.params.level = Some(level);
+        self
+    }
+    pub fn secret(&mut self, secret: &'a str) -> &mut Self {
+        self.params.secret = Some(secret);
+        self
+    }
+    pub fn url(&mut self, url: &'a str) -> &mut Self {
+        self.params.url = Some(url);
+        self
+    }
+
+    pub fn build(&self) -> WebhookUpdate<'a> {
+        WebhookUpdate {
+            addon_id: self.addon_id,
+            webhook_id: self.webhook_id,
+            params: WebhookUpdateParams {
+                authorization: self.params.authorization,
+                include: self.params.include.clone(),
+                level: self.params.level,
+                secret: self.params.secret,
+                url: self.params.url,
             },
         }
     }
@@ -154,7 +199,7 @@ impl<'a> WebhookUpdate<'a> {
 
 /// Update add-on webhooks with parameters.
 ///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-config-update-optional-parameters)
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
 pub struct WebhookUpdateParams<'a> {
     /// a custom Authorization header that Heroku will include with all webhook notifications. [Nullable]

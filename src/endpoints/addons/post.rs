@@ -14,31 +14,8 @@ pub struct AddonCreate<'a> {
 }
 
 impl<'a> AddonCreate<'a> {
-    /// Create a new addon with required and optional parameters
-    pub fn new(
-        app_id: &'a str,
-        plan: &'a str,
-        attachment_name: Option<&'a str>,
-        config: Option<HashMap<&'a str, &'a str>>,
-        confirm: Option<&'a str>,
-        name: Option<&'a str>,
-    ) -> AddonCreate<'a> {
-        AddonCreate {
-            app_id,
-            params: AddonCreateParams {
-                attachment: Some(Attachment {
-                    name: attachment_name,
-                }),
-                config: config,
-                plan: plan,
-                confirm: confirm,
-                name: name,
-            },
-        }
-    }
-
     /// Create a new addon without required parameters only
-    pub fn create(app_id: &'a str, plan: &'a str) -> AddonCreate<'a> {
+    pub fn new(app_id: &'a str, plan: &'a str) -> AddonCreate<'a> {
         AddonCreate {
             app_id,
             params: AddonCreateParams {
@@ -47,6 +24,40 @@ impl<'a> AddonCreate<'a> {
                 plan: plan,
                 confirm: None,
                 name: None,
+            },
+        }
+    }
+
+    pub fn attachment_name(&mut self, attachment_name: &'a str) -> &mut Self {
+        self.params.attachment = Some(Attachment {
+            name: Some(attachment_name),
+        });
+        self
+    }
+
+    pub fn config(&mut self, config: HashMap<&'a str, &'a str>) -> &mut Self {
+        self.params.config = Some(config);
+        self
+    }
+
+    pub fn confirm(&mut self, confirm: &'a str) -> &mut Self {
+        self.params.confirm = Some(confirm);
+        self
+    }
+
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+    pub fn build(&self) -> AddonCreate<'a> {
+        AddonCreate {
+            app_id: self.app_id,
+            params: AddonCreateParams {
+                attachment: self.params.attachment.clone(),
+                config: self.params.config.clone(),
+                plan: self.params.plan,
+                confirm: self.params.confirm,
+                name: self.params.name,
             },
         }
     }
@@ -100,28 +111,31 @@ pub struct AddonResolutionCreate<'a> {
 }
 
 impl<'a> AddonResolutionCreate<'a> {
-    /// Create a new addon with required and optional parameters
-    pub fn new(
-        addon: &'a str,
-        addon_service: Option<&'a str>,
-        app: Option<&'a str>,
-    ) -> AddonResolutionCreate<'a> {
-        AddonResolutionCreate {
-            params: AddonResolutionCreateParams {
-                addon,
-                addon_service,
-                app,
-            },
-        }
-    }
-
     /// Create a new addon resolution without optional parameters
-    pub fn create(addon: &'a str) -> AddonResolutionCreate<'a> {
+    pub fn new(addon: &'a str) -> AddonResolutionCreate<'a> {
         AddonResolutionCreate {
             params: AddonResolutionCreateParams {
                 addon: addon,
                 addon_service: None,
                 app: None,
+            },
+        }
+    }
+    pub fn addon_service(&mut self, addon_service: &'a str) -> &mut Self {
+        self.params.addon_service = Some(addon_service);
+        self
+    }
+    pub fn app(&mut self, app: &'a str) -> &mut Self {
+        self.params.app = Some(app);
+        self
+    }
+
+    pub fn build(&self) -> AddonResolutionCreate<'a> {
+        AddonResolutionCreate {
+            params: AddonResolutionCreateParams {
+                addon: self.params.addon,
+                addon_service: self.params.addon_service,
+                app: self.params.app,
             },
         }
     }
@@ -216,27 +230,8 @@ pub struct AttachmentCreate<'a> {
 }
 
 impl<'a> AttachmentCreate<'a> {
-    /// Create a new addon with required and optional parameters
-    pub fn new(
-        addon: &'a str,
-        app: &'a str,
-        confirm: Option<&'a str>,
-        name: Option<&'a str>,
-        namespace: Option<&'a str>,
-    ) -> AttachmentCreate<'a> {
-        AttachmentCreate {
-            params: AttachmentCreateParams {
-                addon,
-                app,
-                confirm,
-                name,
-                namespace,
-            },
-        }
-    }
-
     /// Create a new addon resolution without optional parameters
-    pub fn create(addon: &'a str, app: &'a str) -> AttachmentCreate<'a> {
+    pub fn new(addon: &'a str, app: &'a str) -> AttachmentCreate<'a> {
         AttachmentCreate {
             params: AttachmentCreateParams {
                 addon: addon,
@@ -244,6 +239,31 @@ impl<'a> AttachmentCreate<'a> {
                 confirm: None,
                 name: None,
                 namespace: None,
+            },
+        }
+    }
+
+    pub fn confirm(&mut self, confirm: &'a str) -> &mut Self {
+        self.params.confirm = Some(confirm);
+        self
+    }
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+    pub fn namespace(&mut self, namespace: &'a str) -> &mut Self {
+        self.params.namespace = Some(namespace);
+        self
+    }
+
+    pub fn build(&self) -> AttachmentCreate<'a> {
+        AttachmentCreate {
+            params: AttachmentCreateParams {
+                addon: self.params.addon,
+                app: self.params.app,
+                confirm: self.params.confirm,
+                name: self.params.name,
+                namespace: self.params.namespace,
             },
         }
     }
@@ -293,28 +313,32 @@ pub struct AttachmentResolutionCreate<'a> {
 }
 
 impl<'a> AttachmentResolutionCreate<'a> {
-    /// Create a new addon with required and optional parameters
-    pub fn new(
-        addon_attachment: &'a str,
-        addon_service: Option<&'a str>,
-        app: Option<&'a str>,
-    ) -> AttachmentResolutionCreate<'a> {
-        AttachmentResolutionCreate {
-            params: AttachmentResolutionCreateParams {
-                addon_attachment,
-                addon_service,
-                app,
-            },
-        }
-    }
-
     /// Create a new addon resolution without optional parameters
-    pub fn create(addon_attachment: &'a str) -> AttachmentResolutionCreate<'a> {
+    pub fn new(addon_attachment: &'a str) -> AttachmentResolutionCreate<'a> {
         AttachmentResolutionCreate {
             params: AttachmentResolutionCreateParams {
                 addon_attachment: addon_attachment,
                 addon_service: None,
                 app: None,
+            },
+        }
+    }
+    pub fn app(&mut self, app: &'a str) -> &mut Self {
+        self.params.app = Some(app);
+        self
+    }
+
+    pub fn addon_service(&mut self, addon_service: &'a str) -> &mut Self {
+        self.params.addon_service = Some(addon_service);
+        self
+    }
+
+    pub fn build(&self) -> AttachmentResolutionCreate<'a> {
+        AttachmentResolutionCreate {
+            params: AttachmentResolutionCreateParams {
+                addon_attachment: self.params.addon_attachment,
+                addon_service: self.params.addon_service,
+                app: self.params.app,
             },
         }
     }
@@ -362,29 +386,8 @@ pub struct WebhookCreate<'a> {
 }
 
 impl<'a> WebhookCreate<'a> {
-    /// Create a new addon webhook with required and optional parameters
-    pub fn new(
-        addon_id: &'a str,
-        authorization: Option<&'a str>,
-        include: Vec<&'a str>,
-        level: &'a str,
-        secret: Option<&'a str>,
-        url: &'a str,
-    ) -> WebhookCreate<'a> {
-        WebhookCreate {
-            addon_id,
-            params: WebhookCreateParams {
-                authorization,
-                include,
-                level,
-                secret,
-                url,
-            },
-        }
-    }
-
     /// Create a new addon webhook without optional parameters
-    pub fn create(
+    pub fn new(
         addon_id: &'a str,
         include: Vec<&'a str>,
         level: &'a str,
@@ -398,6 +401,29 @@ impl<'a> WebhookCreate<'a> {
                 level: level,
                 secret: None,
                 url: url,
+            },
+        }
+    }
+
+    pub fn authorization(&mut self, authorization: &'a str) -> &mut Self {
+        self.params.authorization = Some(authorization);
+        self
+    }
+
+    pub fn secret(&mut self, secret: &'a str) -> &mut Self {
+        self.params.secret = Some(secret);
+        self
+    }
+
+    pub fn build(&self) -> WebhookCreate<'a> {
+        WebhookCreate {
+            addon_id: self.addon_id,
+            params: WebhookCreateParams {
+                authorization: None,
+                include: self.params.include.clone(),
+                level: self.params.level,
+                secret: self.params.secret,
+                url: self.params.url,
             },
         }
     }

@@ -16,14 +16,28 @@ pub struct TeamInvitationCreate<'a> {
 }
 
 impl<'a> TeamInvitationCreate<'a> {
-    pub fn new(
-        team_id: &'a str,
-        email: &'a str,
-        role: Option<&'a str>,
-    ) -> TeamInvitationCreate<'a> {
+    pub fn new(team_id: &'a str, email: &'a str) -> TeamInvitationCreate<'a> {
         TeamInvitationCreate {
             team_id,
-            params: TeamInvitationCreateParams { email, role },
+            params: TeamInvitationCreateParams {
+                email: email,
+                role: None,
+            },
+        }
+    }
+
+    pub fn role(&mut self, role: &'a str) -> &mut Self {
+        self.params.role = Some(role);
+        self
+    }
+
+    pub fn build(&self) -> TeamInvitationCreate<'a> {
+        TeamInvitationCreate {
+            team_id: self.team_id,
+            params: TeamInvitationCreateParams {
+                email: self.params.email,
+                role: self.params.role,
+            },
         }
     }
 }
@@ -70,30 +84,30 @@ pub struct TeamMemberCreateorUpdate<'a> {
 }
 
 impl<'a> TeamMemberCreateorUpdate<'a> {
-    /// required and optional parameters
-    pub fn new(
-        team_id: &'a str,
-        email: &'a str,
-        role: &'a str,
-        federated: Option<bool>,
-    ) -> TeamMemberCreateorUpdate<'a> {
-        TeamMemberCreateorUpdate {
-            team_id,
-            params: TeamMemberCreateorUpdateParams {
-                email,
-                role,
-                federated,
-            },
-        }
-    }
     /// Only required parameters passed
-    pub fn create(team_id: &'a str, email: &'a str, role: &'a str) -> TeamMemberCreateorUpdate<'a> {
+    pub fn new(team_id: &'a str, email: &'a str, role: &'a str) -> TeamMemberCreateorUpdate<'a> {
         TeamMemberCreateorUpdate {
             team_id,
             params: TeamMemberCreateorUpdateParams {
                 email: email,
                 role: role,
                 federated: None,
+            },
+        }
+    }
+
+    pub fn federated(&mut self, federated: bool) -> &mut Self {
+        self.params.federated = Some(federated);
+        self
+    }
+
+    pub fn build(&self) -> TeamMemberCreateorUpdate<'a> {
+        TeamMemberCreateorUpdate {
+            team_id: self.team_id,
+            params: TeamMemberCreateorUpdateParams {
+                email: self.params.email,
+                role: self.params.role,
+                federated: self.params.federated,
             },
         }
     }

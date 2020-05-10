@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// List existing builds.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-list)
-pub struct BuildList {
+pub struct BuildList<'a> {
     /// app_id can be the app name or id.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl BuildList {
-    pub fn new(app_id: String) -> BuildList {
+impl<'a> BuildList<'a> {
+    pub fn new(app_id: &'a str) -> BuildList<'a> {
         BuildList { app_id }
     }
 }
 
-impl HerokuEndpoint<Vec<Build>> for BuildList {
+impl<'a> HerokuEndpoint<Vec<Build>> for BuildList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -33,20 +33,20 @@ impl HerokuEndpoint<Vec<Build>> for BuildList {
 /// Info for existing build.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-info)
-pub struct BuildDetails {
+pub struct BuildDetails <'a>{
     /// app_id can be the app name or id.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// build_id is the build identifier which you want to get
-    pub build_id: String,
+    pub build_id: &'a str,
 }
 
-impl BuildDetails {
-    pub fn new(app_id: String, build_id: String) -> BuildDetails {
+impl<'a> BuildDetails<'a> {
+    pub fn new(app_id: &'a str, build_id: &'a str) -> BuildDetails<'a> {
         BuildDetails { app_id, build_id }
     }
 }
 
-impl HerokuEndpoint<Build> for BuildDetails {
+impl<'a> HerokuEndpoint<Build> for BuildDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -60,18 +60,18 @@ impl HerokuEndpoint<Build> for BuildDetails {
 /// List an app’s existing buildpack installations.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-list)
-pub struct BuildPackInstallationList {
+pub struct BuildPackInstallationList<'a> {
     /// app_id can be the app name or id.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl BuildPackInstallationList {
-    pub fn new(app_id: String) -> BuildPackInstallationList {
+impl<'a> BuildPackInstallationList<'a> {
+    pub fn new(app_id: &'a str) -> BuildPackInstallationList<'a> {
         BuildPackInstallationList { app_id }
     }
 }
 
-impl HerokuEndpoint<Vec<BuildpackInstallation>> for BuildPackInstallationList {
+impl<'a> HerokuEndpoint<Vec<BuildpackInstallation>> for BuildPackInstallationList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

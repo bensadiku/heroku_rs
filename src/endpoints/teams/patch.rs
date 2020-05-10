@@ -12,26 +12,38 @@ pub struct TeamUpdate<'a> {
     /// team_id is the unique team identifier.
     pub team_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params_optional: Option<TeamUpdateParams<'a>>,
+    pub params: TeamUpdateParams<'a>,
 }
 
 impl<'a> TeamUpdate<'a> {
     // cares for optional parameters
-    pub fn new(team_id: &'a str, default: Option<bool>, name: Option<&'a str>) -> TeamUpdate<'a> {
+    pub fn new(team_id: &'a str) -> TeamUpdate<'a> {
         TeamUpdate {
             team_id,
-            params_optional: Some(TeamUpdateParams {
-                default: default,
-                name: name,
-            }),
+            params: TeamUpdateParams {
+                default: None,
+                name: None,
+            },
         }
     }
 
-    // only required parameters to be passed
-    pub fn create(team_id: &'a str) -> TeamUpdate<'a> {
+    pub fn default(&mut self, default: bool) -> &mut Self {
+        self.params.default = Some(default);
+        self
+    }
+
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+
+    pub fn build(&self) -> TeamUpdate<'a> {
         TeamUpdate {
-            team_id,
-            params_optional: None,
+            team_id: self.team_id,
+            params: TeamUpdateParams {
+                default: self.params.default,
+                name: self.params.name,
+            },
         }
     }
 }
@@ -56,7 +68,7 @@ impl<'a> HerokuEndpoint<Team, (), TeamUpdateParams<'a>> for TeamUpdate<'a> {
         format!("teams/{}", self.team_id)
     }
     fn body(&self) -> Option<TeamUpdateParams<'a>> {
-        self.params_optional.clone()
+        Some(self.params.clone())
     }
 }
 
@@ -166,30 +178,30 @@ pub struct TeamMemberUpdate<'a> {
 }
 
 impl<'a> TeamMemberUpdate<'a> {
-    /// required and optional parameters
-    pub fn new(
-        team_id: &'a str,
-        email: &'a str,
-        role: &'a str,
-        federated: Option<bool>,
-    ) -> TeamMemberUpdate<'a> {
-        TeamMemberUpdate {
-            team_id,
-            params: TeamMemberUpdateParams {
-                email,
-                role,
-                federated,
-            },
-        }
-    }
     /// Only required parameters passed
-    pub fn create(team_id: &'a str, email: &'a str, role: &'a str) -> TeamMemberUpdate<'a> {
+    pub fn new(team_id: &'a str, email: &'a str, role: &'a str) -> TeamMemberUpdate<'a> {
         TeamMemberUpdate {
             team_id,
             params: TeamMemberUpdateParams {
                 email: email,
                 role: role,
                 federated: None,
+            },
+        }
+    }
+
+    pub fn federated(&mut self, federated: bool) -> &mut Self {
+        self.params.federated = Some(federated);
+        self
+    }
+
+    pub fn build(&self) -> TeamMemberUpdate<'a> {
+        TeamMemberUpdate {
+            team_id: self.team_id,
+            params: TeamMemberUpdateParams {
+                email: self.params.email,
+                role: self.params.role,
+                federated: self.params.federated,
             },
         }
     }
@@ -236,11 +248,25 @@ pub struct TeamPreferenceUpdate<'a> {
 }
 
 impl<'a> TeamPreferenceUpdate<'a> {
-    pub fn new(id: &'a str, whitelisting_enabled: Option<bool>) -> TeamPreferenceUpdate<'a> {
+    pub fn new(id: &'a str) -> TeamPreferenceUpdate<'a> {
         TeamPreferenceUpdate {
             id,
             params: TeamPreferenceUpdateParams {
-                whitelisting_enabled,
+                whitelisting_enabled: None,
+            },
+        }
+    }
+
+    pub fn whitelisting_enabled(&mut self, whitelisting_enabled: bool) -> &mut Self {
+        self.params.whitelisting_enabled = Some(whitelisting_enabled);
+        self
+    }
+
+    pub fn build(&self) -> TeamPreferenceUpdate<'a> {
+        TeamPreferenceUpdate {
+            id: self.id,
+            params: TeamPreferenceUpdateParams {
+                whitelisting_enabled: self.params.whitelisting_enabled,
             },
         }
     }

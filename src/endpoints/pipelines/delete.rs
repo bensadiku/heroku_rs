@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-delete)
-pub struct PipelineDelete {
+pub struct PipelineDelete<'a> {
     /// unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
 }
 
-impl PipelineDelete {
-    pub fn new(pipeline_id: String) -> PipelineDelete {
+impl<'a> PipelineDelete<'a> {
+    pub fn new(pipeline_id: &'a str) -> PipelineDelete<'a> {
         PipelineDelete { pipeline_id }
     }
 }
 
-impl HerokuEndpoint<Pipeline, (), ()> for PipelineDelete {
+impl<'a> HerokuEndpoint<Pipeline> for PipelineDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }
@@ -33,18 +33,18 @@ impl HerokuEndpoint<Pipeline, (), ()> for PipelineDelete {
 /// Delete an existing pipeline coupling.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-delete)
-pub struct PipelineCouplingDelete {
+pub struct PipelineCouplingDelete<'a> {
     /// unique pipeline coupling identifier.
-    pub coupling_id: String,
+    pub coupling_id: &'a str,
 }
 
-impl PipelineCouplingDelete {
-    pub fn new(coupling_id: String) -> PipelineCouplingDelete {
+impl<'a> PipelineCouplingDelete<'a> {
+    pub fn new(coupling_id: &'a str) -> PipelineCouplingDelete<'a> {
         PipelineCouplingDelete { coupling_id }
     }
 }
 
-impl HerokuEndpoint<PipelineCoupling, (), ()> for PipelineCouplingDelete {
+impl<'a> HerokuEndpoint<PipelineCoupling> for PipelineCouplingDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }

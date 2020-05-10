@@ -8,28 +8,33 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new app transfer.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create)
-pub struct AppTransferCreate {
+pub struct AppTransferCreate<'a> {
     /// The parameters to pass to the Heroku API
-    pub params: AppTransferCreateParams,
+    pub params: AppTransferCreateParams<'a>,
 }
 
-impl AppTransferCreate {
-    pub fn new(app: String, recipient: String, silent: Option<bool>) -> AppTransferCreate {
-        AppTransferCreate {
-            params: AppTransferCreateParams {
-                app: app,
-                recipient: recipient,
-                silent: silent,
-            },
-        }
-    }
-
-    pub fn create(app: String, recipient: String) -> AppTransferCreate {
+impl<'a> AppTransferCreate<'a> {
+    pub fn new(app: &'a str, recipient: &'a str) -> AppTransferCreate<'a> {
         AppTransferCreate {
             params: AppTransferCreateParams {
                 app: app,
                 recipient: recipient,
                 silent: None,
+            },
+        }
+    }
+
+    pub fn silent(&mut self, silent: bool) -> &mut Self {
+        self.params.silent = Some(silent);
+        self
+    }
+
+    pub fn build(&self) -> AppTransferCreate<'a> {
+        AppTransferCreate {
+            params: AppTransferCreateParams {
+                app: self.params.app,
+                recipient: self.params.recipient,
+                silent: self.params.silent,
             },
         }
     }
@@ -40,23 +45,23 @@ impl AppTransferCreate {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create-required-parameters)
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct AppTransferCreateParams {
+pub struct AppTransferCreateParams<'a> {
     /// unique identifier or name of app
-    pub app: String,
+    pub app: &'a str,
     /// unique email address, identifier of an account or implicit reference to currently authorized user
-    pub recipient: String,
+    pub recipient: &'a str,
     /// whether to suppress email notification when transferring apps
     pub silent: Option<bool>,
 }
 
-impl HerokuEndpoint<AppTransfer, (), AppTransferCreateParams> for AppTransferCreate {
+impl<'a> HerokuEndpoint<AppTransfer, (), AppTransferCreateParams<'a>> for AppTransferCreate<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("account/app-transfers")
     }
-    fn body(&self) -> Option<AppTransferCreateParams> {
+    fn body(&self) -> Option<AppTransferCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -66,15 +71,35 @@ impl HerokuEndpoint<AppTransfer, (), AppTransferCreateParams> for AppTransferCre
 /// Create a new credit.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-create)
-pub struct AccountCreditCreate {
+pub struct AccountCreditCreate<'a> {
     /// The parameters to pass to the Heroku API
-    pub params: AccountCreditCreateParams,
+    pub params: AccountCreditCreateParams<'a>,
 }
 
-impl AccountCreditCreate {
-    pub fn new(code1: Option<String>, code2: Option<String>) -> AccountCreditCreate {
+impl<'a> AccountCreditCreate<'a> {
+    pub fn new() -> AccountCreditCreate<'a> {
         AccountCreditCreate {
-            params: AccountCreditCreateParams { code1, code2 },
+            params: AccountCreditCreateParams {
+                code1: None,
+                code2: None,
+            },
+        }
+    }
+    pub fn code_1(&mut self, code1: &'a str) -> &mut Self {
+        self.params.code1 = Some(code1);
+        self
+    }
+    pub fn code_2(&mut self, code2: &'a str) -> &mut Self {
+        self.params.code2 = Some(code2);
+        self
+    }
+
+    pub fn build(&self) -> AccountCreditCreate<'a> {
+        AccountCreditCreate {
+            params: AccountCreditCreateParams {
+                code1: self.params.code1,
+                code2: self.params.code2,
+            },
         }
     }
 }
@@ -84,21 +109,21 @@ impl AccountCreditCreate {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-create-optional-parameters)
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct AccountCreditCreateParams {
+pub struct AccountCreditCreateParams<'a> {
     /// first code from a discount card
-    pub code1: Option<String>,
+    pub code1: Option<&'a str>,
     /// second code from a discount card
-    pub code2: Option<String>,
+    pub code2: Option<&'a str>,
 }
 
-impl HerokuEndpoint<Credit, (), AccountCreditCreateParams> for AccountCreditCreate {
+impl<'a> HerokuEndpoint<Credit, (), AccountCreditCreateParams<'a>> for AccountCreditCreate<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("account/credits")
     }
-    fn body(&self) -> Option<AccountCreditCreateParams> {
+    fn body(&self) -> Option<AccountCreditCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -108,13 +133,13 @@ impl HerokuEndpoint<Credit, (), AccountCreditCreateParams> for AccountCreditCrea
 /// Reset account’s password. This will send a reset password link to the user’s email address.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-reset-password)
-pub struct PasswordReset {
+pub struct PasswordReset<'a> {
     /// The parameters to pass to the Heroku API
-    pub params: PasswordResetParams,
+    pub params: PasswordResetParams<'a>,
 }
 
-impl PasswordReset {
-    pub fn new(email: String) -> PasswordReset {
+impl<'a> PasswordReset<'a> {
+    pub fn new(email: &'a str) -> PasswordReset {
         PasswordReset {
             params: PasswordResetParams { email },
         }
@@ -124,21 +149,20 @@ impl PasswordReset {
 /// Update account credits with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-reset-password-optional-parameters)
-#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct PasswordResetParams {
+pub struct PasswordResetParams<'a> {
     /// unique email address
-    pub email: String, // this isn't optional apparently...
+    pub email: &'a str, // this isn't optional(inacurate Heroku docs)
 }
 
-impl HerokuEndpoint<PasswordResetResponse, (), PasswordResetParams> for PasswordReset {
+impl<'a> HerokuEndpoint<PasswordResetResponse, (), PasswordResetParams<'a>> for PasswordReset<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("password-resets")
     }
-    fn body(&self) -> Option<PasswordResetParams> {
+    fn body(&self) -> Option<PasswordResetParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -148,24 +172,40 @@ impl HerokuEndpoint<PasswordResetResponse, (), PasswordResetParams> for Password
 /// Complete password reset.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-complete-reset-password)
-pub struct PasswordResetConfirm {
+pub struct PasswordResetConfirm<'a> {
     /// Password token
-    pub password_id: String,
+    pub password_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: PasswordResetConfirmParams,
+    pub params: PasswordResetConfirmParams<'a>,
 }
 
-impl PasswordResetConfirm {
-    pub fn new(
-        password_id: String,
-        password: String,
-        password_confirmation: String,
-    ) -> PasswordResetConfirm {
+impl<'a> PasswordResetConfirm<'a> {
+    pub fn new(password_id: &'a str) -> PasswordResetConfirm<'a> {
         PasswordResetConfirm {
             password_id,
             params: PasswordResetConfirmParams {
-                password,
-                password_confirmation,
+                password: None,
+                password_confirmation: None,
+            },
+        }
+    }
+
+    pub fn password(&mut self, password: &'a str) -> &mut Self {
+        self.params.password = Some(password);
+        self
+    }
+
+    pub fn password_confirmation(&mut self, password_confirmation: &'a str) -> &mut Self {
+        self.params.password_confirmation = Some(password_confirmation);
+        self
+    }
+
+    pub fn build(&self) -> PasswordResetConfirm<'a> {
+        PasswordResetConfirm {
+            password_id: self.password_id,
+            params: PasswordResetConfirmParams {
+                password: self.params.password,
+                password_confirmation: self.params.password_confirmation,
             },
         }
     }
@@ -173,18 +213,18 @@ impl PasswordResetConfirm {
 
 /// Update account credits with parameters.
 ///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-reset-password-optional-parameters)
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-complete-reset-password-optional-parameters)
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct PasswordResetConfirmParams {
+pub struct PasswordResetConfirmParams<'a> {
     /// current password on the account
-    pub password: String,
+    pub password: Option<&'a str>,
     /// confirmation of the new password
-    pub password_confirmation: String,
+    pub password_confirmation: Option<&'a str>,
 }
 
-impl HerokuEndpoint<PasswordResetResponse, (), PasswordResetConfirmParams>
-    for PasswordResetConfirm
+impl<'a> HerokuEndpoint<PasswordResetResponse, (), PasswordResetConfirmParams<'a>>
+    for PasswordResetConfirm<'a>
 {
     fn method(&self) -> Method {
         Method::Post
@@ -192,7 +232,7 @@ impl HerokuEndpoint<PasswordResetResponse, (), PasswordResetConfirmParams>
     fn path(&self) -> String {
         format!("password-resets/{}/actions/finalize", self.password_id)
     }
-    fn body(&self) -> Option<PasswordResetConfirmParams> {
+    fn body(&self) -> Option<PasswordResetConfirmParams<'a>> {
         Some(self.params.clone())
     }
 }

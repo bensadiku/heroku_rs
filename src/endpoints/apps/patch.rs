@@ -8,39 +8,47 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update an existing app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-update)
-pub struct AppUpdate {
+pub struct AppUpdate<'a> {
     /// app_id can be either app id or app name.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// params are the parameters sent to the API to patch the App.
-    pub params: AppUpdateParams,
+    pub params: AppUpdateParams<'a>,
 }
 
-impl AppUpdate {
-    /// Update a Heroku app with optional parameters
-    pub fn new(
-        app_id: String,
-        build_stack: Option<String>,
-        maintenance: Option<bool>,
-        name: Option<String>,
-    ) -> AppUpdate {
-        AppUpdate {
-            app_id,
-            params: AppUpdateParams {
-                build_stack,
-                maintenance,
-                name,
-            },
-        }
-    }
-
+impl<'a> AppUpdate<'a> {
     /// Update a Heroku app without optional parameters
-    pub fn create(app_id: String) -> AppUpdate {
+    pub fn new(app_id: &'a str) -> AppUpdate {
         AppUpdate {
             app_id: app_id,
             params: AppUpdateParams {
                 build_stack: None,
                 maintenance: None,
                 name: None,
+            },
+        }
+    }
+    pub fn build_stack(&mut self, build_stack: &'a str) -> &mut Self {
+        self.params.build_stack = Some(build_stack);
+        self
+    }
+
+    pub fn maintenance(&mut self, maintenance: bool) -> &mut Self {
+        self.params.maintenance = Some(maintenance);
+        self
+    }
+
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+
+    pub fn build(&self) -> AppUpdate<'a> {
+        AppUpdate {
+            app_id: self.app_id,
+            params: AppUpdateParams {
+                build_stack: self.params.build_stack,
+                maintenance: self.params.maintenance,
+                name: self.params.name,
             },
         }
     }
@@ -51,23 +59,23 @@ impl AppUpdate {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-update-optional-parameters)
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct AppUpdateParams {
+pub struct AppUpdateParams<'a> {
     /// unique name or identifier of stack
-    pub build_stack: Option<String>,
+    pub build_stack: Option<&'a str>,
     /// maintenance status of app
     pub maintenance: Option<bool>,
     /// name of app. pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
-    pub name: Option<String>,
+    pub name: Option<&'a str>,
 }
 
-impl HerokuEndpoint<App, (), AppUpdateParams> for AppUpdate {
+impl<'a> HerokuEndpoint<App, (), AppUpdateParams<'a>> for AppUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
     fn path(&self) -> String {
         format!("apps/{}", self.app_id)
     }
-    fn body(&self) -> Option<AppUpdateParams> {
+    fn body(&self) -> Option<AppUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -77,18 +85,18 @@ impl HerokuEndpoint<App, (), AppUpdateParams> for AppUpdate {
 /// Refresh ACM for an app
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-refresh-acm)
-pub struct AppRefreshAcm {
+pub struct AppRefreshAcm<'a> {
     /// app_id can be either app id or app name.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl AppRefreshAcm {
-    pub fn new(app_id: String) -> AppRefreshAcm {
+impl<'a> AppRefreshAcm<'a> {
+    pub fn new(app_id: &'a str) -> AppRefreshAcm<'a> {
         AppRefreshAcm { app_id }
     }
 }
 
-impl HerokuEndpoint<App> for AppRefreshAcm {
+impl<'a> HerokuEndpoint<App> for AppRefreshAcm<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
@@ -102,17 +110,17 @@ impl HerokuEndpoint<App> for AppRefreshAcm {
 /// Update an existing app feature.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-update)
-pub struct AppFeatureUpdate {
+pub struct AppFeatureUpdate<'a> {
     /// app_id can be either app id or app name.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// feature_id can be either feature id or feature name.
-    pub feature_id: String,
+    pub feature_id: &'a str,
     /// params are the parameters sent to the API to patch the feature.
     pub params: AppFeatureUpdateParams,
 }
 
-impl AppFeatureUpdate {
-    pub fn new(app_id: String, feature_id: String, enabled: bool) -> AppFeatureUpdate {
+impl<'a> AppFeatureUpdate<'a> {
+    pub fn new(app_id: &'a str, feature_id: &'a str, enabled: bool) -> AppFeatureUpdate<'a> {
         AppFeatureUpdate {
             app_id,
             feature_id,
@@ -131,7 +139,7 @@ pub struct AppFeatureUpdateParams {
     pub enabled: bool,
 }
 
-impl HerokuEndpoint<AppFeature, (), AppFeatureUpdateParams> for AppFeatureUpdate {
+impl<'a> HerokuEndpoint<AppFeature, (), AppFeatureUpdateParams> for AppFeatureUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
@@ -148,34 +156,65 @@ impl HerokuEndpoint<AppFeature, (), AppFeatureUpdateParams> for AppFeatureUpdate
 /// Updates the details of an app webhook subscription.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update)
-pub struct AppWebhookUpdate {
+pub struct AppWebhookUpdate<'a> {
     /// app_id can be the app id or app name.
-    pub app_id: String,
+    pub app_id: &'a str,
     /// webhook_id is the webhook id.
-    pub webhook_id: String,
+    pub webhook_id: &'a str,
     /// params are the parameters sent to the API to patch the webhook.
-    pub params: AppWebhookUpdateParams,
+    pub params: AppWebhookUpdateParams<'a>,
 }
 
-impl AppWebhookUpdate {
-    pub fn new(
-        app_id: String,
-        webhook_id: String,
-        authorization: Option<String>,
-        include: Option<Vec<String>>,
-        level: Option<String>,
-        secret: Option<String>,
-        url: Option<String>,
-    ) -> AppWebhookUpdate {
+impl<'a> AppWebhookUpdate<'a> {
+    pub fn new(app_id: &'a str, webhook_id: &'a str) -> AppWebhookUpdate<'a> {
         AppWebhookUpdate {
             app_id,
             webhook_id,
             params: AppWebhookUpdateParams {
-                authorization,
-                include,
-                level,
-                secret,
-                url,
+                authorization: None,
+                include: None,
+                level: None,
+                secret: None,
+                url: None,
+            },
+        }
+    }
+
+    pub fn authorization(&mut self, authorization: &'a str) -> &mut Self {
+        self.params.authorization = Some(authorization);
+        self
+    }
+
+    pub fn include(&mut self, include: Vec<&'a str>) -> &mut Self {
+        self.params.include = Some(include);
+        self
+    }
+
+    pub fn level(&mut self, level: &'a str) -> &mut Self {
+        self.params.level = Some(level);
+        self
+    }
+
+    pub fn secret(&mut self, secret: &'a str) -> &mut Self {
+        self.params.secret = Some(secret);
+        self
+    }
+
+    pub fn url(&mut self, url: &'a str) -> &mut Self {
+        self.params.url = Some(url);
+        self
+    }
+
+    pub fn build(&self) -> AppWebhookUpdate<'a> {
+        AppWebhookUpdate {
+            app_id: self.app_id,
+            webhook_id: self.webhook_id,
+            params: AppWebhookUpdateParams {
+                authorization: self.params.authorization,
+                include: self.params.include.clone(),
+                level: self.params.level,
+                secret: self.params.secret,
+                url: self.params.url,
             },
         }
     }
@@ -187,31 +226,31 @@ impl AppWebhookUpdate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct AppWebhookUpdateParams {
+pub struct AppWebhookUpdateParams<'a> {
     /// A custom Authorization header that Heroku will include with all webhook notifications [Nullable]
-    pub authorization: Option<String>,
+    pub authorization: Option<&'a str>,
     /// The entities that the subscription provides notifications for
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub include: Option<Vec<String>>,
+    pub include: Option<Vec<&'a str>>,
     /// One of: "notify" or "sync"
     /// If notify, Heroku makes a single, fire-and-forget delivery attempt. If sync, Heroku attempts multiple deliveries until the request is successful or a limit is reached
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub level: Option<String>,
+    pub level: Option<&'a str>,
     /// A value that Heroku will use to sign all webhook notification requests (the signature is included in the request’s Heroku-Webhook-Hmac-SHA256 header) [Nullable]
-    pub secret: Option<String>,
+    pub secret: Option<&'a str>,
     /// The URL where the webhook’s notification requests are sent
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub url: Option<String>,
+    pub url: Option<&'a str>,
 }
 
-impl HerokuEndpoint<AppWebhook, (), AppWebhookUpdateParams> for AppWebhookUpdate {
+impl<'a> HerokuEndpoint<AppWebhook, (), AppWebhookUpdateParams<'a>> for AppWebhookUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
     fn path(&self) -> String {
         format!("apps/{}/webhooks/{}", self.app_id, self.webhook_id)
     }
-    fn body(&self) -> Option<AppWebhookUpdateParams> {
+    fn body(&self) -> Option<AppWebhookUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -288,20 +327,40 @@ pub struct SSLUpdate<'a> {
 
 impl<'a> SSLUpdate<'a> {
     /// Update Heroku app SSL with parameters
-    pub fn new(
-        app_id: &'a str,
-        ssl_id: &'a str,
-        certificate_chain: Option<&'a str>,
-        private_key: Option<&'a str>,
-        preprocess: Option<bool>,
-    ) -> SSLUpdate<'a> {
+    pub fn new(app_id: &'a str, ssl_id: &'a str) -> SSLUpdate<'a> {
         SSLUpdate {
             app_id,
             ssl_id,
             params: SSLUpdateParams {
-                certificate_chain,
-                private_key,
-                preprocess,
+                certificate_chain: None,
+                private_key: None,
+                preprocess: None,
+            },
+        }
+    }
+
+    pub fn certificate_chain(&mut self, certificate_chain: &'a str) -> &mut Self {
+        self.params.certificate_chain = Some(certificate_chain);
+        self
+    }
+
+    pub fn private_key(&mut self, private_key: &'a str) -> &mut Self {
+        self.params.private_key = Some(private_key);
+        self
+    }
+
+    pub fn preprocess(&mut self, preprocess: bool) -> &mut Self {
+        self.params.preprocess = Some(preprocess);
+        self
+    }
+    pub fn build(&self) -> SSLUpdate<'a> {
+        SSLUpdate {
+            app_id: self.app_id,
+            ssl_id: self.ssl_id,
+            params: SSLUpdateParams {
+                certificate_chain: self.params.certificate_chain,
+                private_key: self.params.private_key,
+                preprocess: self.params.preprocess,
             },
         }
     }

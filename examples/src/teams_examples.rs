@@ -46,8 +46,11 @@ pub fn run<T: HerokuApiClient>(api_client: &T) {
 // update team preferences
 fn update_team_preferences<T: HerokuApiClient>(api_client: &T) {
     let id = "123";
-    let whitelist_enabled = Some(true);
-    let response = api_client.request(&teams::TeamPreferenceUpdate::new(id, whitelist_enabled));
+    let response = api_client.request(
+        &teams::TeamPreferenceUpdate::new(id)
+            .whitelisting_enabled(true)
+            .build(),
+    );
     print_response(response);
 }
 
@@ -86,7 +89,11 @@ fn team_member_update<T: HerokuApiClient>(api_client: &T) {
     let email = "123@example.de";
     let role = "admin";
     let team_id = "123";
-    let response = api_client.request(&teams::TeamMemberUpdate::create(team_id, email, role));
+    let response = api_client.request(
+        &teams::TeamMemberUpdate::new(team_id, email, role)
+            .federated(false)
+            .build(),
+    );
     print_response(response);
 }
 
@@ -95,7 +102,7 @@ fn team_member_create<T: HerokuApiClient>(api_client: &T) {
     let email = "123@example.de";
     let role = "admin";
     let team_id = "123";
-    let response = api_client.request(&teams::TeamMemberCreate::create(team_id, email, role));
+    let response = api_client.request(&teams::TeamMemberCreate::new(team_id, email, role));
     print_response(response);
 }
 
@@ -104,9 +111,7 @@ fn team_member_create_or_update<T: HerokuApiClient>(api_client: &T) {
     let email = "123@example.de";
     let role = "admin";
     let team_id = "123";
-    let response = api_client.request(&teams::TeamMemberCreateorUpdate::create(
-        team_id, email, role,
-    ));
+    let response = api_client.request(&teams::TeamMemberCreateorUpdate::new(team_id, email, role));
     print_response(response);
 }
 
@@ -154,9 +159,11 @@ fn revoke_team_invitation<T: HerokuApiClient>(api_client: &T) {
 fn create_team_invitation<T: HerokuApiClient>(api_client: &T) {
     let team_id = "123";
     let email = "name@gmail.com";
-    // this will send a `null` to the API
-    let role = None;
-    let response = api_client.request(&teams::TeamInvitationCreate::new(team_id, email, role));
+    let response = api_client.request(
+        &teams::TeamInvitationCreate::new(team_id, email)
+            .role("member")
+            .build(),
+    );
     print_response(response);
 }
 
@@ -228,12 +235,12 @@ fn update_team_app<T: HerokuApiClient>(api_client: &T) {
 /// Create a new team app
 fn update_team<T: HerokuApiClient>(api_client: &T) {
     let team_id = "123";
-    // let response = api_client.request(&teams::TeamUpdate {
-    //     team_id,
-    //     params_optional: None,
-    // });
-
-    let response = api_client.request(&teams::TeamUpdate::new(team_id, None, None));
+    let response = api_client.request(
+        &teams::TeamUpdate::new(team_id)
+            .default(false)
+            .name("new-team-name")
+            .build(),
+    );
     print_response(response);
 }
 
@@ -246,8 +253,12 @@ fn get_team_app<T: HerokuApiClient>(api_client: &T) {
 
 /// Create a new team app
 fn create_team_app<T: HerokuApiClient>(api_client: &T) {
-    // let response = api_client.request(&teams::TeamAppCreate { params: None });
-    let response = api_client.request(&teams::TeamAppCreate::create());
+    let response = api_client.request(
+        &teams::TeamAppCreate::new()
+            .name("team-app")
+            .locked(true)
+            .build(),
+    );
     print_response(response);
 }
 
@@ -279,37 +290,11 @@ fn get_team<T: HerokuApiClient>(api_client: &T) {
 }
 
 /// Create a new team
-/// Parameters specified with None will not be sent
 fn create_team<T: HerokuApiClient>(api_client: &T) {
-    // team name
-    let name = "herokursteam2020";
 
-    // let response = api_client.request(&teams::TeamCreate {
-    //     params: teams::TeamCreateParams {
-    //         name: name,
-    //         params_optional: Some(teams::TeamCreateOptionalParams {
-    //             address_1: None,
-    //             address_2: Some("test"),
-    //             card_number: None,
-    //             city: None,
-    //             country: None,
-    //             cvv: None,
-    //             expiration_month: None,
-    //             expiration_year: None,
-    //             first_name: None,
-    //             last_name: None,
-    //             other: None,
-    //             postal_code: None,
-    //             state: None,
-    //             nonce: None,
-    //             device_data: None,
-    //         }),
-    //     },
-    // });
-
-    // `create` method has only the required parameters
-    // use `new` method if you want to pass optional parameters
-    let response = api_client.request(&teams::TeamCreate::create(name));
+    // `new` method takes only the required parameters and gives access to the builder pattern
+    //address_2 is optional, but showcasing builder pattern
+    let response = api_client.request(&teams::TeamCreate::new("herokursteam2020").address_2("test").build());
     print_response(response);
 }
 

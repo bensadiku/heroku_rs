@@ -8,31 +8,43 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update account.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update)
-pub struct AccountUpdate {
-    pub params: AccountUpdateParams,
+pub struct AccountUpdate<'a> {
+    /// The parameters to pass to the Heroku API
+    pub params: AccountUpdateParams<'a>,
 }
 
-impl AccountUpdate {
-    pub fn new(
-        allow_tracking: Option<bool>,
-        beta: Option<bool>,
-        name: Option<String>,
-    ) -> AccountUpdate {
-        AccountUpdate {
-            params: AccountUpdateParams {
-                allow_tracking,
-                beta,
-                name,
-            },
-        }
-    }
-
-    pub fn create() -> AccountUpdate {
+impl<'a> AccountUpdate<'a> {
+    pub fn new() -> AccountUpdate<'a> {
         AccountUpdate {
             params: AccountUpdateParams {
                 allow_tracking: None,
                 beta: None,
                 name: None,
+            },
+        }
+    }
+
+    pub fn allow_tracking(&mut self, allow_tracking: bool) -> &mut Self {
+        self.params.allow_tracking = Some(allow_tracking);
+        self
+    }
+
+    pub fn beta(&mut self, beta: bool) -> &mut Self {
+        self.params.beta = Some(beta);
+        self
+    }
+
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+
+    pub fn build(&self) -> AccountUpdate<'a> {
+        AccountUpdate {
+            params: AccountUpdateParams {
+                allow_tracking: self.params.allow_tracking,
+                beta: self.params.beta,
+                name: self.params.name,
             },
         }
     }
@@ -44,7 +56,7 @@ impl AccountUpdate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct AccountUpdateParams {
+pub struct AccountUpdateParams<'a> {
     /// whether to allow third party web activity tracking, by default: true
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_tracking: Option<bool>,
@@ -52,17 +64,17 @@ pub struct AccountUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub beta: Option<bool>,
     /// full name of the account owner [Nullable]
-    pub name: Option<String>,
+    pub name: Option<&'a str>,
 }
 
-impl HerokuEndpoint<Account, (), AccountUpdateParams> for AccountUpdate {
+impl<'a> HerokuEndpoint<Account, (), AccountUpdateParams<'a>> for AccountUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
     fn path(&self) -> String {
         format!("account",)
     }
-    fn body(&self) -> Option<AccountUpdateParams> {
+    fn body(&self) -> Option<AccountUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -72,37 +84,47 @@ impl HerokuEndpoint<Account, (), AccountUpdateParams> for AccountUpdate {
 /// Update account.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user)
-pub struct UserAccountUpdate {
+pub struct UserAccountUpdate<'a> {
     /// account_id can be the account email or id.
-    pub account_id: String,
+    pub account_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: UserAccountUpdateParams,
+    pub params: UserAccountUpdateParams<'a>,
 }
 
-impl UserAccountUpdate {
-    pub fn new(
-        account_id: String,
-        allow_tracking: Option<bool>,
-        beta: Option<bool>,
-        name: Option<String>,
-    ) -> UserAccountUpdate {
-        UserAccountUpdate {
-            account_id,
-            params: UserAccountUpdateParams {
-                allow_tracking,
-                beta,
-                name,
-            },
-        }
-    }
-
-    pub fn create(account_id: String) -> UserAccountUpdate {
+impl<'a> UserAccountUpdate<'a> {
+    pub fn new(account_id: &'a str) -> UserAccountUpdate<'a> {
         UserAccountUpdate {
             account_id,
             params: UserAccountUpdateParams {
                 allow_tracking: None,
                 beta: None,
                 name: None,
+            },
+        }
+    }
+
+    pub fn allow_tracking(&mut self, allow_tracking: bool) -> &mut Self {
+        self.params.allow_tracking = Some(allow_tracking);
+        self
+    }
+
+    pub fn beta(&mut self, beta: bool) -> &mut Self {
+        self.params.beta = Some(beta);
+        self
+    }
+
+    pub fn name(&mut self, name: &'a str) -> &mut Self {
+        self.params.name = Some(name);
+        self
+    }
+
+    pub fn build(&self) -> UserAccountUpdate<'a> {
+        UserAccountUpdate {
+            account_id: self.account_id,
+            params: UserAccountUpdateParams {
+                allow_tracking: self.params.allow_tracking,
+                beta: self.params.beta,
+                name: self.params.name,
             },
         }
     }
@@ -114,7 +136,7 @@ impl UserAccountUpdate {
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user-optional-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct UserAccountUpdateParams {
+pub struct UserAccountUpdateParams<'a> {
     /// whether to allow third party web activity tracking, by default: true
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_tracking: Option<bool>,
@@ -122,17 +144,17 @@ pub struct UserAccountUpdateParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub beta: Option<bool>,
     /// full name of the account owner [Nullable]
-    pub name: Option<String>,
+    pub name: Option<&'a str>,
 }
 
-impl HerokuEndpoint<Account, (), UserAccountUpdateParams> for UserAccountUpdate {
+impl<'a> HerokuEndpoint<Account, (), UserAccountUpdateParams<'a>> for UserAccountUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }
     fn path(&self) -> String {
         format!("users/{}", self.account_id)
     }
-    fn body(&self) -> Option<UserAccountUpdateParams> {
+    fn body(&self) -> Option<UserAccountUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -142,15 +164,15 @@ impl HerokuEndpoint<Account, (), UserAccountUpdateParams> for UserAccountUpdate 
 /// Update an existing account feature.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update)
-pub struct AccountFeatureUpdate {
+pub struct AccountFeatureUpdate<'a> {
     /// feature_id can be the feature name or id.
-    pub feature_id: String,
+    pub feature_id: &'a str,
     /// The parameters to pass to the Heroku API
     pub params: AccountFeatureUpdateParams,
 }
 
-impl AccountFeatureUpdate {
-    pub fn new(feature_id: String, enabled: bool) -> AccountFeatureUpdate {
+impl<'a> AccountFeatureUpdate<'a> {
+    pub fn new(feature_id: &'a str, enabled: bool) -> AccountFeatureUpdate {
         AccountFeatureUpdate {
             feature_id,
             params: AccountFeatureUpdateParams { enabled },
@@ -168,7 +190,9 @@ pub struct AccountFeatureUpdateParams {
     pub enabled: bool,
 }
 
-impl HerokuEndpoint<AccountFeature, (), AccountFeatureUpdateParams> for AccountFeatureUpdate {
+impl<'a> HerokuEndpoint<AccountFeature, (), AccountFeatureUpdateParams>
+    for AccountFeatureUpdate<'a>
+{
     fn method(&self) -> Method {
         Method::Patch
     }
@@ -185,15 +209,15 @@ impl HerokuEndpoint<AccountFeature, (), AccountFeatureUpdateParams> for AccountF
 /// Update an existing app transfer.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update)
-pub struct AppTransferUpdate {
+pub struct AppTransferUpdate<'a> {
     /// unique identifier or the transfer name
-    pub transfer_id: String,
+    pub transfer_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: AppTransferUpdateParams,
+    pub params: AppTransferUpdateParams<'a>,
 }
 
-impl AppTransferUpdate {
-    pub fn new(transfer_id: String, state: String) -> AppTransferUpdate {
+impl<'a> AppTransferUpdate<'a> {
+    pub fn new(transfer_id: &'a str, state: &'a str) -> AppTransferUpdate<'a> {
         AppTransferUpdate {
             transfer_id,
             params: AppTransferUpdateParams { state },
@@ -204,21 +228,20 @@ impl AppTransferUpdate {
 /// Update account app transfer with parameters.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update-required-parameters)
-#[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug)]
-pub struct AppTransferUpdateParams {
+pub struct AppTransferUpdateParams<'a> {
     /// the current state of an app transfer, one of:"pending" or "accepted" or "declined"
-    pub state: String,
+    pub state: &'a str,
 }
 
-impl HerokuEndpoint<AppTransfer, (), AppTransferUpdateParams> for AppTransferUpdate {
+impl <'a> HerokuEndpoint<AppTransfer, (), AppTransferUpdateParams<'a>> for AppTransferUpdate <'a>{
     fn method(&self) -> Method {
         Method::Patch
     }
     fn path(&self) -> String {
         format!("account/app-transfers/{}", self.transfer_id)
     }
-    fn body(&self) -> Option<AppTransferUpdateParams> {
+    fn body(&self) -> Option<AppTransferUpdateParams<'a>> {
         Some(self.params.clone())
     }
 }

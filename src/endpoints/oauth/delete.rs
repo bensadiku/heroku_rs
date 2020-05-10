@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete OAuth authorization.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-authorization-delete)
-pub struct OAuthDelete {
+pub struct OAuthDelete<'a> {
     /// unique identifier of OAuth authorization
-    pub oauth_id: String,
+    pub oauth_id: &'a str,
 }
 
-impl OAuthDelete {
-    pub fn new(oauth_id: String) -> OAuthDelete {
+impl<'a> OAuthDelete<'a> {
+    pub fn new(oauth_id: &'a str) -> OAuthDelete<'a> {
         OAuthDelete { oauth_id }
     }
 }
 
-impl HerokuEndpoint<OAuth, (), ()> for OAuthDelete {
+impl<'a> HerokuEndpoint<OAuth> for OAuthDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }
@@ -33,18 +33,18 @@ impl HerokuEndpoint<OAuth, (), ()> for OAuthDelete {
 /// Delete OAuth client.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-delete)
-pub struct OAuthClientDelete {
+pub struct OAuthClientDelete<'a> {
     /// unique identifier of OAuth Client authorization
-    pub client_id: String,
+    pub client_id: &'a str,
 }
 
-impl OAuthClientDelete {
-    pub fn new(client_id: String) -> OAuthClientDelete {
+impl<'a> OAuthClientDelete<'a> {
+    pub fn new(client_id: &'a str) -> OAuthClientDelete<'a> {
         OAuthClientDelete { client_id }
     }
 }
 
-impl HerokuEndpoint<OAuthClient, (), ()> for OAuthClientDelete {
+impl<'a> HerokuEndpoint<OAuthClient, (), ()> for OAuthClientDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }
@@ -58,18 +58,18 @@ impl HerokuEndpoint<OAuthClient, (), ()> for OAuthClientDelete {
 /// Revoke OAuth access token.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-token-delete)
-pub struct OAuthTokenDelete {
+pub struct OAuthTokenDelete<'a> {
     /// unique identifier of token
-    pub token_id: String,
+    pub token_id: &'a str,
 }
 
-impl OAuthTokenDelete {
-    pub fn new(token_id: String) -> OAuthTokenDelete {
+impl<'a> OAuthTokenDelete<'a> {
+    pub fn new(token_id: &'a str) -> OAuthTokenDelete<'a> {
         OAuthTokenDelete { token_id }
     }
 }
 
-impl HerokuEndpoint<OAuthToken, (), ()> for OAuthTokenDelete {
+impl<'a> HerokuEndpoint<OAuthToken, (), ()> for OAuthTokenDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }

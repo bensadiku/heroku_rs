@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Gets an existing review app
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-get-review-app)
-pub struct ReviewAppDetails {
+pub struct ReviewAppDetails<'a> {
     /// review_id is the unique identifier.
-    pub review_id: String,
+    pub review_id: &'a str,
 }
 
-impl ReviewAppDetails {
-    pub fn new(review_id: String) -> ReviewAppDetails {
+impl <'a>ReviewAppDetails <'a>{
+    pub fn new(review_id: &'a str) -> ReviewAppDetails <'a>{
         ReviewAppDetails { review_id }
     }
 }
 
-impl HerokuEndpoint<ReviewApp> for ReviewAppDetails {
+impl <'a>HerokuEndpoint<ReviewApp> for ReviewAppDetails <'a>{
     fn method(&self) -> Method {
         Method::Get
     }
@@ -33,18 +33,18 @@ impl HerokuEndpoint<ReviewApp> for ReviewAppDetails {
 /// Get a review app using the associated app_id
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-get-review-app-by-app_id)
-pub struct ReviewAppByAppDetails {
+pub struct ReviewAppByAppDetails<'a> {
     /// app_id is the unique identifier, app name or app id.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl ReviewAppByAppDetails {
-    pub fn new(app_id: String) -> ReviewAppByAppDetails {
+impl <'a>ReviewAppByAppDetails<'a> {
+    pub fn new(app_id: &'a str) -> ReviewAppByAppDetails<'a> {
         ReviewAppByAppDetails { app_id }
     }
 }
 
-impl HerokuEndpoint<ReviewApp> for ReviewAppByAppDetails {
+impl <'a>HerokuEndpoint<ReviewApp> for ReviewAppByAppDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -58,18 +58,18 @@ impl HerokuEndpoint<ReviewApp> for ReviewAppByAppDetails {
 /// List review apps for a pipeline
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-list)
-pub struct ReviewAppByPipelineList {
+pub struct ReviewAppByPipelineList<'a> {
     /// app_id is the unique identifier, app name or app id.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
 }
 
-impl ReviewAppByPipelineList {
-    pub fn new(pipeline_id: String) -> ReviewAppByPipelineList {
+impl<'a> ReviewAppByPipelineList<'a> {
+    pub fn new(pipeline_id: &'a str) -> ReviewAppByPipelineList <'a>{
         ReviewAppByPipelineList { pipeline_id }
     }
 }
 
-impl HerokuEndpoint<Vec<ReviewApp>> for ReviewAppByPipelineList {
+impl<'a> HerokuEndpoint<Vec<ReviewApp>> for ReviewAppByPipelineList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

@@ -54,34 +54,49 @@ pub struct LogSessionCreate<'a> {
     /// unique app identifier, either app name, or app id
     pub app_id: &'a str,
     /// The parameters to pass to the Heroku API
-    pub params: Option<LogSessionCreateParams<'a>>,
+    pub params: LogSessionCreateParams<'a>,
 }
 
 impl<'a> LogSessionCreate<'a> {
     /// Create a new log session with required parameters
-    pub fn new(
-        app_id: &'a str,
-        dyno: Option<&'a str>,
-        lines: Option<i64>,
-        source: Option<&'a str>,
-        tail: Option<bool>,
-    ) -> LogSessionCreate<'a> {
+    pub fn new(app_id: &'a str) -> LogSessionCreate<'a> {
         LogSessionCreate {
             app_id,
-            params: Some(LogSessionCreateParams {
-                dyno: dyno,
-                lines: lines,
-                source: source,
-                tail: tail,
-            }),
+            params: LogSessionCreateParams {
+                dyno: None,
+                lines: None,
+                source: None,
+                tail: None,
+            },
         }
     }
 
-    /// Create a new log session without parameters
-    pub fn create(app_id: &'a str) -> LogSessionCreate<'a> {
+    pub fn dyno(&mut self, dyno: &'a str) -> &mut Self {
+        self.params.dyno = Some(dyno);
+        self
+    }
+    pub fn lines(&mut self, lines: i64) -> &mut Self {
+        self.params.lines = Some(lines);
+        self
+    }
+    pub fn source(&mut self, source: &'a str) -> &mut Self {
+        self.params.source = Some(source);
+        self
+    }
+    pub fn tail(&mut self, tail: bool) -> &mut Self {
+        self.params.tail = Some(tail);
+        self
+    }
+
+    pub fn build(&self) -> LogSessionCreate<'a> {
         LogSessionCreate {
-            app_id,
-            params: None,
+            app_id: self.app_id,
+            params: LogSessionCreateParams {
+                dyno: self.params.dyno,
+                lines: self.params.lines,
+                source: self.params.source,
+                tail: self.params.tail,
+            },
         }
     }
 }
@@ -109,6 +124,6 @@ impl<'a> HerokuEndpoint<LogSession, (), LogSessionCreateParams<'a>> for LogSessi
         format!("apps/{}/log-sessions", self.app_id)
     }
     fn body(&self) -> Option<LogSessionCreateParams<'a>> {
-        self.params.clone()
+        Some(self.params.clone())
     }
 }

@@ -11,18 +11,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Info for existing pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-info)
-pub struct PipelineDetails {
+pub struct PipelineDetails<'a> {
     /// unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
 }
 
-impl PipelineDetails {
-    pub fn new(pipeline_id: String) -> PipelineDetails {
+impl<'a> PipelineDetails<'a> {
+    pub fn new(pipeline_id: &'a str) -> PipelineDetails<'a> {
         PipelineDetails { pipeline_id }
     }
 }
 
-impl HerokuEndpoint<Pipeline> for PipelineDetails {
+impl<'a> HerokuEndpoint<Pipeline> for PipelineDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -58,18 +58,18 @@ impl HerokuEndpoint<Vec<Pipeline>> for PipelineList {
 /// List latest builds for each app in a pipeline
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build-list)
-pub struct PipelineLatestBuildsList {
+pub struct PipelineLatestBuildsList<'a> {
     /// unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
 }
 
-impl PipelineLatestBuildsList {
-    pub fn new(pipeline_id: String) -> PipelineLatestBuildsList {
+impl<'a> PipelineLatestBuildsList<'a> {
+    pub fn new(pipeline_id: &'a str) -> PipelineLatestBuildsList<'a> {
         PipelineLatestBuildsList { pipeline_id }
     }
 }
 
-impl HerokuEndpoint<Vec<PipelineBuild>> for PipelineLatestBuildsList {
+impl<'a> HerokuEndpoint<Vec<PipelineBuild>> for PipelineLatestBuildsList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -83,18 +83,18 @@ impl HerokuEndpoint<Vec<PipelineBuild>> for PipelineLatestBuildsList {
 /// List couplings for a pipeline
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-list-by-pipeline)
-pub struct PipelineCouplingByPipelineList {
+pub struct PipelineCouplingByPipelineList<'a> {
     /// unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
 }
 
-impl PipelineCouplingByPipelineList {
-    pub fn new(pipeline_id: String) -> PipelineCouplingByPipelineList {
+impl<'a> PipelineCouplingByPipelineList<'a> {
+    pub fn new(pipeline_id: &'a str) -> PipelineCouplingByPipelineList<'a> {
         PipelineCouplingByPipelineList { pipeline_id }
     }
 }
 
-impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByPipelineList {
+impl<'a> HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByPipelineList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -130,18 +130,18 @@ impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByUserList {
 /// List pipeline couplings for a team.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-list-by-team)
-pub struct PipelineCouplingByTeamList {
+pub struct PipelineCouplingByTeamList<'a> {
     /// unique team identifier.
-    pub team_id: String,
+    pub team_id: &'a str,
 }
 
-impl PipelineCouplingByTeamList {
-    pub fn new(team_id: String) -> PipelineCouplingByTeamList {
+impl<'a> PipelineCouplingByTeamList<'a> {
+    pub fn new(team_id: &'a str) -> PipelineCouplingByTeamList<'a> {
         PipelineCouplingByTeamList { team_id }
     }
 }
 
-impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByTeamList {
+impl<'a> HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByTeamList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -155,18 +155,18 @@ impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByTeamList {
 /// Info for an existing pipeline coupling.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-info-by-app)
-pub struct PipelineCouplingByAppDetails {
+pub struct PipelineCouplingByAppDetails<'a> {
     /// unique app identifier.
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl PipelineCouplingByAppDetails {
-    pub fn new(app_id: String) -> PipelineCouplingByAppDetails {
+impl<'a> PipelineCouplingByAppDetails<'a> {
+    pub fn new(app_id: &'a str) -> PipelineCouplingByAppDetails<'a> {
         PipelineCouplingByAppDetails { app_id }
     }
 }
 
-impl HerokuEndpoint<PipelineCoupling> for PipelineCouplingByAppDetails {
+impl<'a> HerokuEndpoint<PipelineCoupling> for PipelineCouplingByAppDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -202,18 +202,18 @@ impl HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingList {
 /// Info for an existing pipeline coupling.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-info)
-pub struct PipelineCouplingDetails {
+pub struct PipelineCouplingDetails<'a> {
     /// unique pipeline coupling identifier.
-    pub coupling_id: String,
+    pub coupling_id: &'a str,
 }
 
-impl PipelineCouplingDetails {
-    pub fn new(coupling_id: String) -> PipelineCouplingDetails {
+impl<'a> PipelineCouplingDetails<'a> {
+    pub fn new(coupling_id: &'a str) -> PipelineCouplingDetails<'a> {
         PipelineCouplingDetails { coupling_id }
     }
 }
 
-impl HerokuEndpoint<PipelineCoupling> for PipelineCouplingDetails {
+impl<'a> HerokuEndpoint<PipelineCoupling> for PipelineCouplingDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -227,18 +227,18 @@ impl HerokuEndpoint<PipelineCoupling> for PipelineCouplingDetails {
 /// List latest slug releases for each app in a pipeline
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-deployment-list)
-pub struct PipelineDeploymentList {
+pub struct PipelineDeploymentList<'a> {
     /// unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
 }
 
-impl PipelineDeploymentList {
-    pub fn new(pipeline_id: String) -> PipelineDeploymentList {
+impl<'a> PipelineDeploymentList<'a> {
+    pub fn new(pipeline_id: &'a str) -> PipelineDeploymentList<'a> {
         PipelineDeploymentList { pipeline_id }
     }
 }
 
-impl HerokuEndpoint<Vec<PipelineDeployment>> for PipelineDeploymentList {
+impl<'a> HerokuEndpoint<Vec<PipelineDeployment>> for PipelineDeploymentList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -252,18 +252,18 @@ impl HerokuEndpoint<Vec<PipelineDeployment>> for PipelineDeploymentList {
 /// Info for existing pipeline promotion.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-promotion-info)
-pub struct PipelinePromotionDetails {
+pub struct PipelinePromotionDetails<'a> {
     /// unique pipeline identifier.
-    pub promotion_id: String,
+    pub promotion_id: &'a str,
 }
 
-impl PipelinePromotionDetails {
-    pub fn new(promotion_id: String) -> PipelinePromotionDetails {
+impl<'a> PipelinePromotionDetails<'a> {
+    pub fn new(promotion_id: &'a str) -> PipelinePromotionDetails<'a> {
         PipelinePromotionDetails { promotion_id }
     }
 }
 
-impl HerokuEndpoint<PipelinePromotion> for PipelinePromotionDetails {
+impl<'a> HerokuEndpoint<PipelinePromotion> for PipelinePromotionDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -277,18 +277,18 @@ impl HerokuEndpoint<PipelinePromotion> for PipelinePromotionDetails {
 /// List promotion targets belonging to an existing promotion.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-promotion-target-list)
-pub struct PipelinePromotionTargetList {
+pub struct PipelinePromotionTargetList<'a> {
     /// unique pipeline identifier.
-    pub promotion_id: String,
+    pub promotion_id: &'a str,
 }
 
-impl PipelinePromotionTargetList {
-    pub fn new(promotion_id: String) -> PipelinePromotionTargetList {
+impl<'a> PipelinePromotionTargetList<'a> {
+    pub fn new(promotion_id: &'a str) -> PipelinePromotionTargetList<'a> {
         PipelinePromotionTargetList { promotion_id }
     }
 }
 
-impl HerokuEndpoint<Vec<PipelinePromotionTarget>> for PipelinePromotionTargetList {
+impl<'a> HerokuEndpoint<Vec<PipelinePromotionTarget>> for PipelinePromotionTargetList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -305,18 +305,18 @@ impl HerokuEndpoint<Vec<PipelinePromotionTarget>> for PipelinePromotionTargetLis
 /// Information about latest releases of apps in a pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release)
-pub struct PipelineLatestReleaseList {
+pub struct PipelineLatestReleaseList<'a> {
     /// unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
 }
 
-impl PipelineLatestReleaseList {
-    pub fn new(pipeline_id: String) -> PipelineLatestReleaseList {
+impl<'a> PipelineLatestReleaseList<'a> {
+    pub fn new(pipeline_id: &'a str) -> PipelineLatestReleaseList<'a> {
         PipelineLatestReleaseList { pipeline_id }
     }
 }
 
-impl HerokuEndpoint<Vec<PipelineRelease>> for PipelineLatestReleaseList {
+impl<'a> HerokuEndpoint<Vec<PipelineRelease>> for PipelineLatestReleaseList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -330,18 +330,18 @@ impl HerokuEndpoint<Vec<PipelineRelease>> for PipelineLatestReleaseList {
 /// Information about latest releases of apps in a pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release)
-pub struct PipelineStackDetails {
+pub struct PipelineStackDetails<'a> {
     /// unique pipeline identifier.
-    pub pipeline_id: String,
+    pub pipeline_id: &'a str,
 }
 
-impl PipelineStackDetails {
-    pub fn new(pipeline_id: String) -> PipelineStackDetails {
+impl<'a> PipelineStackDetails<'a> {
+    pub fn new(pipeline_id: &'a str) -> PipelineStackDetails<'a> {
         PipelineStackDetails { pipeline_id }
     }
 }
 
-impl HerokuEndpoint<PipelineStack> for PipelineStackDetails {
+impl<'a> HerokuEndpoint<PipelineStack> for PipelineStackDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 ///
 /// List existing releases
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-list)
-pub struct ReleaseList {
+pub struct ReleaseList<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
 }
 
-impl ReleaseList {
-    pub fn new(app_id: String) -> ReleaseList {
+impl<'a> ReleaseList<'a> {
+    pub fn new(app_id: &'a str) -> ReleaseList<'a> {
         ReleaseList { app_id }
     }
 }
 
-impl HerokuEndpoint<Vec<Release>> for ReleaseList {
+impl<'a> HerokuEndpoint<Vec<Release>> for ReleaseList<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -32,20 +32,20 @@ impl HerokuEndpoint<Vec<Release>> for ReleaseList {
 ///
 /// Info for existing release
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-info)
-pub struct ReleaseInfo {
+pub struct ReleaseInfo<'a> {
     /// app_id can be the app name or the app id
-    pub app_id: String,
+    pub app_id: &'a str,
     /// release_id can be the id or version
-    pub release_id: String,
+    pub release_id: &'a str,
 }
 
-impl ReleaseInfo {
-    pub fn new(app_id: String, release_id: String) -> ReleaseInfo {
+impl<'a> ReleaseInfo<'a> {
+    pub fn new(app_id: &'a str, release_id: &'a str) -> ReleaseInfo<'a> {
         ReleaseInfo { app_id, release_id }
     }
 }
 
-impl HerokuEndpoint<Release> for ReleaseInfo {
+impl<'a> HerokuEndpoint<Release> for ReleaseInfo<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

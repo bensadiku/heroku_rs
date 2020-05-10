@@ -4,7 +4,7 @@ use heroku_rs::endpoints::collaborators;
 use heroku_rs::framework::apiclient::HerokuApiClient;
 
 pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
-    let app_name = String::from("heroku-rs-tests");
+    let app_name = "heroku-rs-tests";
 
     // create_app_collaborate(api_client, app_name);
     get_app_collaborators(api_client, app_name);
@@ -63,35 +63,19 @@ fn get_team_app_collaborators<T: HerokuApiClient>(api_client: &T, app_id: &str) 
 /// Create team app collaborator
 fn create_team_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: &str) {
     let user = "EMAIL_or_ID_HERE";
-    let silent = Some(false);
-    let permissions = Some(vec!["view"]);
-    //The old way of creating a request, still works
-    // let response = api_client.request(&collaborators::TeamCollaboratorCreate {
-    //     app_id,
-    //     params: collaborators::TeamCollaboratorCreateParams {
-    //         user,
-    //         silent,
-    //         permissions,
-    //     },
-    // });
-
+    let team_app_collab = &collaborators::TeamCollaboratorCreate::new(app_id, user)
+        .permissions(vec!["view"])
+        .silent(false)
+        .build();
     //New way to create a request where you can pass optional parameters
-    let response = api_client.request(&collaborators::TeamCollaboratorCreate::new(
-        app_id,
-        user,
-        silent,
-        permissions,
-    ));
-
-    //New way to create a request where you can pass only the required parameters
-    // let response = api_client.request(&collaborators::TeamCollaboratorCreate::create(app_id, user));
+    let response = api_client.request(team_app_collab);
 
     print_response(response);
 }
 
 /// Delete app collaborator
-fn delete_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let collaborator_id = String::from("COLLAB_EMAIL_OR_ID");
+fn delete_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    let collaborator_id = "COLLAB_EMAIL_OR_ID";
     let response = api_client.request(&collaborators::CollaboratorDelete {
         app_id,
         collaborator_id,
@@ -100,8 +84,8 @@ fn delete_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: String) {
 }
 
 /// Get app collaborator
-fn get_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let collaborator_id = String::from("COLLAB_EMAIL_OR_ID");
+fn get_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    let collaborator_id = "COLLAB_EMAIL_OR_ID";
     let response = api_client.request(&collaborators::CollaboratorDetails {
         app_id,
         collaborator_id,
@@ -110,18 +94,17 @@ fn get_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: String) {
 }
 
 /// Get a list of app collaborators
-fn get_app_collaborators<T: HerokuApiClient>(api_client: &T, app_id: String) {
+fn get_app_collaborators<T: HerokuApiClient>(api_client: &T, app_id: &str) {
     let response = api_client.request(&collaborators::CollaboratorList { app_id });
     print_response(response);
 }
 
 /// Create app collaborator
-fn create_app_collaborate<T: HerokuApiClient>(api_client: &T, app_id: String) {
-    let user = String::from("EMAIL_or_ID_HERE");
-    let silent = Some(false);
-    let response = api_client.request(&collaborators::CollaboratorCreate {
-        app_id,
-        params: collaborators::CollaboratorCreateParams { user, silent },
-    });
+fn create_app_collaborate<T: HerokuApiClient>(api_client: &T, app_id: &str) {
+    let user = "EMAIL_or_ID_HERE";
+    let app_collaborator = &collaborators::CollaboratorCreate::new(app_id, user)
+        .silent(false)
+        .build();
+    let response = api_client.request(app_collaborator);
     print_response(response);
 }

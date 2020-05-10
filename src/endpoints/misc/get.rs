@@ -8,18 +8,18 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Info for existing region.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#region-info)
-pub struct RegionDetails {
+pub struct RegionDetails<'a> {
     /// region_id can be the region name or region id
-    pub region_id: String,
+    pub region_id: &'a str,
 }
 
-impl RegionDetails {
-    pub fn new(region_id: String) -> RegionDetails {
+impl<'a> RegionDetails<'a> {
+    pub fn new(region_id: &'a str) -> RegionDetails<'a> {
         RegionDetails { region_id }
     }
 }
 
-impl HerokuEndpoint<Region> for RegionDetails {
+impl<'a> HerokuEndpoint<Region> for RegionDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
@@ -99,18 +99,18 @@ impl HerokuEndpoint<Vec<Stack>> for StackList {
 /// Info about a specific stack.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#stack-info)
-pub struct StackDetails {
+pub struct StackDetails<'a> {
     /// stack_id can be the stack name or stack id
-    pub stack_id: String,
+    pub stack_id: &'a str,
 }
 
-impl StackDetails {
-    pub fn new(stack_id: String) -> StackDetails {
+impl<'a> StackDetails<'a> {
+    pub fn new(stack_id: &'a str) -> StackDetails<'a> {
         StackDetails { stack_id }
     }
 }
 
-impl HerokuEndpoint<Stack> for StackDetails {
+impl<'a> HerokuEndpoint<Stack> for StackDetails<'a> {
     fn method(&self) -> Method {
         Method::Get
     }
