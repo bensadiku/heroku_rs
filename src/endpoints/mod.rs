@@ -10,7 +10,7 @@ pub mod apps;
 pub mod builds;
 /// collaborators endpoints
 pub mod collaborators;
-/// config vars
+/// config vars endpoints
 // app config vars, pipeline config vars, release config vars
 pub mod config_vars;
 /// custom endpoints
@@ -21,21 +21,21 @@ pub mod domains;
 pub mod dynos;
 /// formations endpoints
 pub mod formations;
-/// heroku logs
+/// heroku logs endpoints
 pub mod logs;
 /// mixed endpoints
 pub mod misc; // used for those one off endpoints e.g. ratelimiting, region, stacks etc.
-/// OAuth Authorization
+/// oauth endpoints
 pub mod oauth;
-/// pipelines
+/// pipeline endpoints
 pub mod pipelines;
-/// releases
+/// release endpoints
 pub mod releases;
-/// app review
+/// app review endpoints
 pub mod review;
 /// slug endpoints
 pub mod slugs;
-/// teams
+/// teams endpoints
 pub mod teams;
-/// spaces
+/// spaces endpoints
 pub mod space;

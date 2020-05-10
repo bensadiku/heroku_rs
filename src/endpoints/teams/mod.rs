@@ -20,8 +20,7 @@ pub use patch::{
 };
 pub use post::{
     TeamAppCreate, TeamAppCreateParams, TeamCreate, TeamCreateByEA, TeamCreateByEAParams,
-    TeamCreateOptionalParams, TeamCreateParams, TeamInvitationAccept, TeamMemberCreate,
-    TeamMemberCreateParams,
+    TeamCreateParams, TeamInvitationAccept, TeamMemberCreate, TeamMemberCreateParams,
 };
 pub use put::{
     TeamInvitationCreate, TeamInvitationCreateParams, TeamMemberCreateorUpdate,

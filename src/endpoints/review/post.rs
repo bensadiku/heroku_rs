@@ -9,35 +9,17 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new review app
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-create)
-pub struct ReviewAppCreate {
+pub struct ReviewAppCreate<'a> {
     /// The parameters to pass to the Heroku API
-    pub params: ReviewAppCreateParams,
+    pub params: ReviewAppCreateParams<'a>,
 }
 
-impl ReviewAppCreate {
+impl<'a> ReviewAppCreate<'a> {
     pub fn new(
-        branch: String,
-        pipeline_id: String,
-        source_blob_url: String,
-        source_blob_version: Option<String>,
-        enviroment: Option<HashMap<String, String>>,
-        fork_repo_id: Option<i64>,
-    ) -> ReviewAppCreate {
-        ReviewAppCreate {
-            params: ReviewAppCreateParams {
-                branch: branch,
-                pipeline: pipeline_id,
-                source_blob: SourceBlob {
-                    url: source_blob_url,
-                    version: source_blob_version,
-                },
-                enviroment: enviroment,
-                fork_repo_id: fork_repo_id,
-            },
-        }
-    }
-
-    pub fn create(branch: String, pipeline_id: String, source_blob_url: String) -> ReviewAppCreate {
+        branch: &'a str,
+        pipeline_id: &'a str,
+        source_blob_url: &'a str,
+    ) -> ReviewAppCreate<'a> {
         ReviewAppCreate {
             params: ReviewAppCreateParams {
                 branch: branch,
@@ -51,71 +33,82 @@ impl ReviewAppCreate {
             },
         }
     }
-}
 
-/// Create a new review app with parameters.
-///
-/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-create-required-parameters)
-#[derive(Serialize, Clone, Debug)]
-pub struct ReviewAppCreateParams {
-    /// the branch of the repository which the review app is based on
-    pub branch: String,
-    /// unique identifier of pipeline
-    pub pipeline: String,
-    /// source blob
-    pub source_blob: SourceBlob,
-    /// A set of key value pairs which will be put into the environment of the spawned review app process. [Nullable]
-    pub enviroment: Option<HashMap<String, String>>,
-    /// repository id of the fork the branch resides in. [Nullable]
-    pub fork_repo_id: Option<i64>,
-}
+    pub fn source_blob_version(&mut self, source_blob_version: &'a str) -> &mut Self {
+        self.params.source_blob.version = Some(source_blob_version);
+        self
+    }
 
-impl ReviewAppCreateParams {
-    /// Method `new` which takes the following arguments.
-    ///
+    pub fn source_blob_url(&mut self, source_blob_url: &'a str) -> &mut Self {
+        self.params.source_blob.url = source_blob_url;
+        self
+    }
+
+    pub fn enviroment(&mut self, enviroment: HashMap<&'a str, &'a str>) -> &mut Self {
+        self.params.enviroment = Some(enviroment);
+        self
+    }
+
+    pub fn fork_repo_id(&mut self, fork_repo_id: i64) -> &mut Self {
+        self.params.fork_repo_id = Some(fork_repo_id);
+        self
+    }
+
     /// * `branch` - the branch of the repository which the review app is based on.
     /// * `pipeline` - unique identifier of pipeline.
     /// * `source_blob_url` - URL where gzipped tar archive of source code for build was downloaded.
     /// * `source_blob_version` - Optional, The version number (or SHA) of the code to build.
     /// * `enviroment` - Optional, A set of key value pairs which will be put into the environment of the spawned review app process.
     /// * `fork_repo_id` - Optional, repository id of the fork the branch resides in.
-    pub fn new(
-        branch: String,
-        pipeline: String,
-        source_blob_url: String,
-        source_blob_version: Option<String>,
-        enviroment: Option<HashMap<String, String>>,
-        fork_repo_id: Option<i64>,
-    ) -> ReviewAppCreateParams {
-        ReviewAppCreateParams {
-            branch: branch,
-            pipeline: pipeline,
-            source_blob: SourceBlob {
-                url: source_blob_url,
-                version: source_blob_version,
+    pub fn build(&self) -> ReviewAppCreate<'a> {
+        ReviewAppCreate {
+            params: ReviewAppCreateParams {
+                branch: self.params.branch,
+                pipeline: self.params.pipeline,
+                source_blob: SourceBlob {
+                    url: self.params.source_blob.url,
+                    version: self.params.source_blob.version,
+                },
+                enviroment: self.params.enviroment.clone(),
+                fork_repo_id: self.params.fork_repo_id,
             },
-            enviroment: enviroment,
-            fork_repo_id: fork_repo_id,
         }
     }
 }
 
+/// Create a new review app with parameters.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-create-required-parameters)
 #[derive(Serialize, Clone, Debug)]
-pub struct SourceBlob {
-    /// URL where gzipped tar archive of source code for build was downloaded.
-    pub url: String,
-    /// The version number (or SHA) of the code to build. [Nullable]
-    pub version: Option<String>,
+pub struct ReviewAppCreateParams<'a> {
+    /// the branch of the repository which the review app is based on
+    pub branch: &'a str,
+    /// unique identifier of pipeline
+    pub pipeline: &'a str,
+    /// source blob
+    pub source_blob: SourceBlob<'a>,
+    /// A set of key value pairs which will be put into the environment of the spawned review app process. [Nullable]
+    pub enviroment: Option<HashMap<&'a str, &'a str>>,
+    /// repository id of the fork the branch resides in. [Nullable]
+    pub fork_repo_id: Option<i64>,
 }
 
-impl HerokuEndpoint<ReviewApp, (), ReviewAppCreateParams> for ReviewAppCreate {
+#[derive(Serialize, Clone, Debug)]
+pub struct SourceBlob<'a> {
+    /// URL where gzipped tar archive of source code for build was downloaded.
+    pub url: &'a str,
+    /// The version number (or SHA) of the code to build. [Nullable]
+    pub version: Option<&'a str>,
+}
+
+impl<'a> HerokuEndpoint<ReviewApp, (), ReviewAppCreateParams<'a>> for ReviewAppCreate<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
     fn path(&self) -> String {
         format!("review-apps")
     }
-    fn body(&self) -> Option<ReviewAppCreateParams> {
+    fn body(&self) -> Option<ReviewAppCreateParams<'a>> {
         Some(self.params.clone())
     }
 }
@@ -132,42 +125,7 @@ pub struct ReviewAppConfigEnable<'a> {
 }
 
 impl<'a> ReviewAppConfigEnable<'a> {
-    pub fn new(
-        pipeline_id: &'a str,
-        repo: &'a str,
-        automatic_review_apps: Option<bool>,
-        destroy_stale_apps: Option<bool>,
-        stale_days: Option<&'a str>,
-        deploy_target_id: Option<&'a str>,
-        deploy_target_type: Option<&'a str>,
-        wait_for_ci: Option<bool>,
-        base_name: Option<&'a str>,
-    ) -> ReviewAppConfigEnable<'a> {
-        // tl;dr DeployTarget is nullable in the API and both fields should either provided or not.
-        let deploy_type: Option<DeployTarget> = match (deploy_target_id, deploy_target_type) {
-            (Some(target_id), Some(type_id)) => Some(DeployTarget {
-                id: target_id,
-                type_field: type_id
-            }),
-            (None, None) =>  None,
-            _ => panic!("deploy_target_id and deploy_target_type have to be either both Some or both None, but not in-between!"),
-        };
-
-        ReviewAppConfigEnable {
-            pipeline_id,
-            params: ReviewAppConfigEnableParams {
-                repo: repo,
-                automatic_review_apps: automatic_review_apps,
-                destroy_stale_apps: destroy_stale_apps,
-                stale_days: stale_days,
-                deploy_target: deploy_type,
-                wait_for_ci: wait_for_ci,
-                base_name: base_name,
-            },
-        }
-    }
-
-    pub fn create(pipeline_id: &'a str, repo: &'a str) -> ReviewAppConfigEnable<'a> {
+    pub fn new(pipeline_id: &'a str, repo: &'a str) -> ReviewAppConfigEnable<'a> {
         ReviewAppConfigEnable {
             pipeline_id,
             params: ReviewAppConfigEnableParams {
@@ -178,6 +136,54 @@ impl<'a> ReviewAppConfigEnable<'a> {
                 deploy_target: None,
                 wait_for_ci: None,
                 base_name: None,
+            },
+        }
+    }
+
+    pub fn base_name(&mut self, base_name: &'a str) -> &mut Self {
+        self.params.base_name = Some(base_name);
+        self
+    }
+
+    pub fn wait_for_ci(&mut self, wait_for_ci: bool) -> &mut Self {
+        self.params.wait_for_ci = Some(wait_for_ci);
+        self
+    }
+
+    pub fn deploy_target(&mut self, id: &'a str, t_type: &'a str) -> &mut Self {
+        self.params.deploy_target = Some(DeployTarget {
+            id: id,
+            type_field: t_type,
+        });
+        self
+    }
+
+    pub fn stale_days(&mut self, stale_days: &'a str) -> &mut Self {
+        self.params.stale_days = Some(stale_days);
+        self
+    }
+
+    pub fn destroy_stale_apps(&mut self, destroy_stale_apps: bool) -> &mut Self {
+        self.params.destroy_stale_apps = Some(destroy_stale_apps);
+        self
+    }
+
+    pub fn automatic_review_apps(&mut self, automatic_review_apps: bool) -> &mut Self {
+        self.params.automatic_review_apps = Some(automatic_review_apps);
+        self
+    }
+
+    pub fn build(&self) -> ReviewAppConfigEnable<'a> {
+        ReviewAppConfigEnable {
+            pipeline_id: self.pipeline_id,
+            params: ReviewAppConfigEnableParams {
+                repo: self.params.repo,
+                automatic_review_apps: self.params.automatic_review_apps,
+                destroy_stale_apps: self.params.destroy_stale_apps,
+                stale_days: self.params.stale_days,
+                deploy_target: self.params.deploy_target.clone(),
+                wait_for_ci: self.params.wait_for_ci,
+                base_name: self.params.base_name,
             },
         }
     }
