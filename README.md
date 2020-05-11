@@ -16,7 +16,7 @@ Add the following to your `Cargo.toml` and run `cargo build`. Voila.
 
 ```toml
 [dependencies]
-heroku_rs = "0.4.2"
+heroku_rs = "0.5"
 ```
 
 Here's a simple example which fetches the apps list. At the moment, the client is blocking by default. For more examples see the [examples directory](https://github.com/bensadiku/heroku_rs/tree/master/examples).
