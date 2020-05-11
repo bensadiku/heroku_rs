@@ -1,5 +1,5 @@
 //Anything related to DELETE requests for account and it's properties goes here.
-use super::Account;
+use super::{Account, AppTransfer};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -66,7 +66,7 @@ impl<'a> AppTransferDelete<'a> {
     }
 }
 
-impl<'a> HerokuEndpoint<Account> for AppTransferDelete<'a> {
+impl<'a> HerokuEndpoint<AppTransfer> for AppTransferDelete<'a> {
     fn method(&self) -> Method {
         Method::Delete
     }
