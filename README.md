@@ -19,6 +19,14 @@ Add the following to your `Cargo.toml` and run `cargo build`. Voila.
 heroku_rs = "0.5"
 ```
 
+You can also compile only the endpoints you need, by specifying so in the toml file:
+```toml
+[dependencies.heroku_rs]
+default-features = false
+features = ["account","apps"]
+version = "0.5"
+```
+
 Here's a simple example which fetches the apps list. At the moment, the client is blocking by default. For more examples see the [examples directory](https://github.com/bensadiku/heroku_rs/tree/master/examples).
 
 ```rust

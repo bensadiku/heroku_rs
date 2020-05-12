@@ -23,5 +23,49 @@ url = "2.1"
 failure = "0.1.5"
 serde_with = "1.3"
 
+
+[features]
+default = [
+    "account",
+    "addons",
+    "apps",
+    "builds",
+    "collaborators",
+    "config_vars",
+    "custom",
+    "domains",
+    "dynos",
+    "formations",
+    "logs",
+    "misc",
+    "oauth",
+    "pipelines",
+    "releases",
+    "review",
+    "slugs",
+    "space",
+    "teams",
+]
+
+account = []
+addons = []
+apps = []
+builds = []
+collaborators = []
+config_vars = []
+custom = []
+domains = []
+dynos = []
+formations = []
+logs = []
+misc = []
+oauth = []
+pipelines = []
+releases = []
+review = []
+slugs = []
+space = []
+teams = []
+
 [dev-dependencies]
 dotenv = "0.15.0"
