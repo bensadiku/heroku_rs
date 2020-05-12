@@ -15,6 +15,7 @@ pub struct DomainDelete<'a> {
     pub domain_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DomainDelete<'a> {
     pub fn new(app_id: &'a str, domain_id: &'a str) -> DomainDelete<'a> {
         DomainDelete { app_id, domain_id }

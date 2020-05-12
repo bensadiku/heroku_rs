@@ -15,6 +15,7 @@ pub struct BuildCreate<'a> {
     pub params: BuildCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> BuildCreate<'a> {
     /// Create a new build only with required parameters
     /// NOTE: Fields that are not passed are sent as NULL to the api.

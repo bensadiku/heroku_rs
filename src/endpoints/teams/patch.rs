@@ -15,6 +15,7 @@ pub struct TeamUpdate<'a> {
     pub params: TeamUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamUpdate<'a> {
     // cares for optional parameters
     pub fn new(team_id: &'a str) -> TeamUpdate<'a> {
@@ -84,6 +85,7 @@ pub struct TeamAppUpdateLocked<'a> {
     pub params: TeamAppUpdateLockedParams,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamAppUpdateLocked<'a> {
     pub fn new(team_id: &'a str, locked: bool) -> TeamAppUpdateLocked<'a> {
         TeamAppUpdateLocked {
@@ -128,6 +130,7 @@ pub struct TeamAppTransfer<'a> {
     pub params: TeamAppTransferParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamAppTransfer<'a> {
     pub fn new(team_id: &'a str, owner_id: &'a str) -> TeamAppTransfer<'a> {
         TeamAppTransfer {
@@ -177,6 +180,7 @@ pub struct TeamMemberUpdate<'a> {
     pub params: TeamMemberUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamMemberUpdate<'a> {
     /// Only required parameters passed
     pub fn new(team_id: &'a str, email: &'a str, role: &'a str) -> TeamMemberUpdate<'a> {
@@ -247,6 +251,7 @@ pub struct TeamPreferenceUpdate<'a> {
     pub params: TeamPreferenceUpdateParams,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamPreferenceUpdate<'a> {
     pub fn new(id: &'a str) -> TeamPreferenceUpdate<'a> {
         TeamPreferenceUpdate {

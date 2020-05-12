@@ -13,6 +13,7 @@ pub struct AppDetails<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppDetails<'a> {
     pub fn new(app_id: &'a str) -> AppDetails {
         AppDetails { app_id }
@@ -35,6 +36,7 @@ impl<'a> HerokuEndpoint<App> for AppDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-list)
 pub struct AppList {}
 
+#[cfg(feature = "builder")]
 impl AppList {
     pub fn new() -> AppList {
         AppList {}
@@ -60,6 +62,7 @@ pub struct AccountAppList<'a> {
     pub account_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AccountAppList<'a> {
     pub fn new(account_id: &'a str) -> AccountAppList<'a> {
         AccountAppList { account_id }
@@ -87,6 +90,7 @@ pub struct AppFeatureDetails<'a> {
     pub feature_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppFeatureDetails<'a> {
     pub fn new(app_id: &'a str, feature_id: &'a str) -> AppFeatureDetails<'a> {
         AppFeatureDetails { app_id, feature_id }
@@ -112,6 +116,7 @@ pub struct AppFeatureList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppFeatureList<'a> {
     pub fn new(app_id: &'a str) -> AppFeatureList {
         AppFeatureList { app_id }
@@ -137,6 +142,7 @@ pub struct AppWebhookList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppWebhookList<'a> {
     pub fn new(app_id: &'a str) -> AppWebhookList<'a> {
         AppWebhookList { app_id }
@@ -164,6 +170,7 @@ pub struct AppWebhookDetails<'a> {
     pub webhook_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppWebhookDetails<'a> {
     pub fn new(app_id: &'a str, webhook_id: &'a str) -> AppWebhookDetails<'a> {
         AppWebhookDetails { app_id, webhook_id }
@@ -191,6 +198,7 @@ pub struct AppWebhookDeliveryDetails<'a> {
     pub webhook_delivery_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppWebhookDeliveryDetails<'a> {
     pub fn new(app_id: &'a str, webhook_delivery_id: &'a str) -> AppWebhookDeliveryDetails<'a> {
         AppWebhookDeliveryDetails {
@@ -222,6 +230,7 @@ pub struct AppWebhookDeliveryList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppWebhookDeliveryList<'a> {
     pub fn new(app_id: &'a str) -> AppWebhookDeliveryList {
         AppWebhookDeliveryList { app_id }
@@ -247,6 +256,7 @@ pub struct AppSetupDetails<'a> {
     pub setup_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppSetupDetails<'a> {
     pub fn new(setup_id: &'a str) -> AppSetupDetails<'a> {
         AppSetupDetails { setup_id }
@@ -274,6 +284,7 @@ pub struct SNIDetails<'a> {
     pub sni_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SNIDetails<'a> {
     pub fn new(app_id: &'a str, sni_id: &'a str) -> SNIDetails<'a> {
         SNIDetails { app_id, sni_id }
@@ -299,6 +310,7 @@ pub struct SNIList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SNIList<'a> {
     pub fn new(app_id: &'a str) -> SNIList<'a> {
         SNIList { app_id }
@@ -324,6 +336,7 @@ pub struct SSLList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SSLList<'a> {
     pub fn new(app_id: &'a str) -> SSLList<'a> {
         SSLList { app_id }
@@ -351,6 +364,7 @@ pub struct SSLDetails<'a> {
     pub ssl_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SSLDetails<'a> {
     pub fn new(app_id: &'a str, ssl_id: &'a str) -> SSLDetails<'a> {
         SSLDetails { app_id, ssl_id }
@@ -378,6 +392,7 @@ pub struct WebhookEventDetails<'a> {
     pub event_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookEventDetails<'a> {
     pub fn new(app_id: &'a str, event_id: &'a str) -> WebhookEventDetails<'a> {
         WebhookEventDetails { app_id, event_id }
@@ -403,6 +418,7 @@ pub struct WebhookEventList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookEventList<'a> {
     pub fn new(app_id: &'a str) -> WebhookEventList<'a> {
         WebhookEventList { app_id }

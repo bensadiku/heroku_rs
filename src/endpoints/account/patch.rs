@@ -13,6 +13,7 @@ pub struct AccountUpdate<'a> {
     pub params: AccountUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AccountUpdate<'a> {
     pub fn new() -> AccountUpdate<'a> {
         AccountUpdate {
@@ -91,6 +92,7 @@ pub struct UserAccountUpdate<'a> {
     pub params: UserAccountUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> UserAccountUpdate<'a> {
     pub fn new(account_id: &'a str) -> UserAccountUpdate<'a> {
         UserAccountUpdate {
@@ -171,6 +173,7 @@ pub struct AccountFeatureUpdate<'a> {
     pub params: AccountFeatureUpdateParams,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AccountFeatureUpdate<'a> {
     pub fn new(feature_id: &'a str, enabled: bool) -> AccountFeatureUpdate {
         AccountFeatureUpdate {
@@ -216,6 +219,7 @@ pub struct AppTransferUpdate<'a> {
     pub params: AppTransferUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppTransferUpdate<'a> {
     pub fn new(transfer_id: &'a str, state: &'a str) -> AppTransferUpdate<'a> {
         AppTransferUpdate {

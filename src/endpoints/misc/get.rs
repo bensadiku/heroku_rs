@@ -13,6 +13,7 @@ pub struct RegionDetails<'a> {
     pub region_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> RegionDetails<'a> {
     pub fn new(region_id: &'a str) -> RegionDetails<'a> {
         RegionDetails { region_id }
@@ -35,6 +36,7 @@ impl<'a> HerokuEndpoint<Region> for RegionDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#region-list)
 pub struct RegionList {}
 
+#[cfg(feature = "builder")]
 impl RegionList {
     pub fn new() -> RegionList {
         RegionList {}
@@ -57,6 +59,7 @@ impl HerokuEndpoint<Vec<Region>> for RegionList {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#rate-limit-info)
 pub struct RatelimitDetails {}
 
+#[cfg(feature = "builder")]
 impl RatelimitDetails {
     pub fn new() -> RatelimitDetails {
         RatelimitDetails {}
@@ -79,6 +82,7 @@ impl HerokuEndpoint<Ratelimit> for RatelimitDetails {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#stack-list)
 pub struct StackList {}
 
+#[cfg(feature = "builder")]
 impl StackList {
     pub fn new() -> StackList {
         StackList {}
@@ -104,6 +108,7 @@ pub struct StackDetails<'a> {
     pub stack_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> StackDetails<'a> {
     pub fn new(stack_id: &'a str) -> StackDetails<'a> {
         StackDetails { stack_id }

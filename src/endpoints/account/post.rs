@@ -13,6 +13,7 @@ pub struct AppTransferCreate<'a> {
     pub params: AppTransferCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppTransferCreate<'a> {
     pub fn new(app: &'a str, recipient: &'a str) -> AppTransferCreate<'a> {
         AppTransferCreate {
@@ -76,6 +77,7 @@ pub struct AccountCreditCreate<'a> {
     pub params: AccountCreditCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AccountCreditCreate<'a> {
     pub fn new() -> AccountCreditCreate<'a> {
         AccountCreditCreate {
@@ -138,6 +140,7 @@ pub struct PasswordReset<'a> {
     pub params: PasswordResetParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PasswordReset<'a> {
     pub fn new(email: &'a str) -> PasswordReset {
         PasswordReset {
@@ -179,6 +182,7 @@ pub struct PasswordResetConfirm<'a> {
     pub params: PasswordResetConfirmParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PasswordResetConfirm<'a> {
     pub fn new(password_id: &'a str) -> PasswordResetConfirm<'a> {
         PasswordResetConfirm {
@@ -247,6 +251,7 @@ pub struct SmsNumberRecover<'a> {
     pub account_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SmsNumberRecover<'a> {
     pub fn new(account_id: &'a str) -> SmsNumberRecover<'a> {
         SmsNumberRecover { account_id }
@@ -272,6 +277,7 @@ pub struct SmsNumberConfirm<'a> {
     pub account_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SmsNumberConfirm<'a> {
     pub fn new(account_id: &'a str) -> SmsNumberConfirm<'a> {
         SmsNumberConfirm { account_id }

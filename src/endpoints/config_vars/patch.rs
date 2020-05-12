@@ -20,6 +20,7 @@ pub struct AppConfigVarUpdate<'a> {
     pub params: HashMap<String, String>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppConfigVarUpdate<'a> {
     pub fn new(app_id: &'a str, params: HashMap<String, String>) -> AppConfigVarUpdate {
         AppConfigVarUpdate { app_id, params }
@@ -59,6 +60,7 @@ pub struct PipelineConfigVarUpdate<'a> {
     pub params: HashMap<String, String>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineConfigVarUpdate<'a> {
     pub fn new(
         pipeline_id: &'a str,

@@ -10,6 +10,7 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-delete)
 pub struct AccountDelete {}
 
+#[cfg(feature = "builder")]
 impl AccountDelete {
     pub fn new() -> AccountDelete {
         AccountDelete {}
@@ -35,6 +36,7 @@ pub struct UserAccountDelete<'a> {
     pub account_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> UserAccountDelete<'a> {
     pub fn new(account_id: &'a str) -> UserAccountDelete<'a> {
         UserAccountDelete { account_id }
@@ -60,6 +62,7 @@ pub struct AppTransferDelete<'a> {
     pub transfer_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppTransferDelete<'a> {
     pub fn new(transfer_id: &'a str) -> AppTransferDelete {
         AppTransferDelete { transfer_id }

@@ -13,6 +13,7 @@ pub struct OAuthDelete<'a> {
     pub oauth_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthDelete<'a> {
     pub fn new(oauth_id: &'a str) -> OAuthDelete<'a> {
         OAuthDelete { oauth_id }
@@ -38,6 +39,7 @@ pub struct OAuthClientDelete<'a> {
     pub client_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthClientDelete<'a> {
     pub fn new(client_id: &'a str) -> OAuthClientDelete<'a> {
         OAuthClientDelete { client_id }
@@ -63,6 +65,7 @@ pub struct OAuthTokenDelete<'a> {
     pub token_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthTokenDelete<'a> {
     pub fn new(token_id: &'a str) -> OAuthTokenDelete<'a> {
         OAuthTokenDelete { token_id }

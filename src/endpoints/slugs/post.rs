@@ -16,6 +16,7 @@ pub struct SlugCreate<'a> {
     pub params: SlugCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SlugCreate<'a> {
     pub fn new(app_id: &'a str, process_types: HashMap<&'a str, &'a str>) -> SlugCreate<'a> {
         SlugCreate {

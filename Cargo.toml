@@ -45,6 +45,7 @@ default = [
     "slugs",
     "space",
     "teams",
+    "builder",
 ]
 
 account = []
@@ -66,6 +67,8 @@ review = []
 slugs = []
 space = []
 teams = []
+
+builder = []
 
 [dev-dependencies]
 dotenv = "0.15.0"

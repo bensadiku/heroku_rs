@@ -17,6 +17,7 @@ pub struct LogDrainUpdate<'a> {
     pub params: LogDrainUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> LogDrainUpdate<'a> {
     pub fn new(addon_id: &'a str, drain_id: &'a str, url: &'a str) -> LogDrainUpdate<'a> {
         LogDrainUpdate {

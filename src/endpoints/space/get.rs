@@ -13,6 +13,7 @@ pub struct SpaceDetails<'a> {
     pub space_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SpaceDetails<'a> {
     pub fn new(space_id: &'a str) -> SpaceDetails<'a> {
         SpaceDetails { space_id }
@@ -35,6 +36,7 @@ impl<'a> HerokuEndpoint<Space> for SpaceDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-space-list-1)
 pub struct SpaceList {}
 
+#[cfg(feature = "builder")]
 impl SpaceList {
     pub fn new() -> SpaceList {
         SpaceList {}
@@ -62,6 +64,7 @@ pub struct SpaceAccessDetails<'a> {
     pub account_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SpaceAccessDetails<'a> {
     pub fn new(space_id: &'a str, account_id: &'a str) -> SpaceAccessDetails<'a> {
         SpaceAccessDetails {
@@ -90,6 +93,7 @@ pub struct SpaceAccessList<'a> {
     pub space_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SpaceAccessList<'a> {
     pub fn new(space_id: &'a str) -> SpaceAccessList<'a> {
         SpaceAccessList { space_id }
@@ -115,6 +119,7 @@ pub struct SpaceNATDetails<'a> {
     pub space_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SpaceNATDetails<'a> {
     pub fn new(space_id: &'a str) -> SpaceNATDetails<'a> {
         SpaceNATDetails { space_id }
@@ -140,6 +145,7 @@ pub struct InboundRulesetCurrent<'a> {
     pub space_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> InboundRulesetCurrent<'a> {
     pub fn new(space_id: &'a str) -> InboundRulesetCurrent<'a> {
         InboundRulesetCurrent { space_id }
@@ -167,6 +173,7 @@ pub struct InboundRulesetDetails<'a> {
     pub ruleset_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> InboundRulesetDetails<'a> {
     pub fn new(space_id: &'a str, ruleset_id: &'a str) -> InboundRulesetDetails<'a> {
         InboundRulesetDetails {
@@ -198,6 +205,7 @@ pub struct InboundRulesetList<'a> {
     pub space_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> InboundRulesetList<'a> {
     pub fn new(space_id: &'a str) -> InboundRulesetList<'a> {
         InboundRulesetList { space_id }
@@ -223,6 +231,7 @@ pub struct OutboundRulesetCurrent<'a> {
     pub space_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OutboundRulesetCurrent<'a> {
     pub fn new(space_id: &'a str) -> OutboundRulesetCurrent<'a> {
         OutboundRulesetCurrent { space_id }
@@ -250,6 +259,7 @@ pub struct OutboundRulesetDetails<'a> {
     pub ruleset_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OutboundRulesetDetails<'a> {
     pub fn new(space_id: &'a str, ruleset_id: &'a str) -> OutboundRulesetDetails<'a> {
         OutboundRulesetDetails {
@@ -281,6 +291,7 @@ pub struct OutboundRulesetList<'a> {
     pub space_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OutboundRulesetList<'a> {
     pub fn new(space_id: &'a str) -> OutboundRulesetList<'a> {
         OutboundRulesetList { space_id }

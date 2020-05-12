@@ -13,6 +13,7 @@ pub struct AppDelete<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppDelete<'a> {
     pub fn new(app_id: &'a str) -> AppDelete {
         AppDelete { app_id }
@@ -38,6 +39,7 @@ pub struct AppDisableAcm<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppDisableAcm<'a> {
     pub fn new(app_id: &'a str) -> AppDisableAcm {
         AppDisableAcm { app_id }
@@ -64,6 +66,7 @@ pub struct AppWebhookDelete<'a> {
     /// webhook_id is the webhook id.
     pub webhook_id: &'a str,
 }
+#[cfg(feature = "builder")]
 impl<'a> AppWebhookDelete<'a> {
     pub fn new(app_id: &'a str, webhook_id: &'a str) -> AppWebhookDelete<'a> {
         AppWebhookDelete { app_id, webhook_id }
@@ -91,6 +94,7 @@ pub struct SNIDelete<'a> {
     pub sni_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SNIDelete<'a> {
     pub fn new(app_id: &'a str, sni_id: &'a str) -> SNIDelete<'a> {
         SNIDelete { app_id, sni_id }
@@ -118,6 +122,7 @@ pub struct SSLDelete<'a> {
     pub ssl_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SSLDelete<'a> {
     pub fn new(app_id: &'a str, ssl_id: &'a str) -> SSLDelete<'a> {
         SSLDelete { app_id, ssl_id }

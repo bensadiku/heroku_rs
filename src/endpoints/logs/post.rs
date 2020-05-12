@@ -15,6 +15,7 @@ pub struct LogDrainCreate<'a> {
     pub params: LogDrainCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> LogDrainCreate<'a> {
     pub fn new(app_id: &'a str, url: &'a str) -> LogDrainCreate<'a> {
         LogDrainCreate {
@@ -57,6 +58,7 @@ pub struct LogSessionCreate<'a> {
     pub params: LogSessionCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> LogSessionCreate<'a> {
     /// Create a new log session with required parameters
     pub fn new(app_id: &'a str) -> LogSessionCreate<'a> {

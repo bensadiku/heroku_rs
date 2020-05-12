@@ -13,6 +13,7 @@ pub struct BuildList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> BuildList<'a> {
     pub fn new(app_id: &'a str) -> BuildList<'a> {
         BuildList { app_id }
@@ -40,6 +41,7 @@ pub struct BuildDetails<'a> {
     pub build_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> BuildDetails<'a> {
     pub fn new(app_id: &'a str, build_id: &'a str) -> BuildDetails<'a> {
         BuildDetails { app_id, build_id }
@@ -65,6 +67,7 @@ pub struct BuildPackInstallationList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> BuildPackInstallationList<'a> {
     pub fn new(app_id: &'a str) -> BuildPackInstallationList<'a> {
         BuildPackInstallationList { app_id }

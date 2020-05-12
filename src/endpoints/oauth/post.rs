@@ -13,6 +13,7 @@ pub struct OAuthCreate<'a> {
     pub params: OAuthCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthCreate<'a> {
     pub fn new(scope: Vec<&'a str>) -> OAuthCreate<'a> {
         OAuthCreate {
@@ -91,6 +92,7 @@ pub struct OAuthRegenerate<'a> {
     pub oauth_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthRegenerate<'a> {
     pub fn new(oauth_id: &'a str) -> OAuthRegenerate<'a> {
         OAuthRegenerate { oauth_id }
@@ -119,6 +121,7 @@ pub struct OAuthClientCreate<'a> {
     pub params: OAuthClientCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthClientCreate<'a> {
     pub fn new(name: &'a str, redirect_uri: &'a str) -> OAuthClientCreate<'a> {
         OAuthClientCreate {
@@ -160,6 +163,7 @@ pub struct OAuthClientRotateCredentials<'a> {
     pub client_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthClientRotateCredentials<'a> {
     pub fn new(client_id: &'a str) -> OAuthClientRotateCredentials<'a> {
         OAuthClientRotateCredentials { client_id }
@@ -188,6 +192,7 @@ pub struct OAuthTokenCreate<'a> {
     pub params: OAuthTokenCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthTokenCreate<'a> {
     pub fn new(
         client_secret: &'a str,

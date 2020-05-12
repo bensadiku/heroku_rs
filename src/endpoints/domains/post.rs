@@ -15,6 +15,7 @@ pub struct DomainCreate<'a> {
     pub params: DomainCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DomainCreate<'a> {
     pub fn new(app_id: &'a str, hostname: &'a str) -> DomainCreate<'a> {
         DomainCreate {

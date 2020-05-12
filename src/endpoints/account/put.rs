@@ -12,6 +12,7 @@ pub struct InvoiceAddressUpdate<'a> {
     pub params: InvoiceAddressUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> InvoiceAddressUpdate<'a> {
     pub fn new() -> InvoiceAddressUpdate<'a> {
         InvoiceAddressUpdate {

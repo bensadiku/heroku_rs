@@ -14,6 +14,7 @@ pub struct InboundRulesetCreate<'a> {
     pub params: InboundRulesetCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> InboundRulesetCreate<'a> {
     pub fn new(space_id: &'a str) -> InboundRulesetCreate<'a> {
         InboundRulesetCreate {
@@ -77,6 +78,7 @@ pub struct OutboundRulesetCreate<'a> {
     pub params: OutboundRulesetCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OutboundRulesetCreate<'a> {
     pub fn new(space_id: &'a str) -> OutboundRulesetCreate<'a> {
         OutboundRulesetCreate {

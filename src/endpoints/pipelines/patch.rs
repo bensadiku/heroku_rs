@@ -15,6 +15,7 @@ pub struct PipelineUpdate<'a> {
     pub params: PipelineUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineUpdate<'a> {
     pub fn new(pipeline_id: &'a str) -> PipelineUpdate<'a> {
         PipelineUpdate {
@@ -72,6 +73,7 @@ pub struct PipelineCouplingUpdate<'a> {
     pub params: PipelineCouplingUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineCouplingUpdate<'a> {
     pub fn new(coupling_id: &'a str) -> PipelineCouplingUpdate {
         PipelineCouplingUpdate {

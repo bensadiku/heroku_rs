@@ -13,6 +13,7 @@ pub struct TeamDelete<'a> {
     pub team_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamDelete<'a> {
     pub fn new(team_id: &'a str) -> TeamDelete {
         TeamDelete { team_id }
@@ -40,6 +41,7 @@ pub struct TeamInvitationRevoke<'a> {
     pub invitation_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamInvitationRevoke<'a> {
     pub fn new(team_id: &'a str, invitation_id: &'a str) -> TeamInvitationRevoke<'a> {
         TeamInvitationRevoke {
@@ -70,6 +72,7 @@ pub struct TeamMemberDelete<'a> {
     pub member_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamMemberDelete<'a> {
     pub fn new(team_id: &'a str, member_id: &'a str) -> TeamMemberDelete<'a> {
         TeamMemberDelete { team_id, member_id }

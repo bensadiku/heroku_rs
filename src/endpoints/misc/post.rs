@@ -10,6 +10,7 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#source-create)
 pub struct SourceCreate {}
 
+#[cfg(feature = "builder")]
 impl SourceCreate {
     pub fn new() -> SourceCreate {
         SourceCreate {}

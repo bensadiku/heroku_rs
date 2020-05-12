@@ -13,6 +13,7 @@ pub struct PipelineCreate<'a> {
     pub params: PipelineCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineCreate<'a> {
     pub fn new(pipeline_name: &'a str) -> PipelineCreate<'a> {
         PipelineCreate {
@@ -54,6 +55,7 @@ pub struct PipelineCouplingCreate<'a> {
     pub params: PipelineCouplingCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineCouplingCreate<'a> {
     pub fn new(
         app_id: &'a str,
@@ -107,6 +109,7 @@ pub struct PipelinePromotionCreate<'a> {
     pub params: PipelinePromotionCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelinePromotionCreate<'a> {
     pub fn new(
         pipeline_id: &'a str,
@@ -180,6 +183,7 @@ pub struct PipelineTransferCreate<'a> {
     pub params: PipelineTransferCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineTransferCreate<'a> {
     pub fn new(
         pipeline_id: &'a str,

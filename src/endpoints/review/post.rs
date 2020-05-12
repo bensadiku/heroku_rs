@@ -14,6 +14,7 @@ pub struct ReviewAppCreate<'a> {
     pub params: ReviewAppCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReviewAppCreate<'a> {
     pub fn new(
         branch: &'a str,
@@ -124,6 +125,7 @@ pub struct ReviewAppConfigEnable<'a> {
     pub params: ReviewAppConfigEnableParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReviewAppConfigEnable<'a> {
     pub fn new(pipeline_id: &'a str, repo: &'a str) -> ReviewAppConfigEnable<'a> {
         ReviewAppConfigEnable {

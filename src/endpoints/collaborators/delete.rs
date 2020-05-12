@@ -15,6 +15,7 @@ pub struct CollaboratorDelete<'a> {
     pub collaborator_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> CollaboratorDelete<'a> {
     pub fn new(app_id: &'a str, collaborator_id: &'a str) -> CollaboratorDelete<'a> {
         CollaboratorDelete {
@@ -48,6 +49,7 @@ pub struct TeamCollaboratorDelete<'a> {
     pub collaborator_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamCollaboratorDelete<'a> {
     pub fn new(app_id: &'a str, collaborator_id: &'a str) -> TeamCollaboratorDelete<'a> {
         TeamCollaboratorDelete {

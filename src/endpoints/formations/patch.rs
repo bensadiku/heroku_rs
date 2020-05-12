@@ -17,6 +17,7 @@ pub struct FormationUpdate<'a> {
     pub params: FormationUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> FormationUpdate<'a> {
     pub fn new(app_id: &'a str, formation_id: &'a str) -> FormationUpdate<'a> {
         FormationUpdate {

@@ -11,6 +11,7 @@ pub struct BuildDelete<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> BuildDelete<'a> {
     pub fn new(app_id: &'a str) -> BuildDelete<'a> {
         BuildDelete { app_id }

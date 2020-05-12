@@ -17,6 +17,7 @@ pub struct TeamCollaboratorUpdate<'a> {
     pub params: TeamCollaboratorUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamCollaboratorUpdate<'a> {
     pub fn new(
         app_id: &'a str,

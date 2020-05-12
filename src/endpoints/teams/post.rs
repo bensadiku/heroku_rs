@@ -12,6 +12,7 @@ pub struct TeamCreate<'a> {
     pub params: TeamCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamCreate<'a> {
     // `new` method has only the required parameters
     pub fn new(name: &'a str) -> TeamCreate {
@@ -201,6 +202,7 @@ pub struct TeamCreateByEA<'a> {
     pub params: TeamCreateByEAParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamCreateByEA<'a> {
     pub fn new(account_id: &'a str, name: &'a str) -> TeamCreateByEA<'a> {
         TeamCreateByEA {
@@ -240,6 +242,7 @@ pub struct TeamAppCreate<'a> {
     pub params: TeamAppCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamAppCreate<'a> {
     pub fn new() -> TeamAppCreate<'a> {
         TeamAppCreate {
@@ -362,6 +365,7 @@ pub struct TeamInvitationAccept<'a> {
     pub token_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamInvitationAccept<'a> {
     pub fn new(token_id: &'a str) -> TeamInvitationAccept<'a> {
         TeamInvitationAccept { token_id }
@@ -389,6 +393,7 @@ pub struct TeamMemberCreate<'a> {
     pub params: TeamMemberCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamMemberCreate<'a> {
     /// Only required parameters passed
     pub fn new(team_id: &'a str, email: &'a str, role: &'a str) -> TeamMemberCreate<'a> {
