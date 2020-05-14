@@ -1,5 +1,5 @@
 //Anything related to GET requests for spaces goes here.
-use super::{InboundRuleset, OutboundRuleset, Space, SpaceAccess, SpaceNAT};
+use super::{InboundRuleset, OutboundRuleset, Space, SpaceAccess, SpaceNAT, VPN};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -304,5 +304,59 @@ impl<'a> HerokuEndpoint<Vec<OutboundRuleset>> for OutboundRulesetList<'a> {
     }
     fn path(&self) -> String {
         format!("spaces/{}/outbound-rulesets", self.space_id)
+    }
+}
+
+/// Private Spaces VPN List
+///
+/// List VPN connections for a space.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-list)
+pub struct VPNList<'a> {
+    /// space_id can be the space name or space id
+    pub space_id: &'a str,
+}
+
+#[cfg(feature = "builder")]
+impl<'a> VPNList<'a> {
+    pub fn new(space_id: &'a str) -> VPNList<'a> {
+        VPNList { space_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<Vec<VPN>> for VPNList<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("spaces/{}/vpn-connections", self.space_id)
+    }
+}
+
+/// Private Spaces VPN List
+///
+/// List VPN connections for a space.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-list)
+pub struct VPNDetails<'a> {
+    /// space_id can be the space name or space id
+    pub space_id: &'a str,
+    /// unique vpn identifier, either vpn connection name or vpn connection id
+    pub vpn_id: &'a str,
+}
+
+#[cfg(feature = "builder")]
+impl<'a> VPNDetails<'a> {
+    pub fn new(space_id: &'a str, vpn_id: &'a str) -> VPNDetails<'a> {
+        VPNDetails { space_id, vpn_id }
+    }
+}
+
+impl<'a> HerokuEndpoint<VPN> for VPNDetails<'a> {
+    fn method(&self) -> Method {
+        Method::Get
+    }
+    fn path(&self) -> String {
+        format!("spaces/{}/vpn-connections/{}", self.space_id, self.vpn_id)
     }
 }

@@ -9,14 +9,19 @@ pub mod put;
 pub use get::{
     InboundRulesetCurrent, InboundRulesetDetails, InboundRulesetList, OutboundRulesetCurrent,
     OutboundRulesetDetails, OutboundRulesetList, SpaceAccessDetails, SpaceAccessList, SpaceDetails,
-    SpaceList, SpaceNATDetails,
+    SpaceList, SpaceNATDetails, VPNDetails, VPNList,
 };
 pub use patch::{SpaceAccessUpdate, SpaceAccessUpdateParams, SpaceUpdate, SpaceUpdateParams};
-pub use post::{SpaceCreate, SpaceCreateParams, SpaceTransferCreate, SpaceTransferCreateParams};
+pub use post::{
+    SpaceCreate, SpaceCreateParams, SpaceTransferCreate, SpaceTransferCreateParams, VPNCreate,
+    VPNCreateParams,
+};
 pub use put::{
     InboundRulesetCreate, InboundRulesetCreateParams, OutboundRulesetCreate,
     OutboundRulesetCreateParams,
 };
+
+pub use delete::{SpaceDelete, VPNDelete};
 
 impl ApiResult for Space {}
 impl ApiResult for Vec<Space> {}
@@ -36,12 +41,16 @@ impl ApiResult for Vec<InboundRuleset> {}
 impl ApiResult for OutboundRuleset {}
 impl ApiResult for Vec<OutboundRuleset> {}
 
+impl ApiResult for VPN {}
+impl ApiResult for Vec<VPN> {}
+
 pub use inbound_ruleset::InboundRuleset;
 pub use outbound_ruleset::OutboundRuleset;
 pub use space_access::SpaceAccess;
 pub use space_nat::SpaceNAT;
 pub use space_transfer::SpaceTransfer;
 pub use spaces::Space;
+pub use vpn::VPN;
 
 mod spaces {
     use chrono::offset::Utc;
@@ -298,5 +307,46 @@ mod outbound_ruleset {
         pub from_port: i64,
         pub to_port: i64,
         pub protocol: String,
+    }
+}
+
+mod vpn {
+    /// Private Spaces VPN
+    ///
+    /// Stability: production
+    ///
+    /// [VPN](https://devcenter.heroku.com/articles/private-space-vpn-connection) provides a way to connect your Private Spaces to your network via VPN.
+    ///
+    /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn)
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct VPN {
+        /// VPN unique identifier
+        pub id: String,
+        /// VPN Name
+        pub name: String,
+        /// Public IP of VPN customer gateway
+        pub public_ip: String,
+        /// Routable CIDRs of VPN
+        pub routable_cidrs: Vec<String>,
+        /// CIDR Block of the Private Space
+        pub space_cidr_block: String,
+        /// tunnels
+        pub tunnels: Vec<Tunnel>,
+        /// IKE Version
+        pub ike_version: i64,
+        /// Status of the VPN
+        ///  one of:"pending" or "provisioning" or "active" or "deprovisioning" or "failed"
+        pub status: String,
+        /// Details of the status
+        pub status_message: String,
+    }
+    #[derive(Deserialize, Serialize, Debug, Clone)]
+    pub struct Tunnel {
+        pub last_status_change: String,
+        pub ip: String,
+        pub customer_ip: String,
+        pub pre_shared_key: String,
+        pub status: String,
+        pub status_message: String,
     }
 }

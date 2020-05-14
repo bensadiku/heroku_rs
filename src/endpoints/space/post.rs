@@ -1,5 +1,5 @@
 //Anything related to POST requests for spaces goes here.
-use super::{Space, SpaceTransfer};
+use super::{Space, SpaceTransfer, VPN};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -136,6 +136,58 @@ impl<'a> HerokuEndpoint<SpaceTransfer, (), SpaceTransferCreateParams<'a>>
         format!("spaces/{}/transfer", self.space_id)
     }
     fn body(&self) -> Option<SpaceTransferCreateParams<'a>> {
+        Some(self.params.clone())
+    }
+}
+
+/// Private Spaces VPN Create
+///
+/// Create a new VPN connection in a private space.
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-create)
+pub struct VPNCreate<'a> {
+    /// unique space identifier, either space name or space id
+    pub space_id: &'a str,
+    /// The parameters to pass to the Heroku API
+    pub params: VPNCreateParams<'a>,
+}
+
+#[cfg(feature = "builder")]
+impl<'a> VPNCreate<'a> {
+    pub fn new(space_id: &'a str, name: &'a str, public_ip: &'a str, routable_cidrs: Vec<&'a str>) -> VPNCreate<'a> {
+        VPNCreate {
+            space_id,
+            params: VPNCreateParams {
+                name,
+                public_ip,
+                routable_cidrs,
+            },
+        }
+    }
+}
+
+/// Create a new private space vpn with parameters
+///
+/// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-create-required-parameters)
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug)]
+pub struct VPNCreateParams<'a> {
+    /// VPN Name
+    pub name: &'a str,
+    /// Public IP of VPN customer gateway
+    pub public_ip: &'a str,
+    /// A list of Routable CIDRs of VPN
+    pub routable_cidrs: Vec<&'a str>,
+}
+
+impl<'a> HerokuEndpoint<VPN, (), VPNCreateParams<'a>> for VPNCreate<'a> {
+    fn method(&self) -> Method {
+        Method::Post
+    }
+    fn path(&self) -> String {
+        format!("spaces/{}/vpn-connections", self.space_id)
+    }
+    fn body(&self) -> Option<VPNCreateParams<'a>> {
         Some(self.params.clone())
     }
 }

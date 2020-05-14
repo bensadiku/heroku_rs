@@ -149,8 +149,8 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [ ] [/pipelines/{pipeline_id}/test-runs](https://devcenter.heroku.com/articles/platform-api-reference#test-run-list)	
 - [ ] [/pipelines/{pipeline_id}/test-runs/{test_run_number}](https://devcenter.heroku.com/articles/platform-api-reference#test-run-info-by-pipeline)
 - [ ] [/users/{user_preferences_self}/preferences](https://devcenter.heroku.com/articles/platform-api-reference#user-preferences-list)	
-- [ ] [/spaces/{space_id_or_name}/vpn-connections](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-list)	
-- [ ] [/spaces/{space_id_or_name}/vpn-connections/{vpn_connection_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-info)	
+- [X] [/spaces/{space_id_or_name}/vpn-connections](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-list)	
+- [X] [/spaces/{space_id_or_name}/vpn-connections/{vpn_connection_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-info)	
 - [ ] [/teams/{team_name_or_id}/whitelisted-addon-services](https://devcenter.heroku.com/articles/platform-api-reference#whitelisted-entity-list-by-team)	
 
 ## POST
@@ -203,7 +203,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [X] [/teams/invitations/{team_invitation_token}/accept](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-accept)	
 - [X] [/teams/{team_name_or_id}/members](https://devcenter.heroku.com/articles/platform-api-reference#team-member-create)	
 - [ ] [/test-runs](https://devcenter.heroku.com/articles/platform-api-reference#test-run-create)		
-- [ ] [/spaces/{space_id_or_name}/vpn-connections](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-create)	
+- [X] [/spaces/{space_id_or_name}/vpn-connections](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-create)	
 - [ ] [/teams/{team_name_or_id}/whitelisted-addon-services](https://devcenter.heroku.com/articles/platform-api-reference#whitelisted-entity-create-by-team)	
 
 ## PUT
@@ -247,7 +247,7 @@ Useful read, an overview of the API by [Heroku](https://devcenter.heroku.com/art
 - [X] [/teams/apps/{team_app_name}/collaborators/{team_app_collaborator_email}](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-delete)	
 - [X] [/teams/{team_name_or_id}/invitations/{team_invitation_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-revoke)	
 - [X] [/teams/{team_name_or_id}/members/{team_member_email_or_id}](https://devcenter.heroku.com/articles/platform-api-reference#team-member-delete)	
-- [ ] [/spaces/{space_id_or_name}/vpn-connections/{vpn_connection_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-destroy)	
+- [X] [/spaces/{space_id_or_name}/vpn-connections/{vpn_connection_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-destroy)	
 - [ ] [/teams/{team_name_or_id}/whitelisted-addon-services/{whitelisted_add_on_service_id_or_name}](https://devcenter.heroku.com/articles/platform-api-reference#whitelisted-entity-delete-by-team)	
 
 ## PATCH

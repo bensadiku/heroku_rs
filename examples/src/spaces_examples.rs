@@ -8,6 +8,7 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // update_space(api_client);
     // get_space(api_client);
     get_spaces(api_client);
+    // delete_space(api_client);
 
     // get_space_access(api_client);
     // get_space_access_members(api_client);
@@ -26,7 +27,51 @@ pub fn run<ApiClientType: HerokuApiClient>(api_client: &ApiClientType) {
     // get_outbound_ruleset_current(api_client);
     // get_outbound_ruleset_details(api_client);
     // create_inbound_ruleset(api_client);
+
+    // create_vpn(api_client);
+    // delete_vpn(api_client);
+    // list_vpn(api_client);
+    // details_vpn(api_client);
 }
+
+// get details about a specific vpn
+fn details_vpn<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let vpn_id = "123";
+    let space = &space::VPNDetails::new(space_id, vpn_id);
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
+// list vpn
+fn list_vpn<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let space = &space::VPNList::new(space_id);
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
+// delete vpn
+fn delete_vpn<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let vpn_id = "123";
+    let space = &space::VPNDelete::new(space_id, vpn_id);
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
+// create vpn
+fn create_vpn<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let space = &space::VPNCreate::new(space_id, "office", "35.161.69.30", vec!["172.16.0.0/16"]);
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+
 // create outbound ruleset
 fn create_outbound_ruleset<T: HerokuApiClient>(api_client: &T) {
     let space_id = "123";
@@ -153,6 +198,14 @@ fn get_space_access<T: HerokuApiClient>(api_client: &T) {
     let space_id = "123";
     let account_id = "123";
     let space = &space::SpaceAccessDetails::new(space_id, account_id);
+    let response = api_client.request(space);
+
+    print_response(response);
+}
+// get spaces list
+fn delete_space<T: HerokuApiClient>(api_client: &T) {
+    let space_id = "123";
+    let space = &space::SpaceDelete::new(space_id);
     let response = api_client.request(space);
 
     print_response(response);
