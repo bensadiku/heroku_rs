@@ -15,6 +15,7 @@ pub struct AppConfigVarDelete<'a> {
     pub params: HashMap<String, Option<String>>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppConfigVarDelete<'a> {
     pub fn new(app_id: &'a str, params: HashMap<String, Option<String>>) -> AppConfigVarDelete {
         AppConfigVarDelete { app_id, params }
@@ -56,6 +57,7 @@ pub struct PipelineConfigVarDelete<'a> {
     pub params: HashMap<String, Option<String>>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineConfigVarDelete<'a> {
     pub fn new(
         pipeline_id: &'a str,

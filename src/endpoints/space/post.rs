@@ -13,6 +13,7 @@ pub struct SpaceCreate<'a> {
     pub params: SpaceCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SpaceCreate<'a> {
     pub fn new(name: &'a str, team: &'a str) -> SpaceCreate<'a> {
         SpaceCreate {
@@ -105,6 +106,7 @@ pub struct SpaceTransferCreate<'a> {
     pub params: SpaceTransferCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SpaceTransferCreate<'a> {
     pub fn new(space_id: &'a str, new_owner: &'a str) -> SpaceTransferCreate<'a> {
         SpaceTransferCreate {

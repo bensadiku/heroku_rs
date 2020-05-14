@@ -17,6 +17,7 @@ pub struct DynoActionStop<'a> {
     pub dyno_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DynoActionStop<'a> {
     pub fn new(app_id: &'a str, dyno_id: &'a str) -> DynoActionStop<'a> {
         DynoActionStop { app_id, dyno_id }
@@ -44,6 +45,7 @@ pub struct DynoCreate<'a> {
     pub params: DynoCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DynoCreate<'a> {
     pub fn new(app_id: &'a str, command: &'a str) -> DynoCreate<'a> {
         DynoCreate {

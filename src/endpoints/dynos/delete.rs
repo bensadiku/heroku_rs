@@ -14,6 +14,7 @@ pub struct DynoRestart<'a> {
     pub dyno_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DynoRestart<'a> {
     pub fn new(app_id: &'a str, dyno_id: &'a str) -> DynoRestart<'a> {
         DynoRestart { app_id, dyno_id }
@@ -39,6 +40,7 @@ pub struct DynoAllRestart<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DynoAllRestart<'a> {
     pub fn new(app_id: &'a str) -> DynoAllRestart<'a> {
         DynoAllRestart { app_id }

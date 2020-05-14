@@ -15,6 +15,7 @@ pub struct DomainDetails<'a> {
     pub domain_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DomainDetails<'a> {
     pub fn new(app_id: &'a str, domain_id: &'a str) -> DomainDetails<'a> {
         DomainDetails { app_id, domain_id }
@@ -40,6 +41,7 @@ pub struct DomainList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DomainList<'a> {
     pub fn new(app_id: &'a str) -> DomainList<'a> {
         DomainList { app_id }

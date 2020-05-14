@@ -12,6 +12,7 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-info)
 pub struct AccountDetails {}
 
+#[cfg(feature = "builder")]
 impl AccountDetails {
     pub fn new() -> AccountDetails {
         AccountDetails {}
@@ -37,6 +38,7 @@ pub struct UserAccountDetails<'a> {
     pub account_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> UserAccountDetails<'a> {
     pub fn new(account_id: &'a str) -> UserAccountDetails {
         UserAccountDetails { account_id }
@@ -59,6 +61,7 @@ impl<'a> HerokuEndpoint<Account> for UserAccountDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-list)
 pub struct AccountFeatureList {}
 
+#[cfg(feature = "builder")]
 impl AccountFeatureList {
     pub fn new() -> AccountFeatureList {
         AccountFeatureList {}
@@ -84,6 +87,7 @@ pub struct AccountFeatureDetails<'a> {
     pub feature_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AccountFeatureDetails<'a> {
     pub fn new(feature_id: &'a str) -> AccountFeatureDetails {
         AccountFeatureDetails { feature_id }
@@ -106,6 +110,7 @@ impl<'a> HerokuEndpoint<AccountFeature> for AccountFeatureDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-list)
 pub struct AppTransferList {}
 
+#[cfg(feature = "builder")]
 impl AppTransferList {
     pub fn new() -> AppTransferList {
         AppTransferList {}
@@ -131,6 +136,7 @@ pub struct AppTransferDetails<'a> {
     pub transfer_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppTransferDetails<'a> {
     pub fn new(transfer_id: &'a str) -> AppTransferDetails {
         AppTransferDetails { transfer_id }
@@ -156,6 +162,7 @@ pub struct AccountCreditDetails<'a> {
     pub credit_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AccountCreditDetails<'a> {
     pub fn new(credit_id: &'a str) -> AccountCreditDetails {
         AccountCreditDetails { credit_id }
@@ -178,6 +185,7 @@ impl<'a> HerokuEndpoint<AppTransfer> for AccountCreditDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-list)
 pub struct AccountCreditList {}
 
+#[cfg(feature = "builder")]
 impl AccountCreditList {
     pub fn new() -> AccountCreditList {
         AccountCreditList {}
@@ -193,7 +201,7 @@ impl HerokuEndpoint<Vec<Credit>> for AccountCreditList {
     }
 }
 
-/// SMS NUMBER
+/// Sms Number
 ///
 /// Get sms number by account id or email
 ///
@@ -203,6 +211,7 @@ pub struct SmsNumberDetails<'a> {
     pub account_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SmsNumberDetails<'a> {
     pub fn new(account_id: &'a str) -> SmsNumberDetails {
         SmsNumberDetails { account_id }
@@ -228,6 +237,7 @@ pub struct InvoiceDetails<'a> {
     pub invoice_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> InvoiceDetails<'a> {
     pub fn new(invoice_id: &'a str) -> InvoiceDetails {
         InvoiceDetails { invoice_id }
@@ -250,6 +260,7 @@ impl<'a> HerokuEndpoint<Invoice> for InvoiceDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-list)
 pub struct InvoiceList {}
 
+#[cfg(feature = "builder")]
 impl InvoiceList {
     pub fn new() -> InvoiceList {
         InvoiceList {}
@@ -272,6 +283,7 @@ impl HerokuEndpoint<Vec<Invoice>> for InvoiceList {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-info)
 pub struct InvoiceAddressDetails {}
 
+#[cfg(feature = "builder")]
 impl InvoiceAddressDetails {
     pub fn new() -> InvoiceAddressDetails {
         InvoiceAddressDetails {}
@@ -297,6 +309,7 @@ pub struct KeyDetails<'a> {
     pub key_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> KeyDetails<'a> {
     pub fn new(key_id: &'a str) -> KeyDetails {
         KeyDetails { key_id }
@@ -319,6 +332,7 @@ impl<'a> HerokuEndpoint<Key> for KeyDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#key-list)
 pub struct KeyList {}
 
+#[cfg(feature = "builder")]
 impl KeyList {
     pub fn new() -> KeyList {
         KeyList {}

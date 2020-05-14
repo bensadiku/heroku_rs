@@ -13,6 +13,7 @@ pub struct CollaboratorList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> CollaboratorList<'a> {
     pub fn new(app_id: &'a str) -> CollaboratorList {
         CollaboratorList { app_id }
@@ -41,6 +42,7 @@ pub struct CollaboratorDetails<'a> {
     pub collaborator_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> CollaboratorDetails<'a> {
     pub fn new(app_id: &'a str, collaborator_id: &'a str) -> CollaboratorDetails<'a> {
         CollaboratorDetails {
@@ -71,6 +73,7 @@ pub struct TeamCollaboratorList<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
 }
+#[cfg(feature = "builder")]
 impl<'a> TeamCollaboratorList<'a> {
     pub fn new(app_id: &'a str) -> TeamCollaboratorList<'a> {
         TeamCollaboratorList { app_id }
@@ -98,6 +101,7 @@ pub struct TeamCollaboratorDetails<'a> {
     pub collaborator_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamCollaboratorDetails<'a> {
     pub fn new(app_id: &'a str, collaborator_id: &'a str) -> TeamCollaboratorDetails<'a> {
         TeamCollaboratorDetails {

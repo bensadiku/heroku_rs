@@ -15,6 +15,7 @@ pub struct AddonDetails<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonDetails<'a> {
     pub fn new(addon_id: &'a str) -> AddonDetails {
         AddonDetails { addon_id }
@@ -37,6 +38,7 @@ impl<'a> HerokuEndpoint<Addon> for AddonDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-list)
 pub struct AddonList {}
 
+#[cfg(feature = "builder")]
 impl AddonList {
     pub fn new() -> AddonList {
         AddonList {}
@@ -64,6 +66,7 @@ pub struct AddonDetailsByApp<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonDetailsByApp<'a> {
     pub fn new(app_id: &'a str, addon_id: &'a str) -> AddonDetailsByApp<'a> {
         AddonDetailsByApp { app_id, addon_id }
@@ -89,6 +92,7 @@ pub struct AddonListByApp<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonListByApp<'a> {
     pub fn new(app_id: &'a str) -> AddonListByApp<'a> {
         AddonListByApp { app_id }
@@ -114,6 +118,7 @@ pub struct AddonListByAccount<'a> {
     pub account_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonListByAccount<'a> {
     pub fn new(account_id: &'a str) -> AddonListByAccount<'a> {
         AddonListByAccount { account_id }
@@ -139,6 +144,7 @@ pub struct AddonListByTeam<'a> {
     pub team_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonListByTeam<'a> {
     pub fn new(team_id: &'a str) -> AddonListByTeam<'a> {
         AddonListByTeam { team_id }
@@ -164,6 +170,7 @@ pub struct AttachmentDetails<'a> {
     pub attachment_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AttachmentDetails<'a> {
     pub fn new(attachment_id: &'a str) -> AttachmentDetails<'a> {
         AttachmentDetails { attachment_id }
@@ -186,6 +193,7 @@ impl<'a> HerokuEndpoint<AddonAttachment> for AttachmentDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-list)
 pub struct AttachmentList {}
 
+#[cfg(feature = "builder")]
 impl AttachmentList {
     pub fn new() -> AttachmentList {
         AttachmentList {}
@@ -211,6 +219,7 @@ pub struct AttachmentListByAddon<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AttachmentListByAddon<'a> {
     pub fn new(addon_id: &'a str) -> AttachmentListByAddon {
         AttachmentListByAddon { addon_id }
@@ -236,6 +245,7 @@ pub struct AttachmentListByApp<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AttachmentListByApp<'a> {
     pub fn new(app_id: &'a str) -> AttachmentListByApp {
         AttachmentListByApp { app_id }
@@ -263,6 +273,7 @@ pub struct AttachmentDetailsByApp<'a> {
     pub attachment_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AttachmentDetailsByApp<'a> {
     pub fn new(app_id: &'a str, attachment_id: &'a str) -> AttachmentDetailsByApp<'a> {
         AttachmentDetailsByApp {
@@ -294,6 +305,7 @@ pub struct AddonConfigList<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonConfigList<'a> {
     pub fn new(addon_id: &'a str) -> AddonConfigList<'a> {
         AddonConfigList { addon_id }
@@ -316,6 +328,7 @@ impl<'a> HerokuEndpoint<Vec<AddonConfig>> for AddonConfigList<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-region-capability-list)
 pub struct RegionCapabilityList {}
 
+#[cfg(feature = "builder")]
 impl RegionCapabilityList {
     pub fn new() -> RegionCapabilityList {
         RegionCapabilityList {}
@@ -340,6 +353,7 @@ pub struct RegionCapabilityListByService<'a> {
     pub service_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> RegionCapabilityListByService<'a> {
     pub fn new(service_id: &'a str) -> RegionCapabilityListByService {
         RegionCapabilityListByService { service_id }
@@ -364,6 +378,7 @@ pub struct RegionCapabilityListByRegion<'a> {
     pub region_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> RegionCapabilityListByRegion<'a> {
     pub fn new(region_id: &'a str) -> RegionCapabilityListByRegion {
         RegionCapabilityListByRegion { region_id }
@@ -388,6 +403,7 @@ pub struct AddonServiceDetails<'a> {
     pub service_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonServiceDetails<'a> {
     pub fn new(service_id: &'a str) -> AddonServiceDetails {
         AddonServiceDetails { service_id }
@@ -410,6 +426,7 @@ impl<'a> HerokuEndpoint<AddonService> for AddonServiceDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-service-list)
 pub struct AddonServiceList {}
 
+#[cfg(feature = "builder")]
 impl AddonServiceList {
     pub fn new() -> AddonServiceList {
         AddonServiceList {}
@@ -435,6 +452,7 @@ pub struct WebhookList<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookList<'a> {
     pub fn new(addon_id: &'a str) -> WebhookList {
         WebhookList { addon_id }
@@ -462,6 +480,7 @@ pub struct WebhookDetails<'a> {
     pub webhook_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookDetails<'a> {
     pub fn new(addon_id: &'a str, webhook_id: &'a str) -> WebhookDetails<'a> {
         WebhookDetails {
@@ -492,6 +511,7 @@ pub struct WebhookDeliveryDetails<'a> {
     pub delivery_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookDeliveryDetails<'a> {
     pub fn new(addon_id: &'a str, delivery_id: &'a str) -> WebhookDeliveryDetails<'a> {
         WebhookDeliveryDetails {
@@ -523,6 +543,7 @@ pub struct WebhookDeliveryList<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookDeliveryList<'a> {
     pub fn new(addon_id: &'a str) -> WebhookDeliveryList {
         WebhookDeliveryList { addon_id }
@@ -548,6 +569,7 @@ pub struct WebhookEventList<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookEventList<'a> {
     pub fn new(addon_id: &'a str) -> WebhookEventList {
         WebhookEventList { addon_id }
@@ -575,6 +597,7 @@ pub struct WebhookEventDetails<'a> {
     pub event_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookEventDetails<'a> {
     pub fn new(addon_id: &'a str, event_id: &'a str) -> WebhookEventDetails<'a> {
         WebhookEventDetails { addon_id, event_id }

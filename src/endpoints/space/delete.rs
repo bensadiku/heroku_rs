@@ -13,6 +13,7 @@ pub struct SpaceDelete<'a> {
     pub space_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SpaceDelete<'a> {
     pub fn new(space_id: &'a str) -> SpaceDelete<'a> {
         SpaceDelete { space_id }

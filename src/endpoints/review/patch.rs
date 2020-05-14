@@ -14,6 +14,7 @@ pub struct ReviewAppConfigUpdate<'a> {
     pub params: ReviewAppConfigUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReviewAppConfigUpdate<'a> {
     pub fn new(pipeline_id: &'a str) -> ReviewAppConfigUpdate<'a> {
         ReviewAppConfigUpdate {

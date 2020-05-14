@@ -16,6 +16,7 @@ pub struct ReleaseCreate<'a> {
     pub params: ReleaseCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReleaseCreate<'a> {
     pub fn new(app_id: &'a str, slug: &'a str) -> ReleaseCreate<'a> {
         ReleaseCreate {
@@ -82,6 +83,7 @@ pub struct ReleaseRollback<'a> {
     pub params: ReleaseRollbackParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReleaseRollback<'a> {
     pub fn new(app_id: &'a str, release_id: &'a str) -> ReleaseRollback<'a> {
         ReleaseRollback {

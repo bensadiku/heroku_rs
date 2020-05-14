@@ -13,6 +13,7 @@ pub struct ReviewAppDelete<'a> {
     pub review_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReviewAppDelete<'a> {
     pub fn new(review_id: &'a str) -> ReviewAppDelete<'a> {
         ReviewAppDelete { review_id }
@@ -38,6 +39,7 @@ pub struct ReviewAppConfigDelete<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReviewAppConfigDelete<'a> {
     pub fn new(pipeline_id: &'a str) -> ReviewAppConfigDelete<'a> {
         ReviewAppConfigDelete { pipeline_id }

@@ -15,6 +15,7 @@ pub struct TeamInvitationCreate<'a> {
     pub params: TeamInvitationCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamInvitationCreate<'a> {
     pub fn new(team_id: &'a str, email: &'a str) -> TeamInvitationCreate<'a> {
         TeamInvitationCreate {
@@ -83,6 +84,7 @@ pub struct TeamMemberCreateorUpdate<'a> {
     pub params: TeamMemberCreateorUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamMemberCreateorUpdate<'a> {
     /// Only required parameters passed
     pub fn new(team_id: &'a str, email: &'a str, role: &'a str) -> TeamMemberCreateorUpdate<'a> {

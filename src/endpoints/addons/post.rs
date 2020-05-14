@@ -13,6 +13,7 @@ pub struct AddonCreate<'a> {
     params: AddonCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonCreate<'a> {
     /// Create a new addon without required parameters only
     pub fn new(app_id: &'a str, plan: &'a str) -> AddonCreate<'a> {
@@ -110,6 +111,7 @@ pub struct AddonResolutionCreate<'a> {
     pub params: AddonResolutionCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonResolutionCreate<'a> {
     /// Create a new addon resolution without optional parameters
     pub fn new(addon: &'a str) -> AddonResolutionCreate<'a> {
@@ -180,6 +182,7 @@ pub struct AddonActionProvision<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonActionProvision<'a> {
     pub fn new(addon_id: &'a str) -> AddonActionProvision<'a> {
         AddonActionProvision { addon_id }
@@ -204,6 +207,7 @@ pub struct AddonActionDeprovision<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonActionDeprovision<'a> {
     pub fn new(addon_id: &'a str) -> AddonActionDeprovision<'a> {
         AddonActionDeprovision { addon_id }
@@ -229,6 +233,7 @@ pub struct AttachmentCreate<'a> {
     pub params: AttachmentCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AttachmentCreate<'a> {
     /// Create a new addon resolution without optional parameters
     pub fn new(addon: &'a str, app: &'a str) -> AttachmentCreate<'a> {
@@ -312,6 +317,7 @@ pub struct AttachmentResolutionCreate<'a> {
     pub params: AttachmentResolutionCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AttachmentResolutionCreate<'a> {
     /// Create a new addon resolution without optional parameters
     pub fn new(addon_attachment: &'a str) -> AttachmentResolutionCreate<'a> {
@@ -385,6 +391,7 @@ pub struct WebhookCreate<'a> {
     pub params: WebhookCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookCreate<'a> {
     /// Create a new addon webhook without optional parameters
     pub fn new(

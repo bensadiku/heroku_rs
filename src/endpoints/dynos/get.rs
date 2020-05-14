@@ -16,6 +16,7 @@ pub struct DynoDetails<'a> {
     pub dyno_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DynoDetails<'a> {
     pub fn new(app_id: &'a str, dyno_id: &'a str) -> DynoDetails<'a> {
         DynoDetails { app_id, dyno_id }
@@ -41,6 +42,7 @@ pub struct DynoList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DynoList<'a> {
     pub fn new(app_id: &'a str) -> DynoList<'a> {
         DynoList { app_id }
@@ -63,6 +65,7 @@ impl<'a> HerokuEndpoint<Vec<Dyno>> for DynoList<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-size-list)
 pub struct DynoSizeList {}
 
+#[cfg(feature = "builder")]
 impl DynoSizeList {
     pub fn new() -> DynoSizeList {
         DynoSizeList {}
@@ -88,6 +91,7 @@ pub struct DynoSizeDetails<'a> {
     pub size_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> DynoSizeDetails<'a> {
     pub fn new(size_id: &'a str) -> DynoSizeDetails {
         DynoSizeDetails { size_id }

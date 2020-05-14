@@ -16,6 +16,7 @@ pub struct TeamDetails<'a> {
     pub team_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamDetails<'a> {
     pub fn new(team_id: &'a str) -> TeamDetails {
         TeamDetails { team_id }
@@ -38,6 +39,7 @@ impl<'a> HerokuEndpoint<Team> for TeamDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-list)
 pub struct TeamList {}
 
+#[cfg(feature = "builder")]
 impl TeamList {
     pub fn new() -> TeamList {
         TeamList {}
@@ -62,6 +64,7 @@ pub struct TeamListByEA<'a> {
     pub account_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamListByEA<'a> {
     pub fn new(account_id: &'a str) -> TeamListByEA {
         TeamListByEA { account_id }
@@ -86,6 +89,7 @@ pub struct TeamAppDetails<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamAppDetails<'a> {
     pub fn new(app_id: &'a str) -> TeamAppDetails {
         TeamAppDetails { app_id }
@@ -110,6 +114,7 @@ pub struct TeamAppList<'a> {
     pub team_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamAppList<'a> {
     pub fn new(team_id: &'a str) -> TeamAppList {
         TeamAppList { team_id }
@@ -132,6 +137,7 @@ impl<'a> HerokuEndpoint<Vec<TeamApp>> for TeamAppList<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission-list)
 pub struct TeamAppPermissionList {}
 
+#[cfg(feature = "builder")]
 impl TeamAppPermissionList {
     pub fn new() -> TeamAppPermissionList {
         TeamAppPermissionList {}
@@ -157,6 +163,7 @@ pub struct TeamFeatureList<'a> {
     pub team_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamFeatureList<'a> {
     pub fn new(team_id: &'a str) -> TeamFeatureList {
         TeamFeatureList { team_id }
@@ -184,6 +191,7 @@ pub struct TeamFeatureDetails<'a> {
     pub feature_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamFeatureDetails<'a> {
     pub fn new(team_id: &'a str, feature_id: &'a str) -> TeamFeatureDetails<'a> {
         TeamFeatureDetails {
@@ -212,6 +220,7 @@ pub struct TeamInvitationList<'a> {
     pub team_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamInvitationList<'a> {
     pub fn new(team_id: &'a str) -> TeamInvitationList {
         TeamInvitationList { team_id }
@@ -237,6 +246,7 @@ pub struct TeamInvitationDetails<'a> {
     pub token_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamInvitationDetails<'a> {
     pub fn new(token_id: &'a str) -> TeamInvitationDetails {
         TeamInvitationDetails { token_id }
@@ -262,6 +272,7 @@ pub struct TeamInvoiceList<'a> {
     pub team_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamInvoiceList<'a> {
     pub fn new(team_id: &'a str) -> TeamInvoiceList {
         TeamInvoiceList { team_id }
@@ -289,6 +300,7 @@ pub struct TeamInvoiceDetails<'a> {
     pub invoice_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamInvoiceDetails<'a> {
     pub fn new(team_id: &'a str, invoice_id: &'a str) -> TeamInvoiceDetails<'a> {
         TeamInvoiceDetails {
@@ -317,6 +329,7 @@ pub struct TeamMemberList<'a> {
     pub team_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamMemberList<'a> {
     pub fn new(team_id: &'a str) -> TeamMemberList {
         TeamMemberList { team_id }
@@ -344,6 +357,7 @@ pub struct TeamMemberAppsList<'a> {
     pub member_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamMemberAppsList<'a> {
     pub fn new(team_id: &'a str, member_id: &'a str) -> TeamMemberAppsList<'a> {
         TeamMemberAppsList { team_id, member_id }
@@ -369,6 +383,7 @@ pub struct TeamPreferenceList<'a> {
     pub id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamPreferenceList<'a> {
     pub fn new(id: &'a str) -> TeamPreferenceList {
         TeamPreferenceList { id }

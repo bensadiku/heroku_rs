@@ -15,6 +15,7 @@ pub struct BuildpackInstallationUpdate<'a> {
     pub params: BuildpackInstallationUpdateParams,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> BuildpackInstallationUpdate<'a> {
     pub fn new(app_id: &'a str, buildpacks: Vec<&'a str>) -> BuildpackInstallationUpdate<'a> {
         let mut updates = Vec::new();

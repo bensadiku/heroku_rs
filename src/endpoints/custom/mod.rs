@@ -21,6 +21,7 @@ where
     pub params: T,
 }
 
+#[cfg(feature = "builder")]
 impl<T: Serialize + Clone> CustomEndpoint<T> {
     pub fn new(query: String, method: Method, params: T) -> CustomEndpoint<T> {
         CustomEndpoint {
@@ -57,6 +58,7 @@ pub struct CustomEndpointSimple {
     pub method: Method,
 }
 
+#[cfg(feature = "builder")]
 impl CustomEndpointSimple {
     pub fn new(query: String, method: Method) -> CustomEndpointSimple {
         CustomEndpointSimple { query, method }

@@ -15,6 +15,7 @@ pub struct OAuthClientUpdate<'a> {
     pub params: OAuthClientUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthClientUpdate<'a> {
     pub fn new(client_id: &'a str) -> OAuthClientUpdate<'a> {
         OAuthClientUpdate {

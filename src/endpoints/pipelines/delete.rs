@@ -13,6 +13,7 @@ pub struct PipelineDelete<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineDelete<'a> {
     pub fn new(pipeline_id: &'a str) -> PipelineDelete<'a> {
         PipelineDelete { pipeline_id }
@@ -38,6 +39,7 @@ pub struct PipelineCouplingDelete<'a> {
     pub coupling_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineCouplingDelete<'a> {
     pub fn new(coupling_id: &'a str) -> PipelineCouplingDelete<'a> {
         PipelineCouplingDelete { coupling_id }

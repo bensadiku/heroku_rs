@@ -13,6 +13,7 @@ pub struct ReleaseList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReleaseList<'a> {
     pub fn new(app_id: &'a str) -> ReleaseList<'a> {
         ReleaseList { app_id }
@@ -39,6 +40,7 @@ pub struct ReleaseInfo<'a> {
     pub release_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReleaseInfo<'a> {
     pub fn new(app_id: &'a str, release_id: &'a str) -> ReleaseInfo<'a> {
         ReleaseInfo { app_id, release_id }

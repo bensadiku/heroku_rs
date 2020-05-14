@@ -9,15 +9,21 @@
 
 This crate is a API wrapper for the [Heroku v3 API](https://devcenter.heroku.com/articles/platform-api-reference/).
 
-See the [documentation](https://github.com/bensadiku/heroku_rs/blob/master/docs/ENDPOINTS.md) for more information on which endpoints are covered by the crate. 
+See the [documentation](https://github.com/bensadiku/heroku_rs/blob/master/docs/ENDPOINTS.md) for more information on which endpoints are covered by the crate.
 
 ## Getting Started
+
 Add the following to your `Cargo.toml` and run `cargo build`. Voila.
 
 ```toml
 [dependencies]
 heroku_rs = "0.5"
 ```
+
+See [FEATURES](/docs/FEATURES.md) documentation for more information about the configurations of the crate.
+
+
+## Example 
 
 Here's a simple example which fetches the apps list. At the moment, the client is blocking by default. For more examples see the [examples directory](https://github.com/bensadiku/heroku_rs/tree/master/examples).
 
@@ -39,7 +45,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 You can also call custom endpoints that have not been supported by the library yet. e.g. :
 
-
 ```rust
 use heroku_rs::prelude::*;
 
@@ -52,7 +57,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let response = api_client.request(&custom::CustomEndpointSimple::new(query, method));
 
     Ok(())
-}    
+}
 
 ```
 
@@ -60,20 +65,18 @@ See more [examples](https://github.com/bensadiku/heroku_rs/blob/master/examples/
 
 ### Useful links
 
-[Heroku quickstart](https://devcenter.heroku.com/articles/platform-api-quickstart) 
+[Heroku quickstart](https://devcenter.heroku.com/articles/platform-api-quickstart)
 
 [Heroku API reference](https://devcenter.heroku.com/articles/platform-api-reference)
 
 [Generating a heroku API key](https://help.heroku.com/PBGP6IDE/how-should-i-generate-an-api-key-that-allows-me-to-use-the-heroku-platform-api)
 
-
-
 ## License
 
 Licensed under either of
 
- * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
- * MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+- Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
 at your option.
 
@@ -82,5 +85,4 @@ at your option.
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
 dual licensed as above, without any additional terms or conditions.
-
 

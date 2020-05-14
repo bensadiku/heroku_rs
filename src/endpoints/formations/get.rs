@@ -16,6 +16,7 @@ pub struct FormationDetails<'a> {
     pub formation_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> FormationDetails<'a> {
     pub fn new(app_id: &'a str, formation_id: &'a str) -> FormationDetails<'a> {
         FormationDetails {
@@ -43,6 +44,7 @@ pub struct FormationList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> FormationList<'a> {
     pub fn new(app_id: &'a str) -> FormationList<'a> {
         FormationList { app_id }

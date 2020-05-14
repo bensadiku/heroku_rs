@@ -13,6 +13,7 @@ pub struct LogDrainList<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> LogDrainList<'a> {
     pub fn new(app_id: &'a str) -> LogDrainList {
         LogDrainList { app_id }
@@ -40,6 +41,7 @@ pub struct LogDrainDetails<'a> {
     pub drain_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> LogDrainDetails<'a> {
     pub fn new(app_id: &'a str, drain_id: &'a str) -> LogDrainDetails<'a> {
         LogDrainDetails { app_id, drain_id }
@@ -65,6 +67,7 @@ pub struct LogDrainListByAddon<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> LogDrainListByAddon<'a> {
     pub fn new(addon_id: &'a str) -> LogDrainListByAddon<'a> {
         LogDrainListByAddon { addon_id }

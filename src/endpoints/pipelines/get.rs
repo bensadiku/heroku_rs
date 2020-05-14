@@ -16,6 +16,7 @@ pub struct PipelineDetails<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineDetails<'a> {
     pub fn new(pipeline_id: &'a str) -> PipelineDetails<'a> {
         PipelineDetails { pipeline_id }
@@ -38,6 +39,7 @@ impl<'a> HerokuEndpoint<Pipeline> for PipelineDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-list)
 pub struct PipelineList {}
 
+#[cfg(feature = "builder")]
 impl PipelineList {
     pub fn new() -> PipelineList {
         PipelineList {}
@@ -63,6 +65,7 @@ pub struct PipelineLatestBuildsList<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineLatestBuildsList<'a> {
     pub fn new(pipeline_id: &'a str) -> PipelineLatestBuildsList<'a> {
         PipelineLatestBuildsList { pipeline_id }
@@ -88,6 +91,7 @@ pub struct PipelineCouplingByPipelineList<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineCouplingByPipelineList<'a> {
     pub fn new(pipeline_id: &'a str) -> PipelineCouplingByPipelineList<'a> {
         PipelineCouplingByPipelineList { pipeline_id }
@@ -110,6 +114,7 @@ impl<'a> HerokuEndpoint<Vec<PipelineCoupling>> for PipelineCouplingByPipelineLis
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-list-by-current-user)
 pub struct PipelineCouplingByUserList {}
 
+#[cfg(feature = "builder")]
 impl PipelineCouplingByUserList {
     pub fn new() -> PipelineCouplingByUserList {
         PipelineCouplingByUserList {}
@@ -135,6 +140,7 @@ pub struct PipelineCouplingByTeamList<'a> {
     pub team_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineCouplingByTeamList<'a> {
     pub fn new(team_id: &'a str) -> PipelineCouplingByTeamList<'a> {
         PipelineCouplingByTeamList { team_id }
@@ -160,6 +166,7 @@ pub struct PipelineCouplingByAppDetails<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineCouplingByAppDetails<'a> {
     pub fn new(app_id: &'a str) -> PipelineCouplingByAppDetails<'a> {
         PipelineCouplingByAppDetails { app_id }
@@ -182,6 +189,7 @@ impl<'a> HerokuEndpoint<PipelineCoupling> for PipelineCouplingByAppDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-list)
 pub struct PipelineCouplingList {}
 
+#[cfg(feature = "builder")]
 impl PipelineCouplingList {
     pub fn new() -> PipelineCouplingList {
         PipelineCouplingList {}
@@ -207,6 +215,7 @@ pub struct PipelineCouplingDetails<'a> {
     pub coupling_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineCouplingDetails<'a> {
     pub fn new(coupling_id: &'a str) -> PipelineCouplingDetails<'a> {
         PipelineCouplingDetails { coupling_id }
@@ -232,6 +241,7 @@ pub struct PipelineDeploymentList<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineDeploymentList<'a> {
     pub fn new(pipeline_id: &'a str) -> PipelineDeploymentList<'a> {
         PipelineDeploymentList { pipeline_id }
@@ -257,6 +267,7 @@ pub struct PipelinePromotionDetails<'a> {
     pub promotion_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelinePromotionDetails<'a> {
     pub fn new(promotion_id: &'a str) -> PipelinePromotionDetails<'a> {
         PipelinePromotionDetails { promotion_id }
@@ -282,6 +293,7 @@ pub struct PipelinePromotionTargetList<'a> {
     pub promotion_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelinePromotionTargetList<'a> {
     pub fn new(promotion_id: &'a str) -> PipelinePromotionTargetList<'a> {
         PipelinePromotionTargetList { promotion_id }
@@ -310,6 +322,7 @@ pub struct PipelineLatestReleaseList<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineLatestReleaseList<'a> {
     pub fn new(pipeline_id: &'a str) -> PipelineLatestReleaseList<'a> {
         PipelineLatestReleaseList { pipeline_id }
@@ -335,6 +348,7 @@ pub struct PipelineStackDetails<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> PipelineStackDetails<'a> {
     pub fn new(pipeline_id: &'a str) -> PipelineStackDetails<'a> {
         PipelineStackDetails { pipeline_id }

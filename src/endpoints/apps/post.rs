@@ -14,6 +14,7 @@ pub struct AppCreate<'a> {
     pub params: AppCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppCreate<'a> {
     /// Create a new Heroku app without parameters
     pub fn new() -> AppCreate<'a> {
@@ -90,6 +91,7 @@ pub struct AppEnableAcm<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppEnableAcm<'a> {
     pub fn new(app_id: &'a str) -> AppEnableAcm<'a> {
         AppEnableAcm { app_id }
@@ -117,6 +119,7 @@ pub struct AppWebhookCreate<'a> {
     pub params: AppWebhookCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppWebhookCreate<'a> {
     /// Create a new webhook without optional parameters
     pub fn new(
@@ -201,6 +204,7 @@ pub struct AppSetupCreate<'a> {
     pub params: AppSetupCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppSetupCreate<'a> {
     /// Create a new setup app with required parameters only
     pub fn new(url: &'a str) -> AppSetupCreate<'a> {
@@ -373,6 +377,7 @@ pub struct SNICreate<'a> {
     pub params: SNICreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SNICreate<'a> {
     /// Create a new Heroku app SNI with parameters
     pub fn new(app_id: &'a str, certificate_chain: &'a str, private_key: &'a str) -> SNICreate<'a> {
@@ -421,6 +426,7 @@ pub struct SSLCreate<'a> {
     pub params: SSLCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SSLCreate<'a> {
     /// Update Heroku app SSL with parameters
     pub fn new(app_id: &'a str, certificate_chain: &'a str, private_key: &'a str) -> SSLCreate<'a> {

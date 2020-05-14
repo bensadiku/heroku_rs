@@ -15,6 +15,7 @@ pub struct AddonDelete<'a> {
     pub addon_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonDelete<'a> {
     /// Delete addon
     pub fn new(app_id: &'a str, addon_id: &'a str) -> AddonDelete<'a> {
@@ -41,6 +42,7 @@ pub struct AttachmentDelete<'a> {
     pub attachment_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AttachmentDelete<'a> {
     /// Delete addon
     pub fn new(attachment_id: &'a str) -> AttachmentDelete<'a> {
@@ -69,6 +71,7 @@ pub struct WebhookDelete<'a> {
     pub webhook_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookDelete<'a> {
     /// Delete webhook addon
     pub fn new(addon_id: &'a str, webhook_id: &'a str) -> WebhookDelete<'a> {

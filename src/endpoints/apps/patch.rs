@@ -15,6 +15,7 @@ pub struct AppUpdate<'a> {
     pub params: AppUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppUpdate<'a> {
     /// Update a Heroku app without optional parameters
     pub fn new(app_id: &'a str) -> AppUpdate {
@@ -90,6 +91,7 @@ pub struct AppRefreshAcm<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppRefreshAcm<'a> {
     pub fn new(app_id: &'a str) -> AppRefreshAcm<'a> {
         AppRefreshAcm { app_id }
@@ -119,6 +121,7 @@ pub struct AppFeatureUpdate<'a> {
     pub params: AppFeatureUpdateParams,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppFeatureUpdate<'a> {
     pub fn new(app_id: &'a str, feature_id: &'a str, enabled: bool) -> AppFeatureUpdate<'a> {
         AppFeatureUpdate {
@@ -165,6 +168,7 @@ pub struct AppWebhookUpdate<'a> {
     pub params: AppWebhookUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AppWebhookUpdate<'a> {
     pub fn new(app_id: &'a str, webhook_id: &'a str) -> AppWebhookUpdate<'a> {
         AppWebhookUpdate {
@@ -269,6 +273,7 @@ pub struct SNIUpdate<'a> {
     pub params: SNIUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SNIUpdate<'a> {
     /// Update Heroku app's SNI with parameters
     pub fn new(
@@ -325,6 +330,7 @@ pub struct SSLUpdate<'a> {
     pub params: SSLUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SSLUpdate<'a> {
     /// Update Heroku app SSL with parameters
     pub fn new(app_id: &'a str, ssl_id: &'a str) -> SSLUpdate<'a> {

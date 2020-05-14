@@ -15,6 +15,7 @@ pub struct SlugDetails<'a> {
     pub slug_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SlugDetails<'a> {
     pub fn new(app_id: &'a str, slug_id: &'a str) -> SlugDetails<'a> {
         SlugDetails { app_id, slug_id }

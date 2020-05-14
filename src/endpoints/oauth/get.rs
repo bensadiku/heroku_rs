@@ -13,6 +13,7 @@ pub struct OAuthDetails<'a> {
     pub oauth_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthDetails<'a> {
     pub fn new(oauth_id: &'a str) -> OAuthDetails<'a> {
         OAuthDetails { oauth_id }
@@ -35,6 +36,7 @@ impl<'a> HerokuEndpoint<OAuth> for OAuthDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-authorization-list)
 pub struct OAuthList {}
 
+#[cfg(feature = "builder")]
 impl OAuthList {
     pub fn new() -> OAuthList {
         OAuthList {}
@@ -60,6 +62,7 @@ pub struct OAuthClientDetails<'a> {
     pub client_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> OAuthClientDetails<'a> {
     pub fn new(client_id: &'a str) -> OAuthClientDetails<'a> {
         OAuthClientDetails { client_id }
@@ -82,6 +85,7 @@ impl<'a> HerokuEndpoint<OAuthClient> for OAuthClientDetails<'a> {
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-list)
 pub struct OAuthClientList {}
 
+#[cfg(feature = "builder")]
 impl OAuthClientList {
     pub fn new() -> OAuthClientList {
         OAuthClientList {}

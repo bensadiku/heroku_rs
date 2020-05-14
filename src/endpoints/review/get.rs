@@ -13,6 +13,7 @@ pub struct ReviewAppDetails<'a> {
     pub review_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReviewAppDetails<'a> {
     pub fn new(review_id: &'a str) -> ReviewAppDetails<'a> {
         ReviewAppDetails { review_id }
@@ -38,6 +39,7 @@ pub struct ReviewAppByAppDetails<'a> {
     pub app_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReviewAppByAppDetails<'a> {
     pub fn new(app_id: &'a str) -> ReviewAppByAppDetails<'a> {
         ReviewAppByAppDetails { app_id }
@@ -63,6 +65,7 @@ pub struct ReviewAppByPipelineList<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReviewAppByPipelineList<'a> {
     pub fn new(pipeline_id: &'a str) -> ReviewAppByPipelineList<'a> {
         ReviewAppByPipelineList { pipeline_id }
@@ -88,6 +91,7 @@ pub struct ReviewAppConfigDetails<'a> {
     pub pipeline_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> ReviewAppConfigDetails<'a> {
     pub fn new(pipeline_id: &'a str) -> ReviewAppConfigDetails<'a> {
         ReviewAppConfigDetails { pipeline_id }

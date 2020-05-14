@@ -15,6 +15,7 @@ pub struct SpaceUpdate<'a> {
     pub params: SpaceUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SpaceUpdate<'a> {
     pub fn new(space_id: &'a str) -> SpaceUpdate<'a> {
         SpaceUpdate {
@@ -75,6 +76,7 @@ pub struct SpaceAccessUpdate<'a> {
     pub params: SpaceAccessUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> SpaceAccessUpdate<'a> {
     pub fn new(space_id: &'a str, account_id: &'a str, _name: &'a str) -> SpaceAccessUpdate<'a> {
         SpaceAccessUpdate {

@@ -17,6 +17,7 @@ pub struct AddonUpdate<'a> {
     pub params: AddonUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonUpdate<'a> {
     pub fn new(app_id: &'a str, addon_id: &'a str, plan: &'a str) -> AddonUpdate<'a> {
         AddonUpdate {
@@ -82,6 +83,7 @@ pub struct AddonConfigUpdate<'a> {
     pub params: AddonConfigUpdateParams,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> AddonConfigUpdate<'a> {
     pub fn new(addon_id: &'a str) -> AddonConfigUpdate<'a> {
         AddonConfigUpdate {
@@ -144,6 +146,7 @@ pub struct WebhookUpdate<'a> {
     pub params: WebhookUpdateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> WebhookUpdate<'a> {
     /// Update webhook with optional parameters
     pub fn new(addon_id: &'a str, webhook_id: &'a str) -> WebhookUpdate<'a> {

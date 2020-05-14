@@ -15,6 +15,7 @@ pub struct LogDrainDelete<'a> {
     pub drain_id: &'a str,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> LogDrainDelete<'a> {
     pub fn new(app_id: &'a str, drain_id: &'a str) -> LogDrainDelete<'a> {
         LogDrainDelete { app_id, drain_id }

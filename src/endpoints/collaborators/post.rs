@@ -15,6 +15,7 @@ pub struct CollaboratorCreate<'a> {
     pub params: CollaboratorCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> CollaboratorCreate<'a> {
     pub fn new(app_id: &'a str, user: &'a str) -> CollaboratorCreate<'a> {
         CollaboratorCreate {
@@ -75,6 +76,7 @@ pub struct TeamCollaboratorCreate<'a> {
     pub params: TeamCollaboratorCreateParams<'a>,
 }
 
+#[cfg(feature = "builder")]
 impl<'a> TeamCollaboratorCreate<'a> {
     pub fn new(app_id: &'a str, user: &'a str) -> TeamCollaboratorCreate<'a> {
         TeamCollaboratorCreate {
