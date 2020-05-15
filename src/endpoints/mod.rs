@@ -59,3 +59,6 @@ pub mod space;
 /// teams endpoints
 #[cfg(feature = "teams")]
 pub mod teams;
+/// testing endpoints
+#[cfg(feature = "testing")]
+pub mod testing;

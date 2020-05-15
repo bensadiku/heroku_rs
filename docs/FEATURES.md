@@ -21,7 +21,7 @@ heroku_rs = "0.5"
 If you do not need every endpoints from the API, you can configure only the ones you want.
 
 
-Available configurable endpoints are: `account`, `addons`, `apps`, `builds`, `collaborators`, `config_vars`, `custom`, `domains`, `dynos`, `formations`, `logs`, `misc`, `oauth`, `pipelines`, `releases`, `review`, `slugs`, `space`, `teams`.
+Available configurable endpoints are: `account`, `addons`, `apps`, `builds`, `collaborators`, `config_vars`, `custom`, `domains`, `dynos`, `formations`, `logs`, `misc`, `oauth`, `pipelines`, `releases`, `review`, `slugs`, `space`, `teams`, `testing`.
 
 Other features are: `builder`. Note: When builder feature is activated, if will be enabled for every endpoints that you added to the config.
 
