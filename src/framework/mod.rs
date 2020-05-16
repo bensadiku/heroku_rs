@@ -27,10 +27,15 @@ impl<'a> From<&'a ApiEnvironment> for url::Url {
     }
 }
 
-/// Synchronous Heroku API client.
+/// The client used to make requests to Heroku.
+///
+/// This struct contains the synchronous client.
 pub struct HttpApiClient {
+    /// The base endpoint to target. By default will be heroku
     environment: ApiEnvironment,
+    /// The authentication credential
     credentials: auth::Credentials,
+    /// The blocking client
     http_client: reqwest::blocking::Client,
 }
 
@@ -53,11 +58,25 @@ impl Default for HttpApiClientConfig {
 }
 
 impl HttpApiClient {
-    pub fn new(
-        credentials: auth::Credentials,
-        config: HttpApiClientConfig,
-        environment: ApiEnvironment,
-    ) -> Fallible<HttpApiClient> {
+    /// # Example 1:
+    /// Creating a simple client with the defaults. This has the production Heroku endpoint, 30 seconds timeout and the standard api key authentication.
+    /// ```rust
+    /// use heroku_rs::prelude::*;
+    ///
+    /// fn main() -> Result<(), Box<dyn std::error::Error>> {
+    ///    let api_client = HttpApiClient::create("API_KEY")?;
+    ///
+    ///    // you can start making requests here
+    ///
+    ///    Ok(())
+    /// }
+    /// ```
+    pub fn create(token: &str) -> Fallible<HttpApiClient> {
+        let credentials: auth::Credentials = auth::Credentials::UserAuthToken {
+            token: String::from(token),
+        };
+        let config: HttpApiClientConfig = HttpApiClientConfig::default();
+        let environment: ApiEnvironment = ApiEnvironment::Production;
         let http_client = reqwest::blocking::Client::builder()
             .timeout(config.http_timeout)
             .default_headers(config.default_headers)
@@ -70,12 +89,40 @@ impl HttpApiClient {
         })
     }
 
-    pub fn create(token: &str) -> Fallible<HttpApiClient> {
-        let credentials: auth::Credentials = auth::Credentials::UserAuthToken {
-            token: String::from(token),
-        };
-        let config: HttpApiClientConfig = HttpApiClientConfig::default();
-        let environment: ApiEnvironment = ApiEnvironment::Production;
+    /// # Example 2:
+    /// Creating a custom client in which you can specify the custom endpoint, timeouts and custom credentials.
+    ///
+    /// This example is using a API key to authenticate, 10 second timeouts, and `https://api.custom-somewhere.com/` base endpoint.
+    ///
+    /// This is primarily used for testing / developement.
+    /// ```rust
+    /// use heroku_rs::prelude::*;
+    /// use std::time::Duration;
+    ///
+    /// fn main() -> Result<(), Box<dyn std::error::Error>> {
+    ///    let credentials = Credentials::UserAuthToken {
+    ///         token: String::from("API_KEY"),
+    ///    };
+    ///
+    ///   let api_client = HttpApiClient::new(
+    ///    credentials,
+    ///    HttpApiClientConfig {
+    ///        http_timeout: Duration::from_secs(10),
+    ///        default_headers: http::HeaderMap::default(),
+    ///    },
+    ///    ApiEnvironment::Custom(url::Url::parse("https://api.custom-somewhere.com/").unwrap()))?;
+    ///
+    ///    // you can start making requests here with api_client
+    ///
+    ///    Ok(())
+    /// }
+    ///
+    /// ```
+    pub fn new(
+        credentials: auth::Credentials,
+        config: HttpApiClientConfig,
+        environment: ApiEnvironment,
+    ) -> Fallible<HttpApiClient> {
         let http_client = reqwest::blocking::Client::builder()
             .timeout(config.http_timeout)
             .default_headers(config.default_headers)
