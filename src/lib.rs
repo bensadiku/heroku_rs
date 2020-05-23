@@ -170,6 +170,46 @@ pub mod framework;
 /// This module contains several important traits that provide many
 /// of the convenience methods in heroku_rs.
 pub mod prelude {
+    #[cfg(feature = "account")]
+    pub use crate::endpoints::account::*;
+    #[cfg(feature = "addons")]
+    pub use crate::endpoints::addons::*;
+    #[cfg(feature = "apps")]
+    pub use crate::endpoints::apps::*;
+    #[cfg(feature = "builds")]
+    pub use crate::endpoints::builds::*;
+    #[cfg(feature = "collaborators")]
+    pub use crate::endpoints::collaborators::*;
+    #[cfg(feature = "config_vars")]
+    pub use crate::endpoints::config_vars::*;
+    #[cfg(feature = "custom")]
+    pub use crate::endpoints::custom::*;
+    #[cfg(feature = "domains")]
+    pub use crate::endpoints::domains::*;
+    #[cfg(feature = "dynos")]
+    pub use crate::endpoints::dynos::*;
+    #[cfg(feature = "formations")]
+    pub use crate::endpoints::formations::*;
+    #[cfg(feature = "logs")]
+    pub use crate::endpoints::logs::*;
+    #[cfg(feature = "misc")]
+    pub use crate::endpoints::misc::*;
+    #[cfg(feature = "oauth")]
+    pub use crate::endpoints::oauth::*;
+    #[cfg(feature = "pipelines")]
+    pub use crate::endpoints::pipelines::*;
+    #[cfg(feature = "releases")]
+    pub use crate::endpoints::releases::*;
+    #[cfg(feature = "review")]
+    pub use crate::endpoints::review::*;
+    #[cfg(feature = "slugs")]
+    pub use crate::endpoints::slugs::*;
+    #[cfg(feature = "space")]
+    pub use crate::endpoints::space::*;
+    #[cfg(feature = "teams")]
+    pub use crate::endpoints::teams::*;
+    #[cfg(feature = "testing")]
+    pub use crate::endpoints::testing::*;
     #[doc(no_inline)]
     pub use crate::endpoints::*;
     #[doc(no_inline)]
