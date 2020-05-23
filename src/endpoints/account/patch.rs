@@ -8,6 +8,31 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update account.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update)
+///
+/// # Example:
+///
+/// AccountUpdate has no required parameters and returns the [`Account`][response] that was just updated.
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let account_patch = &AccountUpdate::new()
+///     .beta(false)
+///     .allow_tracking(true)
+///     .name("Tina Edmonds")
+///     .build();
+/// let response = api_client.request(account_patch);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Account.html
 pub struct AccountUpdate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: AccountUpdateParams<'a>,
@@ -25,16 +50,21 @@ impl<'a> AccountUpdate<'a> {
         }
     }
 
+    /// # allow_tracking: whether to allow third party web activity tracking
+    /// 
+    /// # default: true
     pub fn allow_tracking(&mut self, allow_tracking: bool) -> &mut Self {
         self.params.allow_tracking = Some(allow_tracking);
         self
     }
 
+    /// # beta: whether allowed to utilize beta Heroku features.
     pub fn beta(&mut self, beta: bool) -> &mut Self {
         self.params.beta = Some(beta);
         self
     }
 
+    /// # name: full name of the account owner
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.params.name = Some(name);
         self
@@ -85,6 +115,32 @@ impl<'a> HerokuEndpoint<Account, (), AccountUpdateParams<'a>> for AccountUpdate<
 /// Update account.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-update-by-user)
+///
+/// # Example:
+///
+/// UserAccountUpdate has one required parameter, account_id, and returns the [`Account`][response] that was just updated.
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+/// 
+/// let account_id = "USER_ID_OR_EMAIL";
+/// let account_patch = &UserAccountUpdate::new(account_id)
+///     .beta(false)
+///     .allow_tracking(true)
+///     .name("Tina Edmonds")
+///     .build();
+/// let response = api_client.request(account_patch);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Account.html
 pub struct UserAccountUpdate<'a> {
     /// account_id can be the account email or id.
     pub account_id: &'a str,
@@ -105,16 +161,21 @@ impl<'a> UserAccountUpdate<'a> {
         }
     }
 
+    /// # allow_tracking: whether to allow third party web activity tracking
+    /// 
+    /// # default: true
     pub fn allow_tracking(&mut self, allow_tracking: bool) -> &mut Self {
         self.params.allow_tracking = Some(allow_tracking);
         self
     }
 
+    /// # beta: whether allowed to utilize beta Heroku features.
     pub fn beta(&mut self, beta: bool) -> &mut Self {
         self.params.beta = Some(beta);
         self
     }
 
+    /// # name: full name of the account owner
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.params.name = Some(name);
         self
@@ -166,6 +227,28 @@ impl<'a> HerokuEndpoint<Account, (), UserAccountUpdateParams<'a>> for UserAccoun
 /// Update an existing account feature.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#account-feature-update)
+///
+/// # Example:
+///
+/// AccountFeatureUpdate has two required parameters, feature_id and enabled, and returns the [`AccountFeature`][response] that was just updated.
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+/// 
+/// let feature_id = "FEATURE_NAME_OR_ID";
+/// let account_patch = &AccountFeatureUpdate::new(feature_id, true);
+/// let response = api_client.request(account_patch);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AccountFeature.html
 pub struct AccountFeatureUpdate<'a> {
     /// feature_id can be the feature name or id.
     pub feature_id: &'a str,
@@ -212,6 +295,29 @@ impl<'a> HerokuEndpoint<AccountFeature, (), AccountFeatureUpdateParams>
 /// Update an existing app transfer.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-update)
+///
+/// # Example:
+///
+/// AppTransferUpdate has two required parameters, transfer_id and state, and returns the [`AppTransfer`][response] that was just updated.
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+/// 
+/// let transfer_id = "TANSFER_NAME_OR_ID";
+/// let state = "pending";
+/// let account_patch = &AppTransferUpdate::new(transfer_id, state);
+/// let response = api_client.request(account_patch);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppTransfer.html
 pub struct AppTransferUpdate<'a> {
     /// unique identifier or the transfer name
     pub transfer_id: &'a str,

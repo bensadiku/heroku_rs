@@ -8,6 +8,31 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new app transfer.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-create)
+///
+/// # Example:
+///
+/// AppTransferCreate requires two parameters,app and recipient, and returns the [`AppTransfer`][response] that was just created.
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let app = "APP_ID_OR_NAME";
+/// let recipient = "ACCOUNT_ID_OR_EMAIL_HERE";
+/// let transfer = &AppTransferCreate::new(app, recipient)
+///     .silent(false)
+///     .build();
+/// let response = api_client.request(transfer);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppTransfer.html
 pub struct AppTransferCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: AppTransferCreateParams<'a>,
@@ -25,6 +50,7 @@ impl<'a> AppTransferCreate<'a> {
         }
     }
 
+    /// # silent: whether to suppress email notification when transferring apps
     pub fn silent(&mut self, silent: bool) -> &mut Self {
         self.params.silent = Some(silent);
         self
@@ -72,6 +98,30 @@ impl<'a> HerokuEndpoint<AppTransfer, (), AppTransferCreateParams<'a>> for AppTra
 /// Create a new credit.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#credit-create)
+///
+/// # Example:
+///
+/// AccountCreditCreate has no required parameters, and returns the [`Credit`][response] that was just created.
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let transfer = &AccountCreditCreate::new()
+///     .code_1("012abc")
+///     .code_2("210cab")
+///     .build();
+/// let response = api_client.request(transfer);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Credit.html
 pub struct AccountCreditCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: AccountCreditCreateParams<'a>,
@@ -87,10 +137,12 @@ impl<'a> AccountCreditCreate<'a> {
             },
         }
     }
+    /// # code_1: first code from a discount card
     pub fn code_1(&mut self, code1: &'a str) -> &mut Self {
         self.params.code1 = Some(code1);
         self
     }
+    /// # code_2: second code from a discount card
     pub fn code_2(&mut self, code2: &'a str) -> &mut Self {
         self.params.code2 = Some(code2);
         self
@@ -135,6 +187,27 @@ impl<'a> HerokuEndpoint<Credit, (), AccountCreditCreateParams<'a>> for AccountCr
 /// Reset account’s password. This will send a reset password link to the user’s email address.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-reset-password)
+///
+/// # Example:
+///
+/// PasswordReset has one required parameter, email, and returns the [`PasswordResetResponse`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let email = "EMAIL_TO_RESET_PASSWORD";
+/// let response = api_client.request(&PasswordReset::new(email));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.PasswordResetResponse.html
 pub struct PasswordReset<'a> {
     /// The parameters to pass to the Heroku API
     pub params: PasswordResetParams<'a>,
@@ -175,6 +248,30 @@ impl<'a> HerokuEndpoint<PasswordResetResponse, (), PasswordResetParams<'a>> for 
 /// Complete password reset.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-complete-reset-password)
+///
+/// # Example:
+///
+/// PasswordResetConfirm has one required parameter, email, and returns the [`PasswordResetResponse`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let password_confimation = &PasswordResetConfirm::new("PASSWORD_RESET_TOKEN")
+///     .password("CURRENT_PASSWORD")
+///     .password_confirmation("CONFIRMATION_OF_NEW_PASSWORD")
+///     .build();
+/// let response = api_client.request(password_confimation);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.PasswordResetResponse.html
 pub struct PasswordResetConfirm<'a> {
     /// Password token
     pub password_id: &'a str,
@@ -194,11 +291,12 @@ impl<'a> PasswordResetConfirm<'a> {
         }
     }
 
+    /// # password: current password on the account
     pub fn password(&mut self, password: &'a str) -> &mut Self {
         self.params.password = Some(password);
         self
     }
-
+    /// # password_confirmation: confirmation of the new password
     pub fn password_confirmation(&mut self, password_confirmation: &'a str) -> &mut Self {
         self.params.password_confirmation = Some(password_confirmation);
         self
@@ -246,6 +344,26 @@ impl<'a> HerokuEndpoint<PasswordResetResponse, (), PasswordResetConfirmParams<'a
 /// Recover an account using an SMS recovery code
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#passwordreset-reset-password)
+///
+/// # Example:
+///
+/// SmsNumberRecover has one required parameter, account_id, and returns the [`SmsNumber`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&SmsNumberRecover::new("ACCOUNT_EMAIL_OR_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SmsNumber.html
 pub struct SmsNumberRecover<'a> {
     /// unique identifier, email or account id
     pub account_id: &'a str,
@@ -272,6 +390,26 @@ impl<'a> HerokuEndpoint<SmsNumber> for SmsNumberRecover<'a> {
 /// Confirm an SMS number change with a confirmation code
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sms-number-confirm)
+///
+/// # Example:
+///
+/// SmsNumberConfirm has one required parameter, account_id, and returns the [`SmsNumber`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&SmsNumberConfirm::new("ACCOUNT_EMAIL_OR_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SmsNumber.html
 pub struct SmsNumberConfirm<'a> {
     /// unique identifier, email or account id
     pub account_id: &'a str,

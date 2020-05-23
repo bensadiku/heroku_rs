@@ -8,7 +8,38 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update invoice address for an account.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#invoice-address-update)
+///
+/// # Example:
+///
+/// InvoiceAddressUpdate has no required parameters, and returns the [`InvoiceAddress`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+/// 
+/// let update_invoice = &InvoiceAddressUpdate::new()
+///     .address_1("Grove Street")
+///     .address_2("Not Grove Street")
+///     .city("Seattle")
+///     .country("US")
+///     .other("Company ABC Inc. VAT 903820")
+///     .postal_code("98101")
+///     .state("WA")
+///     .use_invoice_address(true)
+///     .build();
+/// let response = api_client.request(update_invoice);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.InvoiceAddress.html
 pub struct InvoiceAddressUpdate<'a> {
+    /// The parameters to pass to the Heroku API
     pub params: InvoiceAddressUpdateParams<'a>,
 }
 
@@ -29,34 +60,42 @@ impl<'a> InvoiceAddressUpdate<'a> {
         }
     }
 
+    /// # address_1: invoice street address line 1
     pub fn address_1(&mut self, address_1: &'a str) -> &mut Self {
         self.params.address_1 = Some(address_1);
         self
     }
+    /// # address_2: invoice street address line 2
     pub fn address_2(&mut self, address_2: &'a str) -> &mut Self {
         self.params.address_2 = Some(address_2);
         self
     }
+    /// # city: invoice city
     pub fn city(&mut self, city: &'a str) -> &mut Self {
         self.params.city = Some(city);
         self
     }
+    /// # country: country
     pub fn country(&mut self, country: &'a str) -> &mut Self {
         self.params.country = Some(country);
         self
     }
+    /// # other: metadata / additional information to go on invoice
     pub fn other(&mut self, other: &'a str) -> &mut Self {
         self.params.country = Some(other);
         self
     }
+    /// # postal_code: invoice zip code
     pub fn postal_code(&mut self, postal_code: &'a str) -> &mut Self {
         self.params.postal_code = Some(postal_code);
         self
     }
+    /// # state: invoice state
     pub fn state(&mut self, state: &'a str) -> &mut Self {
         self.params.state = Some(state);
         self
     }
+    /// # use_invoice_address: flag to use the invoice address for an account or not
     pub fn use_invoice_address(&mut self, use_invoice_address: bool) -> &mut Self {
         self.params.use_invoice_address = Some(use_invoice_address);
         self

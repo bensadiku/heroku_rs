@@ -56,9 +56,9 @@ impl ApiResult for Vec<InvoiceAddress> {}
 impl ApiResult for Key {}
 impl ApiResult for Vec<Key> {}
 
-/// Heroku Account
+/// # Account
 ///
-/// Stability: production
+/// ## Stability: production
 ///
 /// An account represents an individual signed up to use the Heroku platform.
 ///
@@ -158,7 +158,9 @@ pub struct DefaultTeam {
     pub name: String,
 }
 
-/// Account Feature
+/// # Account Feature
+///
+/// ## Stability: production
 ///
 /// An account feature represents a Heroku labs capability that can be enabled or disabled for an account on Heroku.
 ///
@@ -190,7 +192,9 @@ pub struct AccountFeature {
     pub feedback_email: Option<String>,
 }
 
-/// Account App Transfer
+/// # Account App Transfer
+///
+/// ## Stability: production
 ///
 /// An app transfer represents a two party interaction for transferring ownership of an app.
 ///
@@ -240,9 +244,9 @@ pub struct AppTransferRecipient {
     pub id: String,
 }
 
-/// Credit
+/// # Credit
 ///
-/// Stability: development
+/// ## Stability: development
 ///
 /// A credit represents value that will be used up before further charges are assigned to an account.
 ///
@@ -270,9 +274,9 @@ mod password {
     use chrono::offset::Utc;
     use chrono::DateTime;
 
-    /// PasswordReset
+    /// # PasswordReset
     ///
-    /// Stability: production
+    /// ## Stability: production
     ///
     /// A password reset represents a in-process password reset attempt.
     ///
@@ -295,9 +299,9 @@ mod password {
 }
 
 mod sms_number {
-    /// SMS Number
+    /// # SMS Number
     ///
-    /// Stability: production
+    /// ## Stability: production
     ///
     /// SMS numbers are used for recovery on accounts with two-factor authentication enabled.
     ///
@@ -313,9 +317,9 @@ mod invoice {
     use chrono::offset::Utc;
     use chrono::DateTime;
 
-    /// Invoice
+    /// # Invoice
     ///
-    /// Stability: development
+    /// ## Stability: development
     ///
     /// An invoice is an itemized bill of goods for an account which includes pricing and charges.
     ///
@@ -347,9 +351,9 @@ mod invoice {
 
 mod invoice_address {
 
-    /// Invoice Address
+    /// # Invoice Address
     ///
-    /// Stability: development
+    /// ## Stability: development
     ///
     /// An invoice address represents the address that should be listed on an invoice.
     ///
@@ -381,9 +385,9 @@ mod key {
     use chrono::offset::Utc;
     use chrono::DateTime;
 
-    /// Key
+    /// # Key
     ///
-    /// Stability: production
+    /// ## Stability: production
     ///
     /// Keys represent public SSH keys associated with an account and are used to authorize accounts as they are performing git operations.
     ///
