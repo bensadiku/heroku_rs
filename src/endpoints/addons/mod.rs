@@ -9,7 +9,7 @@ pub mod put;
 pub use delete::{AddonDelete, AttachmentDelete, WebhookDelete};
 pub use get::{
     AddonConfigList, AddonDetails, AddonDetailsByApp, AddonList, AddonListByAccount,
-    AddonListByTeam, AddonServiceDetails, AddonServiceList, AttachmentDetails,
+    AddonListByApp, AddonListByTeam, AddonServiceDetails, AddonServiceList, AttachmentDetails,
     AttachmentDetailsByApp, AttachmentList, AttachmentListByAddon, AttachmentListByApp,
     RegionCapabilityList, RegionCapabilityListByRegion, RegionCapabilityListByService,
     WebhookDeliveryDetails, WebhookDeliveryList, WebhookDetails, WebhookEventDetails,

@@ -8,8 +8,43 @@ use std::collections::HashMap;
 /// Create a new add-on.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-create)
+///
+/// # Example:
+///
+/// AddonCreate takes two required parameters, app_id and plan, and returns a [`Addon`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+/// use std::collections::HashMap;
+///
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let app_id = "APP_ID";
+/// let plan = "heroku-postgresql:dev";
+/// let mut config = HashMap::new();
+/// config.insert("db-version", "1.2.3");
+///
+/// let addon = &AddonCreate::new(app_id, plan)
+///     .attachment_name("DATABASE")
+///     .confirm("EXAMPLE")
+///     .name("acme-inc-primary-database")
+///     .config(config)
+///     .build();
+/// let response = api_client.request(addon);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Addon.html
 pub struct AddonCreate<'a> {
+    /// unique app identifier, either app id or app name.
     pub app_id: &'a str,
+    /// parameters to pass to the Heroku API
     params: AddonCreateParams<'a>,
 }
 
@@ -29,6 +64,7 @@ impl<'a> AddonCreate<'a> {
         }
     }
 
+    /// # attachment_name: unique name for this add-on attachment to this app
     pub fn attachment_name(&mut self, attachment_name: &'a str) -> &mut Self {
         self.params.attachment = Some(Attachment {
             name: Some(attachment_name),
@@ -36,20 +72,26 @@ impl<'a> AddonCreate<'a> {
         self
     }
 
+    /// # config: custom add-on provisioning options
     pub fn config(&mut self, config: HashMap<&'a str, &'a str>) -> &mut Self {
         self.params.config = Some(config);
         self
     }
 
+    /// # confirm: name of billing entity for confirmation
     pub fn confirm(&mut self, confirm: &'a str) -> &mut Self {
         self.params.confirm = Some(confirm);
         self
     }
 
+    /// # name: globally unique name of the add-on
+    ///
+    /// `pattern:`  pattern: ^[a-zA-Z][A-Za-z0-9_-]+$
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.params.name = Some(name);
         self
     }
+
     pub fn build(&self) -> AddonCreate<'a> {
         AddonCreate {
             app_id: self.app_id,
@@ -106,6 +148,32 @@ impl<'a> HerokuEndpoint<Addon, (), AddonCreateParams<'a>> for AddonCreate<'a> {
 /// Resolve an add-on from a name, optionally passing an app name. If there are matches it returns at least one add-on (exact match) or many.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-resolution)
+///
+/// # Example:
+///
+/// AddonResolutionCreate takes one required parameter, addon_id and returns a list of [`Addons`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &AddonResolutionCreate::new("ADDON_ID")
+///         .app("APP_ID")
+///         .addon_service("heroku-postgresql")
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Addon.html
 pub struct AddonResolutionCreate<'a> {
     /// parameters to pass to the Heroku API
     pub params: AddonResolutionCreateParams<'a>,
@@ -123,10 +191,14 @@ impl<'a> AddonResolutionCreate<'a> {
             },
         }
     }
+    /// # app: unique name of this add-on-service
     pub fn addon_service(&mut self, addon_service: &'a str) -> &mut Self {
         self.params.addon_service = Some(addon_service);
         self
     }
+    /// # app: unique name of app
+    ///
+    /// `pattern:` ^[a-z][a-z0-9-]{1,28}[a-z0-9]$ 	"example"
     pub fn app(&mut self, app: &'a str) -> &mut Self {
         self.params.app = Some(app);
         self
@@ -178,6 +250,29 @@ impl<'a> HerokuEndpoint<Vec<Addon>, (), AddonResolutionCreateParams<'a>>
 /// Mark an add-on as provisioned for use.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-action)
+///
+/// # Example:
+///
+/// AddonActionProvision takes one required parameter, addon_id, and returns a [`Addon`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+/// use std::collections::HashMap;
+///
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &AddonActionProvision::new("ADDON_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Addon.html
 pub struct AddonActionProvision<'a> {
     pub addon_id: &'a str,
 }
@@ -203,6 +298,28 @@ impl<'a> HerokuEndpoint<Addon> for AddonActionProvision<'a> {
 /// Mark an add-on as deprovisioned.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-action-deprovision)
+///
+/// # Example:
+///
+/// AddonActionDeprovision takes one required parameter, addon_id, and returns a [`Addon`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &AddonActionDeprovision::new("ADDON_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Addon.html
 pub struct AddonActionDeprovision<'a> {
     pub addon_id: &'a str,
 }
@@ -228,6 +345,33 @@ impl<'a> HerokuEndpoint<Addon> for AddonActionDeprovision<'a> {
 /// Create a new add-on attachment.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-create)
+///
+/// # Example:
+///
+/// AttachmentCreate takes two required parameters, addon_id and app_id, and returns a [`AddonAttachment`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &AttachmentCreate::new("ADDON_ID", "APP_ID")
+///         .namespace("role:analytics")
+///         .confirm("EXAMPLE")
+///         .name("DATABASE")
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AddonAttachment.html
 pub struct AttachmentCreate<'a> {
     /// parameters to pass to the Heroku API
     pub params: AttachmentCreateParams<'a>,
@@ -248,14 +392,17 @@ impl<'a> AttachmentCreate<'a> {
         }
     }
 
+    /// # confirm: name of owning app for confirmation
     pub fn confirm(&mut self, confirm: &'a str) -> &mut Self {
         self.params.confirm = Some(confirm);
         self
     }
+    /// # name: unique name for this add-on attachment to this app
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.params.name = Some(name);
         self
     }
+    /// # namespace: attachment namespace
     pub fn namespace(&mut self, namespace: &'a str) -> &mut Self {
         self.params.namespace = Some(namespace);
         self
@@ -312,6 +459,32 @@ impl<'a> HerokuEndpoint<AddonAttachment, (), AttachmentCreateParams<'a>> for Att
 /// Resolve an add-on attachment from a name, optionally passing an app name. If there are matches it returns at least one add-on attachment (exact match) or many.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-resolution)
+///
+/// # Example:
+///
+/// AttachmentResolutionCreate takes one required parameter, addon_attachment, and returns a list of [`AddonAttachment`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &AttachmentResolutionCreate::new("ADDON_ATTACHMENT")
+///         .app("APP_NAME")
+///         .addon_service("heroku-postgresql")
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AddonAttachment.html
 pub struct AttachmentResolutionCreate<'a> {
     /// parameters to pass to the Heroku API
     pub params: AttachmentResolutionCreateParams<'a>,
@@ -329,11 +502,15 @@ impl<'a> AttachmentResolutionCreate<'a> {
             },
         }
     }
+    /// # confirm: name of app
+    /// 
+    /// `pattern`:  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$ 
     pub fn app(&mut self, app: &'a str) -> &mut Self {
         self.params.app = Some(app);
         self
     }
 
+    /// # addon_service: unique name of this add-on-service
     pub fn addon_service(&mut self, addon_service: &'a str) -> &mut Self {
         self.params.addon_service = Some(addon_service);
         self
@@ -384,6 +561,35 @@ impl<'a> HerokuEndpoint<Vec<AddonAttachment>, (), AttachmentResolutionCreatePara
 /// Create an add-on webhook subscription. Can only be accessed by the add-on partner providing this add-on.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-create)
+///
+/// # Example:
+///
+/// AttachmentResolutionCreate takes one required parameter, addon_attachment, and returns a [`AddonWebhook`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let webhook_include = vec!["api:release"];
+/// let webhook_level = "notify";
+/// let webhook_url = "https://www.bing.com";
+/// let response = api_client.request(&addons::WebhookCreate::new(
+///     "ADDON_ID",
+///     webhook_include,
+///     webhook_level,
+///     webhook_url,
+/// ));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AddonWebhook.html
 pub struct WebhookCreate<'a> {
     /// unique addon indentifier, either id or name
     pub addon_id: &'a str,
@@ -412,11 +618,13 @@ impl<'a> WebhookCreate<'a> {
         }
     }
 
+    /// # authorization: a custom Authorization header that Heroku will include with all webhook notifications
     pub fn authorization(&mut self, authorization: &'a str) -> &mut Self {
         self.params.authorization = Some(authorization);
         self
     }
 
+    /// # secret: a value that Heroku will use to sign all webhook notification requests (the signature is included in the request’s Heroku-Webhook-Hmac-SHA256 header)
     pub fn secret(&mut self, secret: &'a str) -> &mut Self {
         self.params.secret = Some(secret);
         self
