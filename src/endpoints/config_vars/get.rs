@@ -34,6 +34,25 @@ impl<'a> HerokuEndpoint<HashMap<String, Option<String>>> for AppConfigVarDetails
 /// Get config-vars for an app release.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#config-vars-info-for-app-release)
+/// 
+/// # Example:
+///
+/// ReleaseConfigVarDetails takes two required parameters, app_id and release_id, and returns a `HashMap<String, Option<String>>`.
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&ReleaseConfigVarDetails::new("APP_ID_HERE", "RELEASE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
 pub struct ReleaseConfigVarDetails<'a> {
     /// unique app identifier.
     pub app_id: &'a str,
@@ -65,6 +84,25 @@ impl<'a> HerokuEndpoint<HashMap<String, Option<String>>> for ReleaseConfigVarDet
 /// Pipeline Config Vars allow you to manage the configuration information provided to a pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-config-vars)
+/// 
+/// # Example:
+///
+/// PipelineConfigVarDetails takes two required parameters, app_id and stage_id, and returns a `HashMap<String, Option<String>>`.
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&PipelineConfigVarDetails::new("APP_ID_HERE", "STAGE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
 pub struct PipelineConfigVarDetails<'a> {
     /// unique pipeline identifier.
     pub pipeline_id: &'a str,

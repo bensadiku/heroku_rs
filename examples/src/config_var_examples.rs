@@ -46,11 +46,11 @@ fn update_pipeline_config_vars<T: HerokuApiClient>(api_client: &T) {
 
     cvar.insert(cvar_key, cvar_value);
 
-    let response = api_client.request(&config_vars::PipelineConfigVarUpdate {
+    let response = api_client.request(&config_vars::PipelineConfigVarUpdate::new(
         pipeline_id,
         stage_id,
-        params: cvar,
-    });
+        cvar,
+    ));
     print_response(response);
 }
 
