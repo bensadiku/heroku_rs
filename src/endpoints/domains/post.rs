@@ -8,6 +8,28 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new domain.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-create)
+///
+/// # Example:
+///
+/// DomainCreate takes two required parameters, app_id and hostname, and returns the created [`Domain`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+/// 
+/// let hostname = "heroku_rs.docs.com";
+/// 
+/// let response = api_client.request(&DomainCreate::new("APP_ID", hostname));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Domain.html
 pub struct DomainCreate<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,

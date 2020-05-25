@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Info for existing domain.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-info)
+///
+/// # Example:
+///
+/// DomainDetails takes two required parameters, app_id and domain_id, and returns the [`Domain`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&DomainDetails::new("APP_ID", "DOMAIN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Domain.html
 pub struct DomainDetails<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -36,6 +56,26 @@ impl<'a> HerokuEndpoint<Domain> for DomainDetails<'a> {
 /// List existing domains.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#domain-list)
+///
+/// # Example:
+///
+/// DomainDetails takes one required parameter, app_id, and returns a list of [`Domains`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&DomainList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Domain.html
 pub struct DomainList<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,

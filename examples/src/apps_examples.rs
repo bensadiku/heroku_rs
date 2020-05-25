@@ -265,10 +265,7 @@ fn get_app_domains<T: HerokuApiClient>(api_client: &T, app_id: &str) {
 /// Create domain
 fn create_app_domain<T: HerokuApiClient>(api_client: &T, app_id: &str) {
     let hostname = "heroku-rs.tests.com";
-    let response = api_client.request(&domains::DomainCreate {
-        app_id,
-        params: domains::DomainCreateParams { hostname },
-    });
+    let response = api_client.request(&domains::DomainCreate::new(app_id, hostname));
     print_response(response);
 }
 
