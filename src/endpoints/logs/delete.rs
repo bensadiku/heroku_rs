@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing log drain. Log drains added by add-ons can only be removed by removing the add-on.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#log-drain-delete)
+///
+/// # Example:
+///
+/// LogDrainDelete takes two required parameters, app_id and drain_id, and returns the deleted [`LogDrain`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&LogDrainDelete::new("APP_ID", "DRAIN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.LogDrain.html
 pub struct LogDrainDelete<'a> {
     /// unique app identifier, either app name, or app id
     pub app_id: &'a str,

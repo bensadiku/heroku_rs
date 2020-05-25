@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// List existing log drains.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#log-drain-list)
+///
+/// # Example:
+///
+/// LogDrainList takes one required parameter, app_id, and returns a list of [`LogDrains`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&LogDrainList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.LogDrain.html
 pub struct LogDrainList<'a> {
     /// unique app identifier, either app name, or app id
     pub app_id: &'a str,
@@ -34,6 +54,26 @@ impl<'a> HerokuEndpoint<Vec<LogDrain>> for LogDrainList<'a> {
 /// Info for existing log drain.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#log-drain-info)
+/// 
+/// # Example:
+///
+/// LogDrainDetails takes two required parameters, app_id and drain_id, and returns the [`LogDrain`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&LogDrainDetails::new("APP_ID", "DRAIN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.LogDrain.html
 pub struct LogDrainDetails<'a> {
     /// unique app identifier, either app name, or app id
     pub app_id: &'a str,
@@ -62,6 +102,26 @@ impl<'a> HerokuEndpoint<LogDrain> for LogDrainDetails<'a> {
 /// List existing log drains for an add-on.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#log-drain-list-by-add-on)
+/// 
+/// # Example:
+///
+/// LogDrainListByAddon takes one required parameter, addon_id, and returns a list of [`LogDrains`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&LogDrainListByAddon::new("ADDON_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.LogDrain.html
 pub struct LogDrainListByAddon<'a> {
     /// unique addon identifier
     pub addon_id: &'a str,
@@ -74,7 +134,7 @@ impl<'a> LogDrainListByAddon<'a> {
     }
 }
 
-impl<'a> HerokuEndpoint<LogDrain> for LogDrainListByAddon<'a> {
+impl<'a> HerokuEndpoint<Vec<LogDrain>> for LogDrainListByAddon<'a> {
     fn method(&self) -> Method {
         Method::Get
     }

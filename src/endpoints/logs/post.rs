@@ -8,6 +8,27 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new log drain.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#log-drain-create)
+/// 
+/// # Example:
+///
+/// LogDrainCreate takes two required parameters, app_id and url, and returns the new [`LogDrain`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let url = "https://mycoolherokuappname.herokuapp.com/";
+/// let response = api_client.request(&LogDrainCreate::new("APP_ID", url));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.LogDrain.html
 pub struct LogDrainCreate<'a> {
     /// unique app identifier, either app name, or app id
     pub app_id: &'a str,
@@ -51,6 +72,33 @@ impl<'a> HerokuEndpoint<LogDrain, (), LogDrainCreateParams<'a>> for LogDrainCrea
 /// Create a new log session.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#log-session-create)
+/// 
+/// # Example:
+///
+/// LogSessionCreate takes one required parameter, app_id, and returns the new [`LogSession`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &LogSessionCreate::new("APP_ID")
+///         .dyno("web.1")
+///         .source("app")
+///         .lines(10)
+///         .tail(false)
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.LogSession.html
 pub struct LogSessionCreate<'a> {
     /// unique app identifier, either app name, or app id
     pub app_id: &'a str,
@@ -73,18 +121,22 @@ impl<'a> LogSessionCreate<'a> {
         }
     }
 
+    /// # dyno: dyno to limit results to
     pub fn dyno(&mut self, dyno: &'a str) -> &mut Self {
         self.params.dyno = Some(dyno);
         self
     }
+    /// # lines: number of log lines to stream at once
     pub fn lines(&mut self, lines: i64) -> &mut Self {
         self.params.lines = Some(lines);
         self
     }
+    /// # source: log source to limit results to
     pub fn source(&mut self, source: &'a str) -> &mut Self {
         self.params.source = Some(source);
         self
     }
+    /// # tail: whether to stream ongoing logs
     pub fn tail(&mut self, tail: bool) -> &mut Self {
         self.params.tail = Some(tail);
         self
