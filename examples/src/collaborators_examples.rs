@@ -67,7 +67,6 @@ fn create_team_app_collaborator<T: HerokuApiClient>(api_client: &T, app_id: &str
         .permissions(vec!["view"])
         .silent(false)
         .build();
-    //New way to create a request where you can pass optional parameters
     let response = api_client.request(team_app_collab);
 
     print_response(response);

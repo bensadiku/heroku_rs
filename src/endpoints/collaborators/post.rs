@@ -8,6 +8,29 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new collaborator.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#collaborator-create)
+///
+/// # Example:
+///
+/// CollaboratorCreate takes two required parameters, app_id, user, and returns the created [`Collaborator`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let app_collab = &CollaboratorCreate::new("APP_ID", "ACCOUNT_ID")
+///     .silent(false)
+///     .build();
+/// let response = api_client.request(app_collab);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Collaborator.html
 pub struct CollaboratorCreate<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -24,6 +47,7 @@ impl<'a> CollaboratorCreate<'a> {
         }
     }
 
+    /// # silent: whether to suppress email invitation when creating collaborator
     pub fn silent(&mut self, silent: bool) -> &mut Self {
         self.params.silent = Some(silent);
         self
@@ -69,6 +93,32 @@ impl<'a> HerokuEndpoint<Collaborator, (), CollaboratorCreateParams<'a>> for Coll
 /// Create a new collaborator on a team app. Use this endpoint instead of the /apps/{app_id_or_name}/collaborator endpoint when you want the collaborator to be granted permissions according to their role in the team.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-app-collaborator-create)
+///
+/// # Example:
+///
+/// TeamCollaboratorCreate takes two required parameters, app_id, user, and returns the created [`TeamCollaborator`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let permissions = vec!["view"];
+///
+/// let team_app_collab = &TeamCollaboratorCreate::new("APP_ID", "ACCOUNT_ID")
+///     .permissions(permissions)
+///     .silent(false)
+///     .build();
+/// let response = api_client.request(team_app_collab);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TeamCollaborator.html
 pub struct TeamCollaboratorCreate<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -89,11 +139,13 @@ impl<'a> TeamCollaboratorCreate<'a> {
         }
     }
 
+    /// # silent: whether to suppress email invitation when creating collaborator
     pub fn silent(&mut self, silent: bool) -> &mut Self {
         self.params.silent = Some(silent);
         self
     }
 
+    /// # permissions: An array of permissions to give to the collaborator.
     pub fn permissions(&mut self, permissions: Vec<&'a str>) -> &mut Self {
         self.params.permissions = Some(permissions);
         self

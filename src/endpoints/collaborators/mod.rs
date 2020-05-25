@@ -7,7 +7,7 @@ pub mod patch;
 pub mod post;
 pub mod put;
 
-pub use delete::CollaboratorDelete;
+pub use delete::{CollaboratorDelete, TeamCollaboratorDelete};
 pub use get::{
     CollaboratorDetails, CollaboratorList, TeamCollaboratorDetails, TeamCollaboratorList,
 };
