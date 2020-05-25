@@ -7,7 +7,33 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Formation Update
 ///
 /// Update process type
+/// 
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-update)
+///
+/// # Example:
+///
+/// FormationUpdate takes two required parameters, app_id and formation_id, and returns the updated [`Formation`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///         &formations::FormationUpdate::new("APP_ID", "FORMATION_ID")
+///         .quantity(1)
+///         .size("standard-1X")
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Formation.html
 pub struct FormationUpdate<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -30,11 +56,15 @@ impl<'a> FormationUpdate<'a> {
         }
     }
 
+    /// # size: dyno size
+    ///
+    /// `default`: “standard-1X”
     pub fn size(&mut self, size: &'a str) -> &mut Self {
         self.params.size = Some(size);
         self
     }
 
+    /// # quantity: number of processes to maintain
     pub fn quantity(&mut self, quantity: i32) -> &mut Self {
         self.params.quantity = Some(quantity);
         self

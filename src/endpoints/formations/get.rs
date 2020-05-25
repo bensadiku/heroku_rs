@@ -9,6 +9,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Get info for a process type
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-info)
+///
+/// # Example:
+///
+/// FormationDetails takes two required parameters, app_id and formation_id, and returns the [`Formation`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&FormationDetails::new("APP_ID", "FORMATION_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Formation.html
 pub struct FormationDetails<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -39,6 +59,26 @@ impl<'a> HerokuEndpoint<Formation> for FormationDetails<'a> {
 ///
 /// List process type formation
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#formation-list)
+///
+/// # Example:
+///
+/// FormationList takes one required parameter, app_id, and returns a list of [`Formations`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&FormationList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Formation.html
 pub struct FormationList<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
