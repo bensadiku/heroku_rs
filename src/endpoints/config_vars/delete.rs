@@ -18,7 +18,7 @@ use std::collections::HashMap;
 ///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
 ///
 /// let response = api_client.request(&AppConfigVarDelete::create(
-///     app_id,
+///     "APP_ID",
 ///     String::from("key_to_delete"),
 /// ));
 ///

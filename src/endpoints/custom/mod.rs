@@ -6,6 +6,13 @@ use serde_json::Value;
 impl ApiResult for Value {}
 impl ApiResult for Vec<Value> {}
 
+/// CustomEndpoint
+/// 
+/// CustomEndpoint is way to query Heroku endpoints that have not been supported by the library yet.
+/// 
+/// See [more examples][examples]
+///
+/// [examples]: https://github.com/bensadiku/heroku_rs/blob/master/examples/src/custom_examples.rs
 #[derive(Clone)]
 pub struct CustomEndpoint<T>
 where
@@ -47,7 +54,34 @@ where
     }
 }
 
-/// A simple struct to query some endpoint in Heroku
+/// CustomEndpointSimple
+/// 
+/// CustomEndpointSimple is way to query Heroku endpoints that have not been supported by the library yet.
+/// 
+/// # Example:
+///
+/// See [more examples][examples]
+/// ```rust
+/// use heroku_rs::prelude::*;
+/// 
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+/// let app_id = "APP_ID_HERE";
+/// let query = format!("{}{}", "apps/", app_id);
+/// let method = Method::Get;
+/// 
+/// //This example does a GET request on `https://api.heroku.com/apps/APP_ID`
+/// let response = api_client.request(&CustomEndpointSimple::new(query, method));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [examples]: https://github.com/bensadiku/heroku_rs/blob/master/examples/src/custom_examples.rs
 #[derive(Clone)]
 pub struct CustomEndpointSimple {
     /// the query you want

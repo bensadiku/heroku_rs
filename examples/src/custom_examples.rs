@@ -55,9 +55,6 @@ pub struct AppCreateParam {
 fn get_app_custom<T: HerokuApiClient>(api_client: &T, app_id: String) {
     let query = format!("{}{}", "apps/", app_id);
     let method = Method::Get;
-    let response = api_client.request(&custom::CustomEndpointSimple {
-        query: query,
-        method: method,
-    });
+    let response = api_client.request(&custom::CustomEndpointSimple::new(query, method));
     print_response(response);
 }
