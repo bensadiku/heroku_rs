@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-delete)
+///
+/// # Example:
+///
+/// AppDelete takes one required parameter, app_id, and returns the delete [`App`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppDelete::new("APP_ID_HERE"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.App.html
 pub struct AppDelete<'a> {
     /// app_id can be the app id or app name.
     pub app_id: &'a str,
@@ -34,6 +54,26 @@ impl<'a> HerokuEndpoint<App> for AppDelete<'a> {
 /// Disable ACM flag for an app
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-disable-acm)
+///
+/// # Example:
+///
+/// AppDisableAcm takes one required parameter, app_id, and returns the [`App`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppDisableAcm::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.App.html
 pub struct AppDisableAcm<'a> {
     /// app_id can be the app id or name.
     pub app_id: &'a str,
@@ -60,6 +100,26 @@ impl<'a> HerokuEndpoint<App> for AppDisableAcm<'a> {
 /// Removes an app webhook subscription.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delete)
+///
+/// # Example:
+///
+/// AppWebhookDelete takes two required parameters, app_id and webhook_id, and returns the [`AppWebhook`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppWebhookDelete::new("APP_ID", "WEBHOOK_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppWebhook.html
 pub struct AppWebhookDelete<'a> {
     /// app_id can be the app id or app name.
     pub app_id: &'a str,
@@ -87,6 +147,26 @@ impl<'a> HerokuEndpoint<AppWebhook> for AppWebhookDelete<'a> {
 /// Delete existing SNI endpoint.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-delete)
+///
+/// # Example:
+///
+/// SNIDelete takes two required parameters, app_id and sni_id, and returns the [`SNI`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&SNIDelete::new("APP_ID", "SNI_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SNI.html
 pub struct SNIDelete<'a> {
     /// app_id can be the app id or app name.
     pub app_id: &'a str,
@@ -110,11 +190,31 @@ impl<'a> HerokuEndpoint<SNI> for SNIDelete<'a> {
     }
 }
 
-/// SNI Endpoint Delete
+/// SSL Endpoint Delete
 ///
-/// Delete existing SNI endpoint.
+/// Delete existing SSL endpoint.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-delete)
+///
+/// # Example:
+///
+/// SSLDelete takes two required parameters, app_id and ssl_id, and returns the [`SSL`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&SSLDelete::new("APP_ID", "SSL_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SSL.html
 pub struct SSLDelete<'a> {
     /// app_id can be the app id or app name.
     pub app_id: &'a str,

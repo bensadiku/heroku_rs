@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Get info for existing app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-info)
+///
+/// # Example:
+///
+/// AppDetails takes one required parameter, app_id, and returns the [`App`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppDetails::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.App.html
 pub struct AppDetails<'a> {
     /// app_id can be the app id or app name.
     pub app_id: &'a str,
@@ -34,6 +54,26 @@ impl<'a> HerokuEndpoint<App> for AppDetails<'a> {
 /// List existing apps.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-list)
+///
+/// # Example:
+///
+/// AppDetails has no required parameters, and returns a list of [`Apps`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppList::new());
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.App.html
 pub struct AppList {}
 
 #[cfg(feature = "builder")]
@@ -57,6 +97,26 @@ impl HerokuEndpoint<Vec<App>> for AppList {
 /// List owned and collaborated apps (excludes team apps).
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-list-owned-and-collaborated)
+///
+/// # Example:
+///
+/// AccountAppList takes one required parameter, account_id, and returns a list of [`Apps`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AccountAppList::new("ACCOUNT_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.App.html
 pub struct AccountAppList<'a> {
     /// account_id can be the account email, id or self.
     pub account_id: &'a str,
@@ -83,6 +143,26 @@ impl<'a> HerokuEndpoint<Vec<App>> for AccountAppList<'a> {
 /// Info for an existing app feature.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-info)
+///
+/// # Example:
+///
+/// AppFeatureDetails takes two required parameters, app_id and feature_id, and returns a [`AppFeature`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppFeatureDetails::new("APP_ID","FEATURE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppFeature.html
 pub struct AppFeatureDetails<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -111,6 +191,26 @@ impl<'a> HerokuEndpoint<AppFeature> for AppFeatureDetails<'a> {
 /// List existing app features.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-feature-list)
+///
+/// # Example:
+///
+/// AppFeatureList takes one required parameter, app_id, and returns a list of [`AppFeatures`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppFeatureList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppFeature.html
 pub struct AppFeatureList<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -137,6 +237,26 @@ impl<'a> HerokuEndpoint<Vec<AppFeature>> for AppFeatureList<'a> {
 /// List all webhook subscriptions for a particular app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-list)
+///
+/// # Example:
+///
+/// AppWebhookList takes one required parameter, app_id, and returns a list of [`AppWebhooks`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppWebhookList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppWebhook.html
 pub struct AppWebhookList<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -163,6 +283,26 @@ impl<'a> HerokuEndpoint<Vec<AppWebhook>> for AppWebhookList<'a> {
 /// Returns the info for an app webhook subscription.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-info)
+///
+/// # Example:
+///
+/// AppWebhookDetails takes two required parameters, app_id and webhook_id, and returns a [`AppWebhook`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppWebhookDetails::new("APP_ID", "WEBHOOK_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppWebhook.html
 pub struct AppWebhookDetails<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -191,6 +331,26 @@ impl<'a> HerokuEndpoint<AppWebhook> for AppWebhookDetails<'a> {
 /// Returns the info for an existing delivery.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-info)
+///
+/// # Example:
+///
+/// AppWebhookDeliveryDetails takes two required parameters, app_id and webhook_delivery_id, and returns a [`AppWebhookDelivery`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppWebhookDeliveryDetails::new("APP_ID", "WEBHOOK_DELIVERY_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppWebhookDelivery.html
 pub struct AppWebhookDeliveryDetails<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -225,6 +385,26 @@ impl<'a> HerokuEndpoint<AppWebhookDelivery> for AppWebhookDeliveryDetails<'a> {
 /// Lists existing deliveries for an app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-list)
+///
+/// # Example:
+///
+/// AppWebhookDeliveryList takes one required parameter, app_id, and returns a list of [`AppWebhookDelivery`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppWebhookDeliveryList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppWebhookDelivery.html
 pub struct AppWebhookDeliveryList<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -251,6 +431,26 @@ impl<'a> HerokuEndpoint<Vec<AppWebhookDelivery>> for AppWebhookDeliveryList<'a> 
 /// Get the status of an app setup.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-setup-info)
+///
+/// # Example:
+///
+/// AppSetupDetails takes one required parameter, setup_id, and returns a [`AppSetup`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppSetupDetails::new("SETUP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppSetup.html
 pub struct AppSetupDetails<'a> {
     /// setup_id is the unique setup identifier.
     pub setup_id: &'a str,
@@ -277,6 +477,26 @@ impl<'a> HerokuEndpoint<AppSetup> for AppSetupDetails<'a> {
 /// Info for existing SNI endpoint.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-info)
+///
+/// # Example:
+///
+/// SNIDetails takes two required parameters, app_id and sni_id, and returns a [`SNI`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&SNIDetails::new("APP_ID", "SNI_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SNI.html
 pub struct SNIDetails<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -305,6 +525,26 @@ impl<'a> HerokuEndpoint<SNI> for SNIDetails<'a> {
 /// List existing SNI endpoints.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-list)
+///
+/// # Example:
+///
+/// SNIList takes one required parameter, app_id, and returns a list of [`SNI`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&SNIList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SNI.html
 pub struct SNIList<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -331,6 +571,26 @@ impl<'a> HerokuEndpoint<Vec<SNI>> for SNIList<'a> {
 /// List existing SSL endpoints.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-list)
+///
+/// # Example:
+///
+/// SSLList takes one required parameter, app_id, and returns a list of [`SSL`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&SSLList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SSL.html
 pub struct SSLList<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -357,6 +617,26 @@ impl<'a> HerokuEndpoint<Vec<SSL>> for SSLList<'a> {
 /// Info for existing SSL endpoint.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-info)
+///
+/// # Example:
+///
+/// SSLDetails takes two required parameters, app_id and ssl_id, and returns a [`SSL`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&SSLDetails::new("APP_ID", "SSL_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SSL.html
 pub struct SSLDetails<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -385,6 +665,26 @@ impl<'a> HerokuEndpoint<SSL> for SSLDetails<'a> {
 /// Returns the info for a specified webhook event.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-event-info)
+///
+/// # Example:
+///
+/// WebhookEventDetails takes two required parameters, app_id and event_id, and returns a [`WebhookEvent`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&apps::WebhookEventDetails::new("APP_ID", "EVENT_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.WebhookEvent.html
 pub struct WebhookEventDetails<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,
@@ -413,6 +713,26 @@ impl<'a> HerokuEndpoint<WebhookEvent> for WebhookEventDetails<'a> {
 /// Lists existing webhook events for an app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-event-list)
+///
+/// # Example:
+///
+/// WebhookEventList takes one required parameter, app_id, and returns a list of [`WebhookEvents`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create(&"API_KEY").unwrap();
+///
+/// let response = api_client.request(&apps::WebhookEventList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.WebhookEvent.html
 pub struct WebhookEventList<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,

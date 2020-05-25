@@ -9,6 +9,31 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-create)
+///
+/// # Example:
+///
+/// AppCreate has no required parameters, and returns the created [`App`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let new_app = &AppCreate::new()
+///     .name("an-example-name")
+///     .stack("heroku-18")
+///     .region("us")
+///     .build();
+/// let response = api_client.request(new_app);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.App.html
 pub struct AppCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: AppCreateParams<'a>,
@@ -27,16 +52,21 @@ impl<'a> AppCreate<'a> {
         }
     }
 
+    /// # name: name of app
+    ///
+    /// `pattern`:  ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.params.name = Some(name);
         self
     }
 
+    /// # region: unique identifier or name of region
     pub fn region(&mut self, region: &'a str) -> &mut Self {
         self.params.region = Some(region);
         self
     }
 
+    /// # stack: unique name or identifier of stack
     pub fn stack(&mut self, stack: &'a str) -> &mut Self {
         self.params.stack = Some(stack);
         self
@@ -86,6 +116,26 @@ impl<'a> HerokuEndpoint<App, (), AppCreateParams<'a>> for AppCreate<'a> {
 /// Enable ACM flag for an app
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-enable-acm)
+///
+/// # Example:
+///
+/// AppEnableAcm takes one required parameter, app_id, and returns the [`App`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&AppEnableAcm::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.App.html
 pub struct AppEnableAcm<'a> {
     /// app_id can be the app id or name.
     pub app_id: &'a str,
@@ -112,6 +162,33 @@ impl<'a> HerokuEndpoint<App> for AppEnableAcm<'a> {
 /// Create an app webhook subscription.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-create)
+///
+/// # Example:
+///
+/// AppWebhookCreate has four required parameters, and returns the created [`AppWebhook`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let webhook = &AppWebhookCreate::new(
+///     "APP_ID", //app_id
+///     vec!["api:release"], //include
+///     "notify",//level
+///     "https://www.google.com",//url
+/// );
+///
+/// let response = api_client.request(webhook);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppWebhook.html
 pub struct AppWebhookCreate<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -140,11 +217,13 @@ impl<'a> AppWebhookCreate<'a> {
         }
     }
 
+    /// # authorization: a custom Authorization header that Heroku will include with all webhook notifications
     pub fn authorization(&mut self, authorization: &'a str) -> &mut Self {
         self.params.authorization = Some(authorization);
         self
     }
 
+    /// # secret: a value that Heroku will use to sign all webhook notification requests (the signature is included in the request’s Heroku-Webhook-Hmac-SHA256 header)
     pub fn secret(&mut self, secret: &'a str) -> &mut Self {
         self.params.secret = Some(secret);
         self
@@ -199,6 +278,48 @@ impl<'a> HerokuEndpoint<AppWebhook, (), AppWebhookCreateParams<'a>> for AppWebho
 /// Create a new app setup from a gzipped tar archive containing an app.json manifest file.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#app-setup-create)
+///
+/// # Example:
+///
+/// AppSetupCreate has one required parameter, url, and returns the created [`AppSetup`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+/// use std::collections::HashMap;
+/// 
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let mut env = HashMap::new();
+/// env.insert("FOO", "bar");
+/// env.insert("BAZ", "qux");
+/// 
+/// let source_blob_url = "https://github.com/heroku/ruby-rails-sample/tarball/master/";
+/// 
+/// let new_app_setup = &apps::AppSetupCreate::new(source_blob_url)
+///     .version("v1.3.0")
+///     .checksum("SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+///     .locked(true)
+///     .name("gotye-probably")
+///     .organization("my-org")
+///     .personal(true)
+///     .region("us")
+///     .space("my-space")
+///     .stack("heroku-18")
+///     .buildpacks(vec!["https://github.com/heroku/heroku-buildpack-ruby"])
+///     .env(env)
+///     .build();
+/// 
+/// let response = api_client.request(new_app_setup);;
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.AppSetup.html
 pub struct AppSetupCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: AppSetupCreateParams<'a>,
@@ -232,44 +353,58 @@ impl<'a> AppSetupCreate<'a> {
         }
     }
 
+    /// # version: Version of the gzipped tarball.
     pub fn version(&mut self, version: &'a str) -> &mut Self {
         self.params.source_blob.version = Some(version);
         self
     }
+    /// # checksum: an optional checksum of the gzipped tarball for verifying its integrity
     pub fn checksum(&mut self, checksum: &'a str) -> &mut Self {
         self.params.source_blob.checksum = Some(checksum);
         self
     }
 
+    /// # locked: are other team members forbidden from joining this app.
     pub fn locked(&mut self, locked: bool) -> &mut Self {
         self.params.app.locked = Some(locked);
         self
     }
+    /// # name: name of app
+    ///
+    /// `pattern`:  pattern: ^[a-z][a-z0-9-]{1,28}[a-z0-9]$
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.params.app.name = Some(name);
         self
     }
+    /// # organization: unique name of team
     pub fn organization(&mut self, organization: &'a str) -> &mut Self {
         self.params.app.organization = Some(organization);
         self
     }
+    /// # personal: force creation of the app in the user account even if a default team is set.
     pub fn personal(&mut self, personal: bool) -> &mut Self {
         self.params.app.personal = Some(personal);
         self
     }
+    /// # region: name of region
     pub fn region(&mut self, region: &'a str) -> &mut Self {
         self.params.app.region = Some(region);
         self
     }
+    /// # space: unique name of space
+    ///
+    /// `pattern`:  pattern: `^[a-z0-9](?:[a-z0-9]
     pub fn space(&mut self, space: &'a str) -> &mut Self {
         self.params.app.space = Some(space);
         self
     }
+    /// # stack: unique name of stack
     pub fn stack(&mut self, stack: &'a str) -> &mut Self {
         self.params.app.stack = Some(stack);
         self
     }
 
+    /// # buildpacks: overrides the buildpacks specified in the app.json manifest file
     pub fn buildpacks(&mut self, buildpacks_list: Vec<&'a str>) -> &mut Self {
         let mut buildpacks: Vec<Buildpack> = Vec::new();
         for var in buildpacks_list {
@@ -278,6 +413,7 @@ impl<'a> AppSetupCreate<'a> {
         self.params.overrides.buildpacks = Some(buildpacks);
         self
     }
+    /// # env: overrides of the env specified in the app.json manifest file
     pub fn env(&mut self, env: HashMap<&'a str, &'a str>) -> &mut Self {
         self.params.overrides.env = Some(env);
         self
@@ -370,6 +506,32 @@ impl<'a> HerokuEndpoint<AppSetup, (), AppSetupCreateParams<'a>> for AppSetupCrea
 /// Create a new SNI endpoint.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#sni-endpoint-create)
+///
+/// # Example:
+///
+/// SNICreate has three required parameters, app_id, certificate_chain, private_key, and returns the created [`SNI`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let certificate_chain = "chain_here";
+/// let private_key = "key_here";
+/// let response = api_client.request(&SNICreate::new(
+///     "APP_ID",
+///     certificate_chain,
+///     private_key,
+/// ));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SNI.html
 pub struct SNICreate<'a> {
     /// unique app identifier, either app id or app name
     pub app_id: &'a str,
@@ -419,6 +581,30 @@ impl<'a> HerokuEndpoint<SNI, (), SNICreateParams<'a>> for SNICreate<'a> {
 /// Create a new SSL endpoint.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#ssl-endpoint-create)
+///
+/// # Example:
+///
+/// SSLCreate takes three required parameters, app_id, certificate_chain, private_key. Returns the created [`SSL`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+/// 
+/// let certificate_chain = "chain_here";
+/// let private_key = "key_here";
+/// 
+/// let create_ssl = &SSLCreate::new("APP_ID", certificate_chain, private_key).preprocess(true).build();
+/// let response = api_client.request(create_ssl);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SSL.html
 pub struct SSLCreate<'a> {
     /// unique app identifier, either app id or app name
     pub app_id: &'a str,
@@ -440,6 +626,9 @@ impl<'a> SSLCreate<'a> {
         }
     }
 
+    /// # preprocess: allow Heroku to modify an uploaded public certificate chain if deemed advantageous by adding missing intermediaries, stripping unnecessary ones, etc.
+    /// 
+    /// `default`: true
     pub fn preprocess(&mut self, preprocess: bool) -> &mut Self {
         self.params.preprocess = Some(preprocess);
         self
