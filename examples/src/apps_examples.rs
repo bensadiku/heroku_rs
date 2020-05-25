@@ -314,7 +314,16 @@ fn get_app_builds<T: HerokuApiClient>(api_client: &T, app_id: &str) {
 fn create_app_build<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_name: &str) {
     // `new` method takes only the required parameters
     let blob_url = "https://example.com/source.tgz?token=xyz";
-    let response = api_client.request(&builds::BuildCreate::new(app_name, blob_url));
+    let response = api_client.request(
+        &builds::BuildCreate::new(app_name, blob_url)
+            .checksum("SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+            .version("v1.3.0")
+            .buildpack(
+                "heroku/ruby",
+                "https://github.com/heroku/heroku-buildpack-ruby",
+            )
+            .build(),
+    );
     print_response(response);
 }
 

@@ -8,6 +8,33 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update an app’s buildpack installations.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installations-update)
+///
+/// # Example:
+///
+/// BuildpackInstallationUpdate takes two required parameters, app_id and builpack_list and returns a list of [`BuildpackInstallation`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let buildpack_ruby = "https://github.com/heroku/heroku-buildpack-ruby";
+/// let buildpack_python = "https://github.com/heroku/heroku-buildpack-python";
+/// 
+/// let builpack_list = vec![buildpack_ruby, buildpack_python];
+/// let response = api_client.request(&builds::BuildpackInstallationUpdate::new(
+///     "APP_ID",
+///     builpack_list,
+/// ));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.BuildpackInstallation.html
 pub struct BuildpackInstallationUpdate<'a> {
     /// app_id can be the app name or id.
     pub app_id: &'a str,

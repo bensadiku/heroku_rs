@@ -8,6 +8,37 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new build.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#build-create)
+///
+/// # Example:
+///
+/// BuildCreate takes two required parameters, app_id and source_blob_url and returns the [`Build`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let blob_url = "https://example.com/source.tgz?token=xyz";
+/// 
+///  let response = api_client.request(
+///      &BuildCreate::new("APP_ID", blob_url)
+///          .checksum("SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+///          .version("v1.3.0")
+///          .buildpack(
+///              "heroku/ruby",
+///              "https://github.com/heroku/heroku-buildpack-ruby",
+///          )
+///          .build(),
+///  );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Build.html
 pub struct BuildCreate<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -33,15 +64,20 @@ impl<'a> BuildCreate<'a> {
         }
     }
 
+    /// # checksum: an optional checksum of the gzipped tarball for verifying its integrity
     pub fn checksum(&mut self, checksum: &'a str) -> &mut Self {
         self.params.source_blob.checksum = Some(checksum);
         self
     }
+    /// # version: Version of the gzipped tarball.
     pub fn version(&mut self, version: &'a str) -> &mut Self {
         self.params.source_blob.version = Some(version);
         self
     }
 
+    /// # buildpack: buildpacks executed for this build, in order
+    /// ## url: the URL of the buildpack for the app
+    /// ## name: Buildpack Registry name of the buildpack for the app
     pub fn buildpack(&mut self, url: &'a str, name: &'a str) -> &mut Self {
         self.params.buildpacks = Some(vec![BuildpackParam { url, name }]);
         self
