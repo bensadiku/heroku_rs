@@ -10,6 +10,26 @@ use std::collections::HashMap;
 /// Stop dyno.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference##dyno-stop)
+///
+/// # Example:
+///
+/// DynoActionStop takes two parameters, app_id and dyno_id, and returns a [Dyno`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&DynoActionStop::new("APP_ID","DYNO_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Dyno.html
 pub struct DynoActionStop<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -37,6 +57,41 @@ impl<'a> HerokuEndpoint<Dyno> for DynoActionStop<'a> {
 /// Create a new dyno associated with an application
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-create)
+///
+/// # Example:
+///
+/// DynoCreate takes two parameters, app_id and command, and returns a [Dyno`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+/// use std::collections::HashMap;
+///
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let mut custom_env_vars = HashMap::new();
+/// custom_env_vars.insert("COLUMNS", "80");
+/// custom_env_vars.insert("LINES", "24");
+///
+/// let new_dyno_complex = &DynoCreate::new("APP_ID", "bash")
+///     .attach(true)
+///     .env(custom_env_vars)
+///     .force_no_tty(true)
+///     .size("standard-1X")
+///     .time_to_live(1800)
+///     .dyno_type("run")
+///     .build();
+///
+/// let response = api_client.request(new_dyno_complex);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Dyno.html
 #[derive(Serialize)]
 pub struct DynoCreate<'a> {
     /// app_id can be the app name or the app id
@@ -62,31 +117,39 @@ impl<'a> DynoCreate<'a> {
         }
     }
 
+    /// # attach: whether to stream output or not
     pub fn attach(&mut self, attach: bool) -> &mut Self {
         self.params.attach = Some(attach);
         self
     }
 
+    /// # env: custom environment to add to the dyno config vars
     pub fn env(&mut self, env: HashMap<&'a str, &'a str>) -> &mut Self {
         self.params.env = Some(env);
         self
     }
 
+    /// # force_no_tty: force an attached one-off dyno to not run in a tty
     pub fn force_no_tty(&mut self, force_no_tty: bool) -> &mut Self {
         self.params.force_no_tty = Some(force_no_tty);
         self
     }
 
+    /// # size: dyno size
+    ///
+    /// `default`: “standard-1X”
     pub fn size(&mut self, size: &'a str) -> &mut Self {
         self.params.size = Some(size);
         self
     }
 
+    /// # time_to_live: seconds until dyno expires, after which it will soon be killed, max 86400 seconds (24 hours)
     pub fn time_to_live(&mut self, time_to_live: i32) -> &mut Self {
         self.params.time_to_live = Some(time_to_live);
         self
     }
 
+    /// # dyno_type: type of process
     pub fn dyno_type(&mut self, dyno_type: &'a str) -> &mut Self {
         self.params.r#type = Some(dyno_type);
         self

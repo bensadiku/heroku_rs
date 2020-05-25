@@ -9,6 +9,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Get info for existing dyno.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-info)
+/// 
+/// # Example:
+///
+/// DynoDetails takes two required parameters, app_id and dyno_id, and returns a [`Dyno`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&DynoDetails::new("APP_ID", "DYNO_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Dyno.html
 pub struct DynoDetails<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -37,6 +57,26 @@ impl<'a> HerokuEndpoint<Dyno> for DynoDetails<'a> {
 /// List existing dynos.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-list)
+/// 
+/// # Example:
+///
+/// DynoList takes one required parameter, app_id, and returns a list of [`Dynos`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&DynoList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Dyno.html
 pub struct DynoList<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -63,6 +103,26 @@ impl<'a> HerokuEndpoint<Vec<Dyno>> for DynoList<'a> {
 /// List existing dyno sizes.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-size-list)
+/// 
+/// # Example:
+///
+/// DynoSizeList takes no parameters, and returns a list of [`DynoSize`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&DynoSizeList::new());
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.DynoSize.html
 pub struct DynoSizeList {}
 
 #[cfg(feature = "builder")]
@@ -86,6 +146,26 @@ impl HerokuEndpoint<Vec<DynoSize>> for DynoSizeList {
 /// Info for existing dyno size.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#dyno-size-info)
+/// 
+/// # Example:
+///
+/// DynoSizeDetails takes one parameter, size_id and returns a [DynoSize`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&DynoSizeDetails::new("SIZE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.DynoSize.html
 pub struct DynoSizeDetails<'a> {
     /// unique dyno size identifier
     pub size_id: &'a str,
