@@ -8,6 +8,32 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update OAuth client
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-update)
+/// 
+/// # Example:
+///
+/// OAuthClientUpdate takes one required parameter, client_id, and returns the updated [`OAuthClient`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+/// let redirect_uri = "https://www.blog.redirecting_site_here.dev";
+///
+/// let response = api_client.request(
+///     &OAuthClientUpdate::new("CLIENT_ID")
+///         .name("CLIENT NAME")
+///         .redirect_uri(redirect_uri)
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OAuthClient.html
 pub struct OAuthClientUpdate<'a> {
     /// unique identifier of OAuth Client authorization
     pub client_id: &'a str,
@@ -27,11 +53,13 @@ impl<'a> OAuthClientUpdate<'a> {
         }
     }
 
+    /// # name: OAuth client name
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.params.name = Some(name);
         self
     }
 
+    /// # redirect_uri: endpoint for redirection after authorization with OAuth client
     pub fn redirect_uri(&mut self, redirect_uri: &'a str) -> &mut Self {
         self.params.redirect_uri = Some(redirect_uri);
         self

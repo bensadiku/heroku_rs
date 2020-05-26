@@ -8,6 +8,33 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new OAuth authorization.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-authorization-create)
+/// 
+/// # Example:
+///
+/// OAuthCreate takes one required parameter, scope, and returns the created [`OAuth`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let auth_scope = vec!["global"];
+/// let response = api_client.request(
+///     &OAuthCreate::new(auth_scope)
+///         .description("Global oauth token")
+///         .client("CLIENT_ID")
+///         .expires_in(2592000) //null for indefinite lifetime
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OAuth.html
 pub struct OAuthCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: OAuthCreateParams<'a>,
@@ -26,16 +53,19 @@ impl<'a> OAuthCreate<'a> {
         }
     }
 
+    /// # client: unique identifier of this OAuth client
     pub fn client(&mut self, client: &'a str) -> &mut Self {
         self.params.client = Some(client);
         self
     }
 
+    /// # description: human-friendly description of this OAuth authorization
     pub fn description(&mut self, description: &'a str) -> &mut Self {
         self.params.description = Some(description);
         self
     }
 
+    /// # expires_in: seconds until OAuth token expires; may be null for tokens with indefinite lifetime
     pub fn expires_in(&mut self, expires_in: u32) -> &mut Self {
         self.params.expires_in = Some(expires_in);
         self
@@ -87,6 +117,27 @@ impl<'a> HerokuEndpoint<OAuth, (), OAuthCreateParams<'a>> for OAuthCreate<'a> {
 /// Regenerate OAuth tokens. This endpoint is only available to direct authorizations or privileged OAuth clients.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-authorization-regenerate)
+/// 
+/// # Example:
+///
+/// OAuthRegenerate takes one required parameter, oauth_id, and returns the regenerated [`OAuth`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &OAuthRegenerate::new("OAUTH_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OAuth.html
 pub struct OAuthRegenerate<'a> {
     /// unique identifier of OAuth authorization
     pub oauth_id: &'a str,
@@ -116,6 +167,28 @@ impl<'a> HerokuEndpoint<OAuth> for OAuthRegenerate<'a> {
 /// Create a new OAuth client.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-create)
+/// 
+/// # Example:
+///
+/// OAuthClientCreate takes one required parameter, oauth_id, and returns the created [`OAuthClient`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let name = "Client Name";
+/// let redirect_uri = "https://www.redirecting_site_here.dev";
+/// let response = api_client.request(&OAuthClientCreate::new(name, redirect_uri));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OAuthClient.html
 pub struct OAuthClientCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: OAuthClientCreateParams<'a>,
@@ -158,6 +231,26 @@ impl<'a> HerokuEndpoint<OAuthClient, (), OAuthClientCreateParams<'a>> for OAuthC
 /// Rotate credentials for an OAuth client
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-rotate-credentials)
+/// 
+/// # Example:
+///
+/// OAuthClientRotateCredentials takes one required parameter, oauth_id, and returns the [`OAuthClient`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&OAuthClientRotateCredentials::new("CLIENT_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OAuthClient.html
 pub struct OAuthClientRotateCredentials<'a> {
     /// unique identifier of OAuth Client authorization
     pub client_id: &'a str,
@@ -187,6 +280,36 @@ impl<'a> HerokuEndpoint<OAuthClient> for OAuthClientRotateCredentials<'a> {
 /// Create a new OAuth token.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-token-create)
+/// 
+/// # Example:
+///
+/// OAuthTokenCreate takes one required parameter, oauth_id, and returns the created [`OAuthToken`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let client_secret = "01234567-89ab-cdef-0123-456789abcdef";
+/// let grant_code = "01234567-89ab-cdef-0123-456789abcdef";
+/// let grant_type = "authorization_code";
+/// let refresh_token = "01234567-89ab-cdef-0123-456789abcdef";
+/// 
+/// let response = api_client.request(&OAuthTokenCreate::new(
+///     client_secret,
+///     grant_code,
+///     grant_type,
+///     refresh_token,
+/// ));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OAuthToken.html
 pub struct OAuthTokenCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: OAuthTokenCreateParams<'a>,

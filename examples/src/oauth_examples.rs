@@ -89,9 +89,8 @@ fn get_oauth_client<T: HerokuApiClient>(api_client: &T) {
 fn create_oauth_client<T: HerokuApiClient>(api_client: &T) {
     let name = "Client Name";
     let redirect_uri = "https://www.redirecting_site_here.dev";
-    let response = api_client.request(&oauth::OAuthClientCreate {
-        params: oauth::OAuthClientCreateParams { name, redirect_uri },
-    });
+    let response = api_client.request(&oauth::OAuthClientCreate::new(name, redirect_uri));
+        
     print_response(response);
 }
 
@@ -115,6 +114,8 @@ fn create_oauth<T: HerokuApiClient>(api_client: &T) {
     let response = api_client.request(
         &oauth::OAuthCreate::new(auth_scope)
             .description("Global oauth token")
+            .client("CLIENT_ID")
+            .expires_in(2592000) //null for indefinite lifetime
             .build(),
     );
     print_response(response);

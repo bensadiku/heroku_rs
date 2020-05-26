@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete OAuth authorization.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-authorization-delete)
+///
+/// # Example:
+///
+/// OAuthDelete takes one required parameter, oauth_id, and returns the deleted [`OAuth`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&OAuthDelete::new("OAUTH_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OAuth.html
 pub struct OAuthDelete<'a> {
     /// unique identifier of OAuth authorization
     pub oauth_id: &'a str,
@@ -34,6 +54,26 @@ impl<'a> HerokuEndpoint<OAuth> for OAuthDelete<'a> {
 /// Delete OAuth client.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-client-delete)
+/// 
+/// # Example:
+///
+/// OAuthClientDelete takes one required parameter, client_id, and returns the deleted [`OAuthClient`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&OAuthClientDelete::new("CLIENT_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OAuthClient.html
 pub struct OAuthClientDelete<'a> {
     /// unique identifier of OAuth Client authorization
     pub client_id: &'a str,
@@ -60,6 +100,26 @@ impl<'a> HerokuEndpoint<OAuthClient, (), ()> for OAuthClientDelete<'a> {
 /// Revoke OAuth access token.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#oauth-token-delete)
+/// 
+/// # Example:
+///
+/// OAuthTokenDelete takes one required parameter, client_id, and returns the deleted [`OAuthToken`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&OAuthTokenDelete::new("TOKEN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OAuthToken.html
 pub struct OAuthTokenDelete<'a> {
     /// unique identifier of token
     pub token_id: &'a str,
