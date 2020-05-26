@@ -11,12 +11,12 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// 
 /// # Example:
 ///
-/// ReleaseCreate takes one required parameter, app_id, and returns the new [`Release`][response].
+/// ReleaseCreate takes two required parameters, app_id and slug, and returns the new [`Release`][response].
 /// ```rust
 /// use heroku_rs::prelude::*;
 ///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
 ///
-/// let response = api_client.request(&ReleaseCreate::new("APP_ID"));
+/// let response = api_client.request(&ReleaseCreate::new("APP_ID", "SLUG_ID"));
 ///
 ///match response {
 ///     Ok(success) => println!("Success: {:#?}", success),
