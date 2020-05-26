@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 ///
 /// List existing releases
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-list)
+/// 
+/// # Example:
+///
+/// ReleaseList takes one required parameter, app_id, and returns a list of [`Releases`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&ReleaseList::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Release.html
 pub struct ReleaseList<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,
@@ -33,6 +53,26 @@ impl<'a> HerokuEndpoint<Vec<Release>> for ReleaseList<'a> {
 ///
 /// Info for existing release
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-info)
+/// 
+/// # Example:
+///
+/// ReleaseInfo takes two required parameter, app_id and release_id, and returns the [`Release`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&ReleaseInfo::new("APP_ID", "RELEASE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Release.html
 pub struct ReleaseInfo<'a> {
     /// app_id can be the app name or the app id
     pub app_id: &'a str,

@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new release
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-create)
+/// 
+/// # Example:
+///
+/// ReleaseCreate takes one required parameter, app_id, and returns the new [`Release`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&ReleaseCreate::new("APP_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Release.html
 #[derive(Serialize)]
 pub struct ReleaseCreate<'a> {
     /// app_id can be the app name or the app id
@@ -28,6 +48,7 @@ impl<'a> ReleaseCreate<'a> {
         }
     }
 
+    /// # description: description of changes in this release
     pub fn description(&mut self, description: &'a str) -> &mut Self {
         self.params.description = Some(description);
         self
@@ -75,6 +96,26 @@ impl<'a> HerokuEndpoint<Release, (), ReleaseCreateParams<'a>> for ReleaseCreate<
 /// Rollback to an existing release
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#release-rollback)
+/// 
+/// # Example:
+///
+/// ReleaseRollback takes one required parameter, app_id, and returns the [`Release`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&ReleaseRollback::new("APP_ID", "RELEASE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Release.html
 #[derive(Serialize)]
 pub struct ReleaseRollback<'a> {
     /// app_id can be the app name or the app id
