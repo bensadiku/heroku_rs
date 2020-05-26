@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-create)
+/// 
+/// # Example:
+///
+/// PipelineCreate takes one required parameter, pipeline_name, and returns the created [`Pipeline`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&PipelineCreate::new("MYCOOLPIPELINE"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Pipeline.html
 pub struct PipelineCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: PipelineCreateParams<'a>,
@@ -50,6 +70,32 @@ impl<'a> HerokuEndpoint<Pipeline, (), PipelineCreateParams<'a>> for PipelineCrea
 /// Create a new pipeline coupling.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-create)
+/// 
+/// # Example:
+///
+/// PipelineCouplingCreate takes three required parameters,app_id, pipeline_id and pipeline_stage and returns the created [`PipelineCoupling`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let app = "APP_ID"; // can be app name or app id
+/// let pipeline = "PIPELINE_ID"; // pipeline id
+/// let stage = "test"; // target pipeline stage
+/// 
+/// let response = api_client.request(&PipelineCouplingCreate::new(
+///     app, pipeline, stage,
+/// ));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.PipelineCoupling.html
 pub struct PipelineCouplingCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: PipelineCouplingCreateParams<'a>,
@@ -104,6 +150,34 @@ impl<'a> HerokuEndpoint<PipelineCoupling, (), PipelineCouplingCreateParams<'a>>
 /// Create a new promotion.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-promotion-create)
+/// 
+/// # Example:
+///
+/// PipelinePromotionCreate takes three required parameters,pipeline_id, source_app_id and target_app_id and returns the created [`PipelinePromotion`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let pipeline_id = "PIPELINE_ID";
+/// let source_app_id = "SOURCE_APP_ID";
+/// let target_app_id = "TARGET_APP_ID";
+/// 
+/// let response = api_client.request(&PipelinePromotionCreate::new(
+///     pipeline_id,
+///     source_app_id,
+///     target_app_id,
+/// ));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.PipelinePromotion.html
 pub struct PipelinePromotionCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: PipelinePromotionCreateParams<'a>,
@@ -179,6 +253,34 @@ impl<'a> HerokuEndpoint<PipelinePromotion, (), PipelinePromotionCreateParams<'a>
 /// A pipeline transfer is the process of changing pipeline ownership along with the contained apps.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-transfer)
+/// 
+/// # Example:
+///
+/// PipelinePromotionCreate takes three required parameters,pipeline_id, source_app_id and target_app_id and returns the created [`PipelinePromotion`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let pipeline_id = "PIPELINE_ID";
+/// let owner_type = "user";
+/// let new_owner_id = "OWNER_ID";
+/// 
+/// let response = api_client.request(&PipelineTransferCreate::new(
+///     pipeline_id,
+///     new_owner_id,
+///     owner_type,
+/// ));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.PipelinePromotion.html
 pub struct PipelineTransferCreate<'a> {
     pub params: PipelineTransferCreateParams<'a>,
 }

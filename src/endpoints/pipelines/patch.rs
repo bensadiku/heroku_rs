@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update an existing pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-update)
+/// 
+/// # Example:
+///
+/// PipelineUpdate takes one required parameter, pipeline_id, and returns the updated [`Pipeline`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&PipelineUpdate::new("PIPELINE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Pipeline.html
 pub struct PipelineUpdate<'a> {
     /// unique pipeline identifier.
     pub pipeline_id: &'a str,
@@ -24,6 +44,9 @@ impl<'a> PipelineUpdate<'a> {
         }
     }
 
+    /// # name: name of pipeline
+    /// 
+    /// `pattern`: ^[a-z][a-z0-9-]{2,29}$ 
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.params.name = Some(name);
         self
@@ -66,6 +89,30 @@ impl<'a> HerokuEndpoint<Pipeline, (), PipelineUpdateParams<'a>> for PipelineUpda
 /// Update an existing pipeline coupling.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-update)
+/// 
+/// # Example:
+///
+/// PipelineCouplingUpdate takes one required parameter, coupling_id, and returns the updated [`PipelineCoupling`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &PipelineCouplingUpdate::new("COUPLING_ID")
+///         .stage("development")
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.PipelineCoupling.html
 pub struct PipelineCouplingUpdate<'a> {
     /// unique pipeline coupling identifier.
     pub coupling_id: &'a str,
@@ -82,6 +129,9 @@ impl<'a> PipelineCouplingUpdate<'a> {
         }
     }
 
+    /// # stage: target pipeline stage
+    /// 
+    /// `one of` : "test" or "review" or "development" or "staging" or "production" 
     pub fn stage(&mut self, stage: &'a str) -> &mut Self {
         self.params.stage = Some(stage);
         self
