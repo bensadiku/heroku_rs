@@ -50,6 +50,7 @@ fn enable_app_review_configuration<T: HerokuApiClient>(api_client: &T) {
     // `new` method takes only the required parameters
     let response = api_client.request(
         &review::ReviewAppConfigEnable::new(pipeline_id, repo)
+            .base_name("singular-app")
             .automatic_review_apps(true)
             .build(),
     );

@@ -99,7 +99,7 @@ impl<'a> HerokuEndpoint<Release, (), ReleaseCreateParams<'a>> for ReleaseCreate<
 /// 
 /// # Example:
 ///
-/// ReleaseRollback takes one required parameter, app_id, and returns the [`Release`][response].
+/// ReleaseRollback takes two required parameters, app_id and release_id, and returns the [`Release`][response].
 /// ```rust
 /// use heroku_rs::prelude::*;
 ///#    let api_client = HttpApiClient::create("API_KEY").unwrap();

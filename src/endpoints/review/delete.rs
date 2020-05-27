@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing review app
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-delete)
+/// 
+/// # Example:
+///
+/// ReviewAppDelete takes one required parameter, review_id, and returns the deleted [`ReviewApp`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&ReviewAppDelete::new("REVIEW_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.ReviewApp.html
 pub struct ReviewAppDelete<'a> {
     /// review_id is the unique identifier.
     pub review_id: &'a str,
@@ -34,6 +54,26 @@ impl<'a> HerokuEndpoint<ReviewApp> for ReviewAppDelete<'a> {
 /// Disable review apps for a pipeline
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-configuration-delete)
+/// 
+/// # Example:
+///
+/// ReviewAppConfigDelete takes two required parameters, pipeline_id, and returns the deleted [`ReviewAppConfig`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&ReviewAppConfigDelete::new("PIPELINE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.ReviewAppConfig.html
 pub struct ReviewAppConfigDelete<'a> {
     /// pipeline_id is the unique identifier.
     pub pipeline_id: &'a str,

@@ -8,6 +8,35 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update review app configuration for a pipeline
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#review-app-configuration-update)
+/// 
+/// # Example:
+///
+/// ReviewAppConfigUpdate takes one required parameter, pipeline_id, and returns the updated [`ReviewAppConfig`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &ReviewAppConfigUpdate::new("PIPELINE_ID")
+///         .automatic_review_apps(true)
+///         .deploy_target("^[a-z]{2}$)`","^region$)`")
+///         .stale_days("5")
+///         .destroy_stale_apps(true)
+///         .base_name("cool-base-name-yo")
+///         .wait_for_ci(true)
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.ReviewAppConfig.html
 pub struct ReviewAppConfigUpdate<'a> {
     pub pipeline_id: &'a str,
     /// The parameters to pass to the Heroku API
@@ -30,16 +59,27 @@ impl<'a> ReviewAppConfigUpdate<'a> {
         }
     }
 
+    /// # base_name: A unique prefix that will be used to create review app names
     pub fn base_name(&mut self, base_name: &'a str) -> &mut Self {
         self.params.base_name = Some(base_name);
         self
     }
 
+    /// # wait_for_ci: If true, review apps will only be created when CI passes
     pub fn wait_for_ci(&mut self, wait_for_ci: bool) -> &mut Self {
         self.params.wait_for_ci = Some(wait_for_ci);
         self
     }
 
+    /// # deploy_target: Provides a key/value pair to specify whether to use a common runtime or a private space
+    /// 
+    /// ## id: unique identifier of deploy target
+    /// 
+    /// `pattern`:  pattern: `(^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$
+    /// 
+    /// ## type of deploy target
+    /// 
+    /// `pattern`:  pattern: `(^space$
     pub fn deploy_target(&mut self, id: &'a str, t_type: &'a str) -> &mut Self {
         self.params.deploy_target = Some(DeployTarget {
             id: id,
@@ -48,16 +88,19 @@ impl<'a> ReviewAppConfigUpdate<'a> {
         self
     }
 
+    /// # stale_days: If destroy_stale_apps is true, then apps will be destroyed after this many days
     pub fn stale_days(&mut self, stale_days: &'a str) -> &mut Self {
         self.params.stale_days = Some(stale_days);
         self
     }
 
+    /// # destroy_stale_apps: If true, this will trigger automatic deletion of review apps when they’re stale
     pub fn destroy_stale_apps(&mut self, destroy_stale_apps: bool) -> &mut Self {
         self.params.destroy_stale_apps = Some(destroy_stale_apps);
         self
     }
 
+    /// # automatic_review_apps: If true, this will trigger the creation of review apps when pull-requests are opened in the repo
     pub fn automatic_review_apps(&mut self, automatic_review_apps: bool) -> &mut Self {
         self.params.automatic_review_apps = Some(automatic_review_apps);
         self
