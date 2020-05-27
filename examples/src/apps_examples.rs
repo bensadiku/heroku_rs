@@ -229,6 +229,9 @@ fn create_slug<T: HerokuApiClient>(api_client: &T, app_id: &str) {
         &slugs::SlugCreate::new(app_id, process_types)
             .commit("60883d9e8947a57e04dc9124f25df004866a2051")
             .commit_description("fixed a bug with API documentation")
+            .buildpack_provided_description("Ruby/Rack")
+            .checksum("SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+            .stack("cedar-14")
             .build(),
     );
 
