@@ -15,6 +15,8 @@ use std::collections::HashMap;
 /// SlugCreate takes two required parameters, app_id and process_types, and returns the created [`Slug`][response].
 /// ```rust
 /// use heroku_rs::prelude::*;
+/// use std::collections::HashMap;
+/// 
 ///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
 ///
 /// let mut process_types = HashMap::new();

@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-delete)
+/// 
+/// # Example:
+///
+/// SpaceDelete takes one required parameter, space_id, and returns the deleted [`Space`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&SpaceDelete::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Space.html
 pub struct SpaceDelete<'a> {
     /// unique space identifier, either space name or space id
     pub space_id: &'a str,
@@ -34,6 +54,26 @@ impl<'a> HerokuEndpoint<Space> for SpaceDelete<'a> {
 /// Destroy existing VPN Connection
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-destroy)
+/// 
+/// # Example:
+///
+/// VPNDelete takes two required parameters, space_id and vpn_id, and returns the deleted [`VPN`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&VPNDelete::new("SPACE_ID", "VPN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.VPN.html
 pub struct VPNDelete<'a> {
     /// unique space identifier, either space name or space id
     pub space_id: &'a str,

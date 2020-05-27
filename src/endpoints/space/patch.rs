@@ -8,6 +8,30 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update an existing space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-update)
+///
+/// # Example:
+///
+/// SpaceUpdate takes one required parameter, space_id, and returns the updated [`Space`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let space_id = "myspacename";
+/// let space = &SpaceUpdate::new(space_id)
+///     .name("mynewspacename")
+///     .build();
+/// let response = api_client.request(space);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Space.html
 pub struct SpaceUpdate<'a> {
     /// unique space identifier, either space name or space id
     pub space_id: &'a str,
@@ -24,6 +48,9 @@ impl<'a> SpaceUpdate<'a> {
         }
     }
 
+    /// # name: unique name of space
+    /// 
+    /// `pattern`:  pattern: `^[a-z0-9](?:[a-z0-9]
     pub fn name(&mut self, _name: &'a str) -> &mut Self {
         self.params.name = Some(_name);
         self
@@ -67,6 +94,27 @@ impl<'a> HerokuEndpoint<Space, (), SpaceUpdateParams<'a>> for SpaceUpdate<'a> {
 /// Update an existing user’s set of permissions on a space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-access-update)
+///
+/// # Example:
+///
+/// SpaceAccessUpdate takes three required parameters, space_id and account_id and permission name, and returns the updated [`SpaceAccess`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let space = &SpaceAccessUpdate::new("SPACE_ID", "ACCOUNT_ID", "example");
+/// let response = api_client.request(space);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SpaceAccess.html
 pub struct SpaceAccessUpdate<'a> {
     /// unique space identifier, either space name or space id
     pub space_id: &'a str,

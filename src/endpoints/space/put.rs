@@ -8,6 +8,29 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new inbound ruleset
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-create)
+///
+/// # Example:
+///
+/// InboundRulesetCreate takes one required parameter, space_id, and returns the new [`InboundRuleset`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let space = &InboundRulesetCreate::new("SPACE_ID")
+///     .rule("allow", "1.1.1.1/1")
+///     .build();
+/// let response = api_client.request(space);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.InboundRuleset.html
 pub struct InboundRulesetCreate<'a> {
     pub space_id: &'a str,
     /// The parameters to pass to the Heroku API
@@ -23,6 +46,7 @@ impl<'a> InboundRulesetCreate<'a> {
         }
     }
 
+    /// # name: array of rules
     pub fn rule(&mut self, action: &'a str, source: &'a str) -> &mut Self {
         self.params.rules = Some(vec![(Rule { action, source })]);
         self
@@ -72,6 +96,34 @@ impl<'a> HerokuEndpoint<InboundRuleset, (), InboundRulesetCreateParams<'a>>
 /// Create a new outbound ruleset
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-create)
+///
+/// # Example:
+///
+/// OutboundRulesetCreate takes one required parameter, space_id, and returns the new [`OutboundRuleset`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let target = "1.1.1.1/1";
+/// let protocol = "tcp";
+/// let to_port = 80;
+/// let from_port = 80;
+/// 
+/// let space = &OutboundRulesetCreate::new("SPACE_ID")
+///     .rule(target, protocol, from_port, to_port)
+///     .build();
+/// let response = api_client.request(space);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OutboundRuleset.html
 pub struct OutboundRulesetCreate<'a> {
     pub space_id: &'a str,
     /// The parameters to pass to the Heroku API

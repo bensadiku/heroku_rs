@@ -243,6 +243,7 @@ fn update_space<T: HerokuApiClient>(api_client: &T) {
 fn create_space<T: HerokuApiClient>(api_client: &T) {
     let space = &space::SpaceCreate::new("myspacename", "myteamname")
         .cidr("123")
+        .data_cidr("10.2.0.0/16")
         .region("6f2b2ec9-b087-4976-8ec9-5d2f62276aeb")
         .shield(true)
         .build();

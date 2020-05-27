@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Info for existing space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-info)
+/// 
+/// # Example:
+///
+/// SpaceDetails takes one required parameter, space_id, and returns the [`Space`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&SpaceDetails::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Space.html
 pub struct SpaceDetails<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -34,6 +54,26 @@ impl<'a> HerokuEndpoint<Space> for SpaceDetails<'a> {
 /// List existing spaces.   
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-space-list-1)
+/// 
+/// # Example:
+///
+/// SpaceList takes no required parameters, and returns a list of [`Spaces`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&SpaceList::new());
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Space.html
 pub struct SpaceList {}
 
 #[cfg(feature = "builder")]
@@ -57,6 +97,26 @@ impl HerokuEndpoint<Vec<Space>> for SpaceList {
 /// List permissions for a given user on a given space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-access-info)
+/// 
+/// # Example:
+///
+/// SpaceAccessDetails takes two required parameters, space_id and account_id, and returns the [`SpaceAccess`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&SpaceAccessDetails::new("SPACE_ID", "ACCOUNT_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SpaceAccess.html
 pub struct SpaceAccessDetails<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -88,6 +148,26 @@ impl<'a> HerokuEndpoint<SpaceAccess> for SpaceAccessDetails<'a> {
 /// List all users and their permissions on a space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-access-list)
+/// 
+/// # Example:
+///
+/// SpaceAccessList takes one required parameter, space_id, and returns a list [`SpaceAccess`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&SpaceAccessList::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SpaceAccess.html
 pub struct SpaceAccessList<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -114,6 +194,26 @@ impl<'a> HerokuEndpoint<Vec<SpaceAccess>> for SpaceAccessList<'a> {
 /// Current state of network address translation for a space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-network-address-translation-info)
+/// 
+/// # Example:
+///
+/// SpaceNATDetails takes one required parameter, space_id, and returns the [`SpaceNAT`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&SpaceNATDetails::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SpaceNAT.html
 pub struct SpaceNATDetails<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -140,6 +240,26 @@ impl<'a> HerokuEndpoint<SpaceNAT> for SpaceNATDetails<'a> {
 /// Current inbound ruleset for a space
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-current)
+/// 
+/// # Example:
+///
+/// InboundRulesetCurrent takes one required parameter, space_id, and returns the [`InboundRuleset`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&InboundRulesetCurrent::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.InboundRuleset.html
 pub struct InboundRulesetCurrent<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -166,6 +286,26 @@ impl<'a> HerokuEndpoint<InboundRuleset> for InboundRulesetCurrent<'a> {
 /// Info on an existing Inbound Ruleset
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-info)
+/// 
+/// # Example:
+///
+/// InboundRulesetCurrent takes two required parameters, space_id and ruleset_id, and returns the current [`InboundRuleset`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&InboundRulesetCurrent::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.InboundRuleset.html
 pub struct InboundRulesetDetails<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -200,6 +340,26 @@ impl<'a> HerokuEndpoint<InboundRuleset> for InboundRulesetDetails<'a> {
 /// List all inbound rulesets for a space
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-list)
+///
+/// # Example:
+///
+/// InboundRulesetList takes one required parameter, space_id, and returns a list of [`InboundRuleset`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&InboundRulesetList::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.InboundRuleset.html
 pub struct InboundRulesetList<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -226,6 +386,26 @@ impl<'a> HerokuEndpoint<Vec<InboundRuleset>> for InboundRulesetList<'a> {
 /// Current outbound ruleset for a space
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-current)
+///
+/// # Example:
+///
+/// OutboundRulesetCurrent takes one required parameter, space_id, and returns the current [`OutboundRuleset`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&OutboundRulesetCurrent::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OutboundRuleset.html
 pub struct OutboundRulesetCurrent<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -252,6 +432,26 @@ impl<'a> HerokuEndpoint<OutboundRuleset> for OutboundRulesetCurrent<'a> {
 /// Info on an existing Outbound Ruleset
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-info)
+///
+/// # Example:
+///
+/// OutboundRulesetDetails takes two required parameter, space_id and ruleset_id, and returns the [`OutboundRuleset`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&OutboundRulesetDetails::new("SPACE_ID", "RULESET_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OutboundRuleset.html
 pub struct OutboundRulesetDetails<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -286,6 +486,26 @@ impl<'a> HerokuEndpoint<OutboundRuleset> for OutboundRulesetDetails<'a> {
 /// List all Outbound Rulesets for a space
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-list)
+///
+/// # Example:
+///
+/// OutboundRulesetList takes one required parameter, space_id, and returns a list of [`OutboundRuleset`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&OutboundRulesetList::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.OutboundRuleset.html
 pub struct OutboundRulesetList<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -312,6 +532,26 @@ impl<'a> HerokuEndpoint<Vec<OutboundRuleset>> for OutboundRulesetList<'a> {
 /// List VPN connections for a space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-list)
+///
+/// # Example:
+///
+/// VPNList takes one required parameter, space_id, and returns a list of [`VPN`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&VPNList::new("SPACE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.VPN.html
 pub struct VPNList<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,
@@ -338,6 +578,26 @@ impl<'a> HerokuEndpoint<Vec<VPN>> for VPNList<'a> {
 /// List VPN connections for a space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-list)
+///
+/// # Example:
+///
+/// VPNDetails takes one required parameter, space_id and vpn_id, and returns the [`VPN`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&VPNDetails::new("SPACE_ID", "VPN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.VPN.html
 pub struct VPNDetails<'a> {
     /// space_id can be the space name or space id
     pub space_id: &'a str,

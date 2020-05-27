@@ -8,6 +8,32 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-create)
+///
+/// # Example:
+///
+/// SpaceCreate takes three required parameters, unique space name and team name, and returns the new [`Space`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let space = &SpaceCreate::new("myspacename", "myteamname")
+///     .cidr("123")
+///     .data_cidr("10.2.0.0/16")
+///     .region("6f2b2ec9-b087-4976-8ec9-5d2f62276aeb")
+///     .shield(true)
+///     .build();
+/// let response = api_client.request(space);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Space.html
 pub struct SpaceCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: SpaceCreateParams<'a>,
@@ -28,18 +54,26 @@ impl<'a> SpaceCreate<'a> {
         }
     }
 
+    /// # region: unique identifier or name of region
     pub fn region(&mut self, regions: &'a str) -> &mut Self {
         self.params.region = Some(regions);
         self
     }
+    /// # cidr: The RFC-1918 CIDR the Private Space will use. It must be a /16 in 10.0.0.0/8, 172.16.0.0/12 or 192.168.0.0/16
+    ///
+    /// `default`: "10.0.0.0/16"
+    ///
+    /// `pattern`: `^((?:10
     pub fn cidr(&mut self, _cidr: &'a str) -> &mut Self {
         self.params.cidr = Some(_cidr);
         self
     }
+    /// # data_cidr: The RFC-1918 CIDR that the Private Space will use for the Heroku-managed peering connection that’s automatically created when using Heroku Data add-ons. It must be between a /16 and a /20
     pub fn data_cidr(&mut self, _data_cidr: &'a str) -> &mut Self {
         self.params.data_cidr = Some(_data_cidr);
         self
     }
+    /// # shield: true if this space has shield enabled
     pub fn shield(&mut self, _shield: bool) -> &mut Self {
         self.params.shield = Some(_shield);
         self
@@ -99,6 +133,29 @@ impl<'a> HerokuEndpoint<Space, (), SpaceCreateParams<'a>> for SpaceCreate<'a> {
 /// Transfer space between enterprise teams
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#space-transfer-transfer)
+///
+/// # Example:
+///
+/// SpaceTransferCreate takes two required parameters, space_id and new_owner, and returns the new [`SpaceTransfer`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let new_owner_id = "123";
+/// let space_id = "123";
+/// let space = &SpaceTransferCreate::new(space_id, new_owner_id);
+/// let response = api_client.request(space);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.SpaceTransfer.html
 pub struct SpaceTransferCreate<'a> {
     /// unique space identifier, either space name or space id
     pub space_id: &'a str,
@@ -145,6 +202,27 @@ impl<'a> HerokuEndpoint<SpaceTransfer, (), SpaceTransferCreateParams<'a>>
 /// Create a new VPN connection in a private space.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#private-spaces-vpn-create)
+///
+/// # Example:
+///
+/// VPNCreate takes four required parameters, space_id and new_owner, and returns the new [`VPN`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let space = &VPNCreate::new("SPACE_ID", "office", "35.161.69.30", vec!["172.16.0.0/16"]);
+/// let response = api_client.request(space);
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.VPN.html
 pub struct VPNCreate<'a> {
     /// unique space identifier, either space name or space id
     pub space_id: &'a str,
@@ -154,7 +232,12 @@ pub struct VPNCreate<'a> {
 
 #[cfg(feature = "builder")]
 impl<'a> VPNCreate<'a> {
-    pub fn new(space_id: &'a str, name: &'a str, public_ip: &'a str, routable_cidrs: Vec<&'a str>) -> VPNCreate<'a> {
+    pub fn new(
+        space_id: &'a str,
+        name: &'a str,
+        public_ip: &'a str,
+        routable_cidrs: Vec<&'a str>,
+    ) -> VPNCreate<'a> {
         VPNCreate {
             space_id,
             params: VPNCreateParams {
