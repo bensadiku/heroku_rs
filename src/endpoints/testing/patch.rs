@@ -8,6 +8,28 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update a test-run’s status.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#test-run-update)
+///
+/// # Example:
+///
+/// TestRunUpdate takes three required parameters, run_id, message and status, returns the updated [`TestRun`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let status = "cancelled";
+/// let message = None;
+/// let response = api_client.request(&TestRunUpdate::new("RUN_ID", message, status));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TestRun.html
 pub struct TestRunUpdate<'a> {
     pub run_id: &'a str,
     /// The parameters to pass to the Heroku API
@@ -32,7 +54,7 @@ pub struct TestRunUpdateParams<'a> {
     /// human friendly message indicating reason for an error. [Nullable]
     pub message: Option<&'a str>,
     /// current state of the test run
-    ///  one of:"pending" or "cancelled" or "creating" or "building" or "running" or "succeeded" or "failed" or "errored" or "debugging" 
+    ///  one of:"pending" or "cancelled" or "creating" or "building" or "running" or "succeeded" or "failed" or "errored" or "debugging"
     pub status: &'a str,
 }
 

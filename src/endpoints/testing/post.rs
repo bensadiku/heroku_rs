@@ -8,6 +8,37 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create a new test-run.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#test-run-create)
+/// 
+/// # Example:
+///
+/// TestRunCreate takes five required parameters, run_id, message and status, returns the created [`TestRun`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let commit_branch = "master";
+/// let commit_message = "the message for the commit under test";
+/// let commit_sha = "commit_sha";
+/// let pipeline = "pipeline_id";
+/// let source_blob_url = "url-here";
+/// let response = api_client.request(&TestRunCreate::new(
+///     commit_branch,
+///     commit_message,
+///     commit_sha,
+///     pipeline,
+///     source_blob_url,
+/// ));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TestRun.html
 pub struct TestRunCreate<'a> {
     /// The parameters to pass to the Heroku API
     pub params: TestRunCreateParams<'a>,
@@ -35,11 +66,13 @@ impl<'a> TestRunCreate<'a> {
         }
     }
 
+    /// # debug: whether the test run was started for interactive debugging
     pub fn debug(&mut self, debug: bool) -> &mut Self {
         self.params.debug = Some(debug);
         self
     }
 
+    /// # organization: unique name or identifier of team
     pub fn organization(&mut self, organization: &'a str) -> &mut Self {
         self.params.organization = Some(organization);
         self

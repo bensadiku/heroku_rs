@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// List test cases
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#test-case-list)
+/// 
+/// # Example:
+///
+/// TestCaseList takes one required parameter, run_id, and returns a list of [`TestCases`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TestCaseList::new("RUN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TestCase.html
 pub struct TestCaseList<'a> {
     /// run_id is the test run unique identifier
     pub run_id: &'a str,
@@ -34,6 +54,26 @@ impl<'a> HerokuEndpoint<Vec<TestCase>> for TestCaseList<'a> {
 /// List test nodes
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#test-node-list)
+/// 
+/// # Example:
+///
+/// TestNodeList takes one required parameter, run_id, and returns a list of [`TestNodes`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TestNodeList::new("RUN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TestNode.html
 pub struct TestNodeList<'a> {
     /// run_id is the test run unique identifier
     pub run_id: &'a str,
@@ -60,6 +100,26 @@ impl<'a> HerokuEndpoint<Vec<TestNode>> for TestNodeList<'a> {
 /// Info for existing test-run.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#test-run-info)
+/// 
+/// # Example:
+///
+/// TestRunDetails takes one required parameter, run_id, and returns a [`TestRun`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TestRunDetails::new("RUN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TestRun.html
 pub struct TestRunDetails<'a> {
     /// run_id is the test run unique identifier
     pub run_id: &'a str,
@@ -86,6 +146,26 @@ impl<'a> HerokuEndpoint<TestRun> for TestRunDetails<'a> {
 /// List existing test-runs for a pipeline.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#test-run-list)
+/// 
+/// # Example:
+///
+/// TestRunList takes one required parameter, pipeline_id, and returns a list of [`TestRuns`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TestRunList::new("PIPELINE_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TestRun.html
 pub struct TestRunList<'a> {
     /// pipeline_id is the test run pipeline identifier
     pub pipeline_id: &'a str,
@@ -112,6 +192,26 @@ impl<'a> HerokuEndpoint<Vec<TestRun>> for TestRunList<'a> {
 /// Info for existing test-run by Pipeline
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#test-run-info-by-pipeline)
+/// 
+/// # Example:
+///
+/// TestRunDetailsByPipeline takes two required parameters, pipeline_id and run_id, and returns a [`TestRun`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TestRunDetailsByPipeline::new("PIPELINE_ID", "RUN_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+///
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TestRun.html
 pub struct TestRunDetailsByPipeline<'a> {
     /// pipeline_id is the test run pipeline identifier
     pub pipeline_id: &'a str,
