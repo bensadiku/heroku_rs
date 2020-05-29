@@ -8,6 +8,26 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Delete an existing team.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-delete)
+///
+/// # Example:
+///
+/// AppDelete takes one required parameter, team_id, and returns the deleted [`Team`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TeamDelete::new("TEAM_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Team.html
 pub struct TeamDelete<'a> {
     /// unique team identifier.
     pub team_id: &'a str,
@@ -34,6 +54,26 @@ impl<'a> HerokuEndpoint<Team> for TeamDelete<'a> {
 /// Revoke a team invitation.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-revoke)
+///
+/// # Example:
+///
+/// TeamInvitationRevoke takes two required parameters, team_id and invitation_id, and returns the revoked [`TeamInvitation`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TeamInvitationRevoke::new("TEAM_ID", "INVITATION_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TeamInvitation.html
 pub struct TeamInvitationRevoke<'a> {
     /// unique team identifier.
     pub team_id: &'a str,
@@ -65,6 +105,26 @@ impl<'a> HerokuEndpoint<TeamInvitation> for TeamInvitationRevoke<'a> {
 /// Remove a member from the team.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-member-delete)
+///
+/// # Example:
+///
+/// TeamMemberDelete takes two required parameters, team_id and member_id, and returns the deleted [`TeamMember`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TeamMemberDelete::new("TEAM_ID", "MEMBER_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TeamMember.html
 pub struct TeamMemberDelete<'a> {
     /// unique team identifier.
     pub team_id: &'a str,

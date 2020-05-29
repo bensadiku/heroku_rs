@@ -1,5 +1,5 @@
 //Anything related to PATCH requests for Teams and it's variations goes here.
-use super::{Team, TeamApp, TeamMember};
+use super::{Team, TeamApp, TeamMember, TeamPreferences};
 
 use crate::framework::endpoint::{HerokuEndpoint, Method};
 
@@ -8,6 +8,31 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Update team properties.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-update)
+///
+/// # Example:
+///
+/// TeamUpdate takes one required parameter, team_id and returns a [`Team`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &TeamUpdate::new("TEAM_ID")
+///         .default(false)
+///         .name("new-team-name")
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Team.html
 pub struct TeamUpdate<'a> {
     /// team_id is the unique team identifier.
     pub team_id: &'a str,
@@ -17,7 +42,6 @@ pub struct TeamUpdate<'a> {
 
 #[cfg(feature = "builder")]
 impl<'a> TeamUpdate<'a> {
-    // cares for optional parameters
     pub fn new(team_id: &'a str) -> TeamUpdate<'a> {
         TeamUpdate {
             team_id,
@@ -28,11 +52,13 @@ impl<'a> TeamUpdate<'a> {
         }
     }
 
+    /// # default: whether to use this team when none is specified
     pub fn default(&mut self, default: bool) -> &mut Self {
         self.params.default = Some(default);
         self
     }
 
+    /// # name: unique name of team
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.params.name = Some(name);
         self
@@ -78,6 +104,27 @@ impl<'a> HerokuEndpoint<Team, (), TeamUpdateParams<'a>> for TeamUpdate<'a> {
 /// Lock or unlock a team app.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-app-update-locked)
+///
+/// # Example:
+///
+/// TeamAppUpdateLocked takes two required parameters, team_id and locked and returns the updated [`Team`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let locked = true;
+/// let response = api_client.request(&TeamAppUpdateLocked::new("TEAM_ID", locked));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.Team.html
 pub struct TeamAppUpdateLocked<'a> {
     /// team_id is the unique team identifier.
     pub team_id: &'a str,
@@ -123,6 +170,26 @@ impl<'a> HerokuEndpoint<Team, (), TeamAppUpdateLockedParams> for TeamAppUpdateLo
 /// [See Heroku documentation for more information about the account transfer](https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-account)
 ///
 /// [See Heroku documentation for more information about the team transfer](https://devcenter.heroku.com/articles/platform-api-reference#team-app-transfer-to-team)
+///
+/// # Example:
+///
+/// TeamAppTransfer takes two required parameters, team_id and owner_id and returns the [`TeamApp`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TeamAppTransfer::new("TEAM_ID", "OWNER_ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TeamApp.html
 pub struct TeamAppTransfer<'a> {
     /// team_id is the unique team identifier.
     pub team_id: &'a str,
@@ -173,6 +240,26 @@ impl<'a> HerokuEndpoint<TeamApp, (), TeamAppTransferParams<'a>> for TeamAppTrans
 /// Update a team member.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-member-update)
+///
+/// # Example:
+///
+/// TeamMemberUpdate takes three required parameters, team_id email and role and returns the [`TeamMember`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TeamMemberUpdate::new("TEAM_ID", "EMAIL", "ROLE"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TeamMember.html
 pub struct TeamMemberUpdate<'a> {
     /// unique team identifier
     pub team_id: &'a str,
@@ -194,6 +281,7 @@ impl<'a> TeamMemberUpdate<'a> {
         }
     }
 
+    /// # federated: whether the user is federated and belongs to an Identity Provider
     pub fn federated(&mut self, federated: bool) -> &mut Self {
         self.params.federated = Some(federated);
         self
@@ -244,6 +332,26 @@ impl<'a> HerokuEndpoint<TeamMember, (), TeamMemberUpdateParams<'a>> for TeamMemb
 /// Update Team Preferences
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-preferences-update)
+///
+/// # Example:
+///
+/// TeamPreferenceUpdate takes one required parameter, id and returns the [`TeamPreferences`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(&TeamPreferenceUpdate::new("ID"));
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TeamPreferences.html
 pub struct TeamPreferenceUpdate<'a> {
     /// unique identifier
     pub id: &'a str,
@@ -262,6 +370,7 @@ impl<'a> TeamPreferenceUpdate<'a> {
         }
     }
 
+    /// # whitelisting_enabled: Whether whitelisting rules should be applied to add-on installations
     pub fn whitelisting_enabled(&mut self, whitelisting_enabled: bool) -> &mut Self {
         self.params.whitelisting_enabled = Some(whitelisting_enabled);
         self
@@ -287,7 +396,7 @@ pub struct TeamPreferenceUpdateParams {
     pub whitelisting_enabled: Option<bool>,
 }
 
-impl<'a> HerokuEndpoint<TeamMember, (), TeamPreferenceUpdateParams> for TeamPreferenceUpdate<'a> {
+impl<'a> HerokuEndpoint<TeamPreferences, (), TeamPreferenceUpdateParams> for TeamPreferenceUpdate<'a> {
     fn method(&self) -> Method {
         Method::Patch
     }

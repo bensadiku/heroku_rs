@@ -8,6 +8,30 @@ use crate::framework::endpoint::{HerokuEndpoint, Method};
 /// Create Team Invitation
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-create)
+///
+/// # Example:
+///
+/// TeamInvitationCreate takes three required parameters, team_id email and returns the created [`TeamInvitation`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &TeamInvitationCreate::new("TEAM_ID", "EMAIL")
+///         .role("member")
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TeamInvitation.html
 pub struct TeamInvitationCreate<'a> {
     /// unique team identifier
     pub team_id: &'a str,
@@ -27,6 +51,9 @@ impl<'a> TeamInvitationCreate<'a> {
         }
     }
 
+    /// # role: role in the team
+    /// 
+    /// `one of`: "admin" or "collaborator" or "member" or "owner" or null 
     pub fn role(&mut self, role: &'a str) -> &mut Self {
         self.params.role = Some(role);
         self
@@ -77,6 +104,30 @@ impl<'a> HerokuEndpoint<TeamInvitation, (), TeamInvitationCreateParams<'a>>
 /// Create a new team member, or update their role.
 ///
 /// [See Heroku documentation for more information about this endpoint](https://devcenter.heroku.com/articles/platform-api-reference#team-member-create-or-update)
+///
+/// # Example:
+///
+/// TeamMemberCreateorUpdate takes three required parameters, team_id, email and role, and returns the created or updated [`TeamMember`][response].
+/// ```rust
+/// use heroku_rs::prelude::*;
+///#    let api_client = HttpApiClient::create("API_KEY").unwrap();
+///
+/// let response = api_client.request(
+///     &TeamMemberCreateorUpdate::new("TEAM_ID", "EMAIL", "ROLE")
+///         .federated(true)
+///         .build(),
+/// );
+///
+///match response {
+///     Ok(success) => println!("Success: {:#?}", success),
+///     Err(e) => println!("Error: {}", e),
+///}
+//
+/// ```
+/// See how to create the Heroku [`api_client`][httpApiClientConfig].
+///
+/// [httpApiClientConfig]: ../../../framework/struct.HttpApiClient.html
+/// [response]: ../struct.TeamMember.html
 pub struct TeamMemberCreateorUpdate<'a> {
     /// unique team identifier
     pub team_id: &'a str,
@@ -98,6 +149,7 @@ impl<'a> TeamMemberCreateorUpdate<'a> {
         }
     }
 
+    /// # federated: whether the user is federated and belongs to an Identity Provider
     pub fn federated(&mut self, federated: bool) -> &mut Self {
         self.params.federated = Some(federated);
         self
