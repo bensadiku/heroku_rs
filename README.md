@@ -7,7 +7,7 @@
 
 ## Intro
 
-This crate is a API wrapper for the [Heroku v3 API](https://devcenter.heroku.com/articles/platform-api-reference/).
+This crate provides some convenient Rust bindings for the [Heroku v3 API](https://devcenter.heroku.com/articles/platform-api-reference/).
 
 See the [documentation](https://github.com/bensadiku/heroku_rs/blob/master/docs/ENDPOINTS.md) for more information on which endpoints are covered by the crate.
 
@@ -23,17 +23,20 @@ heroku_rs = "0.5"
 See [FEATURES](/docs/FEATURES.md) documentation for more information about the configurations of the crate.
 
 
-## Example 
+###  - Example 
 
-Here's a simple example which fetches the apps list. At the moment, the client is blocking by default. For more examples see the [examples directory](https://github.com/bensadiku/heroku_rs/tree/master/examples).
+Here's a simple example which fetches the apps list.
 
 ```rust
 use heroku_rs::prelude::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let api_client = HttpApiClient::create("API_KEY")?;
-    let response = api_client.request(&apps::AppList {});
-
+    //create the client
+    let heroku = HttpApiClient::create("API_KEY")?;
+    //request all the apps
+    let response = heroku.request(&AppList::new());
+    
+    //match response
     match response {
         Ok(success) => println!("Success: {:#?}", success),
         Err(e) => println!("Error: {}", e),
@@ -42,28 +45,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+ For more documentation see the [docs](https://docs.rs/heroku_rs/).
 
-You can also call custom endpoints that have not been supported by the library yet. e.g. :
+ For more examples see the [directory](https://github.com/bensadiku/heroku_rs/tree/master/examples).
 
-```rust
-use heroku_rs::prelude::*;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let api_client = HttpApiClient::create("API_KEY")?;
-
-    // This will do a GET request on https://api.heroku.com/apps/my_app_name_here
-    let query = format!("{}{}", "apps/", "my_app_name_here");
-    let method = Method::Get;
-    let response = api_client.request(&custom::CustomEndpointSimple::new(query, method));
-
-    Ok(())
-}
-
-```
-
-See more [examples](https://github.com/bensadiku/heroku_rs/blob/master/examples/src/custom_examples.rs) on how to use these custom endpoints.
-
-### Useful links
+### Useful reads if you're not familiar with Heroku
 
 [Heroku quickstart](https://devcenter.heroku.com/articles/platform-api-quickstart)
 
