@@ -1,5 +1,5 @@
 #![allow(dead_code)] //Some methods may not be "used" because they're showcase examples and not called all at once
-extern crate heroku_rs;
+#[macro_use] extern crate heroku_rs;
 use dotenv;
 use heroku_rs::framework::{
     auth::Credentials,
@@ -21,6 +21,7 @@ mod pipeline_examples;
 mod spaces_examples;
 mod teams_examples;
 mod testing_examples;
+mod macro_examples;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let key = "API_KEY";

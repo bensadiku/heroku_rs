@@ -198,6 +198,8 @@ extern crate reqwest;
 #[macro_use]
 extern crate serde;
 extern crate serde_json;
+#[macro_use]
+pub mod macros;
 
 pub mod endpoints;
 pub mod framework;
