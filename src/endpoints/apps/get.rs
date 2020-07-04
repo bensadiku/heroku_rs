@@ -1,8 +1,9 @@
 //Anything related to getting apps and it's properties goes here.
 use super::{App, AppFeature, AppSetup, AppWebhook, AppWebhookDelivery, WebhookEvent, SNI, SSL};
 
+use crate::framework::apiclient::HerokuApiClient;
 use crate::framework::endpoint::{HerokuEndpoint, Method};
-
+use crate::framework::response::HerokuApiFailure;
 /// App Info
 ///
 /// Get info for existing app.
@@ -37,6 +38,10 @@ pub struct AppDetails<'a> {
 impl<'a> AppDetails<'a> {
     pub fn new(app_id: &'a str) -> AppDetails {
         AppDetails { app_id }
+    }
+
+    pub fn get<T: HerokuApiClient>(&self, client: &T) -> Result<App, HerokuApiFailure> {
+        client.request(self)
     }
 }
 

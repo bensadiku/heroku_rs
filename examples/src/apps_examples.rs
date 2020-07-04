@@ -446,6 +446,11 @@ fn get_app<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: &
     print_response(response);
 }
 
+fn get_app_test<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: &str) {
+    let response = apps::AppDetails::new(app_id).get(api_client);
+    print_response(response);
+}
+
 fn get_app_raw_response<ApiClientType: HerokuApiClient>(api_client: &ApiClientType, app_id: &str) {
     // If successful, this returns a raw reqwest::blocking::response, do whatever with it!
     let response = api_client.request_raw(&apps::AppDetails::new(app_id));
