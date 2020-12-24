@@ -62,7 +62,6 @@ pub use addon_webhook_event::AddonWebhookEvent;
 mod addon {
     use chrono::offset::Utc;
     use chrono::DateTime;
-    use std::collections::HashMap;
 
     /// Add-on
     ///
@@ -74,7 +73,7 @@ mod addon {
     #[derive(Deserialize, Serialize, Debug, Clone)]
     pub struct Addon {
         /// Addon action
-        pub actions: Actions,
+        pub actions: Vec<Actions>,
         /// Addon service
         pub addon_service: AddonService,
         /// Billing entity
@@ -84,7 +83,7 @@ mod addon {
         /// billed price
         pub billed_price: Option<BilledPrice>,
         /// config vars exposed to the owning app by this add-on
-        pub config_vars: Vec<HashMap<String, String>>,
+        pub config_vars: Vec<String>,
         ///when add-on was created
         pub created_at: DateTime<Utc>,
         /// unique identifier of add-on
@@ -111,11 +110,11 @@ mod addon {
         /// the display text shown in Dashboard
         pub label: String,
         /// identifier of the action to take that is sent via SSO
-        pub action: String,
+        pub action: Option<String>,
         /// absolute URL to use instead of an action
         pub url: String,
         /// if the action requires the user to own the app
-        pub requires_owner: bool,
+        pub requires_owner: Option<bool>,
     }
     #[derive(Deserialize, Serialize, Debug, Clone)]
     pub struct AddonService {
