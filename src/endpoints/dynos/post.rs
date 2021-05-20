@@ -44,7 +44,7 @@ impl<'a> DynoActionStop<'a> {
     }
 }
 
-impl<'a> HerokuEndpoint<Dyno> for DynoActionStop<'a> {
+impl<'a> HerokuEndpoint for DynoActionStop<'a> {
     fn method(&self) -> Method {
         Method::Post
     }
