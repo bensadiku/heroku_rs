@@ -21,7 +21,7 @@ mod tests {
                 let api = format!("{}{}", util::TEST_ENDPOINT, "apps");
                 let pass = e.to_string().contains(&api);
                 if !pass {
-                    panic!(util::INVALID_ENDPOINT)
+                    panic!("{}", util::INVALID_ENDPOINT)
                 }
                 println!("Error: {}", e);
             }

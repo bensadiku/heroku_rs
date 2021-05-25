@@ -51,7 +51,7 @@ pub fn assert_valid_url<T: ApiResult>(response: ApiResponse<T>, second_part: Str
         Ok(success) => {
             // This should never succeed because the URL is not valid!
             println!("Success: {:#?}", success);
-            panic!("Got a successful response on a inexistent api call");
+            panic!("{}", "Got a successful response on a inexistent api call");
         }
         Err(e) => {
             let mut error = e.to_string();
@@ -65,10 +65,7 @@ pub fn assert_valid_url<T: ApiResult>(response: ApiResponse<T>, second_part: Str
                 let alpha_offset = error.find(')').unwrap_or(error.len());
                 let error: String = error.drain(..alpha_offset).collect();
 
-                panic!(format!(
-                    "{}. Excpected: {}. Got: {}",
-                    INVALID_ENDPOINT, api, error
-                ));
+                panic!("{}. Excpected: {}. Got: {}", INVALID_ENDPOINT, api, error);
             }
             println!("Error: {}", e);
         }
