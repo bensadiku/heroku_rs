@@ -14,10 +14,11 @@ See the [documentation](https://github.com/bensadiku/heroku_rs/blob/master/docs/
 ## Getting Started
 
 Add the following to your `Cargo.toml` and run `cargo build`. Voila.
+#### Note that version 0.6 and later uses tokio 1.0 
 
 ```toml
 [dependencies]
-heroku_rs = "0.5"
+heroku_rs = "0.6"
 ```
 
 See [FEATURES](/docs/FEATURES.md) documentation for more information about the configurations of the crate.
@@ -38,7 +39,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     //match response
     match response {
-        Ok(success) => println!("Success: {:#?}", success),
+        Ok(apps) => println!("Success: {:#?}", apps),
         Err(e) => println!("Error: {}", e),
     }
 

@@ -13,7 +13,7 @@ Add this to your `Cargo.toml` file and run `cargo build`. That will download the
 
 ```toml
 [dependencies]
-heroku_rs = "0.5"
+heroku_rs = "0.6"
 ```
 
 ### Setting up a custom configuration.
@@ -31,5 +31,5 @@ Other features are: `builder`. Note: When builder feature is activated, if will 
 [dependencies.heroku_rs]
 default-features = false
 features = ["apps","account","builder"]
-version = "0.5"
+version = "0.6"
 ```
