@@ -20,7 +20,7 @@ impl ApiResult for Vec<Release> {}
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct Release {
     /// add-on plans installed on the app for this release
-    pub addon_plan_names: Vec<i64>,
+    pub addon_plan_names: Vec<String>,
     /// An app represents the program that you would like to deploy and run on Heroku
     pub app: App,
     /// when release was created
